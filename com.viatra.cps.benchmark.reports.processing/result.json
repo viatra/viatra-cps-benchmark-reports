@@ -1,0 +1,192 @@
+{
+  "Case" : {
+    "CaseName" : "StatisticBasedCase",
+    "RunIndex" : 1,
+    "Scenario" : "BasicXform",
+    "Tool" : "BATCH_OPTIMIZED-TEMPLATE",
+    "Size" : 1
+  },
+  "PhaseResults" : [ {
+    "PhaseName" : "EMFResourceInitialization",
+    "Sequence" : "1",
+    "Metrics" : [ {
+      "MetricName" : "Time",
+      "MetricValue" : "248497"
+    }, {
+      "MetricName" : "Memory",
+      "MetricValue" : "9355040"
+    } ]
+  }, {
+    "PhaseName" : "Generation",
+    "Sequence" : "2",
+    "Metrics" : [ {
+      "MetricName" : "Time",
+      "MetricValue" : "66196503"
+    }, {
+      "MetricName" : "Memory",
+      "MetricValue" : "10601344"
+    } ]
+  }, {
+    "PhaseName" : "Initialization",
+    "Sequence" : "3",
+    "Metrics" : [ {
+      "MetricName" : "Time",
+      "MetricValue" : "13895"
+    }, {
+      "MetricName" : "Memory",
+      "MetricValue" : "9470296"
+    }, {
+      "MetricName" : "PeakMemory",
+      "MetricValue" : "30944736"
+    }, {
+      "MetricName" : "AverageMemory",
+      "MetricValue" : "20207616"
+    } ]
+  }, {
+    "PhaseName" : "M2MTransformation1",
+    "Sequence" : "4",
+    "Metrics" : [ {
+      "MetricName" : "Time",
+      "MetricValue" : "142246109"
+    }, {
+      "MetricName" : "Memory",
+      "MetricValue" : "9662912"
+    }, {
+      "MetricName" : "AverageMemory",
+      "MetricValue" : "181270696"
+    }, {
+      "MetricName" : "PeakMemory",
+      "MetricValue" : "331595744"
+    } ]
+  }, {
+    "PhaseName" : "Modification",
+    "Sequence" : "5",
+    "Metrics" : [ {
+      "MetricName" : "Time",
+      "MetricValue" : "54878"
+    }, {
+      "MetricName" : "Memory",
+      "MetricValue" : "9663000"
+    } ]
+  }, {
+    "PhaseName" : "M2MTransformation2",
+    "Sequence" : "6",
+    "Metrics" : [ {
+      "MetricName" : "Time",
+      "MetricValue" : "119025473"
+    }, {
+      "MetricName" : "Memory",
+      "MetricValue" : "9723168"
+    }, {
+      "MetricName" : "PeakMemory",
+      "MetricValue" : "331788888"
+    }, {
+      "MetricName" : "AverageMemory",
+      "MetricValue" : "181463784"
+    } ]
+  }, {
+    "PhaseName" : "Modification",
+    "Sequence" : "7",
+    "Metrics" : [ {
+      "MetricName" : "Time",
+      "MetricValue" : "69794"
+    }, {
+      "MetricName" : "Memory",
+      "MetricValue" : "9723256"
+    } ]
+  }, {
+    "PhaseName" : "M2MTransformation2",
+    "Sequence" : "8",
+    "Metrics" : [ {
+      "MetricName" : "Time",
+      "MetricValue" : "117578519"
+    }, {
+      "MetricName" : "Memory",
+      "MetricValue" : "9788312"
+    }, {
+      "MetricName" : "PeakMemory",
+      "MetricValue" : "353323368"
+    }, {
+      "MetricName" : "AverageMemory",
+      "MetricValue" : "192261152"
+    } ]
+  }, {
+    "PhaseName" : "Modification",
+    "Sequence" : "9",
+    "Metrics" : [ {
+      "MetricName" : "Time",
+      "MetricValue" : "79278"
+    }, {
+      "MetricName" : "Memory",
+      "MetricValue" : "9788400"
+    } ]
+  }, {
+    "PhaseName" : "M2MTransformation2",
+    "Sequence" : "10",
+    "Metrics" : [ {
+      "MetricName" : "Time",
+      "MetricValue" : "119825848"
+    }, {
+      "MetricName" : "Memory",
+      "MetricValue" : "9849432"
+    }, {
+      "MetricName" : "PeakMemory",
+      "MetricValue" : "353390656"
+    }, {
+      "MetricName" : "AverageMemory",
+      "MetricValue" : "192327368"
+    } ]
+  }, {
+    "PhaseName" : "Modification",
+    "Sequence" : "11",
+    "Metrics" : [ {
+      "MetricName" : "Time",
+      "MetricValue" : "65466"
+    }, {
+      "MetricName" : "Memory",
+      "MetricValue" : "9849544"
+    } ]
+  }, {
+    "PhaseName" : "M2MTransformation2",
+    "Sequence" : "12",
+    "Metrics" : [ {
+      "MetricName" : "Time",
+      "MetricValue" : "121753311"
+    }, {
+      "MetricName" : "Memory",
+      "MetricValue" : "9927056"
+    }, {
+      "MetricName" : "PeakMemory",
+      "MetricValue" : "353450888"
+    }, {
+      "MetricName" : "AverageMemory",
+      "MetricValue" : "192388068"
+    } ]
+  }, {
+    "PhaseName" : "Modification",
+    "Sequence" : "13",
+    "Metrics" : [ {
+      "MetricName" : "Time",
+      "MetricValue" : "91440"
+    }, {
+      "MetricName" : "Memory",
+      "MetricValue" : "9927144"
+    } ]
+  }, {
+    "PhaseName" : "M2MTransformation2",
+    "Sequence" : "14",
+    "Metrics" : [ {
+      "MetricName" : "Time",
+      "MetricValue" : "123330332"
+    }, {
+      "MetricName" : "Memory",
+      "MetricValue" : "9992072"
+    }, {
+      "MetricName" : "AverageMemory",
+      "MetricValue" : "192466068"
+    }, {
+      "MetricName" : "PeakMemory",
+      "MetricValue" : "353529312"
+    } ]
+  } ]
+}
