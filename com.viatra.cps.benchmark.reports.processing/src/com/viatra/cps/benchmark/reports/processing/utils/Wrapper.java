@@ -7,6 +7,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import com.viatra.cps.benchmark.reports.processing.models.Case;
+import com.viatra.cps.benchmark.reports.processing.models.Configuration;
 import com.viatra.cps.benchmark.reports.processing.models.Metric;
 import com.viatra.cps.benchmark.reports.processing.models.PhaseResult;
 import com.viatra.cps.benchmark.reports.processing.models.Result;
@@ -32,17 +33,6 @@ public class Wrapper {
 	}
 
 	/**
-	 * parse Result to json object
-	 * 
-	 * @param result
-	 *            json object
-	 */
-
-	public static void getJsonFromResult(Result result) {
-		// TODO change return Type to Json, create Json object from result object
-	}
-
-	/**
 	 * Parse json object to case
 	 * 
 	 * @return new Case
@@ -54,15 +44,6 @@ public class Wrapper {
 		String tool = (String) obj.get("Tool");
 		Integer size = ((Long) obj.get("Size")).intValue();
 		return new Case(caseName, runIndex, scenario, tool, size);
-	}
-
-	/**
-	 * parse Case to json object
-	 * 
-	 * @return case json object
-	 */
-	public static void getJsonFromCase(Case caseObject) {
-		// TODO change return Type to Json, create Json object from case object
 	}
 
 	/**
@@ -85,15 +66,6 @@ public class Wrapper {
 	}
 
 	/**
-	 * parse PhaseReult to json object
-	 * 
-	 * @return PhaseReult json object
-	 */
-	public static void getJsonFromPhaseReult(PhaseResult phaseResult) {
-		// TODO change return Type to Json, create Json object from case object
-	}
-
-	/**
 	 * Parse json object to metric
 	 * 
 	 * @return new Metric
@@ -105,11 +77,42 @@ public class Wrapper {
 	}
 
 	/**
-	 * parse PhaseReult to json object
+	 * Parse json object to configuration
 	 * 
-	 * @return PhaseReult json object
+	 * @return newConfiguration
 	 */
-	public static void getJsonFrommetric(Metric phaseResult) {
-		// TODO change return Type to Json, create Json object from case object
+	public static Configuration getConfigurationFromJson(JSONObject obj) {
+		String xDimension = (String) obj.get("X_Dimension");
+		String legend = (String) obj.get("Legend");
+		ArrayList<String> summarizeFunction = new ArrayList<>();
+		JSONArray functions = (JSONArray) obj.get("Summarize_Function");
+		Iterator<String> iteratorF = functions.iterator();
+		while (iteratorF.hasNext()) {
+			String function = iteratorF.next();
+			summarizeFunction.add(function);
+		}
+		String title = (String) obj.get("Title");
+		JSONArray metrics = (JSONArray) obj.get("Metrics");
+		Iterator<String> iteratorM = metrics.iterator();
+		while (iteratorM.hasNext()) {
+			String metricElement = iteratorM.next();
+			summarizeFunction.add(metricElement);
+		}
+		Integer metricScale = ((Long) obj.get("Metric_Scale")).intValue();
+		Long minIterationL = ((Long) obj.get("Min_Iteration"));
+		Integer minIteration = 0;
+		if (minIterationL != null) {
+			minIteration = minIterationL.intValue();
+		}
+		Long maxIterationL = ((Long) obj.get("Max_Iteration"));
+		Integer maxIteration = 0;
+		if (maxIterationL != null) {
+			maxIteration = maxIterationL.intValue();
+		}
+		String yLabel = (String) obj.get("Y_Label");
+		String yAxisScale = (String) obj.get("X_Axis_Scale");
+		String xAxisScale = (String) obj.get("Y_Axis_Scale");
+		return new Configuration(xDimension, legend, summarizeFunction, title, metricScale, minIteration, maxIteration,
+				yLabel, xAxisScale, yAxisScale);
 	}
 }
