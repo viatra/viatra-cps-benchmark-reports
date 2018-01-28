@@ -2,9 +2,9 @@ package com.viatra.cps.benchmark.reports.processing.models;
 
 public class Metric {
 	private String name;
-	private Integer value;
+	private Long value;
 
-	public Metric(String name, Integer value) {
+	public Metric(String name, Long value) {
 		this.name = name;
 		this.value = value;
 	}
@@ -13,7 +13,7 @@ public class Metric {
 		return name;
 	}
 
-	public Integer getValue() {
+	public Long getValue() {
 		return value;
 	}
 	

@@ -72,7 +72,7 @@ public class Wrapper {
 	 */
 	public static Metric getPhaseMetricFromJson(JSONObject obj) {
 		String name = (String) obj.get("MetricName");
-		Integer value = Integer.parseInt((String) obj.get("MetricValue"));
+		Long value = Long.parseLong((String) obj.get("MetricValue"));
 		return new Metric(name, value);
 	}
 
