@@ -3,9 +3,9 @@ package com.viatra.cps.benchmark.reports.processing.models;
 import java.util.List;
 
 public class PhaseResult {
-	private String name;
-	private int sequence;
-	private List<Metric> metrics;
+	protected String name;
+	protected int sequence;
+	protected List<Metric> metrics;
 
 	public PhaseResult(String name, int sequence, List<Metric> metrics) {
 		this.name = name;

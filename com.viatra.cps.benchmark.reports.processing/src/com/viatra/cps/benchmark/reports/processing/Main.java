@@ -12,6 +12,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import com.viatra.cps.benchmark.reports.processing.models.AggregatedPhaseResult;
 import com.viatra.cps.benchmark.reports.processing.models.Configuration;
 import com.viatra.cps.benchmark.reports.processing.models.Metric;
 import com.viatra.cps.benchmark.reports.processing.models.PhaseResult;
@@ -44,9 +45,8 @@ public class Main {
 			}
 			
 			List<PhaseResult> phaseResults = ListUtil.getPhaseListByName(results, configList.get(0).getSummarizeFunction().get(0));
-			Metric m = ListUtil.getMetricByName(phaseResults.get(0).getMetrics(),"Memory");
-				m.print();
-
+			AggregatedPhaseResult agRes =  Operation.sum(phaseResults, "Time");
+			agRes.print();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
