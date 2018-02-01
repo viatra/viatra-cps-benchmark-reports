@@ -6,6 +6,7 @@ public class Configuration {
 	private String xDimension;
 	private String legend;
 	private List<String> summarizeFunction;
+	private List<String> metrics;
 	private String title;
 	private Integer metricScale;
 	private Integer minIteration;
@@ -14,12 +15,13 @@ public class Configuration {
 	private String xAxisScale;
 	private String yAxisScale;
 
-	public Configuration(String xDimension, String tool, List<String> summarizeFunction, String title,
-			Integer metricScale, Integer minIteration, Integer maxIteration, String yLabel, String xAxisScale,
-			String yAxisScale) {
+	public Configuration(String xDimension, String tool, List<String> summarizeFunction, List<String> metrics,
+			String title, Integer metricScale, Integer minIteration, Integer maxIteration, String yLabel,
+			String xAxisScale, String yAxisScale) {
 		this.xDimension = xDimension;
 		this.legend = tool;
 		this.summarizeFunction = summarizeFunction;
+		this.metrics = metrics;
 		this.title = title;
 		this.metricScale = metricScale;
 		this.minIteration = minIteration;
@@ -39,6 +41,10 @@ public class Configuration {
 
 	public List<String> getSummarizeFunction() {
 		return summarizeFunction;
+	}
+
+	public List<String> getMetrics() {
+		return metrics;
 	}
 
 	public String getTitle() {
@@ -68,14 +74,14 @@ public class Configuration {
 	public String getyAxisScale() {
 		return yAxisScale;
 	}
-	
+
 	public void print() {
 		System.out.println("xDimension: " + xDimension);
 		System.out.println("legend: " + legend);
 		System.out.println("summarizeFunction: ");
-		for(String func : summarizeFunction) {
+		for (String func : summarizeFunction) {
 			System.out.print(func + ", ");
-		}	
+		}
 		System.out.println();
 		System.out.println("title: " + title);
 		System.out.println("metricScale: " + metricScale);

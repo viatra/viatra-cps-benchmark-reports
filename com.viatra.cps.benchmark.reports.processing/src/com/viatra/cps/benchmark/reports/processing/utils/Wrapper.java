@@ -72,7 +72,7 @@ public class Wrapper {
 	 */
 	public static Metric getPhaseMetricFromJson(JSONObject obj) {
 		String name = (String) obj.get("MetricName");
-		Long value = Long.parseLong((String) obj.get("MetricValue"));
+		Double value = Double.parseDouble((String) obj.get("MetricValue"));
 		return new Metric(name, value);
 	}
 
@@ -93,10 +93,11 @@ public class Wrapper {
 		}
 		String title = (String) obj.get("Title");
 		JSONArray metrics = (JSONArray) obj.get("Metrics");
+		ArrayList<String> metricList = new ArrayList<>();
 		Iterator<String> iteratorM = metrics.iterator();
 		while (iteratorM.hasNext()) {
 			String metricElement = iteratorM.next();
-			summarizeFunction.add(metricElement);
+			metricList.add(metricElement);
 		}
 		Integer metricScale = ((Long) obj.get("Metric_Scale")).intValue();
 		Long minIterationL = ((Long) obj.get("Min_Iteration"));
@@ -112,7 +113,7 @@ public class Wrapper {
 		String yLabel = (String) obj.get("Y_Label");
 		String yAxisScale = (String) obj.get("X_Axis_Scale");
 		String xAxisScale = (String) obj.get("Y_Axis_Scale");
-		return new Configuration(xDimension, legend, summarizeFunction, title, metricScale, minIteration, maxIteration,
-				yLabel, xAxisScale, yAxisScale);
+		return new Configuration(xDimension, legend, summarizeFunction, metricList, title, metricScale, minIteration,
+				maxIteration, yLabel, xAxisScale, yAxisScale);
 	}
 }

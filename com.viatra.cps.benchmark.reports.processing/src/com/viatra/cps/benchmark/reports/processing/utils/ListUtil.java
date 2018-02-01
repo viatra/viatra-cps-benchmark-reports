@@ -33,6 +33,31 @@ public class ListUtil {
 	}
 
 	/**
+	 * Get all Phaseresult which name has equals phasName input
+	 * 
+	 * @param results
+	 *            Result list
+	 * @param phaseName
+	 *            name of phase
+	 * @return list of PhaseResult
+	 */
+	public static List<List<PhaseResult>> getPhaseListByName(List<Result> results, List<String> phaseNames,
+			final int size) {
+		ArrayList<PhaseResult> phaseResults = new ArrayList<>();
+		ArrayList<List<PhaseResult>> allPhaseResult = new ArrayList<>();
+		for (Result result : results) {
+			if (result.getCase().getSzie() == size) {
+				phaseResults.addAll(result.getPhasesResults().stream().filter(phaseResult -> {
+					return phaseNames.stream().filter(phaseName -> phaseName.equals(phaseResult.getName())).findAny()
+							.isPresent();
+				}).collect(Collectors.toList()));
+				allPhaseResult.add(phaseResults);
+			}
+		}
+		return allPhaseResult;
+	}
+
+	/**
 	 * Get metric which name has equals metricName input
 	 * 
 	 * @param metrics
