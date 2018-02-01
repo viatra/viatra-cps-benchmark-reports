@@ -6,6 +6,7 @@ import java.util.Iterator;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import com.viatra.cps.benchmark.reports.processing.models.AggregatedPhaseResult;
 import com.viatra.cps.benchmark.reports.processing.models.Case;
 import com.viatra.cps.benchmark.reports.processing.models.Configuration;
 import com.viatra.cps.benchmark.reports.processing.models.Metric;
@@ -115,5 +116,17 @@ public class Wrapper {
 		String xAxisScale = (String) obj.get("Y_Axis_Scale");
 		return new Configuration(xDimension, legend, summarizeFunction, metricList, title, metricScale, minIteration,
 				maxIteration, yLabel, xAxisScale, yAxisScale);
+	}
+
+	public static JSONObject getJSONObjectFromAggregatedPhaseResult(AggregatedPhaseResult aggregatedPhaseResult) {
+		JSONObject obj = new JSONObject();
+		obj.put("PhaseName", aggregatedPhaseResult.getName());
+		JSONObject metric = new JSONObject();
+		metric.put("Name", aggregatedPhaseResult.getMetrics().get(0).getName());
+		metric.put("Value", aggregatedPhaseResult.getMetrics().get(0).getValue());
+		obj.put("Metric", metric);
+		obj.put("Sequence", aggregatedPhaseResult.getSequence());
+		obj.put("Operaition", aggregatedPhaseResult.getOperation());
+		return obj;
 	}
 }

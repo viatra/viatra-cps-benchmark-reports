@@ -2,6 +2,7 @@ package com.viatra.cps.benchmark.reports.processing;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -65,17 +66,38 @@ public class Processing {
 	}
 
 	public void process() {
-		int size = 1;
-		for (; size <= 64; size *= 2) {
-			for (Configuration config : configs) {
-				StringBuilder names = new StringBuilder();
-				config.getSummarizeFunction().forEach(function -> names.append(function + " "));
-				aggregatedPhaseResults.add(new AggregatedPhaseResult(names.toString(), -1,
+
+		JSONArray resultArray = new JSONArray();
+		AggregatedPhaseResult aResult = null;
+		for (Configuration config : configs) {
+			StringBuilder names = new StringBuilder();
+			config.getSummarizeFunction().forEach(function -> names.append(function + " "));
+			JSONObject obj = new JSONObject();
+			obj.put("Functions", names.toString());
+			int size = 1;
+			JSONArray valueArray = new JSONArray();
+			for (; size <= 64; size *= 2) {
+
+				aResult = new AggregatedPhaseResult(names.toString(), -1,
 						Arrays.asList(new Metric(config.getMetrics().get(0),
 								Operation.avg(results, config.getSummarizeFunction(), config.getMetrics(), size))),
-						"avg"));
+						"avg");
+				JSONObject vRes = new JSONObject();
+				vRes.put("size", size);
+				vRes.put("Value", Wrapper.getJSONObjectFromAggregatedPhaseResult(aResult));
+				valueArray.add(vRes);
 			}
-			aggregatedPhaseResults.forEach(aggregatedPhaseResults -> aggregatedPhaseResults.print());
+			obj.put("Result", valueArray);
+			resultArray.add(obj);
+		}
+		System.out.println(resultArray);
+		try (FileWriter file = new FileWriter("test.json")) {
+
+			file.write(resultArray.toJSONString());
+			file.flush();
+
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 }
