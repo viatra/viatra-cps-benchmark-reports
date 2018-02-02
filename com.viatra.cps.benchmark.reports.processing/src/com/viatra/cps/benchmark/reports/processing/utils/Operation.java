@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.viatra.cps.benchmark.reports.processing.models.PhaseResult;
-import com.viatra.cps.benchmark.reports.processing.models.Result;
+import com.viatra.cps.benchmark.reports.processing.models.BenchmarkResult;
 
 public class Operation {
 
-	public static Double avg(List<Result> results, List<String> phaseNames, List<String> metricNames,final int size) {
+	public static Double avg(List<BenchmarkResult> results, List<String> phaseNames, List<String> metricNames,final int size) {
 		final List<Double> values = new ArrayList<>();
 		List<List<PhaseResult>> allPhaseResult = ListUtil.getPhaseListByName(results, phaseNames,size);
 		allPhaseResult.forEach(phasresults -> {
