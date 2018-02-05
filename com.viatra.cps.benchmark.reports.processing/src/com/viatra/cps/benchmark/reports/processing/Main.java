@@ -8,6 +8,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 
 import com.viatra.cps.benchmark.reports.processing.models.BenchmarkResult;
+import com.viatra.cps.benchmark.reports.processing.models.Data;
 import com.viatra.cps.benchmark.reports.processing.models.Plot;
 
 public class Main {
@@ -21,7 +22,8 @@ public class Main {
 					new TypeReference<List<BenchmarkResult>>() {
 					});
 			Plot plot = mapper.readValue(new File("config.json"), Plot.class);
-			plot.getConfigs().forEach(element -> System.out.println(element.getTitle()));
+			Data data = mapper.readValue(new File("data.json"), Data.class);
+			data.getBenchmarks().forEach(element -> System.out.println(element.getScenario()));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
