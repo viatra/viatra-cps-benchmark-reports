@@ -1,0 +1,114 @@
+package com.viatra.cps.benchmark.reports.processing;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.type.TypeReference;
+
+import com.viatra.cps.benchmark.reports.processing.models.AggregataedResult;
+import com.viatra.cps.benchmark.reports.processing.models.BenchmarkResult;
+import com.viatra.cps.benchmark.reports.processing.models.Configuration;
+import com.viatra.cps.benchmark.reports.processing.models.Data;
+import com.viatra.cps.benchmark.reports.processing.models.MetricResult;
+import com.viatra.cps.benchmark.reports.processing.models.Tool;
+import com.viatra.cps.benchmark.reports.processing.models.Plot;
+import com.viatra.cps.benchmark.reports.processing.models.Result;
+import com.viatra.cps.benchmark.reports.processing.utils.ListUtil;
+import com.viatra.cps.benchmark.reports.processing.utils.Operation;
+
+public class Processor {
+	Plot plot;
+	Data data;
+	List<BenchmarkResult> benchmarkResults;
+	ObjectMapper mapper;
+	List<AggregataedResult> aggregataedResults;
+
+	public Processor() {
+		benchmarkResults = new ArrayList<>();
+		aggregataedResults = new ArrayList<>();
+		mapper = new ObjectMapper();
+	}
+
+	public void loadData(File data) throws JsonParseException, JsonMappingException, IOException {
+		this.data = mapper.readValue(data, Data.class);
+	}
+
+	public void loadPlot(File plot) throws JsonParseException, JsonMappingException, IOException {
+		this.plot = mapper.readValue(plot, Plot.class);
+	}
+
+	public void loadBenchmarkResults(File benchmarkResults)
+			throws JsonParseException, JsonMappingException, IOException {
+		this.benchmarkResults = mapper.readValue(benchmarkResults, new TypeReference<List<BenchmarkResult>>() {
+		});
+	}
+
+	public void calculateAvarage() {
+		data.getBenchmarks().forEach(benchmark -> {
+			plot.getConfigs().forEach(config -> {
+				AggregataedResult aggRes = new AggregataedResult();
+				aggRes.setOperation("AVG");
+				aggRes.setFunction(getFunctions(config));
+				List<String> tools = getTools(config.getLegendFilters(), benchmark.getTransformationTypes(),
+						benchmark.getGeneratorTypes());
+				List<Tool> ts = new ArrayList<>();
+				tools.forEach(tool -> {
+					Tool t = new Tool();
+					t.setName(tool);
+					List<Result> resList = new ArrayList<>();
+					benchmark.getScales().forEach(scale -> {
+						Result res = new Result();
+						res.setSize(scale);
+						List<BenchmarkResult> filteredResults = ListUtil
+								.getBenchmarkResultBySizeAndTool(benchmarkResults, scale, tool);
+						MetricResult metric = new MetricResult();
+						metric.setName(config.getMetrics().get(0));
+						metric.setValue(Operation.avg(filteredResults, config.getSummarizeFunction(),
+								config.getMetrics(), scale));
+						res.setMetrics(metric);
+						resList.add(res);
+						t.setResults(resList);
+					});
+					ts.add(t);
+				});
+				aggRes.setTool(ts);
+				aggregataedResults.add(aggRes);
+			});
+		});
+	}
+
+	private String getFunctions(Configuration config) {
+		StringBuilder builder = new StringBuilder();
+		config.getSummarizeFunction().forEach(func -> {
+			builder.append(func);
+			builder.append("+");
+		});
+		String function = builder.toString().substring(0, builder.toString().length() - 1);
+		return function;
+	}
+
+	private List<String> getTools(List<String> legendFilters, List<String> transformationTypes,
+			List<String> generatorTypes) {
+		if (legendFilters.size() > 0) {
+			return legendFilters;
+		} else {
+			List<String> tools = new ArrayList<>();
+			transformationTypes.forEach(transformationType -> {
+				generatorTypes.forEach(generatorType -> {
+					tools.add(transformationType + "-" + generatorType);
+				});
+			});
+			return tools;
+		}
+	}
+
+	public void print(File out) throws JsonGenerationException, JsonMappingException, IOException {
+		mapper.writeValue(out, aggregataedResults);
+	}
+}

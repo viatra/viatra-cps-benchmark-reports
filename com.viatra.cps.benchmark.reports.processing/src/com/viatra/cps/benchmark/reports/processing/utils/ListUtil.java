@@ -46,15 +46,23 @@ public class ListUtil {
 		ArrayList<PhaseResult> phaseResults = new ArrayList<>();
 		ArrayList<List<PhaseResult>> allPhaseResult = new ArrayList<>();
 		for (BenchmarkResult result : results) {
-			if (result.getCaseDescriptor().getSzie() == size) {
+			if (result.getCaseDescriptor().getSize() == size) {
 				phaseResults.addAll(result.getPhaseResults().stream().filter(phaseResult -> {
-					return phaseNames.stream().filter(phaseName -> phaseName.equals(phaseResult.getPhaseName())).findAny()
-							.isPresent();
+					return phaseNames.stream().filter(phaseName -> phaseName.equals(phaseResult.getPhaseName()))
+							.findAny().isPresent();
 				}).collect(Collectors.toList()));
 				allPhaseResult.add(phaseResults);
 			}
 		}
-		return allPhaseResult;
+		return allPhaseResult.size() > 0 ? allPhaseResult : null;
+	}
+
+	public static List<BenchmarkResult> getBenchmarkResultBySize(List<BenchmarkResult> results, Integer size) {
+		return results.stream().filter(result -> result.getCaseDescriptor().getSize() == size).collect(Collectors.toList());
+	}
+	
+	public static List<BenchmarkResult> getBenchmarkResultBySizeAndTool(List<BenchmarkResult> results, Integer size, String tool) {
+		return results.stream().filter(result -> result.getCaseDescriptor().getSize() == size && result.getCaseDescriptor().getTool().equals(tool)).collect(Collectors.toList());
 	}
 
 	/**

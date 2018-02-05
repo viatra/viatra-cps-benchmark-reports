@@ -15,6 +15,9 @@ public class Configuration {
 	@JsonProperty("Legend")
 	private String legend;
 	
+	@JsonProperty("Legend_Filters")
+	private List<String> legendFilters;
+	
 	@JsonProperty("Summarize_Function")
 	private List<String> summarizeFunction;
 	
@@ -152,10 +155,21 @@ public class Configuration {
 		this.yAxisScale = yAxisScale;
 	}
 
+	
+
+	public List<String> getLegendFilters() {
+		return legendFilters;
+	}
+
+
+	public void setLegendFilters(List<String> legendFilters) {
+		this.legendFilters = legendFilters;
+	}
+
 
 	public Configuration() {
 		summarizeFunction = new ArrayList<>();
 		metrics = new ArrayList<>();
+		legendFilters = new ArrayList<>();
 	}
-
 }

@@ -39,7 +39,7 @@ public class CaseDescriptor {
 		return tool;
 	}
 
-	public int getSzie() {
+	public int getSize() {
 		return size;
 	}
 

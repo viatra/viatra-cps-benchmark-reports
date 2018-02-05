@@ -1,28 +1,33 @@
 package com.viatra.cps.benchmark.reports.processing.models;
 
-import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.annotate.JsonSetter;
 
 public class MetricResult {
 
-	@JsonProperty("MetricName")
-	private String name;
+	
+	private String metricName;
 
-	@JsonProperty("MetricValue")
-	private String value;
+	private Double value;
 
 	public String getName() {
-		return name;
+		return metricName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	@JsonSetter("MetricName")
+	public void setName(String metricName) {
+		this.metricName = metricName;
 	}
 
 	public Double getValue() {
-		return Double.parseDouble(value);
+		return value;
 	}
 
+	@JsonSetter("MetricValue")
 	public void setValue(String value) {
+		this.value = Double.parseDouble(value);
+	}
+
+	public void setValue(Double value) {
 		this.value = value;
 	}
 

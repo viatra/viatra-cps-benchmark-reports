@@ -1,17 +1,17 @@
 package com.viatra.cps.benchmark.reports.processing.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.codehaus.jackson.annotate.JsonProperty;
-import org.codehaus.jackson.map.annotate.JsonDeserialize;
 
 public class BenchmarkResult {
 
 	@JsonProperty("Case")
-	private CaseDescriptor caseDescriptor;
+	protected CaseDescriptor caseDescriptor;
 
 	@JsonProperty("PhaseResults")
-	private List<PhaseResult> phaseResults;
+	protected List<PhaseResult> phaseResults;
 
 	public CaseDescriptor getCaseDescriptor() {
 		return caseDescriptor;
@@ -28,8 +28,9 @@ public class BenchmarkResult {
 	public void setPhaseResults(List<PhaseResult> phaseResults) {
 		this.phaseResults = phaseResults;
 	}
+	
 
 	public BenchmarkResult() {
-		// TODO Auto-generated constructor stub
+		phaseResults = new ArrayList<>();
 	}
 }
