@@ -4,9 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.viatra.cps.benchmark.reports.processing.models.MetricResult;
-import com.viatra.cps.benchmark.reports.processing.models.PhaseResult;
-import com.viatra.cps.benchmark.reports.processing.models.BenchmarkResult;
+
+import eu.mondo.sam.core.results.BenchmarkResult;
+import eu.mondo.sam.core.results.MetricResult;
+import eu.mondo.sam.core.results.PhaseResult;
 
 /**
  * 
@@ -61,7 +62,7 @@ public class ListUtil {
 		return results.stream().filter(result -> result.getCaseDescriptor().getSize() == size).collect(Collectors.toList());
 	}
 	
-	public static List<BenchmarkResult> getBenchmarkResultBySizeAndTool(List<BenchmarkResult> results, Integer size, String tool) {
+	public static List<eu.mondo.sam.core.results.BenchmarkResult> getBenchmarkResultBySizeAndTool(List<eu.mondo.sam.core.results.BenchmarkResult> results, Integer size, String tool) {
 		return results.stream().filter(result -> result.getCaseDescriptor().getSize() == size && result.getCaseDescriptor().getTool().equals(tool)).collect(Collectors.toList());
 	}
 

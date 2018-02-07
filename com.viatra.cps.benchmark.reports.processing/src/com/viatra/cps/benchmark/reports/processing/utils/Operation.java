@@ -3,8 +3,8 @@ package com.viatra.cps.benchmark.reports.processing.utils;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.viatra.cps.benchmark.reports.processing.models.PhaseResult;
-import com.viatra.cps.benchmark.reports.processing.models.BenchmarkResult;
+import eu.mondo.sam.core.results.BenchmarkResult;
+import eu.mondo.sam.core.results.PhaseResult;
 
 public class Operation {
 
@@ -15,7 +15,8 @@ public class Operation {
 		if (allPhaseResult != null) {
 			allPhaseResult.forEach(phasresults -> {
 				phasresults.forEach(phaseResult -> {
-					values.add(ListUtil.getMetricByName(phaseResult.getMetrics(), metricNames.get(0)).getValue());
+					values.add(Double.parseDouble(
+							ListUtil.getMetricByName(phaseResult.getMetrics(), metricNames.get(0)).getValue()));
 				});
 			});
 		}

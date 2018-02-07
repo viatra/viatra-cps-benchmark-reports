@@ -12,20 +12,22 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 
 import com.viatra.cps.benchmark.reports.processing.models.AggregataedResult;
-import com.viatra.cps.benchmark.reports.processing.models.BenchmarkResult;
 import com.viatra.cps.benchmark.reports.processing.models.Configuration;
 import com.viatra.cps.benchmark.reports.processing.models.Data;
-import com.viatra.cps.benchmark.reports.processing.models.MetricResult;
 import com.viatra.cps.benchmark.reports.processing.models.Tool;
 import com.viatra.cps.benchmark.reports.processing.models.Plot;
 import com.viatra.cps.benchmark.reports.processing.models.Result;
 import com.viatra.cps.benchmark.reports.processing.utils.ListUtil;
 import com.viatra.cps.benchmark.reports.processing.utils.Operation;
 
+import eu.mondo.sam.core.results.BenchmarkResult;
+import eu.mondo.sam.core.results.JsonSerializer;
+import eu.mondo.sam.core.results.MetricResult;
+
 public class Processor {
 	Plot plot;
 	Data data;
-	List<BenchmarkResult> benchmarkResults;
+	List<eu.mondo.sam.core.results.BenchmarkResult> benchmarkResults;
 	ObjectMapper mapper;
 	List<AggregataedResult> aggregataedResults;
 
@@ -54,7 +56,7 @@ public class Processor {
 			plot.getConfigs().forEach(config -> {
 				AggregataedResult aggRes = new AggregataedResult();
 				aggRes.setOperation("AVG");
-				aggRes.setFunction(getFunctions(config));
+				aggRes.setFunction(config.getTitle());
 				List<String> tools = getTools(config.getLegendFilters(), benchmark.getTransformationTypes(),
 						benchmark.getGeneratorTypes());
 				List<Tool> ts = new ArrayList<>();
@@ -65,12 +67,11 @@ public class Processor {
 					benchmark.getScales().forEach(scale -> {
 						Result res = new Result();
 						res.setSize(scale);
-						List<BenchmarkResult> filteredResults = ListUtil
-								.getBenchmarkResultBySizeAndTool(benchmarkResults, scale, tool);
+						List<BenchmarkResult> filteredResults = ListUtil.getBenchmarkResultBySizeAndTool(benchmarkResults, scale, tool);
 						MetricResult metric = new MetricResult();
 						metric.setName(config.getMetrics().get(0));
 						metric.setValue(Operation.avg(filteredResults, config.getSummarizeFunction(),
-								config.getMetrics(), scale));
+								config.getMetrics(), scale).toString());
 						res.setMetrics(metric);
 						resList.add(res);
 						t.setResults(resList);
@@ -81,16 +82,6 @@ public class Processor {
 				aggregataedResults.add(aggRes);
 			});
 		});
-	}
-
-	private String getFunctions(Configuration config) {
-		StringBuilder builder = new StringBuilder();
-		config.getSummarizeFunction().forEach(func -> {
-			builder.append(func);
-			builder.append("+");
-		});
-		String function = builder.toString().substring(0, builder.toString().length() - 1);
-		return function;
 	}
 
 	private List<String> getTools(List<String> legendFilters, List<String> transformationTypes,
@@ -109,6 +100,7 @@ public class Processor {
 	}
 
 	public void print(File out) throws JsonGenerationException, JsonMappingException, IOException {
-		mapper.writeValue(out, aggregataedResults);
+		JsonArraySerializer ser = new JsonArraySerializer();
+		ser.serialize(benchmarkResults, "test.json");
 	}
 }
