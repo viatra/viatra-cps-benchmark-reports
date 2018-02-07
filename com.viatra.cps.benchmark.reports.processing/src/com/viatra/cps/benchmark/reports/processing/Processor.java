@@ -3,6 +3,7 @@ package com.viatra.cps.benchmark.reports.processing;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.codehaus.jackson.JsonGenerationException;
@@ -67,11 +68,13 @@ public class Processor {
 					benchmark.getScales().forEach(scale -> {
 						Result res = new Result();
 						res.setSize(scale);
-						List<BenchmarkResult> filteredResults = ListUtil.getBenchmarkResultBySizeAndTool(benchmarkResults, scale, tool);
+						List<BenchmarkResult> filteredResults = ListUtil
+								.getBenchmarkResultBySizeAndTool(benchmarkResults, scale, tool);
 						MetricResult metric = new MetricResult();
 						metric.setName(config.getMetrics().get(0));
-						metric.setValue(Operation.avg(filteredResults, config.getSummarizeFunction(),
-								config.getMetrics(), scale).toString());
+						metric.setValue(Operation
+								.avg(filteredResults, config.getSummarizeFunction(), config.getMetrics(), scale)
+								.toString());
 						res.setMetrics(metric);
 						resList.add(res);
 						t.setResults(resList);
@@ -100,7 +103,8 @@ public class Processor {
 	}
 
 	public void print(File out) throws JsonGenerationException, JsonMappingException, IOException {
-		JsonArraySerializer ser = new JsonArraySerializer();
-		ser.serialize(benchmarkResults, "test.json");
+		JsonSerializer ser = new JsonSerializer();
+		JsonSerializer.setResultPath("");
+		ser.serialize("test", benchmarkResults.toArray(new BenchmarkResult[benchmarkResults.size()]));
 	}
 }
