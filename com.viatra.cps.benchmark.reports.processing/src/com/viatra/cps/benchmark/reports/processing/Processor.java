@@ -105,6 +105,6 @@ public class Processor {
 	public void print(File out) throws JsonGenerationException, JsonMappingException, IOException {
 		JsonSerializer ser = new JsonSerializer();
 		JsonSerializer.setResultPath("");
-		ser.serialize("test", benchmarkResults.toArray(new BenchmarkResult[benchmarkResults.size()]));
+		ser.serialize(benchmarkResults, "test");
 	}
 }
