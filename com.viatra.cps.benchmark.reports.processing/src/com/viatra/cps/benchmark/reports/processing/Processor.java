@@ -13,16 +13,15 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 
 import com.viatra.cps.benchmark.reports.processing.models.AggregataedResult;
-import com.viatra.cps.benchmark.reports.processing.models.Configuration;
 import com.viatra.cps.benchmark.reports.processing.models.Data;
 import com.viatra.cps.benchmark.reports.processing.models.Tool;
+import com.viatra.cps.benchmark.reports.processing.serializer.JsonSerializer;
 import com.viatra.cps.benchmark.reports.processing.models.Plot;
 import com.viatra.cps.benchmark.reports.processing.models.Result;
 import com.viatra.cps.benchmark.reports.processing.utils.ListUtil;
 import com.viatra.cps.benchmark.reports.processing.utils.Operation;
 
 import eu.mondo.sam.core.results.BenchmarkResult;
-import eu.mondo.sam.core.results.JsonSerializer;
 import eu.mondo.sam.core.results.MetricResult;
 
 public class Processor {
@@ -72,9 +71,11 @@ public class Processor {
 								.getBenchmarkResultBySizeAndTool(benchmarkResults, scale, tool);
 						MetricResult metric = new MetricResult();
 						metric.setName(config.getMetrics().get(0));
-						metric.setValue(Operation
-								.avg(filteredResults, config.getSummarizeFunction(), config.getMetrics(), scale)
-								.toString());
+						Double avg = Operation.avg(filteredResults, config.getSummarizeFunction(), config.getMetrics(), scale);
+						if(avg==-1) {
+							return;
+						}
+						metric.setValue(avg);
 						res.setMetrics(metric);
 						resList.add(res);
 						t.setResults(resList);
@@ -104,7 +105,6 @@ public class Processor {
 
 	public void print(File out) throws JsonGenerationException, JsonMappingException, IOException {
 		JsonSerializer ser = new JsonSerializer();
-		JsonSerializer.setResultPath("");
-		ser.serialize(benchmarkResults, "test");
+		ser.serialize(aggregataedResults, "results");
 	}
 }

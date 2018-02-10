@@ -6,9 +6,11 @@ import eu.mondo.sam.core.results.MetricResult;
 
 public class Result {
 
+	@JsonProperty("Size")
 	protected Integer size;
 
-	MetricResult metrics;
+	@JsonProperty("Meric")
+	MetricResult metric;
 
 	public Result() {
 	}
@@ -22,12 +24,11 @@ public class Result {
 	}
 
 	public MetricResult getMetrics() {
-		return metrics;
+		return metric;
 	}
 
-	public void setMetrics(MetricResult metrics) {
-		this.metrics = metrics;
+	public void setMetrics(MetricResult metric) {
+		this.metric = metric;
 	}
-	
-	
+
 }

@@ -15,8 +15,7 @@ public class Operation {
 		if (allPhaseResult != null) {
 			allPhaseResult.forEach(phasresults -> {
 				phasresults.forEach(phaseResult -> {
-					values.add(Double.parseDouble(
-							ListUtil.getMetricByName(phaseResult.getMetrics(), metricNames.get(0)).getValue()));
+					values.add(ListUtil.getMetricByName(phaseResult.getMetrics(), metricNames.get(0)).getValue());
 				});
 			});
 		}
