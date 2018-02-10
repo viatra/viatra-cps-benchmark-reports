@@ -15,7 +15,13 @@ public class AggregataedResult {
 
 	@JsonProperty("tool")
 	protected List<Tool> tool;
+	
+	@JsonProperty("Y_Label")
+	protected String yLabel; 
 
+	@JsonProperty("X_Label")
+	protected String xLabel; 
+	
 	public AggregataedResult() {
 		tool = new ArrayList<>();
 	}
@@ -43,5 +49,22 @@ public class AggregataedResult {
 	public void setTool(List<Tool> tool) {
 		this.tool = tool;
 	}
+
+	public String getyLabel() {
+		return yLabel;
+	}
+
+	public void setyLabel(String yLabel) {
+		this.yLabel = yLabel;
+	}
+
+	public String getxLabel() {
+		return xLabel;
+	}
+
+	public void setxLabel(String xLabel) {
+		this.xLabel = xLabel;
+	}
+	
 
 }

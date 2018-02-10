@@ -45,7 +45,9 @@ public class Configuration {
 	@JsonProperty("Y_Axis_Scale")
 	private String yAxisScale;
 
-
+	@JsonProperty("X_Label")
+	protected String xLabel; 
+	
 	public String getxDimension() {
 		return xDimension;
 	}
@@ -164,6 +166,16 @@ public class Configuration {
 
 	public void setLegendFilters(List<String> legendFilters) {
 		this.legendFilters = legendFilters;
+	}
+
+
+	public String getxLabel() {
+		return xLabel;
+	}
+
+
+	public void setxLabel(String xLabel) {
+		this.xLabel = xLabel;
 	}
 
 

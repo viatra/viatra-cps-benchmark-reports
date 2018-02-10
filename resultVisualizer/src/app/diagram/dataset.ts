@@ -1,5 +1,6 @@
 export class Dataset {
     label: string;
     data: number[];
-    backgroundColor: string;  
+    borderColor: string;  
+    fill: boolean;
 }

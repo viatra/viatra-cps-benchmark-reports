@@ -56,6 +56,8 @@ public class Processor {
 			plot.getConfigs().forEach(config -> {
 				AggregataedResult aggRes = new AggregataedResult();
 				aggRes.setOperation("AVG");
+				aggRes.setxLabel(config.getxLabel());
+				aggRes.setyLabel(config.getyLabel());
 				aggRes.setFunction(config.getTitle());
 				List<String> tools = getTools(config.getLegendFilters(), benchmark.getTransformationTypes(),
 						benchmark.getGeneratorTypes());
