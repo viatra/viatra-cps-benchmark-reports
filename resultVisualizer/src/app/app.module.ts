@@ -6,6 +6,7 @@ import { ChartModule } from 'angular2-chartjs';
 import { AppComponent } from './app.component';
 import { JsonService } from './services/json.service';
 import { Http, HttpModule } from '@angular/http';
+import { ColorService } from './services/color.service';
 
 
 @NgModule({
@@ -15,7 +16,7 @@ import { Http, HttpModule } from '@angular/http';
   imports: [
     BrowserModule, ChartModule, HttpModule  
   ],
-  providers: [JsonService],
+  providers: [JsonService , ColorService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

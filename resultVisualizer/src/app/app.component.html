@@ -1,6 +1,9 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <div class="container">
   <div class="row" *ngIf="inited">
-<div class="col col-lg-12" ><chart [type]="type" [data]="data" [options]="options"></chart></div>
+<div class="col col-lg-12" *ngFor="let diagram of diagrams">
+  <h2>{{diagram.operation}} {{diagram.function}}</h2>
+  <chart [type]="diagram.type" [data]="diagram.data" [options]="diagram.options"></chart>
+</div>
 </div>
 </div>
