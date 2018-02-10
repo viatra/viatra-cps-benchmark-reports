@@ -33,7 +33,7 @@ public class JsonSerializer{
 				false);
 		try {
 
-			mapper.writeValue(new File("../results/"+fileName + ".json"), aggregataedResults);
+			mapper.writeValue(new File("../resultVisualizer/src/results/"+fileName + ".json"), aggregataedResults);
 		} catch (JsonGenerationException e) {
 			throw new IOException(e);
 		} catch (JsonMappingException e) {

@@ -9,7 +9,7 @@ public class Result {
 	@JsonProperty("Size")
 	protected Integer size;
 
-	@JsonProperty("Meric")
+	@JsonProperty("Metric")
 	MetricResult metric;
 
 	public Result() {
