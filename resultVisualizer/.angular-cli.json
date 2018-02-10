@@ -5,11 +5,13 @@
   },
   "apps": [
     {
-      "root": "src",
+      "root":  "src",
       "outDir": "dist",
       "assets": [
         "assets",
-        "favicon.ico"
+        "favicon.ico",
+        "results",
+        { "glob": "results.json", "input": "./", "output": "./results/" }
       ],
       "index": "index.html",
       "main": "main.ts",
