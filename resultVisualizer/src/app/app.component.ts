@@ -38,8 +38,9 @@ export class AppComponent implements OnInit{
           yAxes: [{
             ticks: {
               callback: function(tick, index, ticks) {
-               return ((Math.log(ticks.length - (index)) /Math.log(2) ) % 1  == 0) || (index == 0) ? tick.toLocaleString() : null;
-              }
+               return ((index) % 2  == 0) || (index == ticks.length - 1) ? tick.toLocaleString() : null;
+              },
+              min: 0
             },
             scaleLabel: {
               display: true,
@@ -70,6 +71,7 @@ export class AppComponent implements OnInit{
           dataset.data = new Array();
           dataset.fill = false;
           dataset.borderColor = this._colorService.colors[index];
+          dataset.backgroundColor = this._colorService.colors[index];
           tool.results.forEach((result: Result) => {
             dataset.data.push((result.Metric.MetricValue/ 100000));
           });
