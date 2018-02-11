@@ -5,7 +5,7 @@ export class Diagram {
     type: string;
     data: Data;
     options: Option;  
-    function: string;
+    title: string;
     operation: string;
 }
 

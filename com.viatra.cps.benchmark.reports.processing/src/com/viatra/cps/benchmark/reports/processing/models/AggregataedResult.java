@@ -10,8 +10,8 @@ public class AggregataedResult {
 	@JsonProperty("operation")
 	protected String operation;
 
-	@JsonProperty("function")
-	protected String function;
+	@JsonProperty("title")
+	protected String title;
 
 	@JsonProperty("tool")
 	protected List<Tool> tool;
@@ -26,6 +26,14 @@ public class AggregataedResult {
 		tool = new ArrayList<>();
 	}
 
+	public AggregataedResult(String operation, String xLabel, String yLabel, String title) {
+		this.operation = operation;
+		this.title = title;
+		this.xLabel = xLabel;
+		this.yLabel = yLabel;
+	}
+	
+
 	public String getOperation() {
 		return operation;
 	}
@@ -34,12 +42,12 @@ public class AggregataedResult {
 		this.operation = operation;
 	}
 
-	public String getFunction() {
-		return function;
+	public String getTitle() {
+		return title;
 	}
 
-	public void setFunction(String function) {
-		this.function = function;
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
 	public List<Tool> getTool() {

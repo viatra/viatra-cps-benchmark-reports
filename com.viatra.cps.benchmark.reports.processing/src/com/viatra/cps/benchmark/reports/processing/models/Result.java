@@ -6,13 +6,17 @@ import eu.mondo.sam.core.results.MetricResult;
 
 public class Result {
 
-	@JsonProperty("Size")
+	@JsonProperty("size")
 	protected Integer size;
 
-	@JsonProperty("Metric")
+	@JsonProperty("metric")
 	MetricResult metric;
 
 	public Result() {
+	}
+
+	public Result(Integer size) {
+		this.size = size;
 	}
 
 	public Integer getSize() {
