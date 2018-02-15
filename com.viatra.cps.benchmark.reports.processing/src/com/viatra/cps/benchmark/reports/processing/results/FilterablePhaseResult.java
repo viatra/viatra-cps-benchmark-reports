@@ -19,4 +19,8 @@ public class FilterablePhaseResult extends PhaseResult {
 				metric -> metricNames.stream().filter(name -> name.equals(metric.getName())).findAny().isPresent())
 				.collect(Collectors.toList());
 	}
+	
+	public MetricResult getMetricByName(String metricName) {
+		return this.metrics.stream().filter(metric ->metric.getName().equals(metricName)).findFirst().get();
+	}
 }

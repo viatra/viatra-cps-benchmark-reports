@@ -3,6 +3,7 @@ package com.viatra.cps.benchmark.reports.processing;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -62,6 +63,12 @@ public class Processor {
 	public void process() {
 		data.getBenchmarks().forEach(benchmark -> {
 			plot.getConfigs().forEach(config -> {
+				Double metricScale;
+				if (config.getMetricScale() < 0) {
+					metricScale = 1 / (Math.pow(10, -1 * config.getMetricScale()));
+				} else {
+					metricScale = Math.pow(10, config.getMetricScale());
+				}
 				// Initialize AggregataedResult
 				AggregataedResult aggRes = new AggregataedResult("AVG", config.getxDimension(), config.getyLabel(),
 						config.getTitle());
@@ -101,7 +108,8 @@ public class Processor {
 							Double sum = 0.0;
 							// sum selected phasevalues
 							for (int i = 0; i < filterablePhaseResults.size(); i++) {
-								sum += filterablePhaseResults.get(i).getMetrics().get(0).getValue();
+								Double tmp = filterablePhaseResults.get(i).getMetricsByMetricName(Arrays.asList(config.getMetrics().get(0))).get(0).getValue();
+								sum += (tmp * metricScale);
 							}
 							descriptiveStatistics.addValue(sum);
 						});
@@ -111,6 +119,7 @@ public class Processor {
 						if (Double.isNaN(avg)) {
 							return;
 						}
+
 						metricResult.setValue(avg);
 						result.setMetrics(metricResult);
 						results.add(result);
