@@ -8,7 +8,8 @@ export class Option {
         yAxes: [{
             ticks: {
                 callback: (tick, index, ticks) => number,
-                min: number
+                min: number,
+                max: number
             },
             scaleLabel: {
                 display: boolean,

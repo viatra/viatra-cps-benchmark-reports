@@ -38,9 +38,10 @@ export class AppComponent implements OnInit{
           yAxes: [{
             ticks: {
               callback: function(tick, index, ticks) {
-               return ((index) % 2  == 0) || (index == ticks.length - 1) ? tick.toLocaleString() : null;
+               return tick.toLocaleString();
               },
-              min: 0
+              min: minValue,
+              max: maxValue
             },
             scaleLabel: {
               display: true,
@@ -107,10 +108,12 @@ export class AppComponent implements OnInit{
   }
 
   getMinValue(tools: Tool[]) : number {
-    let min: number = tools[0].results[0].metric.MetricValue;
-    for(let i = 1;i < tools.length; i++){
-      if(min > tools[i].results[0].metric.MetricValue){
-        min = tools[i].results[0].metric.MetricValue;
+    let min: number = tools[0].results[tools[0].results.length - 1].metric.MetricValue;
+    for(let j = 0; j < tools.length;j++){
+      for(let i = 0;i < tools[j].results.length; i++){
+        if(min > tools[j].results[i].metric.MetricValue){
+          min = tools[j].results[i].metric.MetricValue
+        }
       }
     }
     return min;
@@ -118,9 +121,11 @@ export class AppComponent implements OnInit{
 
   getMaxValue(tools: Tool[]) : number {
     let max: number = tools[0].results[tools[0].results.length - 1].metric.MetricValue;
-    for(let i = 1;i < tools.length; i++){
-      if(max < tools[i].results[tools[i].results.length - 1].metric.MetricValue){
-        max = tools[i].results[tools[i].results.length - 1].metric.MetricValue
+    for(let j = 0; j < tools.length;j++){
+      for(let i = 0;i < tools[j].results.length; i++){
+        if(max < tools[j].results[i].metric.MetricValue){
+          max = tools[j].results[i].metric.MetricValue
+        }
       }
     }
     return max;
