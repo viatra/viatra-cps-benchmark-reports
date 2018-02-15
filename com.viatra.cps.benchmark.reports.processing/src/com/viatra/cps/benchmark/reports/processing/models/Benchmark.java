@@ -6,32 +6,42 @@ import java.util.List;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 public class Benchmark {
-	
+
 	@JsonProperty("scenario")
 	String scenario;
-	
+
 	@JsonProperty("cases")
 	List<String> cases;
-	
+
 	@JsonProperty("transformation_types")
 	List<String> transformationTypes;
-	
+
 	@JsonProperty("generator_types")
 	List<String> generatorTypes;
-	
+
 	@JsonProperty("scales")
 	List<Integer> scales;
-	
+
 	@JsonProperty("timeout")
 	Integer timeout;
-	
+
 	@JsonProperty("runs")
 	Integer runs;
-	
+
 	public Benchmark() {
 		cases = new ArrayList<>();
 		transformationTypes = new ArrayList<>();
 		generatorTypes = new ArrayList<>();
+	}
+
+	public List<String> getToolNames() {
+		List<String> toolNames = new ArrayList<>();
+		transformationTypes.forEach(transformationType -> {
+			generatorTypes.forEach(generatorType -> {
+				toolNames.add(transformationType + "-" + generatorType);
+			});
+		});
+		return toolNames;
 	}
 
 	public String getScenario() {
@@ -89,6 +99,5 @@ public class Benchmark {
 	public void setRuns(Integer runs) {
 		this.runs = runs;
 	}
-	
-	
+
 }

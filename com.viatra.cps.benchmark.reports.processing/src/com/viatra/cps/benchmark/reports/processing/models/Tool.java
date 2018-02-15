@@ -17,6 +17,10 @@ public class Tool {
 		results = new ArrayList<>();
 	}
 
+	public Tool(String toolName) {
+		this.name = toolName;
+	}
+
 	public String getName() {
 		return name;
 	}

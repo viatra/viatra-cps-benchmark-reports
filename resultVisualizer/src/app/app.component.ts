@@ -28,7 +28,7 @@ export class AppComponent implements OnInit{
 
         diagram.options.maintainAspectRatio = true;
         diagram.operation = benchmark.operation;
-        diagram.function = benchmark.function;
+        diagram.title = benchmark.title;
         diagram.options.responsive = true;
         diagram.options.legend = {position : "right"};
         let minValue = this.getMinValue(benchmark.tool);
@@ -73,7 +73,7 @@ export class AppComponent implements OnInit{
           dataset.borderColor = this._colorService.colors[index];
           dataset.backgroundColor = this._colorService.colors[index];
           tool.results.forEach((result: Result) => {
-            dataset.data.push((result.Metric.MetricValue/ 100000));
+            dataset.data.push((result.metric.MetricValue));
           });
           diagram.data.datasets.push(dataset);
         index++;
@@ -87,7 +87,7 @@ export class AppComponent implements OnInit{
   getSizes(tool : Tool): string []{
     let sizes: string[] = [];
     tool.results.forEach((result: Result) =>{
-      sizes.push(result.Size.toString());
+      sizes.push(result.size.toString());
     });
     return sizes;
   }
@@ -107,20 +107,20 @@ export class AppComponent implements OnInit{
   }
 
   getMinValue(tools: Tool[]) : number {
-    let min: number = tools[0].results[0].Metric.MetricValue/ 100000;
+    let min: number = tools[0].results[0].metric.MetricValue;
     for(let i = 1;i < tools.length; i++){
-      if(min > tools[i].results[0].Metric.MetricValue/ 100000){
-        min = tools[i].results[0].Metric.MetricValue/ 100000;
+      if(min > tools[i].results[0].metric.MetricValue){
+        min = tools[i].results[0].metric.MetricValue;
       }
     }
     return min;
   }
 
   getMaxValue(tools: Tool[]) : number {
-    let max: number = tools[0].results[tools[0].results.length - 1].Metric.MetricValue/ 100000;
+    let max: number = tools[0].results[tools[0].results.length - 1].metric.MetricValue;
     for(let i = 1;i < tools.length; i++){
-      if(max < tools[i].results[tools[i].results.length - 1].Metric.MetricValue/ 100000){
-        max = tools[i].results[tools[i].results.length - 1].Metric.MetricValue/ 100000
+      if(max < tools[i].results[tools[i].results.length - 1].metric.MetricValue){
+        max = tools[i].results[tools[i].results.length - 1].metric.MetricValue
       }
     }
     return max;
