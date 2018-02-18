@@ -3,23 +3,26 @@ import { NgModule } from '@angular/core';
 
 import { ChartModule } from 'angular2-chartjs';
 
+import {FormsModule } from "@angular/forms";
 import { AppComponent } from './app.component';
 import { JsonService } from './services/json.service';
 import { Http, HttpModule } from '@angular/http';
 import { ColorService } from './services/color.service';
 import { DiagramComponent } from './diagram/component/diagram.component';
 import { DiagramService } from './diagram/service/diagram.service';
+import { DropdownDiretive } from './directive/dropdown.directive';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    DiagramComponent
+    DiagramComponent,
+    DropdownDiretive
   ],
   imports: [
-    BrowserModule, ChartModule, HttpModule  
-  ],
-  providers: [JsonService , ColorService,DiagramService],
+    BrowserModule, ChartModule, HttpModule, FormsModule 
+  ], 
+  providers: [JsonService , ColorService, DiagramService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

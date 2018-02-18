@@ -1,3 +1,20 @@
 <!--The content below is only a placeholder and can be replaced.-->
-
+<!-- As a heading -->
+<nav class="navbar navbar-inverse bg-primary">
+  <div class="collapse navbar-collapse">
+    <div class="nav navbar-nav">
+        <h4>Result Visualizer</h4>
+    </div>
+    <ul class="nav navbar-nav navbar-right">
+      <li class="dropdown" appdropdown>
+        <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown">Diagrams<span class="caret"></span></a>
+        <ul class="dropdown-menu">
+            <li><a href="#"*ngFor="let title of titles"><input id="checkBox" name="title_{{ i }}" type="checkbox" [(ngModel)]="title.HasChecked" (ngModelChange)="changedSelection($event)"/> {{title.Value}}</a></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+  </nav>
+<div class="container">
 <app-diagram></app-diagram>
+</div>

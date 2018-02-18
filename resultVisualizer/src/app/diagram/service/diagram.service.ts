@@ -8,18 +8,25 @@ import { Tool } from '../../model/tool';
 import { Dataset } from '../model/dataset';
 import { ColorService } from '../../services/color.service';
 import { digest } from '@angular/compiler/src/i18n/serializers/xmb';
+import { Diagram } from '../model/diagram';
 
 @Injectable()
 export class DiagramService {
-
+  private _selectedTitle: string;
   private _benchmarks : Array<Benchmark>
   private _event : EventEmitter<null>
+  private _title : Array<Title>;
+
   constructor(private _jsonService: JsonService, private _colorService: ColorService) {
     this._event = new EventEmitter<null>();
-  console.log("new diagram")
    this._jsonService.getResults().subscribe((benchmarks: Benchmark[]) => {
     this._benchmarks = benchmarks;
-    this._event.emit()
+    this._title = new Array<Title>();
+    this._benchmarks.forEach((benchmark : Benchmark)=>{
+      this._title.push(new Title(benchmark.title,false));
+    });
+    this._title[0].HasChecked = true;
+    this._event.emit();
     });
    }
 
@@ -27,12 +34,21 @@ export class DiagramService {
      return this._event;
    }
 
-   getDiagramData(title: string): Data{
-     var benchmark =  this._benchmarks.find((value : Benchmark) => {
-      return value.title === title
-     })
-     console.log(benchmark)
-     if (benchmark != null || benchmark != undefined) {
+
+
+   selectionUpdate(){
+     console.log(this._title);
+    this._event.emit();
+    
+   }
+
+   getDiagramDatas(): Array<Diagram>{
+     let diagrams = new Array<Diagram>();
+      this._benchmarks.forEach((benchmark: Benchmark)=>{
+      let title = this._title.find((value: Title) => {
+        return value.Value == benchmark.title;
+      })
+      if(title.HasChecked){
       var data = new Data();
       let tools: Tool[] = benchmark.tool;
       let maxSizeTool : Tool = this.getMaxSizeTool(benchmark);
@@ -43,10 +59,10 @@ export class DiagramService {
         data.datasets.push(this.getDataSet(tool,index));
         index++;
       });
-      return data;
-     } else {
-       return null;
-     }
+      diagrams.push(new Diagram("line",data,this.getOption(benchmark.Y_Label,benchmark.X_Label),benchmark.title))
+      }
+    });
+    return diagrams;
     }
 
    private getDataSet(tool : Tool, index: number){
@@ -63,12 +79,8 @@ export class DiagramService {
       return dataset;
    }
 
-    getTitles(): Array<string>{
-    var titles = new Array<string>(); 
-    this._benchmarks.forEach((value: Benchmark)=>{
-      titles.push(value.title);
-     })
-     return titles;
+    get Title(): Array<Title>{
+      return this._title;
    }
 
    private getSizes(tool : Tool): string []{
@@ -118,5 +130,22 @@ export class DiagramService {
         }]
       }
     }
+  }
+}
+
+
+export class Title{
+  constructor(private _value: string, private _hasChecked: boolean){}
+
+  set HasChecked(c : boolean){
+    this._hasChecked = c;
+  }
+
+  get HasChecked(){
+    return this._hasChecked;
+  }
+
+  get Value(){
+    return this._value;
   }
 }
