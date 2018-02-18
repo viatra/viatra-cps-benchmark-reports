@@ -1,6 +1,6 @@
 <div class="row">
 <div class="col col-lg-12" *ngFor="let diagram of diagrams">
-  <h3>{{diagram.title}}</h3>
+  <h3><a name="{{diagram.title}}">{{diagram.title}}</a></h3>
   <chart [type]="diagram.type" [data]="diagram.data" [options]="diagram.options"></chart>
 </div>
 </div>

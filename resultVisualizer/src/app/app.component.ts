@@ -13,18 +13,20 @@ import { DiagramService, Title } from './diagram/service/diagram.service';
   styleUrls: ['./app.component.css']
 })
 
-export class AppComponent {
+export class AppComponent implements OnInit{
   
 titles : Array<Title>
   constructor(private _diagramService: DiagramService){
     this.titles = new Array<Title>();
-    this._diagramService.Event.subscribe(()=> {
+    this._diagramService.InitEvent.subscribe(() =>{
       this.titles = this._diagramService.Title;
-    })
+    });
   }
 
-  changedSelection(){
-    console.log(this.titles);
-    this._diagramService.selectionUpdate();
+  changedSelection(event: boolean,title: string){
+    this._diagramService.updateSelection(event,title);
   }
+
+  ngOnInit(){}
+
 }

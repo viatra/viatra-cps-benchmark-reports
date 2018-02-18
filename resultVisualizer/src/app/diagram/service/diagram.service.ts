@@ -9,61 +9,61 @@ import { Dataset } from '../model/dataset';
 import { ColorService } from '../../services/color.service';
 import { digest } from '@angular/compiler/src/i18n/serializers/xmb';
 import { Diagram } from '../model/diagram';
+import { query } from '@angular/core/src/render3/instructions';
+import { Console } from '@angular/core/src/console';
 
 @Injectable()
 export class DiagramService {
   private _selectedTitle: string;
   private _benchmarks : Array<Benchmark>
-  private _event : EventEmitter<null>
-  private _title : Array<Title>;
-
+  private _selectionUpdate : EventEmitter<SelectionUpdateEvent>
+  private _initEvent : EventEmitter<null>
+  private _diagrams : Array<Diagram>
   constructor(private _jsonService: JsonService, private _colorService: ColorService) {
-    this._event = new EventEmitter<null>();
-   this._jsonService.getResults().subscribe((benchmarks: Benchmark[]) => {
+    this._selectionUpdate = new EventEmitter<SelectionUpdateEvent>();
+    this._initEvent = new EventEmitter<null>();
+    this._jsonService.getResults().subscribe((benchmarks: Benchmark[]) => {
     this._benchmarks = benchmarks;
-    this._title = new Array<Title>();
-    this._benchmarks.forEach((benchmark : Benchmark)=>{
-      this._title.push(new Title(benchmark.title,false));
-    });
-    this._title[0].HasChecked = true;
-    this._event.emit();
+    this._initEvent.emit();
+    this.createDiagramList();
+    this._selectionUpdate.emit(new SelectionUpdateEvent("Added",this._diagrams[0]));
     });
    }
 
-   get Event(){
-     return this._event;
+  get InitEvent(){
+    return this._initEvent;
+   }
+
+   get SelectiponUpdateEvent(){
+    return this._selectionUpdate;
    }
 
 
-
-   selectionUpdate(){
-     console.log(this._title);
-    this._event.emit();
-    
+   updateSelection(added: boolean,title: string){
+     let diagram = this._diagrams.find((diagram: Diagram)=>{
+       return diagram.title == title;
+     });
+     console.log(diagram);
+     let type = added == true ?  "Added" : "Removed";
+     this._selectionUpdate.emit(new SelectionUpdateEvent(type,diagram));
    }
 
-   getDiagramDatas(): Array<Diagram>{
-     let diagrams = new Array<Diagram>();
-      this._benchmarks.forEach((benchmark: Benchmark)=>{
-      let title = this._title.find((value: Title) => {
-        return value.Value == benchmark.title;
-      })
-      if(title.HasChecked){
-      var data = new Data();
-      let tools: Tool[] = benchmark.tool;
-      let maxSizeTool : Tool = this.getMaxSizeTool(benchmark);
-      data.labels = this.getSizes(maxSizeTool);
-      let index = 0;
-      data.datasets = new Array<Dataset>();
-      tools.forEach((tool : Tool) => {
-        data.datasets.push(this.getDataSet(tool,index));
-        index++;
-      });
-      diagrams.push(new Diagram("line",data,this.getOption(benchmark.Y_Label,benchmark.X_Label),benchmark.title))
-      }
+   private createDiagramList(){
+    this._diagrams = new Array<Diagram>();
+    this._benchmarks.forEach((benchmark: Benchmark)=>{
+    var data = new Data();
+    let tools: Tool[] = benchmark.tool;
+    let maxSizeTool : Tool = this.getMaxSizeTool(benchmark);
+    data.labels = this.getSizes(maxSizeTool);
+    let index = 0;
+    data.datasets = new Array<Dataset>();
+    tools.forEach((tool : Tool) => {
+      data.datasets.push(this.getDataSet(tool,index));
+      index++;
     });
-    return diagrams;
-    }
+    this._diagrams.push(new Diagram("line",data,this.getOption(benchmark.Y_Label,benchmark.X_Label),benchmark.title))
+    });
+   }
 
    private getDataSet(tool : Tool, index: number){
       let dataset: Dataset = new Dataset();
@@ -80,7 +80,12 @@ export class DiagramService {
    }
 
     get Title(): Array<Title>{
-      return this._title;
+      let title = new Array<Title>();
+      this._benchmarks.forEach((benchmark : Benchmark)=>{
+        title.push(new Title(benchmark.title,false));
+      });
+      title[0].HasChecked = true;
+      return title;
    }
 
    private getSizes(tool : Tool): string []{
@@ -149,3 +154,16 @@ export class Title{
     return this._value;
   }
 }
+
+
+export class SelectionUpdateEvent{
+  constructor(private eventType: string, private diagram: Diagram){}
+  get EventType(){
+    return this.eventType;
+  }
+
+  get Diagram(){
+    return this.diagram;
+  }
+}
+

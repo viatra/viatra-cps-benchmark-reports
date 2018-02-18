@@ -9,7 +9,7 @@
       <li class="dropdown" appdropdown>
         <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown">Diagrams<span class="caret"></span></a>
         <ul class="dropdown-menu">
-            <li><a href="#"*ngFor="let title of titles"><input id="checkBox" name="title_{{ i }}" type="checkbox" [(ngModel)]="title.HasChecked" (ngModelChange)="changedSelection($event)"/> {{title.Value}}</a></li>
+            <li><a href="#" *ngFor="let title of titles"><input id="checkBox" name="title_{{ i }}" type="checkbox" [(ngModel)]="title.HasChecked" (ngModelChange)="changedSelection($event,title.Value)"/> {{title.Value}}</a></li>
         </ul>
       </li>
     </ul>
