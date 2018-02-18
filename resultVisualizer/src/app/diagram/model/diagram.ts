@@ -1,5 +1,6 @@
-import { Data } from "./data";
+
 import { Option } from "./option";
+import { Data } from "./data";
 
 export class Diagram {
     type: string;

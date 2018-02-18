@@ -1,0 +1,4 @@
+
+<div class="col col-lg-12" *ngFor="let diagram of diagrams">
+  <chart [type]="diagram.type" [data]="diagram.data" [options]="diagram.options"></chart>
+</div>

@@ -7,16 +7,19 @@ import { AppComponent } from './app.component';
 import { JsonService } from './services/json.service';
 import { Http, HttpModule } from '@angular/http';
 import { ColorService } from './services/color.service';
+import { DiagramComponent } from './diagram/component/diagram.component';
+import { DiagramService } from './diagram/service/diagram.service';
 
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    DiagramComponent
   ],
   imports: [
     BrowserModule, ChartModule, HttpModule  
   ],
-  providers: [JsonService , ColorService],
+  providers: [JsonService , ColorService,DiagramService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
