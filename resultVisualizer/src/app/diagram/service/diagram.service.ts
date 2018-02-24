@@ -11,6 +11,9 @@ import { digest } from '@angular/compiler/src/i18n/serializers/xmb';
 import { Diagram } from '../model/diagram';
 import { query } from '@angular/core/src/render3/instructions';
 import { Console } from '@angular/core/src/console';
+import { Scenario } from '../../model/scenario';
+import { Observable } from 'rxjs/Observable';
+import { take } from 'rxjs/operator/take';
 
 @Injectable()
 export class DiagramService {
@@ -19,16 +22,42 @@ export class DiagramService {
   private _selectionUpdate : EventEmitter<SelectionUpdateEvent>
   private _initEvent : EventEmitter<null>
   private _diagrams : Array<Diagram>
+  private _scenarios : Array<Scenario>
+  private _title: Array<Title>
   constructor(private _jsonService: JsonService, private _colorService: ColorService) {
     this._selectionUpdate = new EventEmitter<SelectionUpdateEvent>();
     this._initEvent = new EventEmitter<null>();
-    this._jsonService.getResults().subscribe((benchmarks: Benchmark[]) => {
-    this._benchmarks = benchmarks;
-    this._initEvent.emit();
-    this.createDiagramList();
-    this._selectionUpdate.emit(new SelectionUpdateEvent("Added",this._diagrams[0]));
+    this._jsonService.getScenarios().subscribe((scenarios : Scenario[]) => {
+      this._scenarios = scenarios
+      this._initEvent.emit();
     });
    }
+
+  get Scenarios(){
+    return this._scenarios;
+  }
+
+   public runScenario(scenario: Scenario): Observable<null>{
+     return new Observable((observer) =>{
+      this._selectionUpdate.emit(new SelectionUpdateEvent("Clear",null));
+      this._jsonService.getResults(scenario.build).subscribe((benchmarks : Benchmark[]) =>{
+       this._benchmarks = benchmarks;
+       this.createDiagramList();
+       this.setTitle();
+       scenario.diagrams.forEach((diagramName: string)=>{
+         let index =this._diagrams.findIndex((diagram: Diagram,index : number,diagrams: Diagram[]) =>{
+           return diagram.title === diagramName
+         });
+         this._selectionUpdate.emit(new SelectionUpdateEvent("Added",this._diagrams[index]));
+         this._title[index].HasChecked = true;
+        
+       });
+       observer.next();
+       observer.complete();
+     });
+    });
+  }
+
 
   get InitEvent(){
     return this._initEvent;
@@ -43,7 +72,6 @@ export class DiagramService {
      let diagram = this._diagrams.find((diagram: Diagram)=>{
        return diagram.title == title;
      });
-     console.log(diagram);
      let type = added == true ?  "Added" : "Removed";
      this._selectionUpdate.emit(new SelectionUpdateEvent(type,diagram));
    }
@@ -80,12 +108,15 @@ export class DiagramService {
    }
 
     get Title(): Array<Title>{
-      let title = new Array<Title>();
-      this._benchmarks.forEach((benchmark : Benchmark)=>{
-        title.push(new Title(benchmark.title,false));
-      });
-      title[0].HasChecked = true;
-      return title;
+      
+      return this._title;
+   }
+
+   private setTitle(){
+    this._title = new Array<Title>();
+    this._benchmarks.forEach((benchmark : Benchmark)=>{
+      this._title.push(new Title(benchmark.title,false));
+    });
    }
 
    private getSizes(tool : Tool): string []{
@@ -110,7 +141,7 @@ export class DiagramService {
     return {
       maintainAspectRatio : true,
       legend : {
-        position : "right"
+        position : "bottom"
       },
       responsive : true,
       scales: {

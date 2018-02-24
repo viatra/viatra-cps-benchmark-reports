@@ -6,7 +6,15 @@ import 'rxjs/Rx';
 export class JsonService {
  
   constructor(private http: Http) {}
-  getResults() {
-    return this.http.get("results/results.json").map((res:Response) => res.json());
+  getResults(build: string) {
+    return this.http.get(`results/${build}/results.json`).map((res:Response) => res.json());
+  }
+
+  getScenarios(){
+    return this.http.get(`config/example.scenario.json`).map((res:Response) => res.json());
+  }
+
+  getDiagramConfigs(){
+    return this.http.get(`config/diagram.config.hson`).map((res:Response) => res.json());
   }
 }

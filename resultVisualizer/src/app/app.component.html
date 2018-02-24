@@ -3,7 +3,7 @@
 <nav class="navbar navbar-inverse bg-primary">
   <div class="collapse navbar-collapse">
     <div class="nav navbar-nav">
-        <h4>Result Visualizer</h4>
+        <h4 (click)="home()">Result Visualizer</h4>
     </div>
     <ul class="nav navbar-nav navbar-right">
       <li class="dropdown" appdropdown>
@@ -15,6 +15,19 @@
     </ul>
   </div>
   </nav>
-<div class="container">
-<app-diagram></app-diagram>
+<div class="board">
+  <div *ngIf="started == false">
+      <div class="row">
+        <div class="col col-lg-4"></div>
+          <div class="col col-lg-2">
+    <select name="sometext" (change)="selectionChange($event.target.value)">
+        <option *ngFor="let scenario of scenarios" >{{scenario.name}}</option>
+      </select>
+          </div>
+      <div class="col col-lg-6">
+      <button type="button" (click)="select()">Select Scenario</button>
+    </div>
+    </div>
+  </div>
+<app-diagram  *ngIf="started == true"></app-diagram>
 </div>
