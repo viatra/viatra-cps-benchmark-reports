@@ -4,16 +4,19 @@ import java.util.List;
 
 import eu.mondo.sam.core.results.BenchmarkResult;
 
-public class Mean<T> extends Operation<T> {
+public class Mean<T> implements Operation {
+	protected String attribute;
+	protected List<T> filter;
 
 	public Mean(String attribute, List<T> filter) {
-		super(attribute, filter);
-		// TODO Auto-generated constructor stub
+		this.attribute = attribute;
+		this.filter = filter;
 	}
 
 	@Override
-	public BenchmarkResult calculate() {
+	public BenchmarkResult calculate(List<BenchmarkResult> results) {
 		// TODO Auto-generated method stub
+		System.out.println("calcuate Mean");
 		return null;
 	}
 

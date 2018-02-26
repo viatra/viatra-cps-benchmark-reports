@@ -4,17 +4,18 @@ import java.util.List;
 
 import eu.mondo.sam.core.results.BenchmarkResult;
 
-public class Average<T> extends Operation<T> {
+public class Average<T> implements Operation {
+	protected String attribute;
+	protected List<T> filter;
 
 	public Average(String attribute, List<T> filter) {
-		super(attribute, filter);
-		// TODO Auto-generated constructor stub
+		this.attribute = attribute;
+		this.filter = filter;
 	}
 
 	@Override
-	public BenchmarkResult calculate() {
-		// TODO Auto-generated method stub
+	public BenchmarkResult calculate(List<BenchmarkResult> results) {
+		System.out.println("calcuate Average");
 		return null;
 	}
-
 }
