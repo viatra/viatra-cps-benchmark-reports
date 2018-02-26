@@ -1,2 +1,2 @@
-# viatra-cps-benchmark-reports.github.io
+# viatra.github.io/viatra-cps-benchmark-reports
 Visualization of CPS benchmark results
