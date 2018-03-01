@@ -11,7 +11,6 @@ public class Main {
 			process.loadBenchmarkResults(new File("result.json"));
 			process.process();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

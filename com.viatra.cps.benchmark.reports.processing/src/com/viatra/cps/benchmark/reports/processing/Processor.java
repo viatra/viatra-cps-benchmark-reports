@@ -13,7 +13,6 @@ import com.viatra.cps.benchmark.reports.processing.models.Data;
 import com.viatra.cps.benchmark.reports.processing.models.OperationConfig;
 import com.viatra.cps.benchmark.reports.processing.operation.Operation;
 import com.viatra.cps.benchmark.reports.processing.operation.OperationFactory;
-import com.viatra.cps.benchmark.reports.processing.operation.OperationType;
 
 
 public class Processor {
@@ -33,20 +32,7 @@ public class Processor {
 	public void process() {
 		List<Operation> operationChain = new ArrayList<Operation>();
 		for(OperationConfig op : aggregatorConfiguration.getOperations(true)) {
-			OperationType operationType = null;
-			switch (op.getType()) {
-			case "Mean":
-				operationType = OperationType.Mean;
-				break;
-			case "Average":
-				operationType = OperationType.Average;
-				break;
-			case "Summary":
-				operationType = OperationType.Summary;
-			default:
-				break;
-			}
-			operationChain.add(OperationFactory.createOperation(operationType, op.getFilter(), op.getAttribute()));
+			operationChain.add(OperationFactory.createOperation(op.getType(), op.getFilter(), op.getAttribute()));
 		}
 		for(Operation oper : operationChain) {
 			oper.calculate();
