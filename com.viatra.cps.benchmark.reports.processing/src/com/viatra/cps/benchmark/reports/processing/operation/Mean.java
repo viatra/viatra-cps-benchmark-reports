@@ -11,10 +11,15 @@ public class Mean extends Operation {
 	}
 
 	@Override
-	public BenchmarkResult calculate(List<BenchmarkResult> results) {
+	public void calculate() {
 		// TODO Auto-generated method stub
 		System.out.println("calcuate Mean");
-		return null;
+	}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

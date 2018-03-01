@@ -11,8 +11,13 @@ public class Average extends Operation {
 	}
 
 	@Override
-	public BenchmarkResult calculate(List<BenchmarkResult> results) {
+	public void calculate() {
 		System.out.println("calcuate Average");
-		return null;
+	}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
 	}
 }

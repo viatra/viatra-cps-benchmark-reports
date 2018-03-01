@@ -11,10 +11,14 @@ public class Summary extends Operation {
 	}
 
 	@Override
-	public BenchmarkResult calculate(List<BenchmarkResult> results) {
-		// TODO Auto-generated method stub
+	public void calculate() {
 		System.out.println("calcuate Summary");
-		return null;
+	}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

@@ -49,7 +49,7 @@ public class Processor {
 			operationChain.add(OperationFactory.createOperation(operationType, op.getFilter(), op.getAttribute()));
 		}
 		for(Operation oper : operationChain) {
-			oper.calculate(null);
+			oper.calculate();
 		}
 	}
 }
