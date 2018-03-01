@@ -4,13 +4,10 @@ import java.util.List;
 
 import eu.mondo.sam.core.results.BenchmarkResult;
 
-public class Average<T> implements Operation {
-	protected String attribute;
-	protected List<T> filter;
+public class Average extends Operation {
 
-	public Average(String attribute, List<T> filter) {
-		this.attribute = attribute;
-		this.filter = filter;
+	public Average(String attribute, List<Object> filter) {
+		super(attribute, filter);
 	}
 
 	@Override

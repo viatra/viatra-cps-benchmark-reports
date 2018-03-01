@@ -4,13 +4,10 @@ import java.util.List;
 
 import eu.mondo.sam.core.results.BenchmarkResult;
 
-public class Mean<T> implements Operation {
-	protected String attribute;
-	protected List<T> filter;
+public class Mean extends Operation {
 
-	public Mean(String attribute, List<T> filter) {
-		this.attribute = attribute;
-		this.filter = filter;
+	public Mean(String attribute, List<Object> filter) {
+		super(attribute, filter);
 	}
 
 	@Override

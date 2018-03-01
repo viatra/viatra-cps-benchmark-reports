@@ -4,13 +4,10 @@ import java.util.List;
 
 import eu.mondo.sam.core.results.BenchmarkResult;
 
-public class Summary<T> implements Operation {
-	protected String attribute;
-	protected List<T> filter;
+public class Summary extends Operation {
 
-	public Summary(String attribute, List<T> filter) {
-		this.attribute = attribute;
-		this.filter = filter;
+	public Summary(String attribute, List<Object> filter) {
+		super(attribute, filter);
 	}
 
 	@Override

@@ -5,7 +5,12 @@ import java.util.List;
 
 import eu.mondo.sam.core.results.BenchmarkResult;
 
-public interface Operation {
-	
+public abstract class Operation {
+	protected String attribute;
+	protected List<Object> filter;
+	public Operation(String attribute,List<Object> filter) {
+		this.attribute = attribute;
+		this.filter = filter;
+	}
 	public abstract BenchmarkResult calculate(List<BenchmarkResult> results);
 }
