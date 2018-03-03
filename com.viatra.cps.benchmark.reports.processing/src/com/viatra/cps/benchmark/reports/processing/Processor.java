@@ -36,16 +36,27 @@ public class Processor {
 
 	public void process() throws JsonParseException, JsonMappingException, IOException {
 		Operation tmp = new Summary(null, null);
-		OperationConfig opconf = aggregatorConfiguration.getFirts();
-		Operation operation = OperationFactory.createOperation(tmp, opconf.getType(), opconf.getFilter(),
-				opconf.getAttribute());
-		operation.start();
+		List<OperationConfig> opconf = aggregatorConfiguration.getOperations(false);
+		Operation last = null;
+		for (OperationConfig opconfing : opconf) {
+			if (last == null) {
+				last = OperationFactory.createOperation(tmp, opconfing.getType(), opconfing.getFilter(),
+						opconfing.getAttribute());
+
+			} else {
+				last = OperationFactory.createOperation(last, opconfing.getType(), opconfing.getFilter(),
+						opconfing.getAttribute());
+			}
+		}
+		;
+		last.start();
+
 		List<BenchmarkResult> benchmarkResults = mapper.readValue(new File("result.json"),
 				new TypeReference<List<BenchmarkResult>>() {
 				});
-		benchmarkResults.forEach(res -> {
-			operation.addResult(res);
-		});
-		operation.stop();
+		for (BenchmarkResult res : benchmarkResults) {
+			last.addResult(res);
+		}
+		last.stop();
 	}
 }

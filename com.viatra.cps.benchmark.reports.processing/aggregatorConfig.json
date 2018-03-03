@@ -1,8 +1,14 @@
 {
 	"Operations": 
-	[ { 
+	[
+	{
+		"type": "Average",
+		"attribute": "Phase-Name",
+		"filter": ["Generation"]
+	},
+	{ 
 		"type": "Filter", 
  		"attribute": "Metric", 
-		"filter": ["Time","Memory","AverageMemory"] 
+		"filter": ["Time"] 
 	} ]
 }

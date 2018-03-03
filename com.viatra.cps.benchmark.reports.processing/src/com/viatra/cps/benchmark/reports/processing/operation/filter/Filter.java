@@ -9,6 +9,11 @@ import eu.mondo.sam.core.results.BenchmarkResult;
 public abstract class Filter implements Operation {
 	protected List<Object> elements;
 	protected Thread thread;
+
+	public Thread getThread() {
+		return thread;
+	}
+
 	protected Boolean running;
 	protected Object lock;
 	protected ConcurrentLinkedQueue<BenchmarkResult> queue;
@@ -20,12 +25,14 @@ public abstract class Filter implements Operation {
 		this.contained = contained;
 		this.next = next;
 		this.running = false;
+		this.lock = new Object();
 	}
 
 	public Filter(List<Object> elements, Boolean contained) {
 		this.elements = elements;
 		this.contained = contained;
 		this.running = false;
+		this.lock = new Object();
 	}
 
 	@Override
@@ -36,14 +43,18 @@ public abstract class Filter implements Operation {
 	@Override
 	public boolean start() {
 		try {
-			this.thread = new Thread(this);
 			this.lock = new Object();
-			this.queue = new ConcurrentLinkedQueue<>();
-			this.running = true;
-			this.thread.start();
-			if (!this.contained) {
-				return this.next.start();
+			synchronized (this.lock) {
+				this.thread = new Thread(this);
+				this.queue = new ConcurrentLinkedQueue<>();
+				this.running = true;
+				this.thread.start();
+				if (!this.contained) {
+					return this.next.start();
+				}
+				lock.notify();
 			}
+
 			return true;
 		} catch (IllegalThreadStateException e) {
 			return false;
@@ -53,6 +64,14 @@ public abstract class Filter implements Operation {
 	@Override
 	public void addResult(BenchmarkResult result) {
 		synchronized (this.lock) {
+			if(!this.running) {
+				try {
+					this.lock.wait();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 			this.queue.add(result);
 			this.lock.notify();
 		}

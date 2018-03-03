@@ -58,7 +58,7 @@ public class MetricFilter extends Filter {
 			if (next != null)
 				next.addResult(filteredResult);
 		}
-		if (next != null) {
+		if (!this.contained && next != null) {
 			next.stop();
 		}
 	}

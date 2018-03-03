@@ -25,7 +25,7 @@ public abstract class NumericOperation implements Operation {
 		this.filter = filter;
 		this.running = false;
 	}
-	
+
 	@Override
 	public void setNext(Operation next) {
 		this.next = next;
@@ -34,11 +34,15 @@ public abstract class NumericOperation implements Operation {
 	@Override
 	public boolean start() {
 		try {
+			if (filter != null) {
+				this.filter.start();
+			}
 			this.thread = new Thread(this);
 			this.lock = new Object();
 			this.queue = new ConcurrentLinkedQueue<>();
 			this.running = true;
 			this.thread.start();
+
 			return true;
 		} catch (IllegalThreadStateException e) {
 			return false;
@@ -47,6 +51,12 @@ public abstract class NumericOperation implements Operation {
 
 	@Override
 	public void addResult(BenchmarkResult result) {
+		if (filter != null) {
+			filter.addResult(result);
+		}
+	}
+
+	public void addFilteredResult(BenchmarkResult result) {
 		synchronized (this.lock) {
 			this.queue.add(result);
 			this.lock.notify();

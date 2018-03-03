@@ -22,5 +22,7 @@ public class Mean extends NumericOperation {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	
 
 }

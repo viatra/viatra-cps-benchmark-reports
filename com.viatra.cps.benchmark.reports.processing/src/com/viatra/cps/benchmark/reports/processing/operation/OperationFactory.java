@@ -4,13 +4,15 @@ import java.util.List;
 
 import com.viatra.cps.benchmark.reports.processing.operation.filter.Filter;
 import com.viatra.cps.benchmark.reports.processing.operation.filter.MetricFilter;
+import com.viatra.cps.benchmark.reports.processing.operation.filter.PhaseNameFilter;
 import com.viatra.cps.benchmark.reports.processing.operation.numeric.Average;
 import com.viatra.cps.benchmark.reports.processing.operation.numeric.Mean;
 import com.viatra.cps.benchmark.reports.processing.operation.numeric.NumericOperation;
 import com.viatra.cps.benchmark.reports.processing.operation.numeric.Summary;
 
 public class OperationFactory {
-	public static Operation createOperation(Operation next, String operationType, List<Object> elements, String attribute) {
+	public static Operation createOperation(Operation next, String operationType, List<Object> elements,
+			String attribute) {
 		Filter filter = null;
 		switch (operationType) {
 		case "Average":
@@ -48,6 +50,8 @@ public class OperationFactory {
 		switch (type) {
 		case "Metric":
 			return new MetricFilter(elements, next, contained);
+		case "Phase-Name":
+			return new PhaseNameFilter(elements, contained);
 		default:
 			return null;
 		}
