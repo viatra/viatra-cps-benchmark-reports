@@ -1,18 +1,8 @@
 {
 	"Operations": 
 	[ { 
-		"type": "Mean", 
- 		"attribute": "runIndex", 
-		"filter": [1,2] 
-	}, 
-	{ 
-		"type": "Summary", 
-		"attribute": "PhaseName", 
-		"filter": ["Generation"] 
-	}, 
-	{ 
-		"type": "Average", 
-		"attribute": "sequence", 
-		"filter": []
+		"type": "Filter", 
+ 		"attribute": "Metric", 
+		"filter": ["Time","Memory","AverageMemory"] 
 	} ]
 }

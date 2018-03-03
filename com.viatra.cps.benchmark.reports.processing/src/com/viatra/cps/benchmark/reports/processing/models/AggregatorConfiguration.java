@@ -25,4 +25,8 @@ public class AggregatorConfiguration {
 			return this.operations;
 		}
 	}
+	
+	public OperationConfig getFirts() {
+		return this.operations.get(0);
+	}
 }
