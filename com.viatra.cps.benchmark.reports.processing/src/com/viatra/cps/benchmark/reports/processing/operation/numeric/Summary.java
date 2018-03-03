@@ -33,15 +33,16 @@ public class Summary extends NumericOperation {
 			});
 		});
 	}
+
 	@Override
 	public void addResult(BenchmarkResult result) {
-		System.out.println(result.getCaseDescriptor().getRunIndex() + " " + result.getCaseDescriptor().getTool());
-		result.getPhaseResults().forEach(phaseResult -> {
-			System.out.print(phaseResult.getMetrics().size() + " " + phaseResult.getPhaseName() + " ");
-			phaseResult.getMetrics().forEach(action -> {
-				System.out.println(action.getName() + " " + action.getValue());
-			});
-		});
+		System.out.println("RunIndex: " +result.getCaseDescriptor().getRunIndex());
+		System.out.println("Tool: " + result.getCaseDescriptor().getTool());
+		System.out.println("Size: " + result.getCaseDescriptor().getSize());
+		System.out.println("Function count: " + result.getPhaseResults().size());
+		System.out.println("Function: " + result.getPhaseResults().get(0).getPhaseName());
+		System.out.println("Function: " + result.getPhaseResults().get(0).getMetrics().get(0).getValue());
+		System.out.println();
 	}
 
 }

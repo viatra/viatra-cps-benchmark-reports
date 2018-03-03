@@ -19,6 +19,7 @@ public class MetricFilter extends Filter {
 	public MetricFilter(List<Object> elements, Boolean contained) {
 		super(elements, contained);
 	}
+	
 
 	@Override
 	public void run() {

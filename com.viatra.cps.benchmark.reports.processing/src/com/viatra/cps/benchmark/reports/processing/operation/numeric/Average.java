@@ -26,8 +26,8 @@ public class Average extends NumericOperation {
 			this.filter.getThread().join();
 			while (!queue.isEmpty()) {
 				Double sum = 0.0;
-				Double size = new Double(queue.size());
 				BenchmarkResult res = queue.poll();
+				Double size = new Double(res.getPhaseResults().size());
 				for (PhaseResult pRes : res.getPhaseResults()) {
 					sum += pRes.getMetrics().get(0).getValue();
 				}
@@ -46,6 +46,9 @@ public class Average extends NumericOperation {
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+		if (this.next != null) {
+			this.next.stop();
 		}
 	}
 

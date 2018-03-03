@@ -11,12 +11,10 @@ public class PhaseNameFilter extends Filter {
 
 	public PhaseNameFilter(List<Object> elements, Boolean contained) {
 		super(elements, contained);
-		// TODO Auto-generated constructor stub
 	}
 
 	public PhaseNameFilter(List<Object> elements, Operation next, Boolean contained) {
 		super(elements, next, contained);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -61,6 +59,9 @@ public class PhaseNameFilter extends Filter {
 					this.next.addResult(filteredResult);
 				}
 			}
+		}
+		if(!this.contained && this.next != null) {
+			this.next.stop();
 		}
 	}
 

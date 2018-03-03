@@ -64,14 +64,6 @@ public abstract class Filter implements Operation {
 	@Override
 	public void addResult(BenchmarkResult result) {
 		synchronized (this.lock) {
-			if(!this.running) {
-				try {
-					this.lock.wait();
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
 			this.queue.add(result);
 			this.lock.notify();
 		}

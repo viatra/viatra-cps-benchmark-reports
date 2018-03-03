@@ -68,6 +68,9 @@ public abstract class NumericOperation implements Operation {
 		synchronized (lock) {
 			this.running = false;
 			this.lock.notify();
+			if (this.filter != null) {
+				this.filter.stop();
+			}
 		}
 	}
 

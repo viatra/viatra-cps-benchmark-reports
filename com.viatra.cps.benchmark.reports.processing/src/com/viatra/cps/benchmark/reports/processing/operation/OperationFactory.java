@@ -5,6 +5,8 @@ import java.util.List;
 import com.viatra.cps.benchmark.reports.processing.operation.filter.Filter;
 import com.viatra.cps.benchmark.reports.processing.operation.filter.MetricFilter;
 import com.viatra.cps.benchmark.reports.processing.operation.filter.PhaseNameFilter;
+import com.viatra.cps.benchmark.reports.processing.operation.filter.RunIndexFilter;
+import com.viatra.cps.benchmark.reports.processing.operation.filter.ToolFilter;
 import com.viatra.cps.benchmark.reports.processing.operation.numeric.Average;
 import com.viatra.cps.benchmark.reports.processing.operation.numeric.Mean;
 import com.viatra.cps.benchmark.reports.processing.operation.numeric.NumericOperation;
@@ -51,7 +53,11 @@ public class OperationFactory {
 		case "Metric":
 			return new MetricFilter(elements, next, contained);
 		case "Phase-Name":
-			return new PhaseNameFilter(elements, contained);
+			return new PhaseNameFilter(elements,next, contained);
+		case "Tool":
+			return new ToolFilter(elements,next, contained);
+		case "RunIndex":
+			return new RunIndexFilter(elements, next, contained);
 		default:
 			return null;
 		}
