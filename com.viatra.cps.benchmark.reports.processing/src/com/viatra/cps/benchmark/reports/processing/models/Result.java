@@ -1,5 +1,7 @@
 package com.viatra.cps.benchmark.reports.processing.models;
 
+
+
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import eu.mondo.sam.core.results.MetricResult;

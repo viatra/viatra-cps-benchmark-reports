@@ -2,148 +2,68 @@ package com.viatra.cps.benchmark.reports.processing;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
-import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 
-import com.viatra.cps.benchmark.reports.processing.models.AggregataedResult;
-import com.viatra.cps.benchmark.reports.processing.models.Data;
-import com.viatra.cps.benchmark.reports.processing.models.Plot;
-import com.viatra.cps.benchmark.reports.processing.models.Tool;
-import com.viatra.cps.benchmark.reports.processing.models.Result;
-import com.viatra.cps.benchmark.reports.processing.results.FilterableBenchmarkResult;
-import com.viatra.cps.benchmark.reports.processing.results.FilterablePhaseResult;
-import com.viatra.cps.benchmark.reports.processing.serializer.JsonSerializer;
+import com.viatra.cps.benchmark.reports.processing.models.AggregatorConfiguration;
+import com.viatra.cps.benchmark.reports.processing.models.OperationConfig;
+import com.viatra.cps.benchmark.reports.processing.operation.Operation;
+import com.viatra.cps.benchmark.reports.processing.operation.OperationFactory;
+import com.viatra.cps.benchmark.reports.processing.operation.serializer.JSonSerializer;
 
-import eu.mondo.sam.core.results.MetricResult;
+import eu.mondo.sam.core.results.BenchmarkResult;
 
 public class Processor {
-	Plot plot;
-	Data data;
-	List<FilterableBenchmarkResult> benchmarkResults;
+	List<AggregatorConfiguration> aggregatorConfiguration;
 	ObjectMapper mapper;
-	List<AggregataedResult> aggregataedResults;
 
 	public Processor() {
-		benchmarkResults = new ArrayList<>();
-		aggregataedResults = new ArrayList<>();
 		mapper = new ObjectMapper();
-		mapper.registerSubtypes(FilterableBenchmarkResult.class);
-	}
-
-	public void loadData(File data) throws JsonParseException, JsonMappingException, IOException {
-		System.out.println("Load data.json");
-		this.data = mapper.readValue(data, Data.class);
-		System.out.println("Done");
-	}
-
-	public void loadPlot(File plot) throws JsonParseException, JsonMappingException, IOException {
-		System.out.println("Load config.json");
-		this.plot = mapper.readValue(plot, Plot.class);
-		System.out.println("Done");
 	}
 
 	public void loadBenchmarkResults(File benchmarkResults)
 			throws JsonParseException, JsonMappingException, IOException {
-		System.out.println("Load result.json");
-		this.benchmarkResults = mapper.readValue(benchmarkResults,
-				new TypeReference<List<FilterableBenchmarkResult>>() {
+		this.aggregatorConfiguration = mapper.readValue(new File("aggregatorConfig.json"),
+				new TypeReference<List<AggregatorConfiguration>>() {
 				});
-		System.out.println("Done");
 	}
 
-	public void process() {
-		data.getBenchmarks().forEach(benchmark -> {
-			plot.getConfigs().forEach(config -> {
-				Double metricScale;
-				if (config.getMetricScale() < 0) {
-					metricScale = 1 / (Math.pow(10, -1 * config.getMetricScale()));
+	public void process() throws JsonParseException, JsonMappingException, IOException {
+		File file = new File("Aggresults.json");
+		mapper.writeValue(file, new ArrayList<>());
+
+		List<BenchmarkResult> benchmarkResults = mapper.readValue(new File("result.json"),
+				new TypeReference<List<BenchmarkResult>>() {
+				});
+
+		this.aggregatorConfiguration.forEach(aggConfig -> {
+			Operation last = null;
+			Operation tmp = new JSonSerializer(file, aggConfig.getID(), aggConfig.getTitle());
+			List<OperationConfig> opconf = aggConfig.getOperations(false);
+			for (OperationConfig opconfig : opconf) {
+				if (last == null) {
+					last = OperationFactory.createOperation(tmp, opconfig.getType(), opconfig.getFilter(),
+							opconfig.getAttribute());
 				} else {
-					metricScale = Math.pow(10, config.getMetricScale());
+					last = OperationFactory.createOperation(last, opconfig.getType(), opconfig.getFilter(),
+							opconfig.getAttribute());
 				}
-				// Initialize AggregataedResult
-				AggregataedResult aggRes = new AggregataedResult("AVG", config.getxDimension(), config.getyLabel(),
-						config.getTitle());
-
-				// Get toolsNames
-				List<String> toolNames = config.getLegendFilters().size() > 0 ? config.getLegendFilters()
-						: benchmark.getToolNames();
-
-				// Initialize tool List
-				List<Tool> tools = new ArrayList<>();
-
-				toolNames.forEach(toolName -> {
-					// Initialize new Tool
-					Tool tool = new Tool(toolName);
-
-					// Initialize Result list
-					List<Result> results = new ArrayList<>();
-
-					benchmark.getScales().forEach(scale -> {
-						// Initialize new Result
-						Result result = new Result(scale);
-
-						// Filter benchmarks
-						List<FilterableBenchmarkResult> filteredBenchmarkResults = this
-								.getBenchmarkResultBySizeAndTool(scale, toolName);
-
-						DescriptiveStatistics descriptiveStatistics = new DescriptiveStatistics();
-
-						// Initialize metric result
-						MetricResult metricResult = new MetricResult();
-						metricResult.setName(config.getMetrics().get(0));
-						filteredBenchmarkResults.forEach(filteredBenchmakResult -> {
-
-							// Get phaseResult
-							List<FilterablePhaseResult> filterablePhaseResults = filteredBenchmakResult
-									.getPharesultByPhaseNames(config.getSummarizeFunction());
-							Double sum = 0.0;
-							// sum selected phasevalues
-							for (int i = 0; i < filterablePhaseResults.size(); i++) {
-								Double tmp = filterablePhaseResults.get(i).getMetricsByMetricName(Arrays.asList(config.getMetrics().get(0))).get(0).getValue();
-								sum += (tmp * metricScale);
-							}
-							descriptiveStatistics.addValue(sum);
-						});
-
-						// Calculate average
-						Double avg = descriptiveStatistics.getMean();
-						if (Double.isNaN(avg)) {
-							return;
-						}
-
-						metricResult.setValue(avg);
-						result.setMetrics(metricResult);
-						results.add(result);
-						tool.setResults(results);
-					});
-					tools.add(tool);
-				});
-				aggRes.setTool(tools);
-				aggregataedResults.add(aggRes);
-			});
+			}
+			;
+			last.start();
+			List<BenchmarkResult> list = benchmarkResults.subList(0, benchmarkResults.size());
+			for (BenchmarkResult res : list) {
+				last.addResult(res);
+			}
+			last.stop();
 		});
-	}
-
-	private List<FilterableBenchmarkResult> getBenchmarkResultBySizeAndTool(Integer size, String tool) {
-		return this.benchmarkResults.stream().filter(benchmarkResult -> {
-			return benchmarkResult.getCaseDescriptor().getSize() == size
-					&& benchmarkResult.getCaseDescriptor().getTool().equals(tool);
-		}).collect(Collectors.toList());
-	}
-
-	public void print(String fileName) throws JsonGenerationException, JsonMappingException, IOException {
-		System.out.println("Write results");
-		JsonSerializer ser = new JsonSerializer();
-		ser.serialize(aggregataedResults, fileName);
-		System.out.println("done");
 	}
 }

@@ -1,18 +1,30 @@
 package com.viatra.cps.benchmark.reports.processing.operation;
 
-import java.util.List;
-
 import eu.mondo.sam.core.results.BenchmarkResult;
 
-public abstract class Operation<T> {
+public interface Operation extends Runnable {
+	
+	/**
+	 * Start operation
+	 * @return success
+	 */
+	public boolean start();
 
-	protected String attribute;
-	protected List<T> filter;
+	/**
+	 * Add one BenchmarkResult to operation
+	 * @param result
+	 */
+	public void addResult(BenchmarkResult result);
 	
-	public Operation(String attribute, List<T> filter) {
-		this.attribute = attribute;
-		this.filter = filter;
-	}
-	
-	public abstract BenchmarkResult calculate();
+	/**
+	 * Stop operation
+	 */
+	public void stop();
+
+	/**
+	 * Set next operation
+	 * @param next
+	 */
+	public void setNext(Operation next);
+
 }
