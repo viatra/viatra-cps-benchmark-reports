@@ -13,7 +13,6 @@ import eu.mondo.sam.core.results.BenchmarkResult;
 
 public class ToolFilter extends Filter {
 	private Map<String, Map<Integer, Map<Integer, List<BenchmarkResult>>>> benchmarkMap;
-	private int stop = 0;
 
 	public ToolFilter(List<Object> elements, Boolean contained) {
 		super(elements, contained);
@@ -79,12 +78,6 @@ public class ToolFilter extends Filter {
 				});
 			});
 		});
-	}
-
-	private BenchmarkResult createBenchmarkResult(BenchmarkResult benchmarkResult) {
-		BenchmarkResult newRes = new BenchmarkResult();
-		newRes.setCaseDescriptor(benchmarkResult.getCaseDescriptor());
-		return newRes;
 	}
 
 	private void addToMap(BenchmarkResult benchmarkResult) {

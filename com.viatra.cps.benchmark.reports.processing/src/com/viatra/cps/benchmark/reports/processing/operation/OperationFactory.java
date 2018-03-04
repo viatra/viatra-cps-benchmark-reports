@@ -53,9 +53,9 @@ public class OperationFactory {
 		case "Metric":
 			return new MetricFilter(elements, next, contained);
 		case "Phase-Name":
-			return new PhaseNameFilter(elements,next, contained);
+			return new PhaseNameFilter(elements, next, contained);
 		case "Tool":
-			return new ToolFilter(elements,next, contained);
+			return new ToolFilter(elements, next, contained);
 		case "RunIndex":
 			return new RunIndexFilter(elements, next, contained);
 		default:

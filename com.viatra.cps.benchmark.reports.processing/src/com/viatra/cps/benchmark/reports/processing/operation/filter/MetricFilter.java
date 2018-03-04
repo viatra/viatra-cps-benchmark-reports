@@ -31,7 +31,6 @@ public class MetricFilter extends Filter {
 		while (this.running || !this.queue.isEmpty()) {
 			BenchmarkResult benchmarkResult = null;
 			synchronized (this.lock) {
-				// Wait for result
 				if (this.queue.isEmpty()) {
 					try {
 						this.lock.wait();
@@ -39,12 +38,10 @@ public class MetricFilter extends Filter {
 						e.printStackTrace();
 					}
 				}
-				// Work on result
 				benchmarkResult = this.queue.poll();
 			}
 			if (benchmarkResult != null) {
 				BenchmarkResult filteredResult = this.createBenchmarkResult(benchmarkResult);
-
 				benchmarkResult.getPhaseResults().forEach(phaseResult -> {
 					if (elements.size() > 0) {
 						List<MetricResult> metricResults = phaseResult.getMetrics().stream().filter(metric -> {
@@ -71,12 +68,6 @@ public class MetricFilter extends Filter {
 		}
 	}
 
-	private BenchmarkResult createBenchmarkResult(BenchmarkResult benchmarkResult) {
-		BenchmarkResult newRes = new BenchmarkResult();
-		newRes.setCaseDescriptor(benchmarkResult.getCaseDescriptor());
-		return newRes;
-	}
-
 	private PhaseResult createPhaseResult(PhaseResult phaseResult, MetricResult metricResult) {
 		PhaseResult newRes = new PhaseResult();
 		newRes.setPhaseName(phaseResult.getPhaseName());
@@ -84,5 +75,4 @@ public class MetricFilter extends Filter {
 		newRes.setMetrics(Arrays.asList(metricResult));
 		return newRes;
 	}
-
 }

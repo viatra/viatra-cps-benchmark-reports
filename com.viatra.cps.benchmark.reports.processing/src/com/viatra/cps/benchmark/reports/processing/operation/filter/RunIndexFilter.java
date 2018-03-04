@@ -79,12 +79,6 @@ public class RunIndexFilter extends Filter {
 		});
 	}
 
-	private BenchmarkResult createBenchmarkResult(BenchmarkResult benchmarkResult) {
-		BenchmarkResult newRes = new BenchmarkResult();
-		newRes.setCaseDescriptor(benchmarkResult.getCaseDescriptor());
-		return newRes;
-	}
-
 	private void addToMap(BenchmarkResult benchmarkResult) {
 		Map<Integer, List<BenchmarkResult>> toolMap = this.benchmarkMap
 				.get(benchmarkResult.getCaseDescriptor().getTool());

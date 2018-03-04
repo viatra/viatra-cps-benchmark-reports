@@ -5,7 +5,7 @@
 	"OperationChain": 
 	[
 	{
-		"type": "Average",
+		"type": "Mean",
 		"attribute": "RunIndex",
 		"filter": []
 	},
@@ -31,7 +31,7 @@
 	"OperationChain": 
 	[
 	{
-		"type": "Average",
+		"type": "Mean",
 		"attribute": "RunIndex",
 		"filter": []
 	},
@@ -57,7 +57,7 @@
 	"OperationChain": 
 	[
 	{
-		"type": "Average",
+		"type": "Mean",
 		"attribute": "RunIndex",
 		"filter": []
 	},
@@ -83,7 +83,7 @@
 	"OperationChain": 
 	[
 	{
-		"type": "Average",
+		"type": "Mean",
 		"attribute": "RunIndex",
 		"filter": []
 	},
@@ -101,5 +101,161 @@
 		"type": "Filter", 
  		"attribute": "Metric", 
 		"filter": ["Time"] 
+	} ]
+},
+{
+	"ID": "5",
+	"title": "Persistent memory after M2M",
+	"OperationChain": 
+	[
+	{
+		"type": "Mean",
+		"attribute": "RunIndex",
+		"filter": []
+	},
+	{
+		"type": "Summary",
+		"attribute": "Tool",
+		"filter": []
+	},
+	{
+		"type": "Average",
+		"attribute": "Phase-Name",
+		"filter": ["M2MTransformation1"]
+	},
+	{
+		"type": "Filter", 
+ 		"attribute": "Metric", 
+		"filter": ["Memory"] 
+	} ]
+},
+{
+	"ID": "6",
+	"title": "Peak memory during M2M",
+	"OperationChain": 
+	[
+	{
+		"type": "Mean",
+		"attribute": "RunIndex",
+		"filter": []
+	},
+	{
+		"type": "Summary",
+		"attribute": "Tool",
+		"filter": []
+	},
+	{
+		"type": "Average",
+		"attribute": "Phase-Name",
+		"filter": ["M2MTransformation1"]
+	},
+	{
+		"type": "Filter", 
+ 		"attribute": "Metric", 
+		"filter": ["PeakMemory"] 
+	} ]
+},
+{
+	"ID": "7",
+	"title": "Average memory during M2M",
+	"OperationChain": 
+	[
+	{
+		"type": "Mean",
+		"attribute": "RunIndex",
+		"filter": []
+	},
+	{
+		"type": "Summary",
+		"attribute": "Tool",
+		"filter": []
+	},
+	{
+		"type": "Average",
+		"attribute": "Phase-Name",
+		"filter": ["M2MTransformation1"]
+	},
+	{
+		"type": "Filter", 
+ 		"attribute": "Metric", 
+		"filter": ["AverageMemory"] 
+	} ]
+},
+{
+	"ID": "8",
+	"title": "Persistent memory after Initialization",
+	"OperationChain": 
+	[
+	{
+		"type": "Mean",
+		"attribute": "RunIndex",
+		"filter": []
+	},
+	{
+		"type": "Summary",
+		"attribute": "Tool",
+		"filter": []
+	},
+	{
+		"type": "Average",
+		"attribute": "Phase-Name",
+		"filter": ["Initialization"]
+	},
+	{
+		"type": "Filter", 
+ 		"attribute": "Metric", 
+		"filter": ["Memory"] 
+	} ]
+},
+{
+	"ID": "9",
+	"title": "Peak memory during Initialization",
+	"OperationChain": 
+	[
+	{
+		"type": "Mean",
+		"attribute": "RunIndex",
+		"filter": []
+	},
+	{
+		"type": "Summary",
+		"attribute": "Tool",
+		"filter": []
+	},
+	{
+		"type": "Average",
+		"attribute": "Phase-Name",
+		"filter": ["Initialization"]
+	},
+	{
+		"type": "Filter", 
+ 		"attribute": "Metric", 
+		"filter": ["PeakMemory"] 
+	} ]
+},
+{
+	"ID": "10",
+	"title": "Average memory during Initialization",
+	"OperationChain": 
+	[
+	{
+		"type": "Mean",
+		"attribute": "RunIndex",
+		"filter": []
+	},
+	{
+		"type": "Summary",
+		"attribute": "Tool",
+		"filter": []
+	},
+	{
+		"type": "Average",
+		"attribute": "Phase-Name",
+		"filter": ["Initialization"]
+	},
+	{
+		"type": "Filter", 
+ 		"attribute": "Metric", 
+		"filter": ["AverageMemory"] 
 	} ]
 }]

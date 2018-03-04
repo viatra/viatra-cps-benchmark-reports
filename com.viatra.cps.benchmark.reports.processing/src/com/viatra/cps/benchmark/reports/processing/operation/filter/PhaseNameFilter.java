@@ -86,11 +86,7 @@ public class PhaseNameFilter extends Filter {
 		phaseList.add(phaseResult);
 	}
 
-	private BenchmarkResult createBenchmarkResult(BenchmarkResult benchmarkResult) {
-		BenchmarkResult newRes = new BenchmarkResult();
-		newRes.setCaseDescriptor(benchmarkResult.getCaseDescriptor());
-		return newRes;
-	}
+
 
 	private Boolean isNeeded(PhaseResult phaseResult, List<Object> elements) {
 		Boolean need = elements.stream().filter(phaseName -> {

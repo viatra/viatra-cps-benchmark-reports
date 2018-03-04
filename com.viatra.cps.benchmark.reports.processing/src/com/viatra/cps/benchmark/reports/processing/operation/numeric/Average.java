@@ -11,8 +11,6 @@ import eu.mondo.sam.core.results.PhaseResult;
 
 public class Average extends NumericOperation {
 
-	private int stop = 0;
-
 	public Average(Filter filter, Operation next) {
 		super(filter, next);
 	}
@@ -43,7 +41,6 @@ public class Average extends NumericOperation {
 				p.setMetrics(Arrays.asList(m));
 				b.addResults(p);
 				next.addResult(b);
-				stop++;
 			}
 			if (this.next != null) {
 				this.next.stop();

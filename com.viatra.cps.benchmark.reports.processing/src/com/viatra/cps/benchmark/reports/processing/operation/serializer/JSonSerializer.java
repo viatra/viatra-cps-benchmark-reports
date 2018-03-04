@@ -3,8 +3,6 @@ package com.viatra.cps.benchmark.reports.processing.operation.serializer;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -138,7 +136,6 @@ public class JSonSerializer implements Operation {
 	public boolean start() {
 		try {
 			this.thread = new Thread(this);
-			this.lock = new Object();
 			this.queue = new ConcurrentLinkedQueue<>();
 			this.running = true;
 			this.thread.start();
@@ -156,8 +153,6 @@ public class JSonSerializer implements Operation {
 		}
 	}
 
-	int stop = 0;
-
 	@Override
 	public void stop() {
 		synchronized (this.lock) {
@@ -168,7 +163,7 @@ public class JSonSerializer implements Operation {
 
 	@Override
 	public void setNext(Operation next) {
-
+		//Do nothing
 	}
 
 }

@@ -9,11 +9,6 @@ import eu.mondo.sam.core.results.BenchmarkResult;
 public abstract class Filter implements Operation {
 	protected List<Object> elements;
 	protected Thread thread;
-
-	public Thread getThread() {
-		return thread;
-	}
-
 	protected Boolean running;
 	protected Object lock;
 	protected ConcurrentLinkedQueue<BenchmarkResult> queue;
@@ -34,6 +29,10 @@ public abstract class Filter implements Operation {
 		this.running = false;
 		this.lock = new Object();
 	}
+	
+	public Thread getThread() {
+		return thread;
+	}
 
 	@Override
 	public void setNext(Operation next) {
@@ -43,7 +42,6 @@ public abstract class Filter implements Operation {
 	@Override
 	public boolean start() {
 		try {
-			this.lock = new Object();
 			synchronized (this.lock) {
 				this.thread = new Thread(this);
 				this.queue = new ConcurrentLinkedQueue<>();
@@ -74,6 +72,12 @@ public abstract class Filter implements Operation {
 			this.running = false;
 			this.lock.notify();
 		}
+	}
+	
+	protected BenchmarkResult createBenchmarkResult(BenchmarkResult benchmarkResult) {
+		BenchmarkResult newRes = new BenchmarkResult();
+		newRes.setCaseDescriptor(benchmarkResult.getCaseDescriptor());
+		return newRes;
 	}
 
 }
