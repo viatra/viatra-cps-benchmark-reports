@@ -38,16 +38,19 @@ public class RunIndexFilter extends Filter {
 						e.printStackTrace();
 					}
 				}
+				benchmarkResult = this.queue.poll();
 			}
-			benchmarkResult = this.queue.poll();
-			if (this.elements.size() > 0) {
-				if (this.isNeeded(benchmarkResult, elements)) {
+			if (benchmarkResult != null) {
+
+				if (this.elements.size() > 0) {
+					if (this.isNeeded(benchmarkResult, elements)) {
+						this.addToMap(benchmarkResult);
+					}
+				} else {
 					this.addToMap(benchmarkResult);
 				}
-			} else {
-				this.addToMap(benchmarkResult);
-			}
 
+			}
 		}
 		this.calculate();
 	}
@@ -57,23 +60,23 @@ public class RunIndexFilter extends Filter {
 		toolKeys.forEach(tool -> {
 			Set<Integer> sizeKey = this.benchmarkMap.get(tool).keySet();
 			sizeKey.forEach(size -> {
-					List<BenchmarkResult> results = this.benchmarkMap.get(tool).get(size);
-					BenchmarkResult filteredResult = createBenchmarkResult(results.get(0));
-					filteredResult.getCaseDescriptor().setRunIndex(-1);
-					results.forEach(result -> {
-						result.getPhaseResults().forEach(phaseResult -> {
-							filteredResult.addResults(phaseResult);
-						});
+				List<BenchmarkResult> results = this.benchmarkMap.get(tool).get(size);
+				BenchmarkResult filteredResult = createBenchmarkResult(results.get(0));
+				filteredResult.getCaseDescriptor().setRunIndex(-1);
+				results.forEach(result -> {
+					result.getPhaseResults().forEach(phaseResult -> {
+						filteredResult.addResults(phaseResult);
 					});
-					if (this.next != null) {
-						if (this.contained) {
-							((NumericOperation) this.next).addFilteredResult(filteredResult);
-						} else {
-							this.next.addResult(filteredResult);
-						}
-					}
 				});
+				if (this.next != null) {
+					if (this.contained) {
+						((NumericOperation) this.next).addFilteredResult(filteredResult);
+					} else {
+						this.next.addResult(filteredResult);
+					}
+				}
 			});
+		});
 	}
 
 	private BenchmarkResult createBenchmarkResult(BenchmarkResult benchmarkResult) {
@@ -83,7 +86,8 @@ public class RunIndexFilter extends Filter {
 	}
 
 	private void addToMap(BenchmarkResult benchmarkResult) {
-		Map<Integer, List<BenchmarkResult>> toolMap = this.benchmarkMap.get(benchmarkResult.getCaseDescriptor().getTool());
+		Map<Integer, List<BenchmarkResult>> toolMap = this.benchmarkMap
+				.get(benchmarkResult.getCaseDescriptor().getTool());
 		if (toolMap == null) {
 			toolMap = new HashMap<>();
 			this.benchmarkMap.put(benchmarkResult.getCaseDescriptor().getTool(), toolMap);

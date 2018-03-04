@@ -20,6 +20,11 @@ public class MetricFilter extends Filter {
 		super(elements, contained);
 	}
 	
+	@Override
+	public boolean start() {
+		super.start();
+		return true;
+	}
 
 	@Override
 	public void run() {
@@ -34,30 +39,32 @@ public class MetricFilter extends Filter {
 						e.printStackTrace();
 					}
 				}
-
 				// Work on result
 				benchmarkResult = this.queue.poll();
 			}
-			BenchmarkResult filteredResult = this.createBenchmarkResult(benchmarkResult);
+			if (benchmarkResult != null) {
+				BenchmarkResult filteredResult = this.createBenchmarkResult(benchmarkResult);
 
-			benchmarkResult.getPhaseResults().forEach(phaseResult -> {
-				if (elements.size() > 0) {
-					List<MetricResult> metricResults = phaseResult.getMetrics().stream().filter(metric -> {
-						return elements.stream().filter(element -> {
-							return ((String) element).equals(metric.getName());
-						}).findAny().isPresent();
-					}).collect(Collectors.toList());
-					metricResults.forEach(metricResult -> {
-						filteredResult.addResults(createPhaseResult(phaseResult, metricResult));
-					});
-				} else {
-					phaseResult.getMetrics().forEach(metricResult -> {
-						filteredResult.addResults(createPhaseResult(phaseResult, metricResult));
-					});
+				benchmarkResult.getPhaseResults().forEach(phaseResult -> {
+					if (elements.size() > 0) {
+						List<MetricResult> metricResults = phaseResult.getMetrics().stream().filter(metric -> {
+							return elements.stream().filter(element -> {
+								return ((String) element).equals(metric.getName());
+							}).findAny().isPresent();
+						}).collect(Collectors.toList());
+						metricResults.forEach(metricResult -> {
+							filteredResult.addResults(createPhaseResult(phaseResult, metricResult));
+						});
+					} else {
+						phaseResult.getMetrics().forEach(metricResult -> {
+							filteredResult.addResults(createPhaseResult(phaseResult, metricResult));
+						});
+					}
+				});
+				if (next != null) {
+					next.addResult(filteredResult);
 				}
-			});
-			if (next != null)
-				next.addResult(filteredResult);
+			}
 		}
 		if (!this.contained && next != null) {
 			next.stop();

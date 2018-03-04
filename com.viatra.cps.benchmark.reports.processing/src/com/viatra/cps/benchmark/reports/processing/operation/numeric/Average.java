@@ -11,6 +11,8 @@ import eu.mondo.sam.core.results.PhaseResult;
 
 public class Average extends NumericOperation {
 
+	private int stop = 0;
+
 	public Average(Filter filter, Operation next) {
 		super(filter, next);
 	}
@@ -21,6 +23,7 @@ public class Average extends NumericOperation {
 
 	@Override
 	public void calculate() {
+		
 		next.start();
 		try {
 			this.filter.getThread().join();
@@ -40,34 +43,30 @@ public class Average extends NumericOperation {
 				p.setMetrics(Arrays.asList(m));
 				b.addResults(p);
 				next.addResult(b);
+				stop++;
+			}
+			if (this.next != null) {
+				this.next.stop();
 			}
 
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		if (this.next != null) {
-			this.next.stop();
-		}
+
 	}
 
 	@Override
 	public void run() {
-		while (this.running || !this.queue.isEmpty()) {
-			BenchmarkResult benchmarkResult = this.queue.poll();
+		if(this.running) {
 			synchronized (this.lock) {
-				// Wait for result
-				if (benchmarkResult == null) {
-					try {
-						this.lock.wait();
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-				} else {
-					// Work on result
-					filter.addResult(benchmarkResult);
+				try {
+					this.lock.wait();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
-
+				
 			}
 		}
 		this.filter.stop();

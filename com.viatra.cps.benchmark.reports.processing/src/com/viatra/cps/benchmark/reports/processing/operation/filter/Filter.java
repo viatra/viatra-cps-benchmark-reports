@@ -52,7 +52,6 @@ public abstract class Filter implements Operation {
 				if (!this.contained) {
 					return this.next.start();
 				}
-				lock.notify();
 			}
 
 			return true;

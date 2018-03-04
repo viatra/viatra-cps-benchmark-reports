@@ -51,16 +51,11 @@ public abstract class NumericOperation implements Operation {
 
 	@Override
 	public void addResult(BenchmarkResult result) {
-		if (filter != null) {
-			filter.addResult(result);
-		}
+		filter.addResult(result);
 	}
 
 	public void addFilteredResult(BenchmarkResult result) {
-		synchronized (this.lock) {
-			this.queue.add(result);
-			this.lock.notify();
-		}
+		this.queue.add(result);
 	}
 
 	@Override
@@ -68,9 +63,6 @@ public abstract class NumericOperation implements Operation {
 		synchronized (lock) {
 			this.running = false;
 			this.lock.notify();
-			if (this.filter != null) {
-				this.filter.stop();
-			}
 		}
 	}
 

@@ -1,5 +1,8 @@
+[
 {
-	"Operations": 
+	"ID": "1",
+	"title": "Generation",
+	"OperationChain": 
 	[
 	{
 		"type": "Average",
@@ -14,6 +17,58 @@
 	{
 		"type": "Summary",
 		"attribute": "Phase-Name",
+		"filter": ["Generation"]
+	},
+	{
+		"type": "Filter", 
+ 		"attribute": "Metric", 
+		"filter": ["Time"] 
+	} ]
+},
+{
+	"ID": "2",
+	"title": "Init M2M",
+	"OperationChain": 
+	[
+	{
+		"type": "Average",
+		"attribute": "RunIndex",
+		"filter": []
+	},
+	{
+		"type": "Summary",
+		"attribute": "Tool",
+		"filter": []
+	},
+	{
+		"type": "Summary",
+		"attribute": "Phase-Name",
+		"filter": ["Initialization", "M2MTransformation1"]
+	},
+	{
+		"type": "Filter", 
+ 		"attribute": "Metric", 
+		"filter": ["Time"] 
+	} ]
+},
+{
+	"ID": "3",
+	"title": "Full workflow",
+	"OperationChain": 
+	[
+	{
+		"type": "Average",
+		"attribute": "RunIndex",
+		"filter": []
+	},
+	{
+		"type": "Summary",
+		"attribute": "Tool",
+		"filter": []
+	},
+	{
+		"type": "Summary",
+		"attribute": "Phase-Name",
 		"filter": ["Initialization","M2MTransformation1","M2MTransformation2","Modification"]
 	},
 	{
@@ -21,4 +76,30 @@
  		"attribute": "Metric", 
 		"filter": ["Time"] 
 	} ]
-}
+},
+{
+	"ID": "4",
+	"title": "Modify M2M",
+	"OperationChain": 
+	[
+	{
+		"type": "Average",
+		"attribute": "RunIndex",
+		"filter": []
+	},
+	{
+		"type": "Summary",
+		"attribute": "Tool",
+		"filter": []
+	},
+	{
+		"type": "Summary",
+		"attribute": "Phase-Name",
+		"filter": ["M2MTransformation2", "Modification"]
+	},
+	{
+		"type": "Filter", 
+ 		"attribute": "Metric", 
+		"filter": ["Time"] 
+	} ]
+}]

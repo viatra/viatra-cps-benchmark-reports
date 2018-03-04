@@ -40,31 +40,25 @@ public class Summary extends NumericOperation {
 				b.addResults(p);
 				next.addResult(b);
 			}
-
+			if (this.next != null) {
+				this.next.stop();
+			}
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		if (this.next != null) {
-			this.next.stop();
-		}
+
 	}
 
 	@Override
 	public void run() {
-		while (this.running || !this.queue.isEmpty()) {
-			BenchmarkResult benchmarkResult = this.queue.poll();
+		if (this.running) {
 			synchronized (this.lock) {
-				// Wait for result
-				if (benchmarkResult == null) {
-					try {
-						this.lock.wait();
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-				} else {
-					// Work on result
-					filter.addResult(benchmarkResult);
+				try {
+					this.lock.wait();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 
 			}

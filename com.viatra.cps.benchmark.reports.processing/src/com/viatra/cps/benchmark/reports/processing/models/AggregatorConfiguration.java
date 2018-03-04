@@ -6,27 +6,50 @@ import java.util.List;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 
+
+
 public class AggregatorConfiguration {
 	
+	@JsonProperty("ID")
+	private String ID;
 	
-	@JsonProperty("Operations")
-	private List<OperationConfig> operations;
+	@JsonProperty("title")
+	private String title;
+	
+	public String getID() {
+		return ID;
+	}
+
+	public void setID(String iD) {
+		ID = iD;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	@JsonProperty("OperationChain")
+	private List<OperationConfig> operationChain;
 	
 	public void setOperation(List<OperationConfig> operationConfigs) {
-		this.operations = operationConfigs;
+		this.operationChain = operationConfigs;
 	}
 	
 	public List<OperationConfig> getOperations(Boolean reverse) {
 		if(reverse) {
-			List<OperationConfig> tmp = this.operations.subList(0, this.operations.size());
+			List<OperationConfig> tmp = this.operationChain.subList(0, this.operationChain.size());
 			Collections.reverse(tmp);
 			return tmp;
 		}else {
-			return this.operations;
+			return this.operationChain;
 		}
 	}
 	
 	public OperationConfig getFirts() {
-		return this.operations.get(0);
+		return this.operationChain.get(0);
 	}
 }

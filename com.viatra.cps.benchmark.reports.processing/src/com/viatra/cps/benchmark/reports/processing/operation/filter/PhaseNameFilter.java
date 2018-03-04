@@ -40,40 +40,41 @@ public class PhaseNameFilter extends Filter {
 				// Work on result
 				benchmarkResult = this.queue.poll();
 			}
-			this.phaseMap = new HashMap<>();
-			benchmarkResult.getPhaseResults().forEach(phaseResult -> {
-				if (this.elements.size() > 0) {
-					if (this.isNeeded(phaseResult, elements)) {
+			if (benchmarkResult != null) {
+				this.phaseMap = new HashMap<>();
+				benchmarkResult.getPhaseResults().forEach(phaseResult -> {
+					if (this.elements.size() > 0) {
+						if (this.isNeeded(phaseResult, elements)) {
+							this.addToMap(phaseResult);
+						}
+					} else {
 						this.addToMap(phaseResult);
 					}
-				} else {
-					this.addToMap(phaseResult);
-				}
-			});
-			this.transform(benchmarkResult);
+				});
+				this.transform(benchmarkResult);
+			}
 		}
-		if(!this.contained && this.next != null) {
+		if (!this.contained && this.next != null) {
 			this.next.stop();
 		}
 	}
 
 	private void transform(BenchmarkResult benchmarkResult) {
 		Set<String> phanesNames = this.phaseMap.keySet();
-		phanesNames.forEach(phaseName ->{
+		phanesNames.forEach(phaseName -> {
 			BenchmarkResult filteredResult = this.createBenchmarkResult(benchmarkResult);
 			this.phaseMap.get(phaseName).forEach(phase -> {
 				filteredResult.addResults(phase);
 			});
-			if(next != null) {
-				if(this.contained) {
-					((NumericOperation)this.next).addFilteredResult(filteredResult);
-				}else {
+			if (next != null) {
+				if (this.contained) {
+					((NumericOperation) this.next).addFilteredResult(filteredResult);
+				} else {
 					this.next.addResult(filteredResult);
 				}
-
 			}
 		});
-		
+
 	}
 
 	private void addToMap(PhaseResult phaseResult) {

@@ -13,6 +13,7 @@ import eu.mondo.sam.core.results.BenchmarkResult;
 
 public class ToolFilter extends Filter {
 	private Map<String, Map<Integer, Map<Integer, List<BenchmarkResult>>>> benchmarkMap;
+	private int stop = 0;
 
 	public ToolFilter(List<Object> elements, Boolean contained) {
 		super(elements, contained);
@@ -37,8 +38,9 @@ public class ToolFilter extends Filter {
 						e.printStackTrace();
 					}
 				}
+				benchmarkResult = this.queue.poll();
 			}
-			benchmarkResult = this.queue.poll();
+
 			if (benchmarkResult != null) {
 				if (this.elements.size() > 0) {
 					if (this.isNeeded(benchmarkResult, elements)) {
