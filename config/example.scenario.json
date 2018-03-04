@@ -1,0 +1,12 @@
+[{"build": "example.build",
+    "diagrams" : ["Generation","Init M2M","Full workflow"],
+    "name" : "Init time"
+},{
+"build": "example.build",
+    "diagrams" : ["Persistent memory after M2M","Peak memory during M2M","Average memory during M2M"],
+    "name" : "M2M memory"
+},{
+    "build": "example.build",
+    "diagrams" : ["Persistent memory after Initialization","Peak memory during Initialization","Average memory during Initialization"],
+    "name" : "Init memory"
+}]
