@@ -7,16 +7,16 @@
 		"filter": []
 	},
 	{
-		"type": "Average",
+		"type": "Summary",
 		"attribute": "Tool",
 		"filter": ["BATCH_VIATRA_QUERY_RETE-TEMPLATE"]
 	},
 	{
-		"type": "Average",
+		"type": "Summary",
 		"attribute": "Phase-Name",
-		"filter": ["Generation"]
+		"filter": ["Initialization","M2MTransformation1","M2MTransformation2","Modification"]
 	},
-	{ 
+	{
 		"type": "Filter", 
  		"attribute": "Metric", 
 		"filter": ["Time"] 

@@ -1,9 +1,13 @@
 package com.viatra.cps.benchmark.reports.processing.operation.numeric;
 
+import java.util.Arrays;
+
 import com.viatra.cps.benchmark.reports.processing.operation.Operation;
 import com.viatra.cps.benchmark.reports.processing.operation.filter.Filter;
 
 import eu.mondo.sam.core.results.BenchmarkResult;
+import eu.mondo.sam.core.results.MetricResult;
+import eu.mondo.sam.core.results.PhaseResult;
 
 public class Summary extends NumericOperation {
 
@@ -11,38 +15,61 @@ public class Summary extends NumericOperation {
 		super(filter, next);
 	}
 
+	public Summary(Filter filter) {
+		super(filter);
+	}
+
 	@Override
-	protected void calculate() {
-		System.out.println("calcuate Summary");
-		if (filter != null) {
-			this.filter.start();
+	public void calculate() {
+		next.start();
+		try {
+			this.filter.getThread().join();
+			while (!queue.isEmpty()) {
+				Double sum = 0.0;
+				BenchmarkResult res = queue.poll();
+				for (PhaseResult pRes : res.getPhaseResults()) {
+					sum += pRes.getMetrics().get(0).getValue();
+				}
+				MetricResult m = new MetricResult();
+				m.setValue(sum);
+				BenchmarkResult b = new BenchmarkResult();
+				b.setCaseDescriptor(res.getCaseDescriptor());
+				PhaseResult p = new PhaseResult();
+				p.setPhaseName(res.getPhaseResults().get(0).getPhaseName());
+				p.setMetrics(Arrays.asList(m));
+				b.addResults(p);
+				next.addResult(b);
+			}
+
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if (this.next != null) {
+			this.next.stop();
 		}
 	}
 
 	@Override
 	public void run() {
+		while (this.running || !this.queue.isEmpty()) {
+			BenchmarkResult benchmarkResult = this.queue.poll();
+			synchronized (this.lock) {
+				// Wait for result
+				if (benchmarkResult == null) {
+					try {
+						this.lock.wait();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				} else {
+					// Work on result
+					filter.addResult(benchmarkResult);
+				}
+
+			}
+		}
+		this.filter.stop();
 		this.calculate();
 	}
-
-	@Override
-	public void addFilteredResult(BenchmarkResult result) {
-		result.getPhaseResults().forEach(phaseResult -> {
-			System.out.print(phaseResult.getMetrics().size() + " " + phaseResult.getPhaseName() + " ");
-			phaseResult.getMetrics().forEach(action -> {
-				System.out.println(action.getName());
-			});
-		});
-	}
-
-	@Override
-	public void addResult(BenchmarkResult result) {
-		System.out.println("RunIndex: " +result.getCaseDescriptor().getRunIndex());
-		System.out.println("Tool: " + result.getCaseDescriptor().getTool());
-		System.out.println("Size: " + result.getCaseDescriptor().getSize());
-		System.out.println("Function count: " + result.getPhaseResults().size());
-		System.out.println("Function: " + result.getPhaseResults().get(0).getPhaseName());
-		System.out.println("Function: " + result.getPhaseResults().get(0).getMetrics().get(0).getValue());
-		System.out.println();
-	}
-
 }

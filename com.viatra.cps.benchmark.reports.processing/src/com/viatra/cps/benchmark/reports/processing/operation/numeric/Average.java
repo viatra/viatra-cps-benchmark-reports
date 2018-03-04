@@ -32,12 +32,11 @@ public class Average extends NumericOperation {
 					sum += pRes.getMetrics().get(0).getValue();
 				}
 				MetricResult m = new MetricResult();
-				m.setName("Time");
 				m.setValue(sum / size);
 				BenchmarkResult b = new BenchmarkResult();
 				b.setCaseDescriptor(res.getCaseDescriptor());
 				PhaseResult p = new PhaseResult();
-				p.setPhaseName("Generation");
+				p.setPhaseName(res.getPhaseResults().get(0).getPhaseName());
 				p.setMetrics(Arrays.asList(m));
 				b.addResults(p);
 				next.addResult(b);

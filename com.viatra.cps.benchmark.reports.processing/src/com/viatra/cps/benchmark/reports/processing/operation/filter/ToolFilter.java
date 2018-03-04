@@ -39,14 +39,16 @@ public class ToolFilter extends Filter {
 				}
 			}
 			benchmarkResult = this.queue.poll();
-			if (this.elements.size() > 0) {
-				if (this.isNeeded(benchmarkResult, elements)) {
+			if (benchmarkResult != null) {
+				if (this.elements.size() > 0) {
+					if (this.isNeeded(benchmarkResult, elements)) {
+						this.addToMap(benchmarkResult);
+					}
+				} else {
 					this.addToMap(benchmarkResult);
 				}
-			} else {
-				this.addToMap(benchmarkResult);
-			}
 
+			}
 		}
 		this.calculate();
 	}
@@ -84,7 +86,8 @@ public class ToolFilter extends Filter {
 	}
 
 	private void addToMap(BenchmarkResult benchmarkResult) {
-		Map<Integer, Map<Integer, List<BenchmarkResult>>> toolMap = this.benchmarkMap.get(benchmarkResult.getCaseDescriptor().getTool());
+		Map<Integer, Map<Integer, List<BenchmarkResult>>> toolMap = this.benchmarkMap
+				.get(benchmarkResult.getCaseDescriptor().getTool());
 		if (toolMap == null) {
 			toolMap = new HashMap<>();
 			this.benchmarkMap.put(benchmarkResult.getCaseDescriptor().getTool(), toolMap);
