@@ -14,6 +14,7 @@ import { Console } from '@angular/core/src/console';
 import { Scenario } from '../../model/scenario';
 import { Observable } from 'rxjs/Observable';
 import { take } from 'rxjs/operator/take';
+import { Config } from '../../model/config';
 
 @Injectable()
 export class DiagramService {
@@ -25,11 +26,8 @@ export class DiagramService {
   private _scenarios : Array<Scenario>
   private _title: Array<Title>
   constructor(private _jsonService: JsonService, private _colorService: ColorService) {
-    this._selectionUpdate = new EventEmitter<SelectionUpdateEvent>();
-    this._initEvent = new EventEmitter<null>();
-    this._jsonService.getScenarios().subscribe((scenarios : Scenario[]) => {
-      this._scenarios = scenarios
-      this._initEvent.emit();
+    this._jsonService.getDiagramConfig().subscribe((config : Config) => {
+      console.log(config)
     });
    }
 
@@ -40,21 +38,6 @@ export class DiagramService {
    public runScenario(scenario: Scenario): Observable<null>{
      return new Observable((observer) =>{
       this._selectionUpdate.emit(new SelectionUpdateEvent("Clear",null));
-      this._jsonService.getResults(scenario.build).subscribe((benchmarks : Benchmark[]) =>{
-       this._benchmarks = benchmarks;
-       this.createDiagramList();
-       this.setTitle();
-       scenario.diagrams.forEach((diagramName: string)=>{
-         let index =this._diagrams.findIndex((diagram: Diagram,index : number,diagrams: Diagram[]) =>{
-           return diagram.title === diagramName
-         });
-         this._selectionUpdate.emit(new SelectionUpdateEvent("Added",this._diagrams[index]));
-         this._title[index].HasChecked = true;
-        
-       });
-       observer.next();
-       observer.complete();
-     });
     });
   }
 
@@ -89,7 +72,6 @@ export class DiagramService {
       data.datasets.push(this.getDataSet(tool,index));
       index++;
     });
-    this._diagrams.push(new Diagram("line",data,this.getOption(benchmark.Y_Label,benchmark.X_Label),benchmark.title))
     });
    }
 
@@ -115,7 +97,7 @@ export class DiagramService {
    private setTitle(){
     this._title = new Array<Title>();
     this._benchmarks.forEach((benchmark : Benchmark)=>{
-      this._title.push(new Title(benchmark.title,false));
+
     });
    }
 
@@ -141,7 +123,7 @@ export class DiagramService {
     return {
       maintainAspectRatio : true,
       legend : {
-        position : "bottom"
+        position : "right"
       },
       responsive : true,
       scales: {
