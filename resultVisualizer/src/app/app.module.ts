@@ -11,6 +11,7 @@ import { ColorService } from './services/color.service';
 import { DiagramComponent } from './diagram/component/diagram.component';
 import { DiagramService } from './diagram/service/diagram.service';
 import { DropdownDiretive } from './directive/dropdown.directive';
+import { ConfigService } from './services/config.service';
 
 
 @NgModule({
@@ -22,7 +23,7 @@ import { DropdownDiretive } from './directive/dropdown.directive';
   imports: [
     BrowserModule, ChartModule, HttpModule, FormsModule 
   ], 
-  providers: [JsonService , ColorService, DiagramService],
+  providers: [JsonService , ColorService, DiagramService, ConfigService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

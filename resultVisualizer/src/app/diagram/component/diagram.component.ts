@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit , ViewChildren, QueryList} from '@angular/core';
+
 import { Diagram } from '../model/diagram';
+import { ChartComponent } from 'angular2-chartjs';
 import { DiagramService, SelectionUpdateEvent } from '../service/diagram.service';
 
 @Component({
@@ -8,6 +10,7 @@ import { DiagramService, SelectionUpdateEvent } from '../service/diagram.service
   styleUrls: ['./diagram.component.css']
 })
 export class DiagramComponent implements OnInit {
+  @ViewChildren(ChartComponent) chart: QueryList<ChartComponent>; 
   diagrams : Array<Diagram>;
   ngClass: any;
   constructor(private _diagramService: DiagramService) {
@@ -24,6 +27,16 @@ export class DiagramComponent implements OnInit {
         this.updateClass();
       }
     });
+  }
+
+  hide(){
+    console.log(this.chart)
+    this.diagrams.forEach(diagram =>{
+      diagram.data.datasets[0].hidden = true;
+    })
+    this.chart.forEach(c =>{
+      c.chart.update();
+    })
   }
 
   updateClass(){

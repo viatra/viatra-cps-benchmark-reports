@@ -1,5 +1,5 @@
 export class Color{
-    set Color(color : String){
+    set Color(color : string){
         this._color = color;
     }
 
@@ -15,5 +15,5 @@ export class Color{
         return this._tootlName;
     }
     
-    constructor(private _tootlName: String, private _color: String){}
+    constructor(private _tootlName: String, private _color: string){}
 }

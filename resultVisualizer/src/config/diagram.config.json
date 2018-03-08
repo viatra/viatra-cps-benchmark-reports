@@ -19,79 +19,80 @@
         "ToolName": "BATCH_VIATRA_QUERY_LOCAL_SEARCH-TEMPLATE",
         "Color": "rgba(50, 82, 45, 1)"
     }],
-    "ResultConfig": [{
-        "Build" : {
-            "ID": "example.Build",
+    "ResultConfig": {
+        "Build" : [{
+            "Name": "example.build",
+            "ID": "1",
             "ResultData" :[{
                 "DiagramType": "line",
                 "OperationID": "1",
                 "Title": "Generation",
                 "XLabel": "Size",
-                "YXLabel": "Time"
+                "YLabel": "Time"
             },
             {
                 "DiagramType": "line",
                 "OperationID": "2",
                 "Title": "Init M2M",
                 "XLabel": "Size",
-                "YXLabel": "Time"
+                "YLabel": "Time"
             },
             {
                 "DiagramType": "line",
                 "OperationID": "3",
                 "Title": "Full workflow",
                 "XLabel": "Size",
-                "YXLabel": "Time"
+                "YLabel": "Time"
             },
             {
                 "DiagramType": "line",
                 "OperationID": "4",
                 "Title": "Modify M2M",
                 "XLabel": "Size",
-                "YXLabel": "Time"
+                "YLabel": "Time"
             },
             {
                 "DiagramType": "line",
                 "OperationID": "5",
                 "Title": "Persistent memory after M2M",
                 "XLabel": "Size",
-                "YXLabel": "Memory"
+                "YLabel": "Memory"
             },
             {
                 "DiagramType": "line",
                 "OperationID": "6",
                 "Title": "Peak memory during M2M",
                 "XLabel": "Size",
-                "YXLabel": "PeakMemory"
+                "YLabel": "PeakMemory"
             },
             {
                 "DiagramType": "line",
                 "OperationID": "7",
                 "Title": "Average memory during M2M",
                 "XLabel": "Size",
-                "YXLabel": "AverageMemory"
+                "YLabel": "AverageMemory"
             },
             {
                 "DiagramType": "line",
                 "OperationID": "8",
                 "Title": "Persistent memory after Initialization",
                 "XLabel": "Size",
-                "YXLabel": "Memory"
+                "YLabel": "Memory"
             },
             {
                 "DiagramType": "line",
                 "OperationID": "9",
                 "Title": "Peak memory during Initialization",
                 "XLabel": "Size",
-                "YXLabel": "PeakMemory"
+                "YLabel": "PeakMemory"
             },
             {
                 "DiagramType": "line",
                 "OperationID": "10",
                 "Title": "Average memory during Initialization",
                 "XLabel": "Size",
-                "YXLabel": "AverageMemory"
+                "YLabel": "AverageMemory"
             }]
-        }
-    }]
+        }]
+    }
 }

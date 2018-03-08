@@ -1,6 +1,14 @@
 import { ResultsData } from "./resultData";
 
-export class Build{
+export class Build {
+
+    set Name(name : string){
+        this._name = name;
+    }
+
+    get Name(){
+        return this._name;
+    }
 
     set ID(id: String){
         this._id = id;
@@ -18,5 +26,5 @@ export class Build{
         return this._resultData;
     }
 
-    constructor(private _id: String,private _resultData: Array<ResultsData>){}  
+    constructor(private _name: string,private _id: String,private _resultData: Array<ResultsData>){}  
 }
