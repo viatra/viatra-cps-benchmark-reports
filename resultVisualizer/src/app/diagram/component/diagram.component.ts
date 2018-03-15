@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit , ViewChildren, QueryList} from '@angular/core';
+
 import { Diagram } from '../model/diagram';
-import { DiagramService, SelectionUpdateEvent } from '../service/diagram.service';
+import { ChartComponent } from 'angular2-chartjs';
+import { DiagramService, SelectionUpdateEvent, LegendUpdateEvent } from '../service/diagram.service';
 
 @Component({
   selector: 'app-diagram',
@@ -8,6 +10,7 @@ import { DiagramService, SelectionUpdateEvent } from '../service/diagram.service
   styleUrls: ['./diagram.component.css']
 })
 export class DiagramComponent implements OnInit {
+  @ViewChildren(ChartComponent) chart: QueryList<ChartComponent>; 
   diagrams : Array<Diagram>;
   ngClass: any;
   constructor(private _diagramService: DiagramService) {
@@ -24,14 +27,30 @@ export class DiagramComponent implements OnInit {
         this.updateClass();
       }
     });
+    this.updateLegend();
+  }
+
+  updateLegend(){
+    this._diagramService.LegendUpdateEvent.subscribe((event : LegendUpdateEvent) =>{
+      this.diagrams.forEach(diagram =>{
+        let dataset = diagram.data.datasets.find((dataset)=>{
+          return dataset.label === event.ToolName;
+        });
+        if(dataset !== null && dataset != undefined){
+          dataset.hidden = event.EventType === "hide" ? true : false;
+        }
+      });
+      this.chart.forEach(c =>{
+        c.chart.update();
+      })
+    });
+    
   }
 
   updateClass(){
     this.ngClass= {
       "col" : true,
-      "col-lg-12" : this.diagrams.length < 2,
-      "col-lg-6" : this.diagrams.length >=2 && this.diagrams.length < 6,
-      "col-lg-4" : this.diagrams.length >=6
+      "col-lg-12" : true
     }
   }
   ngOnInit() {

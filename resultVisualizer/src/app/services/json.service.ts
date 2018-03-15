@@ -14,7 +14,8 @@ export class JsonService {
     return this.http.get(`config/example.scenario.json`).map((res:Response) => res.json());
   }
 
-  getDiagramConfigs(){
-    return this.http.get(`config/diagram.config.hson`).map((res:Response) => res.json());
+  getDiagramConfig(configPath: string){
+    return this.http.get(configPath).map((res:Response) => res.json());
   }
+
 }

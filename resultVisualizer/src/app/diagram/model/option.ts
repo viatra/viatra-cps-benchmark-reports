@@ -13,7 +13,8 @@ interface Scales {
 
 
 interface Legend{
-    position: string;
+    position?: string;
+    display?: boolean;
 }
 
 interface yAxes extends Axes{

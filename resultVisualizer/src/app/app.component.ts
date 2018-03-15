@@ -11,26 +11,26 @@ import { Scenario } from './model/scenario';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'] 
 })
 
 export class AppComponent implements OnInit{
   
-titles : Array<Title>
+titles : Array<string>
+ngClass : Array<{
+  "line-through": boolean
+}>
 scenarios : Array<Scenario>
 selected : number;
 started: boolean = false;
   constructor(private _diagramService: DiagramService){
-    this.titles = new Array<Title>();
+    this.titles = new Array<string>();
+    this.ngClass = new  Array<{"line-through": boolean}>();
     this.scenarios = new Array<Scenario>();
     this._diagramService.InitEvent.subscribe(() =>{
       this.scenarios = this._diagramService.Scenarios;
       this.selected = 0;
     });
-  }
-
-  changedSelection(event: boolean,title: string){
-    this._diagramService.updateSelection(event,title);
   }
 
   public home(){
@@ -46,10 +46,12 @@ started: boolean = false;
   public select(){
     this.started = true;
     this._diagramService.runScenario(this.scenarios[this.selected]).subscribe(()=>{
-      this.titles = this._diagramService.Title;
-    });
- 
-  }
+      this._diagramService.Title.forEach((title) =>{
+        this.ngClass.push(title.NgClass);
+        this.titles.push(title.Value);
+      });
+  });
+}
 
   ngOnInit(){}
 

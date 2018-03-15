@@ -14,47 +14,76 @@ import { Console } from '@angular/core/src/console';
 import { Scenario } from '../../model/scenario';
 import { Observable } from 'rxjs/Observable';
 import { take } from 'rxjs/operator/take';
+import { Config } from '../../model/config';
+import { Color } from '../../model/color';
+import { ResultConfig } from '../../model/resultConfig';
+import { ConfigService } from '../../services/config.service';
+import { Build } from '../../model/build';
+import { ResultsData } from '../../model/resultData';
 
 @Injectable()
 export class DiagramService {
   private _selectedTitle: string;
-  private _benchmarks : Array<Benchmark>
-  private _selectionUpdate : EventEmitter<SelectionUpdateEvent>
-  private _initEvent : EventEmitter<null>
-  private _diagrams : Array<Diagram>
-  private _scenarios : Array<Scenario>
-  private _title: Array<Title>
-  constructor(private _jsonService: JsonService, private _colorService: ColorService) {
+  private _benchmarks : Array<Benchmark>;
+  private _selectionUpdate : EventEmitter<SelectionUpdateEvent>;
+  private _legendUpdate : EventEmitter<LegendUpdateEvent>;
+  private _initEvent : EventEmitter<null>;
+  private _diagrams : Array<Diagram>;
+  private _scenarios : Array<Scenario>;
+  private _title: Array<Title>;
+  private _colors : Array<Color>;
+  private _resultConfig: ResultConfig;
+  public configPath : string = `config/diagram.config.json`;
+  private _selectedBuild : Build;
+  constructor(private _jsonService: JsonService,private _colorService: ColorService, private _configservice: ConfigService) {
     this._selectionUpdate = new EventEmitter<SelectionUpdateEvent>();
+    this._legendUpdate = new EventEmitter<SelectionUpdateEvent>();
     this._initEvent = new EventEmitter<null>();
+    this._colorService.getColors(this.configPath).subscribe((colors : Color[]) => {
+      this._colors = colors;
+    });
     this._jsonService.getScenarios().subscribe((scenarios : Scenario[]) => {
       this._scenarios = scenarios
       this._initEvent.emit();
     });
+    this._configservice.getResultConfig(this.configPath).subscribe((resultConfig: ResultConfig)=>{
+      this._resultConfig = resultConfig;
+    });
    }
-
+ 
   get Scenarios(){
     return this._scenarios;
   }
 
+  get Build(){
+    return this._selectedBuild;
+  }
+
    public runScenario(scenario: Scenario): Observable<null>{
-     return new Observable((observer) =>{
+     return new Observable((observer) => {
       this._selectionUpdate.emit(new SelectionUpdateEvent("Clear",null));
-      this._jsonService.getResults(scenario.build).subscribe((benchmarks : Benchmark[]) =>{
-       this._benchmarks = benchmarks;
-       this.createDiagramList();
-       this.setTitle();
-       scenario.diagrams.forEach((diagramName: string)=>{
-         let index =this._diagrams.findIndex((diagram: Diagram,index : number,diagrams: Diagram[]) =>{
-           return diagram.title === diagramName
-         });
-         this._selectionUpdate.emit(new SelectionUpdateEvent("Added",this._diagrams[index]));
-         this._title[index].HasChecked = true;
-        
-       });
-       observer.next();
-       observer.complete();
-     });
+      this._selectedBuild = this.getBuild(scenario.build);
+      this._jsonService.getResults(this._selectedBuild.Name).subscribe((benchmarks : Benchmark[]) =>{
+        this._benchmarks = benchmarks;
+        this.createDiagramList(this._selectedBuild);
+        this.setTitle(this._selectedBuild);
+        scenario.diagrams.forEach((operationId: string)=> {
+          let index = this._diagrams.findIndex((diagram: Diagram,index : number,diagrams: Diagram[]) =>{
+            return diagram.title === this.resolveOperation(this._selectedBuild.ResultData,operationId).Title
+          });
+          this._title[index].NgClass["line-through"] = false;
+          this._selectionUpdate.emit(new SelectionUpdateEvent("Added",this._diagrams[index]));
+        });
+        console.log(this._title)
+        observer.next();
+        observer.complete();
+      });
+    });
+  }
+
+  public getBuild(buildId: String){
+    return this._resultConfig.Build.find((build: Build)=>{
+      return build.ID === buildId;
     });
   }
 
@@ -67,6 +96,15 @@ export class DiagramService {
     return this._selectionUpdate;
    }
 
+   get LegendUpdateEvent(){
+     return this._legendUpdate;
+   }
+
+  updateLegend(hide: boolean, toolName: string){
+    let type = hide === true ? "hide" : "show" 
+    this._legendUpdate.emit(new LegendUpdateEvent(type,toolName));
+  }
+
 
    updateSelection(added: boolean,title: string){
      let diagram = this._diagrams.find((diagram: Diagram)=>{
@@ -76,7 +114,7 @@ export class DiagramService {
      this._selectionUpdate.emit(new SelectionUpdateEvent(type,diagram));
    }
 
-   private createDiagramList(){
+   private createDiagramList(build : Build){
     this._diagrams = new Array<Diagram>();
     this._benchmarks.forEach((benchmark: Benchmark)=>{
     var data = new Data();
@@ -89,18 +127,22 @@ export class DiagramService {
       data.datasets.push(this.getDataSet(tool,index));
       index++;
     });
-    this._diagrams.push(new Diagram("line",data,this.getOption(benchmark.Y_Label,benchmark.X_Label),benchmark.title))
-    });
+    let operation = this.resolveOperation(build.ResultData,benchmark.operationID);
+    this._diagrams.push(new Diagram(operation.DiagramType,data,this.getOption(operation.YLabel,operation.XLabel),operation.Title))  
+  });
    }
 
    private getDataSet(tool : Tool, index: number){
       let dataset: Dataset = new Dataset();
       dataset.lineTension = 0;
-      dataset.label = tool.name;
       dataset.data = new Array();
       dataset.fill = false;
-      dataset.borderColor = this._colorService.colors[index];
-      dataset.backgroundColor = this._colorService.colors[index];
+      dataset.label = tool.name
+      if(tool.name === "BATCH_VIATRA_QUERY_RETE-TEMPLATE"){
+      console.log(this.getColor(this._colors[index].ToolName) + " " + tool.name )
+      }
+      dataset.borderColor = this.getColor(tool.name);
+      dataset.backgroundColor = this.getColor(tool.name);
       tool.results.forEach((result: Result) => {
         dataset.data.push((result.metric.MetricValue));
       });
@@ -108,15 +150,27 @@ export class DiagramService {
    }
 
     get Title(): Array<Title>{
-      
       return this._title;
    }
 
-   private setTitle(){
+
+   public getColor(toolName: String): string{
+    return this._colors.find((color: Color)=>{
+      return color.ToolName === toolName;
+    }).Color;
+   }
+
+   private setTitle(build: Build){
     this._title = new Array<Title>();
     this._benchmarks.forEach((benchmark : Benchmark)=>{
-      this._title.push(new Title(benchmark.title,false));
+     this._title.push(new Title(this.resolveOperation(build.ResultData,benchmark.operationID).Title,{"line-through": true}))
     });
+   }
+
+   private resolveOperation(resultDatas: Array<ResultsData>,operationID: String){
+     return resultDatas.find((resultData: ResultsData)=>{
+       return resultData.OperationID === operationID;
+     })
    }
 
    private getSizes(tool : Tool): string []{
@@ -141,7 +195,7 @@ export class DiagramService {
     return {
       maintainAspectRatio : true,
       legend : {
-        position : "bottom"
+        display: false
       },
       responsive : true,
       scales: {
@@ -171,15 +225,16 @@ export class DiagramService {
 
 
 export class Title{
-  constructor(private _value: string, private _hasChecked: boolean){}
+  constructor(private _value: string, private _ngclass: {"line-through": boolean}){}
 
-  set HasChecked(c : boolean){
-    this._hasChecked = c;
+  set NgClass(ngClass: {"line-through": boolean}){
+    this._ngclass = ngClass;
   }
 
-  get HasChecked(){
-    return this._hasChecked;
+  get NgClass(){
+    return this._ngclass;
   }
+
 
   get Value(){
     return this._value;
@@ -188,13 +243,25 @@ export class Title{
 
 
 export class SelectionUpdateEvent{
-  constructor(private eventType: string, private diagram: Diagram){}
+  constructor(private _eventType: string, private _diagram: Diagram){}
   get EventType(){
-    return this.eventType;
+    return this._eventType;
   }
 
   get Diagram(){
-    return this.diagram;
+    return this._diagram;
+  }
+}
+
+export class LegendUpdateEvent{
+  constructor(private _evenType: string, private _toolName: string){}
+  
+  get EventType(){
+    return this._evenType;
+  }
+
+  get ToolName(){
+    return this._toolName;
   }
 }
 

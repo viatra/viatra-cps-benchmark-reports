@@ -11,18 +11,23 @@ import { ColorService } from './services/color.service';
 import { DiagramComponent } from './diagram/component/diagram.component';
 import { DiagramService } from './diagram/service/diagram.service';
 import { DropdownDiretive } from './directive/dropdown.directive';
+import { ConfigService } from './services/config.service';
+import { DiagramTitleComponent } from './title/diagram-title/diagram-title.component';
+import { LegendTitleComponent } from './title/legend-title/legend-title.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     DiagramComponent,
-    DropdownDiretive
+    DropdownDiretive,
+    DiagramTitleComponent,
+    LegendTitleComponent
   ],
   imports: [
     BrowserModule, ChartModule, HttpModule, FormsModule 
   ], 
-  providers: [JsonService , ColorService, DiagramService],
+  providers: [JsonService , ColorService, DiagramService, ConfigService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,0 +1,10 @@
+<div class="row">
+  <div class="col col-lg-12"><h3>Diagram Tittles</h3></div>
+  <div class="col col-lg-12">
+      <ul>
+          <li *ngFor="let title of titles; let i = index"  [ngClass]="checked[i]" (click)="changedSelection(i)">
+             {{title}}
+        </li>
+      </ul>
+  </div>
+</div>
