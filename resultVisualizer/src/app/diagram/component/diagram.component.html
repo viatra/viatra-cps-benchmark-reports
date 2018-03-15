@@ -1,6 +1,4 @@
-<button (click)="hide()">Hide </button>
-
-<div class="row">
+<div class="row bordered">
 <div [ngClass]="ngClass" *ngFor="let diagram of diagrams">
   <h3><a name="{{diagram.title}}">{{diagram.title}}</a></h3>
   <chart [type]="diagram.type" [data]="diagram.data" [options]="diagram.options"></chart>

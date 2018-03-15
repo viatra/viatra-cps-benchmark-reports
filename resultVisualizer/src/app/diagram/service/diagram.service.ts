@@ -69,10 +69,10 @@ export class DiagramService {
           let index = this._diagrams.findIndex((diagram: Diagram,index : number,diagrams: Diagram[]) =>{
             return diagram.title === this.resolveOperation(this._selectedBuild.ResultData,operationId).Title
           });
+          this._title[index].NgClass["line-through"] = false;
           this._selectionUpdate.emit(new SelectionUpdateEvent("Added",this._diagrams[index]));
-          this._title[index].HasChecked = true;
         });
-
+        console.log(this._title)
         observer.next();
         observer.complete();
       });
@@ -126,6 +126,7 @@ export class DiagramService {
       dataset.lineTension = 0;
       dataset.data = new Array();
       dataset.fill = false;
+      dataset.label = tool.name
       dataset.borderColor = this.getColor(this._colors[index].ToolName);
       dataset.backgroundColor = this.getColor(this._colors[index].ToolName);
       tool.results.forEach((result: Result) => {
@@ -149,7 +150,7 @@ export class DiagramService {
    private setTitle(build: Build){
     this._title = new Array<Title>();
     this._benchmarks.forEach((benchmark : Benchmark)=>{
-     this._title.push(new Title(this.resolveOperation(build.ResultData,benchmark.operationID).Title,false))
+     this._title.push(new Title(this.resolveOperation(build.ResultData,benchmark.operationID).Title,{"line-through": true}))
     });
    }
 
@@ -211,15 +212,16 @@ export class DiagramService {
 
 
 export class Title{
-  constructor(private _value: String, private _hasChecked: boolean){}
+  constructor(private _value: string, private _ngclass: {"line-through": boolean}){}
 
-  set HasChecked(c : boolean){
-    this._hasChecked = c;
+  set NgClass(ngClass: {"line-through": boolean}){
+    this._ngclass = ngClass;
   }
 
-  get HasChecked(){
-    return this._hasChecked;
+  get NgClass(){
+    return this._ngclass;
   }
+
 
   get Value(){
     return this._value;
