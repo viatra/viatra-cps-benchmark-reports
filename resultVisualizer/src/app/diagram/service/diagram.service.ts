@@ -26,6 +26,7 @@ export class DiagramService {
   private _selectedTitle: string;
   private _benchmarks : Array<Benchmark>;
   private _selectionUpdate : EventEmitter<SelectionUpdateEvent>;
+  private _legendUpdate : EventEmitter<LegendUpdateEvent>;
   private _initEvent : EventEmitter<null>;
   private _diagrams : Array<Diagram>;
   private _scenarios : Array<Scenario>;
@@ -36,6 +37,7 @@ export class DiagramService {
   private _selectedBuild : Build;
   constructor(private _jsonService: JsonService,private _colorService: ColorService, private _configservice: ConfigService) {
     this._selectionUpdate = new EventEmitter<SelectionUpdateEvent>();
+    this._legendUpdate = new EventEmitter<SelectionUpdateEvent>();
     this._initEvent = new EventEmitter<null>();
     this._colorService.getColors(this.configPath).subscribe((colors : Color[]) => {
       this._colors = colors;
@@ -94,6 +96,15 @@ export class DiagramService {
     return this._selectionUpdate;
    }
 
+   get LegendUpdateEvent(){
+     return this._legendUpdate;
+   }
+
+  updateLegend(hide: boolean, toolName: string){
+    let type = hide === true ? "hide" : "show" 
+    this._legendUpdate.emit(new LegendUpdateEvent(type,toolName));
+  }
+
 
    updateSelection(added: boolean,title: string){
      let diagram = this._diagrams.find((diagram: Diagram)=>{
@@ -127,8 +138,11 @@ export class DiagramService {
       dataset.data = new Array();
       dataset.fill = false;
       dataset.label = tool.name
-      dataset.borderColor = this.getColor(this._colors[index].ToolName);
-      dataset.backgroundColor = this.getColor(this._colors[index].ToolName);
+      if(tool.name === "BATCH_VIATRA_QUERY_RETE-TEMPLATE"){
+      console.log(this.getColor(this._colors[index].ToolName) + " " + tool.name )
+      }
+      dataset.borderColor = this.getColor(tool.name);
+      dataset.backgroundColor = this.getColor(tool.name);
       tool.results.forEach((result: Result) => {
         dataset.data.push((result.metric.MetricValue));
       });
@@ -136,7 +150,6 @@ export class DiagramService {
    }
 
     get Title(): Array<Title>{
-      
       return this._title;
    }
 
@@ -230,13 +243,25 @@ export class Title{
 
 
 export class SelectionUpdateEvent{
-  constructor(private eventType: string, private diagram: Diagram){}
+  constructor(private _eventType: string, private _diagram: Diagram){}
   get EventType(){
-    return this.eventType;
+    return this._eventType;
   }
 
   get Diagram(){
-    return this.diagram;
+    return this._diagram;
+  }
+}
+
+export class LegendUpdateEvent{
+  constructor(private _evenType: string, private _toolName: string){}
+  
+  get EventType(){
+    return this._evenType;
+  }
+
+  get ToolName(){
+    return this._toolName;
   }
 }
 

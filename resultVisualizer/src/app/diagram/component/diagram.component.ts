@@ -2,7 +2,7 @@ import { Component, OnInit , ViewChildren, QueryList} from '@angular/core';
 
 import { Diagram } from '../model/diagram';
 import { ChartComponent } from 'angular2-chartjs';
-import { DiagramService, SelectionUpdateEvent } from '../service/diagram.service';
+import { DiagramService, SelectionUpdateEvent, LegendUpdateEvent } from '../service/diagram.service';
 
 @Component({
   selector: 'app-diagram',
@@ -27,16 +27,24 @@ export class DiagramComponent implements OnInit {
         this.updateClass();
       }
     });
+    this.updateLegend();
   }
 
-  hide(){
-    console.log(this.chart)
-    this.diagrams.forEach(diagram =>{
-      diagram.data.datasets[0].hidden = true;
-    })
-    this.chart.forEach(c =>{
-      c.chart.update();
-    })
+  updateLegend(){
+    this._diagramService.LegendUpdateEvent.subscribe((event : LegendUpdateEvent) =>{
+      this.diagrams.forEach(diagram =>{
+        let dataset = diagram.data.datasets.find((dataset)=>{
+          return dataset.label === event.ToolName;
+        });
+        if(dataset !== null && dataset != undefined){
+          dataset.hidden = event.EventType === "hide" ? true : false;
+        }
+      });
+      this.chart.forEach(c =>{
+        c.chart.update();
+      })
+    });
+    
   }
 
   updateClass(){

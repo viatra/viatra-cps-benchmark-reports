@@ -2,7 +2,7 @@
     <div class="col col-lg-12"><h3>Legend Tittles</h3></div>
     <div class="col col-lg-12">
         <ul>
-            <li *ngFor="let legend of legends; let i = index" (click)="changedSelection(i)">
+            <li *ngFor="let legend of legends; let i = index" [ngClass]="checked[i]" (click)="changedSelection(i)">
                <div class="foo" [style.background]="legend.Color"></div>{{legend.Title}}
           </li>
         </ul>
