@@ -37,7 +37,7 @@ export class DiagramService {
   private _selectedBuild : Build;
   constructor(private _jsonService: JsonService,private _colorService: ColorService, private _configservice: ConfigService) {
     this._selectionUpdate = new EventEmitter<SelectionUpdateEvent>();
-    this._legendUpdate = new EventEmitter<SelectionUpdateEvent>();
+    this._legendUpdate = new EventEmitter<LegendUpdateEvent>();
     this._initEvent = new EventEmitter<null>();
     this._colorService.getColors(this.configPath).subscribe((colors : Color[]) => {
       this._colors = colors;
