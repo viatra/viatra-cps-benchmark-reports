@@ -20,7 +20,6 @@ import { ResultConfig } from '../../model/resultConfig';
 import { ConfigService } from '../../services/config.service';
 import { Build } from '../../model/build';
 import { ResultsData } from '../../model/resultData';
-import { open } from 'fs';
 import { DefaultScale } from '../../model/defaultScale';
 
 @Injectable()
@@ -136,16 +135,9 @@ export class DiagramService {
       index++;
     });
     let operation = this.resolveOperation(build.ResultData,benchmark.operationID);
-    switch(operation.Metric){
-      case "Time":
-      let scale = this._resultConfig.DefaultScale.find(dScale =>{
-        return dScale.Metric === operation.Metric
-      }).Scale
-      this._diagrams.push(new Diagram(operation.DiagramType,data,this.getOption(`${operation.YLabel} [${TimeScale[scale]}]`,operation.XLabel),operation.Title)) 
-    }
-    
-  });
-   }
+      this._diagrams.push(new Diagram(operation.DiagramType,data,this.getOption(operation.YLabel,operation.XLabel),operation.Title,operation.Metric)) 
+   });
+  }
 
    private getDataSet(tool : Tool, index: number){
       let dataset: Dataset = new Dataset();
@@ -277,7 +269,7 @@ export class LegendUpdateEvent{
   }
 }
 
-export enum TimeScale{
+export enum TimeScale {
   "s" = 0,
   "ms" = -3,
   "µs" = -6,
@@ -285,3 +277,9 @@ export enum TimeScale{
   "ps" = -12,
 }
 
+export enum MemoryScale{
+  "B" = 1,
+  "MB" = 2,
+  "GB" = 3,
+  "TB" = 4
+}

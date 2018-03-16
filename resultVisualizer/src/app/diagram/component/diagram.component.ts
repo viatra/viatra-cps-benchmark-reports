@@ -3,6 +3,7 @@ import { Component, OnInit , ViewChildren, QueryList, Input, OnChanges} from '@a
 import { Diagram } from '../model/diagram';
 import { ChartComponent } from 'angular2-chartjs';
 import { DiagramService, SelectionUpdateEvent, LegendUpdateEvent } from '../service/diagram.service';
+import { DefaultScale } from '../../model/defaultScale';
 
 @Component({
   selector: 'app-diagram',
@@ -12,7 +13,9 @@ import { DiagramService, SelectionUpdateEvent, LegendUpdateEvent } from '../serv
 export class DiagramComponent implements OnInit, OnChanges {
   @ViewChildren(ChartComponent) chart: QueryList<ChartComponent>; 
   @Input() scale: number;
+  @Input() metric: string
   private _prev;
+  private _prevMetric;
   diagrams : Array<Diagram>;
   ngClass: any;
   constructor(private _diagramService: DiagramService) {
@@ -60,27 +63,37 @@ export class DiagramComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(){
-    if(this.chart != null && this.chart != undefined){
-    this.diagrams.forEach(diagram =>{
-      diagram.data.datasets.forEach(dataset=>{
-        let datas = new Array<number>();
-        dataset.data.forEach(data=>{
-         let change = this._prev - this.scale;
-         console.log(`${change} ${this._prev} ${this.scale}`)
-         if(change != 0){
-            datas.push(data * (Math.pow(10,change)));
+    if(this.metric == this._prevMetric){
+      if(this.chart != null && this.chart != undefined){
+        this.diagrams.forEach(diagram =>{
+        if(diagram.metric === this.metric){
+          diagram.data.datasets.forEach(dataset=>{
+            let datas = new Array<number>();
+            dataset.data.forEach(data=>{
+              let change = this._prev - this.scale;
+              if(change != 0){
+                 switch(diagram.metric){
+                   case "Time":
+                    datas.push(data * (Math.pow(10,change)));
+                  break;
+                  case "Memory":
+                    datas.push(data * (Math.pow(Math.pow(2,10),change)))
+                  break;
+                }
+              }
+            });
+            dataset.data = datas;
+          })
+          let label = diagram.options.scales.yAxes[0].scaleLabel.labelString.replace("","");
         }
-      });
-      dataset.data = datas;
-    })
-    let label = diagram.options.scales.yAxes[0].scaleLabel.labelString.replace("","");
-    console.log(label);
-  })
-  this.chart.forEach(c =>{
-     c.chart.update();
-  })
-}
-this._prev = this.scale;
+      })
+      this.chart.forEach(c =>{
+        c.chart.update();
+      })
+    }
   }
+  this._prevMetric = this.metric;
+  this._prev = this.scale;
+}
 
 }
