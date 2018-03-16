@@ -39,10 +39,15 @@ export class ResultsData{
         return this._yLabel;
     }
 
+    get Metric(){
+        return this._metric;
+    }
+
     constructor(private _diagramType: string,
                 private _operationID: String,
                 private _title: string,
                 private _xLabel: string,
-                private _yLabel: string
+                private _yLabel: string,
+                private _metric: string
                 ){}
 }

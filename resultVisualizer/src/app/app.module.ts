@@ -15,6 +15,7 @@ import { ConfigService } from './services/config.service';
 import { DiagramTitleComponent } from './title/diagram-title/diagram-title.component';
 import { LegendTitleComponent } from './title/legend-title/legend-title.component';
 
+import {MatSliderModule} from '@angular/material/slider';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,7 @@ import { LegendTitleComponent } from './title/legend-title/legend-title.componen
     LegendTitleComponent
   ],
   imports: [
-    BrowserModule, ChartModule, HttpModule, FormsModule 
+    BrowserModule, ChartModule, HttpModule, FormsModule, MatSliderModule
   ], 
   providers: [JsonService , ColorService, DiagramService, ConfigService],
   bootstrap: [AppComponent]

@@ -20,6 +20,7 @@ import { ResultConfig } from '../../model/resultConfig';
 import { ConfigService } from '../../services/config.service';
 import { Build } from '../../model/build';
 import { ResultsData } from '../../model/resultData';
+import { Scale } from '../../model/defaultScale';
 
 @Injectable()
 export class DiagramService {
@@ -27,7 +28,7 @@ export class DiagramService {
   private _benchmarks : Array<Benchmark>;
   private _selectionUpdate : EventEmitter<SelectionUpdateEvent>;
   private _legendUpdate : EventEmitter<LegendUpdateEvent>;
-  private _initEvent : EventEmitter<null>;
+  private _initEvent : EventEmitter<String>;
   private _diagrams : Array<Diagram>;
   private _scenarios : Array<Scenario>;
   private _title: Array<Title>;
@@ -35,6 +36,7 @@ export class DiagramService {
   private _resultConfig: ResultConfig;
   public configPath : string = `config/diagram.config.json`;
   private _selectedBuild : Build;
+  private _defaultScale: Array<Scale>;
   constructor(private _jsonService: JsonService,private _colorService: ColorService, private _configservice: ConfigService) {
     this._selectionUpdate = new EventEmitter<SelectionUpdateEvent>();
     this._legendUpdate = new EventEmitter<LegendUpdateEvent>();
@@ -44,10 +46,15 @@ export class DiagramService {
     });
     this._jsonService.getScenarios().subscribe((scenarios : Scenario[]) => {
       this._scenarios = scenarios
-      this._initEvent.emit();
+      this._initEvent.emit("Scenario");
     });
     this._configservice.getResultConfig(this.configPath).subscribe((resultConfig: ResultConfig)=>{
       this._resultConfig = resultConfig;
+      this._defaultScale = this._resultConfig.Scale
+      this._defaultScale.forEach(scale=> {
+        scale.ActualScale = scale.DefaultScale;
+      })
+      this._initEvent.emit("Config");
     });
    }
  
@@ -74,11 +81,14 @@ export class DiagramService {
           this._title[index].NgClass["line-through"] = false;
           this._selectionUpdate.emit(new SelectionUpdateEvent("Added",this._diagrams[index]));
         });
-        console.log(this._title)
         observer.next();
         observer.complete();
       });
     });
+  }
+
+  public getScale(){
+    return this._defaultScale;
   }
 
   public getBuild(buildId: String){
@@ -113,7 +123,7 @@ export class DiagramService {
      let type = added == true ?  "Added" : "Removed";
      this._selectionUpdate.emit(new SelectionUpdateEvent(type,diagram));
    }
-
+ 
    private createDiagramList(build : Build){
     this._diagrams = new Array<Diagram>();
     this._benchmarks.forEach((benchmark: Benchmark)=>{
@@ -128,9 +138,9 @@ export class DiagramService {
       index++;
     });
     let operation = this.resolveOperation(build.ResultData,benchmark.operationID);
-    this._diagrams.push(new Diagram(operation.DiagramType,data,this.getOption(operation.YLabel,operation.XLabel),operation.Title))  
-  });
-   }
+      this._diagrams.push(new Diagram(operation.DiagramType,data,this.getOption(operation.YLabel,operation.XLabel),operation.Title,operation.Metric)) 
+   });
+  }
 
    private getDataSet(tool : Tool, index: number){
       let dataset: Dataset = new Dataset();
@@ -138,9 +148,6 @@ export class DiagramService {
       dataset.data = new Array();
       dataset.fill = false;
       dataset.label = tool.name
-      if(tool.name === "BATCH_VIATRA_QUERY_RETE-TEMPLATE"){
-      console.log(this.getColor(this._colors[index].ToolName) + " " + tool.name )
-      }
       dataset.borderColor = this.getColor(tool.name);
       dataset.backgroundColor = this.getColor(tool.name);
       tool.results.forEach((result: Result) => {
@@ -265,3 +272,17 @@ export class LegendUpdateEvent{
   }
 }
 
+export enum TimeScale {
+  "s" = 0,
+  "ms" = -3,
+  "µs" = -6,
+  "ns" = -9,
+  "ps" = -12,
+}
+
+export enum MemoryScale{
+  "B" = 1,
+  "KB" = 2,
+  "MB" = 3,
+  "GB" = 4
+}
