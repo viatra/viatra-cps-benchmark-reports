@@ -31,7 +31,7 @@
 
   </nav>
 <div class="conatiner">
-    <div class="col col-lg-2" *ngIf="started == true"></div>
+
 <div *ngIf="started == false" class="col col-lg-12">
       <div class="row">
         <div class="col col-lg-4"></div>
@@ -45,15 +45,7 @@
     </div>
     </div>
   </div>
-  <div *ngIf="started == true" class="col col-lg-7">
-<app-diagram [scale]="selectedSlider.ActualScale" [default]="selectedSlider.DefaultScale" [metric]="selectedSlider.Metric"></app-diagram>
-</div>
-<div class="col col-lg-2"></div>
-<div class="col col-lg-2 top left" *ngIf="started == true">
-    <app-diagram-title [titles]="titles"  [checked]="ngClass"></app-diagram-title>
-</div>
-<div class="col col-lg-3 top right" *ngIf="started == true">
-  <app-legend-title></app-legend-title>
-</div>
-
+  <div class="col col-lg-12" *ngIf="started == true">
+    <app-container  [titles]="titles"  [checked]="ngClass"  [scale]="selectedSlider.ActualScale" [default]="selectedSlider.DefaultScale" [metric]="selectedSlider.Metric"></app-container>
+  </div>
 </div>

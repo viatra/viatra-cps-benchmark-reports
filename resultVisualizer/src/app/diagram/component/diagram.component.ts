@@ -25,7 +25,6 @@ export class DiagramComponent implements OnInit, OnChanges {
     this._diagramService.SelectiponUpdateEvent.subscribe((selectionUpdateEvent: SelectionUpdateEvent) =>{
       if(selectionUpdateEvent.EventType == "Added"){
         this.diagrams.push(selectionUpdateEvent.Diagram);
-        console.log(this.scale + " " + this.default);
         this.changeScale(this.default,selectionUpdateEvent.Diagram);
         this.updateClass();
       }else if(selectionUpdateEvent.EventType == "Removed"){
