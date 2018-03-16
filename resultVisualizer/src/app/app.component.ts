@@ -5,7 +5,7 @@ import { Tool } from './model/tool';
 import { Result } from './model/result';
 import { DiagramService, Title, TimeScale, MemoryScale } from './diagram/service/diagram.service';
 import { Scenario } from './model/scenario';
-import { DefaultScale } from './model/defaultScale';
+import { Scale } from './model/defaultScale';
 
 
 
@@ -24,10 +24,10 @@ ngClass : Array<{
 scenarios : Array<Scenario>
 selected : number;
 started: boolean = false;
-selectedSlider: DefaultScale;
-scales: Array<DefaultScale>;
+selectedSlider: Scale;
+scales: Array<Scale>;
   constructor(private _diagramService: DiagramService){
-    this.selectedSlider = new DefaultScale("Time",-9,"ns");
+    this.selectedSlider = new Scale("Time",-9,-9,"ns");
     this.titles = new Array<string>();
     this.ngClass = new  Array<{"line-through": boolean}>();
     this.scenarios = new Array<Scenario>();
@@ -70,16 +70,26 @@ public changeSlider(slider: string){
   this.selectedSlider =  this.scales.find(scale =>{
     return scale.Metric === slider;
    });
+   switch(this.selectedSlider.Metric){
+     case "Time":
+        this.selectedSlider.Name = TimeScale[this.selectedSlider.ActualScale];
+      break;
+
+      case "Memory":
+      this.selectedSlider.Name = MemoryScale[this.selectedSlider.ActualScale];
+      break;
+     }
 }
 
   ngOnInit(){}
-  change(slider : DefaultScale){
+
+  change(slider : Scale){
     switch(slider.Metric){
       case "Time":
-        slider.Name = TimeScale[slider.Scale];
+        slider.Name = TimeScale[slider.ActualScale];
       break;
       case "Memory":
-        slider.Name = MemoryScale[slider.Scale];
+        slider.Name = MemoryScale[slider.ActualScale];
       break;
     }
   

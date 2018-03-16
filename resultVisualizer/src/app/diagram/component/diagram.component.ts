@@ -3,7 +3,7 @@ import { Component, OnInit , ViewChildren, QueryList, Input, OnChanges} from '@a
 import { Diagram } from '../model/diagram';
 import { ChartComponent } from 'angular2-chartjs';
 import { DiagramService, SelectionUpdateEvent, LegendUpdateEvent } from '../service/diagram.service';
-import { DefaultScale } from '../../model/defaultScale';
+import { Scale } from '../../model/defaultScale';
 
 @Component({
   selector: 'app-diagram',
@@ -13,7 +13,8 @@ import { DefaultScale } from '../../model/defaultScale';
 export class DiagramComponent implements OnInit, OnChanges {
   @ViewChildren(ChartComponent) chart: QueryList<ChartComponent>; 
   @Input() scale: number;
-  @Input() metric: string
+  @Input() metric: string;
+  @Input() default: number;
   private _prev;
   private _prevMetric;
   diagrams : Array<Diagram>;
@@ -24,6 +25,8 @@ export class DiagramComponent implements OnInit, OnChanges {
     this._diagramService.SelectiponUpdateEvent.subscribe((selectionUpdateEvent: SelectionUpdateEvent) =>{
       if(selectionUpdateEvent.EventType == "Added"){
         this.diagrams.push(selectionUpdateEvent.Diagram);
+        console.log(this.scale + " " + this.default);
+        this.changeScale(this.default,selectionUpdateEvent.Diagram);
         this.updateClass();
       }else if(selectionUpdateEvent.EventType == "Removed"){
         this.diagrams.splice(this.diagrams.indexOf(selectionUpdateEvent.Diagram),1);
@@ -60,19 +63,29 @@ export class DiagramComponent implements OnInit, OnChanges {
     }
   }
   ngOnInit() {
+
   }
 
   ngOnChanges(){
     if(this.metric == this._prevMetric){
+      
+      this.diagrams.forEach(diagram =>{
+        this.changeScale(this._prev,diagram);
+      });
+    }
+    this._prevMetric = this.metric;
+    this._prev = this.scale;
+    
+  }
+  changeScale(prev: number,diagram: Diagram){
       if(this.chart != null && this.chart != undefined){
-        this.diagrams.forEach(diagram =>{
         if(diagram.metric === this.metric){
           diagram.data.datasets.forEach(dataset=>{
-            let datas = new Array<number>();
-            dataset.data.forEach(data=>{
-              let change = this._prev - this.scale;
-              if(change != 0){
-                 switch(diagram.metric){
+            let change = prev - this.scale;
+            if(change != 0){
+              let datas = new Array<number>();
+              dataset.data.forEach(data=>{
+                switch(diagram.metric){
                    case "Time":
                     datas.push(data * (Math.pow(10,change)));
                   break;
@@ -80,20 +93,16 @@ export class DiagramComponent implements OnInit, OnChanges {
                     datas.push(data * (Math.pow(Math.pow(2,10),change)))
                   break;
                 }
-              }
-            });
+              });
             dataset.data = datas;
-          })
+            }
+          });
           let label = diagram.options.scales.yAxes[0].scaleLabel.labelString.replace("","");
         }
-      })
       this.chart.forEach(c =>{
         c.chart.update();
       })
     }
+  
+}
   }
-  this._prevMetric = this.metric;
-  this._prev = this.scale;
-}
-
-}

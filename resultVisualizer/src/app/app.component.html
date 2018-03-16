@@ -8,14 +8,14 @@
     <div [ngSwitch]="selectedSlider.Metric">
         <ng-container *ngSwitchCase="'Time'">
             <div class="col col-lg-7" *ngIf="started == true">
-                <mat-slider step="3" tickInterval="12" min="-12" max="0" class="slider" (change)="change(selectedSlider)" [(ngModel)]="selectedSlider.Scale"></mat-slider> 
+                <mat-slider step="3" tickInterval="12" min="-12" max="0" class="slider" (change)="change(selectedSlider)" [(ngModel)]="selectedSlider.ActualScale"></mat-slider> 
             </div>
             <div class="col col-lg-1 color-box" *ngIf="started == true"><span>{{selectedSlider.Name}}</span></div>
           </ng-container>
 
           <ng-container *ngSwitchCase="'Memory'">
               <div class="col col-lg-7" *ngIf="started == true">
-                  <mat-slider step="1" tickInterval="4" min="1" max="4" class="slider" (change)="change(selectedSlider)" [(ngModel)]="selectedSlider.Scale"></mat-slider> 
+                  <mat-slider step="1" tickInterval="4" min="1" max="4" class="slider" (change)="change(selectedSlider)" [(ngModel)]="selectedSlider.ActualScale"></mat-slider> 
               </div>
               <div class="col col-lg-1 color-box" *ngIf="started == true"><span>{{selectedSlider.Name}}</span></div>
             </ng-container>
@@ -46,7 +46,7 @@
     </div>
   </div>
   <div *ngIf="started == true" class="col col-lg-7">
-<app-diagram [scale]="selectedSlider.Scale" [metric]="selectedSlider.Metric"></app-diagram>
+<app-diagram [scale]="selectedSlider.ActualScale" [default]="selectedSlider.DefaultScale" [metric]="selectedSlider.Metric"></app-diagram>
 </div>
 <div class="col col-lg-2"></div>
 <div class="col col-lg-2 top left" *ngIf="started == true">

@@ -20,7 +20,7 @@ import { ResultConfig } from '../../model/resultConfig';
 import { ConfigService } from '../../services/config.service';
 import { Build } from '../../model/build';
 import { ResultsData } from '../../model/resultData';
-import { DefaultScale } from '../../model/defaultScale';
+import { Scale } from '../../model/defaultScale';
 
 @Injectable()
 export class DiagramService {
@@ -36,7 +36,7 @@ export class DiagramService {
   private _resultConfig: ResultConfig;
   public configPath : string = `config/diagram.config.json`;
   private _selectedBuild : Build;
-  private _defaultScale: Array<DefaultScale>;
+  private _defaultScale: Array<Scale>;
   constructor(private _jsonService: JsonService,private _colorService: ColorService, private _configservice: ConfigService) {
     this._selectionUpdate = new EventEmitter<SelectionUpdateEvent>();
     this._legendUpdate = new EventEmitter<LegendUpdateEvent>();
@@ -50,7 +50,10 @@ export class DiagramService {
     });
     this._configservice.getResultConfig(this.configPath).subscribe((resultConfig: ResultConfig)=>{
       this._resultConfig = resultConfig;
-      this._defaultScale = this._resultConfig.DefaultScale
+      this._defaultScale = this._resultConfig.Scale
+      this._defaultScale.forEach(scale=> {
+        scale.ActualScale = scale.DefaultScale;
+      })
       this._initEvent.emit("Config");
     });
    }
@@ -279,7 +282,7 @@ export enum TimeScale {
 
 export enum MemoryScale{
   "B" = 1,
-  "MB" = 2,
-  "GB" = 3,
-  "TB" = 4
+  "KB" = 2,
+  "MB" = 3,
+  "GB" = 4
 }

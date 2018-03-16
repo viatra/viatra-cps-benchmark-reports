@@ -20,12 +20,12 @@
         "Color": "rgba(50, 82, 45, 1)"
     }],
     "ResultConfig": {
-        "DefaultScale":[{
+        "Scale":[{
             "Metric" :"Time",
-            "Scale" : -9
+            "DefaultScale" : -9
         },{
             "Metric" :"Memory",
-            "Scale" : 1
+            "DefaultScale" : 1
         }],
         "Build" : [{
             "Name": "example.build",
