@@ -1,4 +1,5 @@
 import { Build } from "./build";
+import { DefaultScale } from "./defaultScale";
 
 export class ResultConfig {
 
@@ -10,5 +11,10 @@ export class ResultConfig {
         return this._build;
     } 
 
-    constructor(private _build: Array<Build>){}
+
+    get DefaultScale(){
+        return this._defaultScale;
+    }
+
+    constructor(private _build: Array<Build>, private _defaultScale : Array<DefaultScale>){}
 }

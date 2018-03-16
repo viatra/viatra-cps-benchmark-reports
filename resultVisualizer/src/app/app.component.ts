@@ -5,6 +5,7 @@ import { Tool } from './model/tool';
 import { Result } from './model/result';
 import { DiagramService, Title } from './diagram/service/diagram.service';
 import { Scenario } from './model/scenario';
+import { DefaultScale } from './model/defaultScale';
 
 
 
@@ -23,13 +24,23 @@ ngClass : Array<{
 scenarios : Array<Scenario>
 selected : number;
 started: boolean = false;
+selectedSlider: DefaultScale;
+scales: Array<DefaultScale>;
   constructor(private _diagramService: DiagramService){
+    this.selectedSlider = new DefaultScale("Time",-9);
     this.titles = new Array<string>();
     this.ngClass = new  Array<{"line-through": boolean}>();
     this.scenarios = new Array<Scenario>();
-    this._diagramService.InitEvent.subscribe(() =>{
-      this.scenarios = this._diagramService.Scenarios;
-      this.selected = 0;
+    this._diagramService.InitEvent.subscribe((event) =>{
+      switch(event){
+        case "Scenario":
+          this.scenarios = this._diagramService.Scenarios;
+          this.selected = 0;
+          break;
+        case "Config":
+          this.scales = this._diagramService.getScale();
+          break;
+      }
     });
   }
 
@@ -53,6 +64,13 @@ started: boolean = false;
   });
 }
 
+public changeSlider(slider: string){
+  this.selectedSlider =  this.scales.find(scale =>{
+    return scale.Metric === slider;
+   });
+}
+
   ngOnInit(){}
+
 
 }
