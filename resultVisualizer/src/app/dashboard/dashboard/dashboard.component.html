@@ -1,0 +1,27 @@
+<div class="col col-lg-12 scenario">
+  <div class="col col-lg-3"></div>
+    <div class="col col-lg-6 bordered">
+        <h1>Scenario</h1>
+        <div *ngIf="state === 'start'">
+          <div class="col col-lg-12">
+            <button class="btn btn-secondary scenario-button" (click)="loadScenario()">Load scenario</button>
+          </div>
+          <div class="col col-lg-12">
+            <button class="btn btn-secondary scenario-button">Create scenario</button>
+        </div>
+      </div>
+      <div *ngIf="state === 'load'">
+          <div class="col col-lg-6">
+              <div class="form-group">
+          <select class="form-control scenario-button" name="sometext" (change)="selectionChange($event.target.value)">
+              <option *ngFor="let scenario of scenarios" >{{scenario.name}}</option>
+            </select>
+              </div>
+          </div>
+          <div class="col col-lg-6">
+            <button class="btn btn-secondary scenario-button" (click)="select()">Select Scenario</button>
+          </div>
+      </div>
+    </div>
+  <div class="col col-lg-3"></div>
+</div>

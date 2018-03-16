@@ -17,6 +17,7 @@ import { LegendTitleComponent } from './title/legend-title/legend-title.componen
 
 import {MatSliderModule} from '@angular/material/slider';
 import { ContainerComponent } from './diagram/container/container.component';
+import { DashboardComponent } from './dashboard/dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { ContainerComponent } from './diagram/container/container.component';
     DropdownDiretive,
     DiagramTitleComponent,
     LegendTitleComponent,
-    ContainerComponent
+    ContainerComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule, ChartModule, HttpModule, FormsModule, MatSliderModule

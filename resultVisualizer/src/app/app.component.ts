@@ -50,12 +50,6 @@ scales: Array<Scale>;
     this.started = false;
   }
 
-  public selectionChange(scenario :string){
-    this.selected = this.scenarios.findIndex((sc: Scenario, index: number,scenarios : Scenario[]) =>{
-      return sc.name == scenario;
-    })
-  }
-
   public select(){
     this.started = true;
     this._diagramService.runScenario(this.scenarios[this.selected]).subscribe(()=>{
