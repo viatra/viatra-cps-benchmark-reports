@@ -17,7 +17,10 @@ export class ContainerComponent implements OnInit {
   public ngClass : Array<{
   "line-through": boolean
 }>
-  constructor(private _diagramService: DiagramService, private _route : ActivatedRoute, private _sliderService : SliderService) {}
+  constructor(private _diagramService: DiagramService, private _route : ActivatedRoute, private _sliderService : SliderService) {
+    this.scale = new Scale("Time",-9,-9,"ns");
+    
+  }
 
   ngOnInit() {
     this.titles = new Array<string>();

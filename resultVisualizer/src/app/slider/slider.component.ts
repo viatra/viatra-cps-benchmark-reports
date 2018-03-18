@@ -15,11 +15,7 @@ export class SliderComponent implements OnInit {
   scales: Array<Scale>;
   constructor(private _sliderService: SliderService) {
     this.selectedSlider = new Scale("Time",-9,-9,"ns");
-  this._sliderService.InitEvent.subscribe((scales) =>{
-        this.scales = scales;
-        this.selectedSlider = this.scales[0];
-        this.change(this.selectedSlider);
-    });
+    this.scales = new Array<Scale>();
 }
 
 
@@ -43,6 +39,13 @@ public changeSlider(slider: string){
   }
 
   ngOnInit() {
+    this._sliderService.getScales().subscribe((scales) =>{
+          this.scales = scales;
+          console.log(this.scales)
+          this.selectedSlider = this.scales[0];
+          this.change(this.selectedSlider);
+    });
+    
   }
 
 }
