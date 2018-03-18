@@ -1,18 +1,16 @@
 <div class="col col-lg-12 scenario">
-  <div class="col col-lg-3"></div>
-    <div class="col col-lg-6 bordered">
-        <div *ngIf="state ===  0">
-          <h1>Scenario</h1>
-          <div class="col col-lg-12">
-            <button class="btn btn-secondary scenario-button"  (click)="loadScenario()">Load scenario</button>
-          </div>
-          <div class="col col-lg-12">
-            <button class="btn btn-secondary scenario-button" (click)="createScenario()">Create scenario</button>
-        </div>
+  <div class="col col-lg-2"></div>
+  <div class="col col-lg-8 bordered">
+    <div *ngIf="state ===  0">
+      <div class="col col-lg-12">
+        <button class="btn btn-secondary scenario-button"  (click)="loadScenario()">Load scenario</button>
       </div>
-
+      <div class="col col-lg-12">
+        <button class="btn btn-secondary scenario-button" (click)="createScenario()">Create scenario</button>
+      </div>
+    </div>
       <app-loading *ngIf="state === 1" (back)="back()"></app-loading>
       <app-creating *ngIf="state === 2" (back)="back()"></app-creating>
     </div>
-  <div class="col col-lg-3"></div>
+  <div class="col col-lg-2"></div>
 </div>
