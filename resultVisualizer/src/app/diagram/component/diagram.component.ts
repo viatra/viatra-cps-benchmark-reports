@@ -24,8 +24,18 @@ export class DiagramComponent implements OnInit, OnChanges {
     this.diagrams = new Array<Diagram>();
     this._diagramService.SelectiponUpdateEvent.subscribe((selectionUpdateEvent: SelectionUpdateEvent) =>{
       if(selectionUpdateEvent.EventType == "Added"){
-        this.diagrams.push(selectionUpdateEvent.Diagram);
-        this.changeScale(this.default,selectionUpdateEvent.Diagram);
+        let diagram = selectionUpdateEvent.Diagram
+        if(diagram.scale === null){
+          console.log("null " + diagram.scale)
+        }if(selectionUpdateEvent.Diagram.scale === undefined){
+          console.log("undefined " + diagram.scale)
+          console.log(diagram)
+          this.changeScale(this.default,diagram);
+        }else{
+          console.log(diagram.scale)
+          this.changeScale(diagram.scale,diagram);
+        }
+        this.diagrams.push(diagram);
         this.updateClass();
       }else if(selectionUpdateEvent.EventType == "Removed"){
         this.diagrams.splice(this.diagrams.indexOf(selectionUpdateEvent.Diagram),1);
@@ -79,8 +89,10 @@ export class DiagramComponent implements OnInit, OnChanges {
   changeScale(prev: number,diagram: Diagram){
       if(this.chart != null && this.chart != undefined){
         if(diagram.metric === this.metric){
+          diagram.scale = this.scale;
           diagram.data.datasets.forEach(dataset=>{
             let change = prev - this.scale;
+            console.log(change);
             if(change != 0){
               let datas = new Array<number>();
               dataset.data.forEach(data=>{
@@ -96,7 +108,6 @@ export class DiagramComponent implements OnInit, OnChanges {
             dataset.data = datas;
             }
           });
-          let label = diagram.options.scales.yAxes[0].scaleLabel.labelString.replace("","");
         }
       this.chart.forEach(c =>{
         c.chart.update();
