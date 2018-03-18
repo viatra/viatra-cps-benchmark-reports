@@ -1,10 +1,10 @@
 <div class="col col-lg-2"></div>
 <div class="col col-lg-7">
-  <app-diagram [scale]="scale" [default]="default" [metric]="metric"></app-diagram>
+  <app-diagram [scale]="scale.ActualScale" [default]="scale.DefaultScale" [metric]="scale.Metric"></app-diagram>
   </div>
   <div class="col col-lg-2"></div>
   <div class="col col-lg-2 top left">
-      <app-diagram-title [titles]="titles"  [checked]="checked"></app-diagram-title>
+      <app-diagram-title [titles]="titles"  [checked]="ngClass"></app-diagram-title>
   </div>
   <div class="col col-lg-3 top right">
     <app-legend-title></app-legend-title>
