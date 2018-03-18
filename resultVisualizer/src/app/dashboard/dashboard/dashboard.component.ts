@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Scenario } from '../../model/scenario';
 import { DiagramService } from '../../diagram/service/diagram.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -10,25 +11,16 @@ import { DiagramService } from '../../diagram/service/diagram.service';
 export class DashboardComponent implements OnInit {
 
   state: string;
-  scenarios : Array<Scenario>
-  selected : number;
-  constructor(private _diagramService : DiagramService) {
+  constructor() {
     this.state = "start";
-    this.scenarios = new Array<Scenario>();
+
   }
 
   ngOnInit() {
   }
-  loadScenario(){
+
+
+  public loadScenario(){
     this.state = "load";
-    this.scenarios = this._diagramService.Scenarios;
-    this.selected = 0;
-  }
-
-
-  public selectionChange(scenario :string){
-    this.selected = this.scenarios.findIndex((sc: Scenario, index: number,scenarios : Scenario[]) =>{
-      return sc.name == scenario;
-    })
   }
 }

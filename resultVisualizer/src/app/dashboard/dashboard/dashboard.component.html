@@ -11,16 +11,7 @@
         </div>
       </div>
       <div *ngIf="state === 'load'">
-          <div class="col col-lg-6">
-              <div class="form-group">
-          <select class="form-control scenario-button" name="sometext" (change)="selectionChange($event.target.value)">
-              <option *ngFor="let scenario of scenarios" >{{scenario.name}}</option>
-            </select>
-              </div>
-          </div>
-          <div class="col col-lg-6">
-            <button class="btn btn-secondary scenario-button" (click)="select()">Select Scenario</button>
-          </div>
+        <app-loading></app-loading>
       </div>
     </div>
   <div class="col col-lg-3"></div>

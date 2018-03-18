@@ -21,8 +21,6 @@ titles : Array<string>
 ngClass : Array<{
   "line-through": boolean
 }>
-scenarios : Array<Scenario>
-selected : number;
 started: boolean = false;
 selectedSlider: Scale;
 scales: Array<Scale>;
@@ -30,13 +28,8 @@ scales: Array<Scale>;
     this.selectedSlider = new Scale("Time",-9,-9,"ns");
     this.titles = new Array<string>();
     this.ngClass = new  Array<{"line-through": boolean}>();
-    this.scenarios = new Array<Scenario>();
     this._diagramService.InitEvent.subscribe((event) =>{
       switch(event){
-        case "Scenario":
-          this.scenarios = this._diagramService.Scenarios;
-          this.selected = 0;
-          break;
         case "Config":
           this.scales = this._diagramService.getScale();
           this.selectedSlider = this.scales[0];
@@ -49,16 +42,6 @@ scales: Array<Scale>;
   public home(){
     this.started = false;
   }
-
-  public select(){
-    this.started = true;
-    this._diagramService.runScenario(this.scenarios[this.selected]).subscribe(()=>{
-      this._diagramService.Title.forEach((title) =>{
-        this.ngClass.push(title.NgClass);
-        this.titles.push(title.Value);
-      });
-  });
-}
 
 public changeSlider(slider: string){
   this.selectedSlider =  this.scales.find(scale =>{

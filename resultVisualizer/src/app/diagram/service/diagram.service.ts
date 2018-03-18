@@ -21,6 +21,7 @@ import { ConfigService } from '../../services/config.service';
 import { Build } from '../../model/build';
 import { ResultsData } from '../../model/resultData';
 import { Scale } from '../../model/defaultScale';
+import { Subscriber } from 'rxjs/Subscriber';
 
 @Injectable()
 export class DiagramService {
@@ -37,6 +38,7 @@ export class DiagramService {
   public configPath : string = `config/diagram.config.json`;
   private _selectedBuild : Build;
   private _defaultScale: Array<Scale>;
+  private _newScenario: Scenario;
   constructor(private _jsonService: JsonService,private _colorService: ColorService, private _configservice: ConfigService) {
     this._selectionUpdate = new EventEmitter<SelectionUpdateEvent>();
     this._legendUpdate = new EventEmitter<LegendUpdateEvent>();
@@ -66,10 +68,46 @@ export class DiagramService {
     return this._selectedBuild;
   }
 
-   public runScenario(scenario: Scenario): Observable<null>{
+  public createNewScenarion(scenario : Scenario){
+    return new Observable((observer) => {
+      this._newScenario = scenario;
+      observer.next();
+      observer.complete();
+    });
+
+  }
+
+   public runScenario(index: number,type: string): Observable<Boolean>{
      return new Observable((observer) => {
-      this._selectionUpdate.emit(new SelectionUpdateEvent("Clear",null));
-      this._selectedBuild = this.getBuild(scenario.build);
+       
+       if((this._scenarios === null || this._scenarios === undefined) && type === "loaded"){
+         this.InitEvent.subscribe(event =>{
+          let scenario;
+           if(event === "Scenario"){
+            let scenario = this.Scenarios[index]; 
+            this.addDiagrams(scenario,observer);
+          }
+        });
+       }
+       else {
+      let scenario;
+      switch(type){
+        case "loaded":
+          scenario = this._scenarios[index];
+        break;
+        case "create":
+          scenario = this._newScenario;
+      }
+      this.addDiagrams(scenario,observer);
+      
+    }
+    });
+  }
+
+  private addDiagrams(scenario: Scenario, observer: Subscriber<Boolean>){
+    this._selectionUpdate.emit(new SelectionUpdateEvent("Clear",null));
+    this.getBuild(scenario.build).subscribe(build =>{
+      this._selectedBuild = build
       this._jsonService.getResults(this._selectedBuild.Name).subscribe((benchmarks : Benchmark[]) =>{
         this._benchmarks = benchmarks;
         this.createDiagramList(this._selectedBuild);
@@ -81,20 +119,37 @@ export class DiagramService {
           this._title[index].NgClass["line-through"] = false;
           this._selectionUpdate.emit(new SelectionUpdateEvent("Added",this._diagrams[index]));
         });
-        observer.next();
+        observer.next(true);
         observer.complete();
       });
     });
+
   }
 
   public getScale(){
     return this._defaultScale;
   }
 
-  public getBuild(buildId: String){
-    return this._resultConfig.Build.find((build: Build)=>{
-      return build.ID === buildId;
-    });
+  public getBuild(buildId: String): Observable<Build>{
+    return new Observable((observer)=>{
+      if(this._resultConfig === null || this._resultConfig === undefined){
+        this.InitEvent.subscribe(event =>{
+          if(event === "Config"){
+            let build = this._resultConfig.Build.find((build: Build)=>{
+              return build.ID === buildId;
+            });
+            observer.next(build);
+          }
+        });
+      } else{
+      let build = this._resultConfig.Build.find((build: Build)=>{
+        return build.ID === buildId;
+      });
+      observer.next(build);
+    }
+    })
+    
+
   }
 
 
