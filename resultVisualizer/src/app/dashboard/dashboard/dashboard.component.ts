@@ -10,9 +10,9 @@ import { Router } from '@angular/router';
 })
 export class DashboardComponent implements OnInit {
 
-  state: string;
+  state: State;
   constructor() {
-    this.state = "start";
+    this.state = State.start;
 
   }
 
@@ -21,6 +21,23 @@ export class DashboardComponent implements OnInit {
 
 
   public loadScenario(){
-    this.state = "load";
+    this.state = State.load;
   }
+
+  public createScenario(){
+    this.state = State.create
+  }
+
+  public back(){
+  this.state = State.start;
+  }
+  
+}
+
+
+
+enum State{
+  start,
+  load,
+  create
 }

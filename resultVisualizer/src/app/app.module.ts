@@ -19,7 +19,10 @@ import { MatSliderModule} from '@angular/material/slider';
 import { ContainerComponent } from './diagram/container/container.component';
 import { DashboardComponent } from './dashboard/dashboard/dashboard.component';
 import { Scenario } from './model/scenario';
+import { SliderService } from './slider/slider.service';
+import { SliderComponent } from './slider/slider.component';
 import { LoadingComponent } from './dashboard/loading/loading.component';
+import { CreatingComponent } from './dashboard/creating/creating.component';
 
 const appRoutes: Routes = [
   { path: '', component: DashboardComponent },
@@ -35,7 +38,9 @@ const appRoutes: Routes = [
     LegendTitleComponent,
     ContainerComponent,
     DashboardComponent,
-    LoadingComponent
+    SliderComponent,
+    LoadingComponent,
+    CreatingComponent
   ],
   imports: [
     BrowserModule,
@@ -45,7 +50,13 @@ const appRoutes: Routes = [
     MatSliderModule,
     RouterModule.forRoot(appRoutes)
   ], 
-  providers: [JsonService , ColorService, DiagramService, ConfigService],
+  providers: [
+    JsonService,
+    ColorService, 
+    DiagramService, 
+    ConfigService, 
+    SliderService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

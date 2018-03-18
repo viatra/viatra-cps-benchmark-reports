@@ -5,30 +5,8 @@
     <div class="nav navbar-nav col col-lg-2">
         <h4><a routerLink="/">Result Visualizer</a></h4>
     </div>
-    <div [ngSwitch]="selectedSlider.Metric">
-        <ng-container *ngSwitchCase="'Time'">
-            <div class="col col-lg-7" *ngIf="started == true">
-                <mat-slider step="3" tickInterval="12" min="-12" max="0" class="slider" (change)="change(selectedSlider)" [(ngModel)]="selectedSlider.ActualScale"></mat-slider> 
-            </div>
-            <div class="col col-lg-1 color-box" *ngIf="started == true"><span>{{selectedSlider.Name}}</span></div>
-          </ng-container>
-
-          <ng-container *ngSwitchCase="'Memory'">
-              <div class="col col-lg-7" *ngIf="started == true">
-                  <mat-slider step="1" tickInterval="4" min="1" max="4" class="slider" (change)="change(selectedSlider)" [(ngModel)]="selectedSlider.ActualScale"></mat-slider> 
-              </div>
-              <div class="col col-lg-1 color-box" *ngIf="started == true"><span>{{selectedSlider.Name}}</span></div>
-            </ng-container>
+    <app-slider  *ngIf="showSlider == true"></app-slider>
   </div>
-    <div class="col col-lg-2 center" *ngIf="started == true">
-      <form class="navbar-form">
-        <select name="" id="" class="form-control" (change)="changeSlider($event.target.value)">
-          <option *ngFor="let scale of scales" >{{scale.Metric}}</option>
-        </select>
-      </form>
-    </div>
-  </div>
-
   </nav>
 <div class="conatiner">
 <router-outlet></router-outlet>
