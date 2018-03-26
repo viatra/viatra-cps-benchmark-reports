@@ -182,6 +182,13 @@ export class DiagramService {
   updateLegend(hide: boolean, toolName: string){
     let type = hide === true ? "hide" : "show" 
     this._legendUpdate.emit(new LegendUpdateEvent(type,toolName));
+    this._diagrams.forEach(diagram=>{
+      diagram.data.datasets.forEach(dataset =>{
+        if(dataset.label === toolName){
+          dataset.hidden = hide
+        }
+      })
+    })
   }
 
 
