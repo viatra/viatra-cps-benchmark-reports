@@ -26,13 +26,9 @@ export class DiagramComponent implements OnInit, OnChanges {
       if(selectionUpdateEvent.EventType == "Added"){
         let diagram = selectionUpdateEvent.Diagram
         if(diagram.scale === null){
-          console.log("null " + diagram.scale)
         }if(selectionUpdateEvent.Diagram.scale === undefined){
-          console.log("undefined " + diagram.scale)
-          console.log(diagram)
           this.changeScale(this.default,diagram);
         }else{
-          console.log(diagram.scale)
           this.changeScale(diagram.scale,diagram);
         }
         this.diagrams.push(diagram);
@@ -93,7 +89,6 @@ export class DiagramComponent implements OnInit, OnChanges {
           diagram.scale = this.scale;
           diagram.data.datasets.forEach(dataset=>{
             let change = prev - this.scale;
-            console.log(change);
             if(change != 0){
               let datas = new Array<number>();
               dataset.data.forEach(data=>{

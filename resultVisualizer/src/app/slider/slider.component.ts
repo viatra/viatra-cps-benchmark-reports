@@ -39,12 +39,9 @@ public changeSlider(slider: string){
   }
 
   ngOnInit() {
-    this._sliderService.getScales().subscribe((scales) =>{
-          this.scales = scales;
+          this.scales = this._sliderService.Scales;
           this.selectedSlider = this.scales[0];
           this.change(this.selectedSlider);
-    });
-    
-  }
+    }
 
 }
