@@ -23,6 +23,7 @@ import { SliderService } from './slider/slider.service';
 import { SliderComponent } from './slider/slider.component';
 import { LoadingComponent } from './dashboard/loading/loading.component';
 import { CreatingComponent } from './dashboard/creating/creating.component';
+import { DragulaModule }  from 'ng2-dragula'
 
 const appRoutes: Routes = [
   { path: '', component: DashboardComponent },
@@ -48,7 +49,8 @@ const appRoutes: Routes = [
     HttpModule, 
     FormsModule, 
     MatSliderModule,
-    RouterModule.forRoot(appRoutes)
+    RouterModule.forRoot(appRoutes),
+    DragulaModule
   ], 
   providers: [
     JsonService,

@@ -46,6 +46,7 @@ export class DiagramComponent implements OnInit, OnChanges {
       }
     });
     this.updateLegend();
+
   }
 
   updateLegend(){

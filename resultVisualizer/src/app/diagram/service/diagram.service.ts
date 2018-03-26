@@ -22,6 +22,7 @@ import { Build } from '../../model/build';
 import { ResultsData } from '../../model/resultData';
 import { Scale } from '../../model/defaultScale';
 import { Subscriber } from 'rxjs/Subscriber';
+import { DiagramLabel } from '../container/container.component';
 
 @Injectable()
 export class DiagramService {
@@ -116,7 +117,8 @@ export class DiagramService {
           let index = this._diagrams.findIndex((diagram: Diagram,index : number,diagrams: Diagram[]) =>{
             return diagram.title === this.resolveOperation(this._selectedBuild.ResultData,operationId).Title
           });
-          this._title[index].NgClass["line-through"] = false;
+          this._title[index].NgClass["glyphicon-eye-open"] = true;
+          this._title[index].NgClass["glyphicon-eye-close"] = false;
           this._selectionUpdate.emit(new SelectionUpdateEvent("Added",this._diagrams[index]));
         });
         observer.next(true);
@@ -128,6 +130,18 @@ export class DiagramService {
 
   public getScale(){
     return this._defaultScale;
+  }
+
+  public sortDiagrams(titles : Array<DiagramLabel>){
+    this._selectionUpdate.emit(new SelectionUpdateEvent("Clear",null));
+    titles.forEach(title =>{
+      let index = this._diagrams.findIndex((item, index) =>{
+        return item.title === title.title && title.ngClass["glyphicon-eye-open"] === true
+      })
+      if(index >=0){
+        this._selectionUpdate.emit(new SelectionUpdateEvent("Added",this._diagrams[index]));
+      }
+    })
   }
 
   public getBuild(buildId: String): Observable<Build>{
@@ -225,7 +239,11 @@ export class DiagramService {
    private setTitle(build: Build){
     this._title = new Array<Title>();
     this._benchmarks.forEach((benchmark : Benchmark)=>{
-     this._title.push(new Title(this.resolveOperation(build.ResultData,benchmark.operationID).Title,{"line-through": true}))
+     this._title.push(new Title(this.resolveOperation(build.ResultData,benchmark.operationID).Title,{
+      "glyphicon" : true,
+      "glyphicon-eye-open": false,
+      "glyphicon-eye-close": true
+    }))
     });
    }
 
@@ -287,9 +305,9 @@ export class DiagramService {
 
 
 export class Title{
-  constructor(private _value: string, private _ngclass: {"line-through": boolean}){}
+  constructor(private _value: string, private _ngclass: Glyphicon){}
 
-  set NgClass(ngClass: {"line-through": boolean}){
+  set NgClass(ngClass: Glyphicon){
     this._ngclass = ngClass;
   }
 
@@ -340,4 +358,11 @@ export enum MemoryScale{
   "KB" = 2,
   "MB" = 3,
   "GB" = 4
+}
+
+
+export interface Glyphicon{
+  "glyphicon" : boolean,
+  "glyphicon-eye-open": boolean,
+  "glyphicon-eye-close": boolean
 }
