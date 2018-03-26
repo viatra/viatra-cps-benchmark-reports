@@ -239,11 +239,12 @@ export class DiagramService {
    private setTitle(build: Build){
     this._title = new Array<Title>();
     this._benchmarks.forEach((benchmark : Benchmark)=>{
-     this._title.push(new Title(this.resolveOperation(build.ResultData,benchmark.operationID).Title,{
+      let tmp = this.resolveOperation(build.ResultData,benchmark.operationID);
+     this._title.push(new Title(tmp.Title,{
       "glyphicon" : true,
       "glyphicon-eye-open": false,
       "glyphicon-eye-close": true
-    }))
+    },tmp.OperationID))
     });
    }
 
@@ -305,10 +306,14 @@ export class DiagramService {
 
 
 export class Title{
-  constructor(private _value: string, private _ngclass: Glyphicon){}
+  constructor(private _value: string, private _ngclass: Glyphicon, private _ID : String){}
 
   set NgClass(ngClass: Glyphicon){
     this._ngclass = ngClass;
+  }
+
+  get ID(){
+    return this._ID;
   }
 
   get NgClass(){

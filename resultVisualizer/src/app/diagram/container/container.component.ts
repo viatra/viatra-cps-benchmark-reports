@@ -26,8 +26,13 @@ export class ContainerComponent implements OnInit {
    this._diagramService.runScenario(scenario,type).subscribe((initialized)=>{
      if(initialized){
       this._diagramService.Title.forEach((title) =>{
-        this.titles.push(new DiagramLabel(title.Value,title.NgClass));
+        this.titles.push(new DiagramLabel(title.Value,title.NgClass,title.ID));
         });
+        this.titles.sort( (a,b) => {
+          if(a.ID < b.ID) return -1;
+          if(a.ID > b.ID) return 1;
+          return 0;
+        })
       }
    });
    this._sliderService.ScaleChangeEvent.subscribe(scale =>{
@@ -40,5 +45,5 @@ export class ContainerComponent implements OnInit {
   }
 
   export class DiagramLabel{
-    constructor(public title :string,public ngClass : Glyphicon){}
+    constructor(public title :string,public ngClass : Glyphicon, public ID: String){}
   }

@@ -34,6 +34,7 @@ export class DiagramTitleComponent implements OnInit {
     this._diagramService.updateSelection(this.titles[index].ngClass["glyphicon-eye-close"],this.titles[index].title);
     this.titles[index].ngClass[ "glyphicon-eye-close"] = !this.titles[index].ngClass[ "glyphicon-eye-close"];
     this.titles[index].ngClass[ "glyphicon-eye-open"] = !this.titles[index].ngClass[ "glyphicon-eye-open"];
+    this._diagramService.sortDiagrams(this.titles);
   }
 
   ngOnInit() {
