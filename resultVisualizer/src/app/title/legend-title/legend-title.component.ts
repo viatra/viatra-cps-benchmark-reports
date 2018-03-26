@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DiagramService, SelectionUpdateEvent } from '../../diagram/service/diagram.service';
+import { DiagramService, SelectionUpdateEvent, Glyphicon } from '../../diagram/service/diagram.service';
 import { Legend } from '../../model/legend';
 import { Data } from '../../diagram/model/data';
 import { tick } from '@angular/core/testing';
@@ -11,11 +11,11 @@ import { tick } from '@angular/core/testing';
 })
 export class LegendTitleComponent implements OnInit {
   legends : Array<Legend>
-  checked: Array<{"line-through": boolean}>
+  checked: Array<Glyphicon>
 
   constructor(private _diagramService: DiagramService) {
     this.legends = new Array<Legend>();
-    this.checked = new Array<{"line-through": boolean}>();
+    this.checked = new Array<Glyphicon>();
 
     this._diagramService.SelectiponUpdateEvent.subscribe((selectionUpdateEvent: SelectionUpdateEvent) =>{
       if(selectionUpdateEvent.EventType == "Added"){
@@ -25,7 +25,11 @@ export class LegendTitleComponent implements OnInit {
           });
           if(title === null || title === undefined){
             this.legends.push(new Legend(dataset.label,dataset.backgroundColor,1));
-            this.checked.push({"line-through": false});
+            this.checked.push({
+              "glyphicon" : true,
+              "glyphicon-eye-open": true,
+              "glyphicon-eye-close": false,
+            });
           } else{
             title.Count++;
           }
@@ -50,8 +54,9 @@ export class LegendTitleComponent implements OnInit {
    }
 
    changedSelection(index: number){
-    this.checked[index]["line-through"] = !this.checked[index]["line-through"];
-    this._diagramService.updateLegend(this.checked[index]["line-through"],this.legends[index].Title);
+    this.checked[index][ "glyphicon-eye-close"] = !this.checked[index][ "glyphicon-eye-close"];
+    this.checked[index][ "glyphicon-eye-open"] = !this.checked[index][ "glyphicon-eye-open"];
+    this._diagramService.updateLegend(this.checked[index][ "glyphicon-eye-close"],this.legends[index].Title);
 
   }
 
