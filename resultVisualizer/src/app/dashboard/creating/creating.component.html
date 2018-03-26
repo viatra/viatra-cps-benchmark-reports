@@ -1,20 +1,29 @@
-<div class="col col-lg-12 hr">
-    <div class="col col-lg-1 scenario-back" (click)="clickedBack()"><span class="glyphicon glyphicon-arrow-left"></span></div>
-    <div class="col col-lg-6"></div>
-    <div class="col col-lg-2 scenario-tab scenario-tab-active"><span>Basic</span></div>
-    <div class="col col-lg-2  scenario-tab"><span>Complex</span></div>
-</div>
+<div class="col col-lg-12">
+    <h1>Create scenario </h1><h3>Select builds</h3>
+    <hr />
+  </div>
 <div class="col col-lg-12 center">
     <div class="col col-lg-6 build">
         <h4>Builds</h4>
-        <ul class="build-list">
-                <li class="build-list-element" *ngFor="let build of builds; let i = index"><input type="checkbox"  (change)="change($event,i)" /> {{build}}</li>
-        </ul>
+        <div class="col col-lg-12 build-list" [dragula]='"build"' [dragulaModel]='builds'>
+            <div class="build-list-element" *ngFor='let build of builds'  [innerHtml]='build'>
+            </div>
+  </div>
     </div>
-    <div class="col col-lg-6">
-            <h4>Diagrams</h4>
-            <ul class="build-list">
-                    <li class="build-list-element" *ngFor="let diagram of diagrams; let i = index"><input type="checkbox" /> {{diagram}}</li>
-            </ul>
+    <div class="col col-lg-6 selected">
+            <h4>Select</h4>
+        <div class="col col-lg-12 build-list" [dragula]='"build"' [dragulaModel]='selects'>
+            <div class="build-list-element" *ngFor='let selected of selects'  [innerHtml]='selected'>
+            </div>
+  </div>
     </div>
+</div>
+
+<div class="col col-lg-1">
+    <span class="glyphicon glyphicon-arrow-left"  (click)="clickedBack()"></span>
+</div>
+<div class="col col-lg-10">
+</div>
+<div class="col col-lg-1">
+    <span [ngClass]="next"  (click)="select()"></span>
 </div>
