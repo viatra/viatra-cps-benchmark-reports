@@ -39,9 +39,13 @@ public changeSlider(slider: string){
   }
 
   ngOnInit() {
-          this.scales = this._sliderService.Scales;
-          this.selectedSlider = this.scales[0];
-          this.change(this.selectedSlider);
+    this.scales = this._sliderService.Scales;
+    if( this.scales === null ||  this.scales === undefined){
+       this._sliderService.InitEvent.subscribe(()=>{
+       this.scales = this._sliderService.Scales;
+        this.selectedSlider = this.scales[0];
+        this.change(this.selectedSlider);
+      })
     }
-
+  }
 }
