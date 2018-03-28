@@ -37,7 +37,6 @@ export class DiagramService {
   private _colors : Array<Color>;
   private _resultConfig: ResultConfig;
   public configPath : string = `config/diagram.config.json`;
-  private _selectedBuild : Build;
   private _defaultScale: Array<Scale>;
   private _newScenario: Scenario;
   constructor(private _jsonService: JsonService,private _colorService: ColorService, private _configservice: ConfigService) {
@@ -63,10 +62,6 @@ export class DiagramService {
  
   get Scenarios(){
     return this._scenarios;
-  }
-
-  get Build(){
-    return this._selectedBuild;
   }
 
   public createNewScenarion(scenario : Scenario){
@@ -108,14 +103,13 @@ export class DiagramService {
   private addDiagrams(scenario: Scenario, observer: Subscriber<Boolean>){
     this._selectionUpdate.emit(new SelectionUpdateEvent("Clear",null));
     this.getBuild(scenario.build).subscribe(build =>{
-      this._selectedBuild = build
-      this._jsonService.getResults(this._selectedBuild.Name).subscribe((benchmarks : Benchmark[]) =>{
+      this._jsonService.getResults(build.Name).subscribe((benchmarks : Benchmark[]) =>{
         this._benchmarks = benchmarks;
-        this.createDiagramList(this._selectedBuild);
-        this.setTitle(this._selectedBuild);
+        this.createDiagramList(build);
+        this.setTitle(build);
         scenario.diagrams.forEach((operationId: string)=> {
           let index = this._diagrams.findIndex((diagram: Diagram,index : number,diagrams: Diagram[]) =>{
-            return diagram.title === this.resolveOperation(this._selectedBuild.ResultData,operationId).Title
+            return diagram.title === `${this.resolveOperation(build.ResultData,operationId).Title} (${build.ID})`
           });
           this._title[index].NgClass["glyphicon-eye-open"] = true;
           this._title[index].NgClass["glyphicon-eye-close"] = false;
@@ -214,7 +208,7 @@ export class DiagramService {
       index++;
     });
     let operation = this.resolveOperation(build.ResultData,benchmark.operationID);
-      this._diagrams.push(new Diagram(operation.DiagramType,data,this.getOption(operation.YLabel,operation.XLabel),operation.Title,operation.Metric)) 
+      this._diagrams.push(new Diagram(operation.DiagramType,data,this.getOption(operation.YLabel,operation.XLabel),`${operation.Title} (${build.ID})`,operation.Metric)) 
    });
   }
 
@@ -247,7 +241,7 @@ export class DiagramService {
     this._title = new Array<Title>();
     this._benchmarks.forEach((benchmark : Benchmark)=>{
       let tmp = this.resolveOperation(build.ResultData,benchmark.operationID);
-     this._title.push(new Title(tmp.Title,{
+     this._title.push(new Title(`${tmp.Title} (${build.ID})`,{
       "glyphicon" : true,
       "glyphicon-eye-open": false,
       "glyphicon-eye-close": true

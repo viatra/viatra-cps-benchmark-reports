@@ -8,16 +8,12 @@ import { Scenario } from './model/scenario';
 import { Scale } from './model/defaultScale';
 import { Router, UrlSegment, NavigationEnd } from '@angular/router';
 
-
-
-
-
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'] 
 })
+
 
 export class AppComponent implements OnInit{
   showSlider: boolean = false;

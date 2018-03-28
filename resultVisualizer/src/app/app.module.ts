@@ -27,7 +27,9 @@ import { DragulaModule }  from 'ng2-dragula'
 
 const appRoutes: Routes = [
   { path: '', component: DashboardComponent },
-  { path: 'diagrams', component: ContainerComponent}
+  { path: 'diagrams', component: ContainerComponent},
+  { path: 'loadScenario', component: LoadingComponent},
+  {path: 'createScenario', component: CreatingComponent}
 ]
 
 @NgModule({

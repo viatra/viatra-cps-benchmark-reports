@@ -3,6 +3,8 @@ import { JsonService } from '../../services/json.service';
 import { build$ } from 'protractor/built/element';
 import { ResultsData } from '../../model/resultData';
 import { DragulaService } from 'ng2-dragula';
+import { Result } from '../../model/result';
+import { Benchmark } from '../../model/benchmark';
 
 
 @Component({
@@ -20,11 +22,23 @@ export class CreatingComponent implements OnInit {
   disabled : boolean;
   builds : Array<string>
   selects: Array<string>;
+  step : number;
+
+  results : Array<String>;
+  shows : Array<String>;
+  hides: Array<String>;
+
   constructor(private _jsonService: JsonService, private _dragulaService: DragulaService) { 
     this.back = new EventEmitter<null>();
     this.builds = new Array<string>();
     this.selects = new Array<string>();
+
+    this.results =  new Array<string>();
+    this.shows =  new Array<string>();
+    this.hides =  new Array<string>();
+
     this.disabled = true;
+    this.step = 1;
     this._dragulaService.dropModel.subscribe((value) => {
       this.onDropModel(value.slice(1));
     });
@@ -35,11 +49,29 @@ export class CreatingComponent implements OnInit {
 
   public clickedBack(){
     this.back.emit();
+    this.step--;
   }
 
 
   public select(){
-    console.log(this.disabled);
+    if(!this.disabled){
+      switch(this.step){
+        case 1: 
+        this.results = new Array<String>();
+        this.shows =  new Array<string>();
+        this.hides =  new Array<string>();
+        this.selects.forEach(select=>{
+          this._jsonService.getResults(select).subscribe((res: Array<Benchmark>)=>{
+            res.forEach(element => {
+              this.results.push(`${select}_${element.operationID}`);
+            });
+          })
+        })
+
+        break;
+      }
+      this.step++;
+    }
   }
 
    private onDropModel(args) {

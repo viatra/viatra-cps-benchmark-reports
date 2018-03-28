@@ -1,8 +1,12 @@
+<div class="col col-lg-12 scenario">
+    <div class="col col-lg-2"></div>
+  <div class="col col-lg-8 bordered">
 <div class="col col-lg-12">
     <h1>Create scenario </h1><h3>Select builds</h3>
     <hr />
   </div>
-<div class="col col-lg-12 center">
+<div class="col col-lg-12 center" [ngSwitch]="step">
+<ng-container *ngSwitchCase="1">
     <div class="col col-lg-6 build">
         <h4>Builds</h4>
         <div class="col col-lg-12 build-list" [dragula]='"build"' [dragulaModel]='builds'>
@@ -17,13 +21,44 @@
             </div>
   </div>
     </div>
+</ng-container>
+<ng-container *ngSwitchCase="2">
+        <div class="col col-lg-6 build">
+            <h4>Results</h4>
+            <div class="col col-lg-12 build-list" [dragula]='"result"' [dragulaModel]='results'>
+                <div class="build-list-element" *ngFor='let result of results'  [innerHtml]='result'>
+                </div>
+      </div>
+        </div>
+        <div class="col col-lg-6 selected">
+                <div class="col col-lg-12">
+                <h4>Show</h4>
+            <div class="col col-lg-12 build-list" [dragula]='"result"' [dragulaModel]='shows'>
+                <div class="build-list-element" *ngFor='let show of shows'  [innerHtml]='show'>
+                </div>
+            </div>
+                </div>
+            <div class="col col-lg-12 hideComponent">
+                <h4>Hide</h4>
+                <div class="col col-lg-12 build-list" [dragula]='"result"' [dragulaModel]='hides'>
+                    <div class="build-list-element" *ngFor='let hide of hides'  [innerHtml]='hide'>
+                    </div>
+                </div>
+                </div>
+        </div>
+    </ng-container>
 </div>
 
 <div class="col col-lg-1">
-    <span class="glyphicon glyphicon-arrow-left"  (click)="clickedBack()"></span>
+        <span class="glyphicon glyphicon-arrow-left"  routerLink="/" *ngIf="step === 1; else elseBlock"></span>
+        <ng-template #elseBlock><span class="glyphicon glyphicon-arrow-left" (click)="clickedBack()"></span></ng-template>
+   
 </div>
 <div class="col col-lg-10">
 </div>
 <div class="col col-lg-1">
     <span [ngClass]="next"  (click)="select()"></span>
+</div>
+
+  </div>
 </div>
