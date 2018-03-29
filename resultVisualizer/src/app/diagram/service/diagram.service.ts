@@ -23,6 +23,7 @@ import { ResultsData } from '../../model/resultData';
 import { Scale } from '../../model/defaultScale';
 import { Subscriber } from 'rxjs/Subscriber';
 import { DiagramLabel } from '../container/container.component';
+import { scan } from 'rxjs/operators/scan';
 
 @Injectable()
 export class DiagramService {
@@ -49,9 +50,11 @@ export class DiagramService {
       this._colors = colors;
     });
     this._jsonService.getScenarios().subscribe((scenarios : any[]) => {
+      let sc = new Array<Scenario>();
       scenarios.forEach((element=>{
-        this._scenarios.push(element.scenario)
+        sc.push(element.scenario)
       }))
+      this._scenarios = sc;
       this._initEvent.emit("Scenario");
     });
     this._configservice.getResultConfig(this.configPath).subscribe((resultConfig: ResultConfig)=>{
@@ -81,7 +84,7 @@ export class DiagramService {
      return new Observable((observer) => {
       this._title = new Array<Title>();
       this._diagrams = new Array<Diagram>();
-       if((this._scenarios === null || this._scenarios === undefined) && type === "loaded"){
+       if((this._scenarios === null || this._scenarios === undefined || this._scenarios.length == 0) && type === "loaded"){
          this.InitEvent.subscribe(event =>{
           let scenario;
            if(event === "Scenario"){
