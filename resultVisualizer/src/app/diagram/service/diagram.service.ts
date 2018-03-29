@@ -40,14 +40,18 @@ export class DiagramService {
   private _defaultScale: Array<Scale>;
   private _newScenario: Scenario;
   constructor(private _jsonService: JsonService,private _colorService: ColorService, private _configservice: ConfigService) {
+    this._title = new Array<Title>();
     this._selectionUpdate = new EventEmitter<SelectionUpdateEvent>();
     this._legendUpdate = new EventEmitter<LegendUpdateEvent>();
     this._initEvent = new EventEmitter<null>();
+    this._scenarios = new Array<Scenario>();
     this._colorService.getColors(this.configPath).subscribe((colors : Color[]) => {
       this._colors = colors;
     });
-    this._jsonService.getScenarios().subscribe((scenarios : Scenario[]) => {
-      this._scenarios = scenarios
+    this._jsonService.getScenarios().subscribe((scenarios : any[]) => {
+      scenarios.forEach((element=>{
+        this._scenarios.push(element.scenario)
+      }))
       this._initEvent.emit("Scenario");
     });
     this._configservice.getResultConfig(this.configPath).subscribe((resultConfig: ResultConfig)=>{
@@ -75,7 +79,8 @@ export class DiagramService {
 
    public runScenario(index: number,type: string): Observable<Boolean>{
      return new Observable((observer) => {
-       
+      this._title = new Array<Title>();
+      this._diagrams = new Array<Diagram>();
        if((this._scenarios === null || this._scenarios === undefined) && type === "loaded"){
          this.InitEvent.subscribe(event =>{
           let scenario;
@@ -95,31 +100,24 @@ export class DiagramService {
           scenario = this._newScenario;
       }
       this.addDiagrams(scenario,observer);
-      
     }
     });
   }
 
   private addDiagrams(scenario: Scenario, observer: Subscriber<Boolean>){
     this._selectionUpdate.emit(new SelectionUpdateEvent("Clear",null));
-    this.getBuild(scenario.build).subscribe(build =>{
+    scenario.diagrams.forEach((diag,index) =>{
+    this.getBuild(diag.build).subscribe(build =>{
       this._jsonService.getResults(build.Name).subscribe((benchmarks : Benchmark[]) =>{
         this._benchmarks = benchmarks;
-        this.createDiagramList(build);
-        this.setTitle(build);
-        scenario.diagrams.forEach((operationId: string)=> {
-          let index = this._diagrams.findIndex((diagram: Diagram,index : number,diagrams: Diagram[]) =>{
-            return diagram.title === `${this.resolveOperation(build.ResultData,operationId).Title} (${build.ID})`
-          });
-          this._title[index].NgClass["glyphicon-eye-open"] = true;
-          this._title[index].NgClass["glyphicon-eye-close"] = false;
-          this._selectionUpdate.emit(new SelectionUpdateEvent("Added",this._diagrams[index]));
-        });
-        observer.next(true);
-        observer.complete();
+        this.createDiagramList(build,diag.result.opened,diag.result.closed);
+        if(index === scenario.diagrams.length - 1){
+          observer.next(true);
+          observer.complete();
+        }
       });
     });
-
+  });
   }
 
   public getScale(){
@@ -194,9 +192,10 @@ export class DiagramService {
      this._selectionUpdate.emit(new SelectionUpdateEvent(type,diagram));
    }
  
-   private createDiagramList(build : Build){
-    this._diagrams = new Array<Diagram>();
-    this._benchmarks.forEach((benchmark: Benchmark)=>{
+   private createDiagramList(build : Build, opened: Array<String>, closed: Array<String>){
+    this._benchmarks.forEach((benchmark: Benchmark) => {
+    let add = this.OpenedDiagram(build,opened,benchmark)
+    if(add || this.ClosedDiagram(build,closed,benchmark)){
     var data = new Data();
     let tools: Tool[] = benchmark.tool;
     let maxSizeTool : Tool = this.getMaxSizeTool(benchmark);
@@ -208,8 +207,36 @@ export class DiagramService {
       index++;
     });
     let operation = this.resolveOperation(build.ResultData,benchmark.operationID);
-      this._diagrams.push(new Diagram(operation.DiagramType,data,this.getOption(operation.YLabel,operation.XLabel),`${operation.Title} (${build.ID})`,operation.Metric)) 
+    let newDiagram = new Diagram(operation.DiagramType,data,this.getOption(operation.YLabel,operation.XLabel),`${operation.Title} (${build.ID})`,operation.Metric);
+      this._diagrams.push(newDiagram) 
+      if(add){
+        this._selectionUpdate.emit(new SelectionUpdateEvent("Added",newDiagram));
+      }
+    }
    });
+  }
+
+  private OpenedDiagram(build : Build, opened: Array<String>, benchmark: Benchmark): boolean{
+    let contains = opened.find(id =>{
+      return id === benchmark.operationID
+    });
+    if(contains){
+      this.addTitle(build,benchmark,true);
+      return true;
+    }
+    return false;
+  }
+
+  private ClosedDiagram(build : Build, closed: Array<String>, benchmark: Benchmark): boolean{
+    let contains = closed.find(id =>{
+      return id === benchmark.operationID
+    });
+    if(contains){
+      
+      this.addTitle(build,benchmark,false);
+      return true;
+    }
+    return false;
   }
 
    private getDataSet(tool : Tool, index: number){
@@ -237,16 +264,19 @@ export class DiagramService {
     }).Color;
    }
 
-   private setTitle(build: Build){
-    this._title = new Array<Title>();
-    this._benchmarks.forEach((benchmark : Benchmark)=>{
+   private addTitle(build: Build,benchmark : Benchmark,opened: boolean){
       let tmp = this.resolveOperation(build.ResultData,benchmark.operationID);
-     this._title.push(new Title(`${tmp.Title} (${build.ID})`,{
-      "glyphicon" : true,
-      "glyphicon-eye-open": false,
-      "glyphicon-eye-close": true
-    },tmp.OperationID))
-    });
+      let ngClass = opened ? {
+        "glyphicon" : true,
+        "glyphicon-eye-open": true,
+        "glyphicon-eye-close": false
+      } : 
+      {
+        "glyphicon" : true,
+        "glyphicon-eye-open": false,
+        "glyphicon-eye-close": true
+      }
+     this._title.push(new Title(`${tmp.Title} (${build.ID})`,ngClass,tmp.OperationID))
    }
 
    private resolveOperation(resultDatas: Array<ResultsData>,operationID: String){

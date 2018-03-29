@@ -1,12 +1,42 @@
-[{"build": "1",
-    "diagrams" : ["1","2","3","4"],
+[{
+"scenario" : {
+    "diagrams":[{  
+        "build": "1",
+        "result" :{
+            "opened" : ["1","2","3","4"],
+            "closed": ["6"]
+        } 
+    }],
     "name" : "Init time"
-},{
-"build": "1",
-    "diagrams" : ["5","6","7"],
+    }
+},
+{
+"scenario" : {
+    "diagrams":[{
+        "build": "1",
+        "result" :{
+            "opened" : ["5","6","7"],
+            "closed": []
+        }    
+    },{
+        "build": "2",
+        "result" :{
+            "opened" : ["5","6","7"],
+            "closed": []
+        }    
+    }],
     "name" : "M2M memory"
-},{
-    "build": "2",
-    "diagrams" : ["8","9","10"],
+    }
+},
+{
+"scenario" : {
+    "diagrams":[{
+        "build": "2",
+        "result" :{
+            "opened" : ["8","9","10"],
+            "closed": []
+        }
+    }],
     "name" : "Init memory"
+    }
 }]

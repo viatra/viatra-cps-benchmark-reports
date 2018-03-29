@@ -1,5 +1,12 @@
 export class Scenario {
-    build: string;
-    diagrams: Array<String>;
-    name: string;
+    constructor(public diagrams : Array<Diagram>, public name : String){}
+}
+
+
+class Diagram {
+    constructor(public build: String, public result : Result){}
+}
+
+class Result{
+    constructor(public opened: Array<String>, public closed: Array<String>){}
 }

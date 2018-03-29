@@ -18,6 +18,7 @@ export class LoadingComponent implements OnInit {
       if(event == "Scenario"){
         this.scenarios = this._diagramService.Scenarios;
         this.selected = 0;
+        console.log(this.scenarios);
       }
     })
     this.scenarios = this._diagramService.Scenarios;
@@ -33,6 +34,7 @@ export class LoadingComponent implements OnInit {
 
 
   public selectionChange(scenario :string){
+    console.log(scenario);
     this.selected = this.scenarios.findIndex((sc: Scenario, index: number,scenarios : Scenario[]) =>{
       return sc.name == scenario;
     })
