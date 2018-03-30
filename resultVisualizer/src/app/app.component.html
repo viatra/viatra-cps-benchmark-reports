@@ -6,15 +6,16 @@
         <h4><a routerLink="/"  class="home-link"><span class="glyphicon glyphicon-home home"></span></a></h4>
     </div>
     <app-slider  *ngIf="showSlider == true"></app-slider>
+      <ul class="nav navbar-nav navbar-right menu">
+        <li  class="dropdown" appDropDown><a  class="dropdown-toggle" role="button"><span class="glyphicon glyphicon-list"></span> </a>
+        <ul class="dropdown-menu">
+          <li class="menu-item" (click)="select('diagramTitle')"><span [ngClass]="title.diagramTitle"></span> Diagram title</li>
+          <li class="menu-item" (click)="select('legendTitle')"><span [ngClass]="title.legendTitle"></span> Legend title</li>
+        </ul></li>
+      </ul>
   </div>
+
   </nav>
 <div class="conatiner">
 <router-outlet></router-outlet>
-<!--<div *ngIf="started == false" class="col col-lg-12">
-<app-dashboard></app-dashboard>
-  </div>
-  <div class="col col-lg-12" *ngIf="started == true">
-    <app-container  [titles]="titles"  [checked]="ngClass"  [scale]="selectedSlider.ActualScale" [default]="selectedSlider.DefaultScale" [metric]="selectedSlider.Metric"></app-container>
-  </div>
--->
 </div>

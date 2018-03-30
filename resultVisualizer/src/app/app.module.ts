@@ -23,7 +23,9 @@ import { SliderService } from './slider/slider.service';
 import { SliderComponent } from './slider/slider.component';
 import { LoadingComponent } from './dashboard/loading/loading.component';
 import { CreatingComponent } from './dashboard/creating/creating.component';
-import { DragulaModule }  from 'ng2-dragula'
+import { DragulaModule }  from 'ng2-dragula';
+import { DropDownDirective } from './directive/drop-down.directive'
+import { ComponentService } from './component.service';
 
 const appRoutes: Routes = [
   { path: '', component: DashboardComponent },
@@ -43,7 +45,8 @@ const appRoutes: Routes = [
     DashboardComponent,
     SliderComponent,
     LoadingComponent,
-    CreatingComponent
+    CreatingComponent,
+    DropDownDirective
   ],
   imports: [
     BrowserModule,
@@ -59,7 +62,8 @@ const appRoutes: Routes = [
     ColorService, 
     DiagramService, 
     ConfigService, 
-    SliderService
+    SliderService,
+    ComponentService
   ],
   bootstrap: [AppComponent]
 })

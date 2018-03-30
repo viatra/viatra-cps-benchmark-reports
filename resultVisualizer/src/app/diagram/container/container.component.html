@@ -1,11 +1,11 @@
-<div class="col col-lg-2"></div>
-<div class="col col-lg-7">
+<div class="col col-lg-2"  [hidden]="hidden.diagramTitle"></div>
+<div [ngClass]="center">
   <app-diagram [scale]="scale.ActualScale" [default]="scale.DefaultScale" [metric]="scale.Metric"></app-diagram>
   </div>
-  <div class="col col-lg-2"></div>
-  <div class="col col-lg-2 top left">
-      <app-diagram-title [titles]="titles"></app-diagram-title>
+
+  <div class="col col-lg-2 top left" [hidden]="hidden.diagramTitle">
+      <app-diagram-title [titles]="titles" (changeEvent)="change('diagram-title',$event)"></app-diagram-title>
   </div>
-  <div class="col col-lg-3 top right">
+  <div class="col col-lg-3 top right"  [hidden]="hidden.legendTitle">
     <app-legend-title></app-legend-title>
   </div>

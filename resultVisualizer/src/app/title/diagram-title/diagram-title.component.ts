@@ -1,4 +1,4 @@
-import { Component, OnInit, Input,  } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Title, DiagramService, Glyphicon } from '../../diagram/service/diagram.service';
 import { Observable } from 'rxjs/Observable';
 import { DragulaService } from 'ng2-dragula';
@@ -11,7 +11,13 @@ import { DiagramLabel } from '../../diagram/container/container.component';
 })
 export class DiagramTitleComponent implements OnInit {
   @Input() titles: Array<DiagramLabel>
+  button : any;
   constructor(private _diagramService: DiagramService, private _dragulaService: DragulaService) {
+   this.button = {
+      "glyphicon" : true,
+      "glyphicon-chevron-left" : true,
+      "glyphicon-chevron-right" : false
+    }
     this._dragulaService.dropModel.subscribe((value) => {
       this.onDropModel(value.slice(1));
     });
@@ -35,6 +41,11 @@ export class DiagramTitleComponent implements OnInit {
     this.titles[index].ngClass[ "glyphicon-eye-close"] = !this.titles[index].ngClass[ "glyphicon-eye-close"];
     this.titles[index].ngClass[ "glyphicon-eye-open"] = !this.titles[index].ngClass[ "glyphicon-eye-open"];
     this._diagramService.sortDiagrams(this.titles);
+  }
+
+  change(){
+    this.button["glyphicon-chevron-left"] = !this.button["glyphicon-chevron-left"];
+    this.button["glyphicon-chevron-right"] = !this.button["glyphicon-chevron-right"];
   }
 
   ngOnInit() {

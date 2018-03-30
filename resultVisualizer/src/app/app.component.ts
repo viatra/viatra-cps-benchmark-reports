@@ -3,10 +3,11 @@ import { JsonService } from './services/json.service';
 import { Benchmark } from './model/benchmark';
 import { Tool } from './model/tool';
 import { Result } from './model/result';
-import { DiagramService, Title, TimeScale, MemoryScale } from './diagram/service/diagram.service';
+import { DiagramService, Title, TimeScale, MemoryScale, Glyphicon } from './diagram/service/diagram.service';
 import { Scenario } from './model/scenario';
 import { Scale } from './model/defaultScale';
 import { Router, UrlSegment, NavigationEnd } from '@angular/router';
+import { ComponentService } from './component.service';
 
 @Component({
   selector: 'app-root',
@@ -16,8 +17,26 @@ import { Router, UrlSegment, NavigationEnd } from '@angular/router';
 
 
 export class AppComponent implements OnInit{
+  title : {
+    diagramTitle : Glyphicon,
+    legendTitle: Glyphicon
+  }
+
+  
   showSlider: boolean = false;
-  constructor(private _router: Router){
+  constructor(private _router: Router, private _componentService: ComponentService){
+    this.title = {
+      "diagramTitle" : {
+      "glyphicon" : true,
+      "glyphicon-eye-open": true,
+      "glyphicon-eye-close": false
+    },
+      "legendTitle":  {
+      "glyphicon" : true,
+      "glyphicon-eye-open": true,
+      "glyphicon-eye-close": false
+    }
+  }
     this._router.events.subscribe(event=>{
       if(event instanceof  NavigationEnd){
         if((event as NavigationEnd).url.includes("diagrams")){
@@ -28,6 +47,13 @@ export class AppComponent implements OnInit{
       }
     });
   }
+
+
+  select(component: string){
+        this.title[component]["glyphicon-eye-open"] = !this.title[component]["glyphicon-eye-open"];
+        this.title[component]["glyphicon-eye-close"] = ! this.title[component]["glyphicon-eye-close"];
+      this._componentService.updateComponent(component,this.title[component]["glyphicon-eye-close"]);
+  } 
   ngOnInit(){}
   
 }

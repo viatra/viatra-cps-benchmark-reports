@@ -5,6 +5,7 @@ import { Scenario } from '../../model/scenario';
 import { Scale } from '../../model/defaultScale';
 import { SliderService } from '../../slider/slider.service';
 import { Diagram } from '../model/diagram';
+import { ComponentService, ComponentUpdateEvent } from '../../component.service';
 
 @Component({
   selector: 'app-container',
@@ -12,11 +13,51 @@ import { Diagram } from '../model/diagram';
   styleUrls: ['./container.component.css']
 })
 export class ContainerComponent implements OnInit {
+ public scale: Scale
+ center: any;
+ hidden ={
+  diagramTitle: false,
+  legendTitle: false
+ }
+ private col7 = {
+  "col": true,
+  "col-lg-7": true
+ }
+ private col9 = {
+  "col": true,
+  "col-lg-9": true
+ }
 
-  public scale: Scale
+ private col10 = {
+  "col": true,
+  "col-lg-10": true
+ }
+ private col12 = {
+  "col": true,
+  "col-lg-12": true
+ }
+
   public titles : Array<DiagramLabel>
-  constructor(private _diagramService: DiagramService, private _route : ActivatedRoute, private _sliderService : SliderService) {
+  constructor(private _diagramService: DiagramService, private _route : ActivatedRoute, private _sliderService : SliderService, private _componentservice: ComponentService) {
+    this.hidden = {
+      "diagramTitle" : false,
+      "legendTitle": false
+    }
     this.scale = new Scale("Time",-9,-9,"ns");
+    this.center = this.col7;
+    this._componentservice.ComponentUpdate.subscribe((event: ComponentUpdateEvent)=>{
+      this.hidden[event.component] = event.hide;
+      if(this.hidden.diagramTitle === true && this.hidden.legendTitle ===true){
+        this.center = this.col12;
+      }
+      else if(this.hidden.diagramTitle === true){
+        this.center = this.col9;
+      }else if(this.hidden.legendTitle ===true){
+        this.center = this.col10;
+      }else{
+        this.center = this.col7;
+      }
+    })
   }
 
   ngOnInit() {
@@ -38,9 +79,7 @@ export class ContainerComponent implements OnInit {
    this._sliderService.ScaleChangeEvent.subscribe(scale =>{
      this.scale = scale;
    })
-
   }
-
 
   }
 
