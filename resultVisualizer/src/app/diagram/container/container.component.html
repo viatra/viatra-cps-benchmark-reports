@@ -3,9 +3,9 @@
   <app-diagram [scale]="scale.ActualScale" [default]="scale.DefaultScale" [metric]="scale.Metric"></app-diagram>
   </div>
 
-  <div class="col col-lg-2 top left" [hidden]="hidden.diagramTitle">
+  <div class="col col-lg-2 top left"  id="scrollable" [hidden]="hidden.diagramTitle">
       <app-diagram-title [titles]="titles" (changeEvent)="change('diagram-title',$event)"></app-diagram-title>
   </div>
-  <div class="col col-lg-3 top right"  [hidden]="hidden.legendTitle">
+  <div class="col col-lg-3 top right" id="scrollable" [hidden]="hidden.legendTitle">
     <app-legend-title></app-legend-title>
   </div>
