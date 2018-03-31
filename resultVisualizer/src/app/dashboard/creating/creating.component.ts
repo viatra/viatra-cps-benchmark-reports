@@ -5,6 +5,7 @@ import { ResultsData } from '../../model/resultData';
 import { DragulaService } from 'ng2-dragula';
 import { Result } from '../../model/result';
 import { Benchmark } from '../../model/benchmark';
+import { DiagramService } from '../../diagram/service/diagram.service';
 
 
 @Component({
@@ -24,26 +25,30 @@ export class CreatingComponent implements OnInit {
   selects: Array<string>;
   step : number;
 
-  results : Array<String>;
+  results : Array<BuildResult>;
   shows : Array<String>;
   hides: Array<String>;
 
-  constructor(private _jsonService: JsonService, private _dragulaService: DragulaService) { 
+  constructor(private _jsonService: JsonService, private _dragulaService: DragulaService,private _diagramService: DiagramService) { 
     this.back = new EventEmitter<null>();
     this.builds = new Array<string>();
     this.selects = new Array<string>();
 
-    this.results =  new Array<string>();
+    this.results =  new Array<BuildResult>();
     this.shows =  new Array<string>();
     this.hides =  new Array<string>();
 
     this.disabled = true;
     this.step = 1;
+
+    this._dragulaService.setOptions('result', {
+      accepts: (el, target, source, sibling) => {
+        return target.id === ""
+      }
+      });
+
     this._dragulaService.dropModel.subscribe((value) => {
       this.onDropModel(value.slice(1));
-    });
-    this._dragulaService.removeModel.subscribe((value) => {
-      this.onRemoveModel(value.slice(1));
     });
   }
 
@@ -57,17 +62,21 @@ export class CreatingComponent implements OnInit {
     if(!this.disabled){
       switch(this.step){
         case 1: 
-        this.results = new Array<String>();
+        this.results = new Array<BuildResult>();
         this.shows =  new Array<string>();
         this.hides =  new Array<string>();
         this.selects.forEach(select=>{
           this._jsonService.getResults(select).subscribe((res: Array<Benchmark>)=>{
+            let result = new Array<string>();
+         
             res.forEach(element => {
-              this.results.push(`${select}_${element.operationID}`);
+              let build = this._diagramService.getResultData(select);
+              let operation = this._diagramService.resolveOperation(build.ResultData,element.operationID);
+              result.push(`${operation.Title} (${build.ID})`);
             });
+            this.results.push(new BuildResult(select,result));
           })
         })
-
         break;
       }
       this.step++;
@@ -80,15 +89,23 @@ export class CreatingComponent implements OnInit {
     this.next["disabled"] = this.disabled;
   }
 
-  private onRemoveModel(args) {
-    let [el, source] = args;
-  }
-
 
 
   ngOnInit() {
     this._jsonService.getBuilds().subscribe((builds : Array<string>)=>{
       this.builds = builds;
     });
+  }
+}
+
+class BuildResult{
+  constructor(private _buildName: string, private _results : Array<String>){}
+
+  get BuildName(){
+    return this._buildName;
+  }
+
+  get Results(){
+    return this._results;
   }
 }

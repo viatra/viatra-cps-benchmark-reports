@@ -282,9 +282,16 @@ export class DiagramService {
      this._title.push(new Title(`${tmp.Title} (${build.ID})`,ngClass,tmp.OperationID))
    }
 
-   private resolveOperation(resultDatas: Array<ResultsData>,operationID: String){
+   public resolveOperation(resultDatas: Array<ResultsData>,operationID: String){
      return resultDatas.find((resultData: ResultsData)=>{
        return resultData.OperationID === operationID;
+     })
+   }
+
+
+   public getResultData(buildName: string){
+     return this._resultConfig.Build.find(config=>{
+       return config.Name == buildName
      })
    }
 

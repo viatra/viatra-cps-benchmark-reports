@@ -24,13 +24,19 @@
 </ng-container>
 <ng-container *ngSwitchCase="2">
         <div class="col col-lg-6 build">
-            <h4>Results</h4>
-            <div class="col col-lg-12 build-list" [dragula]='"result"' [dragulaModel]='results'>
-                <div class="build-list-element" *ngFor='let result of results'  [innerHtml]='result'>
+            <div class="col col-lg-12"> <h3>Results</h3></div>
+                <div class="col col-lg-12" *ngFor="let result of results">
+                        <h4>{{result.BuildName}}</h4>
+            <div class="col col-lg-12 build-list" [dragula]='"result"' [dragulaModel]='result.Results' id="{{result.BuildName}}">
+                <div class="build-list-element" *ngFor='let res of result.Results'  id="{{result.BuildName}}"  [innerHtml]='res'>
                 </div>
       </div>
+                </div>
         </div>
         <div class="col col-lg-6 selected">
+            <div class="col col-lg-12">
+                <h3>Diagrams</h3>
+                </div>
                 <div class="col col-lg-12">
                 <h4>Show</h4>
             <div class="col col-lg-12 build-list" [dragula]='"result"' [dragulaModel]='shows'>
