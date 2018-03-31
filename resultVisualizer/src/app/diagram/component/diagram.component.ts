@@ -4,6 +4,7 @@ import { Diagram } from '../model/diagram';
 import { ChartComponent } from 'angular2-chartjs';
 import { DiagramService, SelectionUpdateEvent, LegendUpdateEvent } from '../service/diagram.service';
 import { Scale } from '../../model/defaultScale';
+import { MatDialog } from '@angular/material';
 
 @Component({
   selector: 'app-diagram',
@@ -19,7 +20,7 @@ export class DiagramComponent implements OnInit, OnChanges {
   private _prevMetric;
   diagrams : Array<Diagram>;
   ngClass: any;
-  constructor(private _diagramService: DiagramService) {
+  constructor(private _diagramService: DiagramService,public _dialog: MatDialog) {
     this._prev = -9;
     this.diagrams = new Array<Diagram>();
     this._diagramService.SelectiponUpdateEvent.subscribe((selectionUpdateEvent: SelectionUpdateEvent) =>{
@@ -43,6 +44,15 @@ export class DiagramComponent implements OnInit, OnChanges {
     });
     this.updateLegend();
 
+  }
+
+  openDialog() {
+    const dialogRef = this._dialog.open(GridSelectionDialog, {
+      height: '200px'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+    });
   }
 
   updateLegend(){
@@ -111,4 +121,20 @@ export class DiagramComponent implements OnInit, OnChanges {
     }
   
 }
+  }
+
+  @Component({
+    selector: 'grid-selection-dialog',
+    templateUrl: 'grid-selection-dialog.html',
+    styleUrls: ['./diagram.component.css']
+  })
+  export class GridSelectionDialog {
+    selectedGrid: string;
+
+    grids = [
+      'line',
+      'row',
+      'two',
+      'three',
+    ];
   }

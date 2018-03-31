@@ -8,14 +8,15 @@ import { AppComponent } from './app.component';
 import { JsonService } from './services/json.service';
 import { Http, HttpModule } from '@angular/http';
 import { ColorService } from './services/color.service';
-import { DiagramComponent } from './diagram/component/diagram.component';
+import { DiagramComponent, GridSelectionDialog } from './diagram/component/diagram.component';
 import { DiagramService } from './diagram/service/diagram.service';
 import { DropdownDiretive } from './directive/dropdown.directive';
 import { ConfigService } from './services/config.service';
 import { DiagramTitleComponent } from './title/diagram-title/diagram-title.component';
 import { LegendTitleComponent } from './title/legend-title/legend-title.component';
-
+import {MatDialogModule} from '@angular/material/dialog'
 import { MatSliderModule} from '@angular/material/slider';
+import {MatRadioModule} from '@angular/material/radio';
 import { ContainerComponent } from './diagram/container/container.component';
 import { DashboardComponent } from './dashboard/dashboard/dashboard.component';
 import { Scenario } from './model/scenario';
@@ -26,7 +27,7 @@ import { CreatingComponent } from './dashboard/creating/creating.component';
 import { DragulaModule }  from 'ng2-dragula';
 import { DropDownDirective } from './directive/drop-down.directive'
 import { ComponentService } from './component.service';
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 const appRoutes: Routes = [
   { path: '', component: DashboardComponent },
   { path: 'diagrams', component: ContainerComponent},
@@ -46,16 +47,23 @@ const appRoutes: Routes = [
     SliderComponent,
     LoadingComponent,
     CreatingComponent,
-    DropDownDirective
+    DropDownDirective, 
+    GridSelectionDialog
   ],
-  imports: [
+  entryComponents: [
+    GridSelectionDialog
+  ],
+  imports: [ 
     BrowserModule,
     ChartModule,
     HttpModule, 
     FormsModule, 
     MatSliderModule,
     RouterModule.forRoot(appRoutes),
-    DragulaModule
+    DragulaModule,
+    MatDialogModule,
+    BrowserAnimationsModule,
+    MatRadioModule
   ], 
   providers: [
     JsonService,
