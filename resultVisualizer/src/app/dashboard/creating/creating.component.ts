@@ -1,12 +1,11 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { JsonService } from '../../services/json.service';
-import { build$ } from 'protractor/built/element';
 import { ResultsData } from '../../model/resultData';
 import { DragulaService } from 'ng2-dragula';
-import { Result } from '../../model/result';
 import { Benchmark } from '../../model/benchmark';
 import { DiagramService } from '../../diagram/service/diagram.service';
-
+import { Scenario, Diagram, Result } from '../../model/scenario';
+import { Router } from '@angular/router'
 
 @Component({
   selector: 'app-creating',
@@ -26,25 +25,27 @@ export class CreatingComponent implements OnInit {
   step : number;
 
   results : Array<BuildResult>;
-  shows : Array<String>;
-  hides: Array<String>;
+  shows : Array<SelectionResult>;
+  hides: Array<SelectionResult>;
 
-  constructor(private _jsonService: JsonService, private _dragulaService: DragulaService,private _diagramService: DiagramService) { 
+  constructor(private _jsonService: JsonService, private _dragulaService: DragulaService,private _diagramService: DiagramService, private _router: Router) { 
     this.back = new EventEmitter<null>();
     this.builds = new Array<string>();
     this.selects = new Array<string>();
 
     this.results =  new Array<BuildResult>();
-    this.shows =  new Array<string>();
-    this.hides =  new Array<string>();
+    this.shows =  new Array<SelectionResult>();
+    this.hides =  new Array<SelectionResult>();
 
     this.disabled = true;
     this.step = 1;
-
+    const bag: any = this._dragulaService.find('result');
+    if (bag !== undefined ) this._dragulaService.destroy('result');
     this._dragulaService.setOptions('result', {
       accepts: (el, target, source, sibling) => {
         return target.id === ""
-      }
+      },
+      revertOnSpill: true 
       });
 
     this._dragulaService.dropModel.subscribe((value) => {
@@ -63,20 +64,47 @@ export class CreatingComponent implements OnInit {
       switch(this.step){
         case 1: 
         this.results = new Array<BuildResult>();
-        this.shows =  new Array<string>();
-        this.hides =  new Array<string>();
+        this.shows =  new Array<SelectionResult>();
+        this.hides =  new Array<SelectionResult>();
         this.selects.forEach(select=>{
           this._jsonService.getResults(select).subscribe((res: Array<Benchmark>)=>{
-            let result = new Array<string>();
+            let result = new Array<SelectionResult>();
          
             res.forEach(element => {
               let build = this._diagramService.getResultData(select);
               let operation = this._diagramService.resolveOperation(build.ResultData,element.operationID);
-              result.push(`${operation.Title} (${build.ID})`);
+              result.push(new SelectionResult(build.ID,operation.OperationID,`${operation.Title} (${build.ID})`));
             });
             this.results.push(new BuildResult(select,result));
           })
         })
+        break;
+        case 2:
+          let diagList = new Array<Diagram>();
+          let hideMap = new Map<String,Result>()
+          this.hides.forEach(hide=>{
+            hideMap.set(hide.BuildID,new Result(new Array<String>(),new Array<String>()));
+          })
+          this.shows.forEach(hide=>{
+            hideMap.set(hide.BuildID,new Result(new Array<String>(),new Array<String>()));
+          })
+
+          hideMap.forEach((value,key)=>{
+            
+            this.hides.forEach((hide)=>{
+              if(hide.BuildID === key){
+                value.closed.push(hide.OperationID)
+              }
+            })
+            this.shows.forEach((show)=>{
+              if(show.BuildID === key){
+                value.opened.push(show.OperationID)
+              }
+            })
+            diagList.push(new Diagram(key,value));
+          })
+          this._diagramService.addScenario(new Scenario(diagList,"custom"));
+          this._router.navigate(['diagrams'], { queryParams: { 'scenario': 1, "type": "created" } });
         break;
       }
       this.step++;
@@ -99,7 +127,7 @@ export class CreatingComponent implements OnInit {
 }
 
 class BuildResult{
-  constructor(private _buildName: string, private _results : Array<String>){}
+  constructor(private _buildName: string, private _results : Array<SelectionResult>){}
 
   get BuildName(){
     return this._buildName;
@@ -107,5 +135,22 @@ class BuildResult{
 
   get Results(){
     return this._results;
+  }
+}
+
+
+class SelectionResult{
+  constructor(private _buildID: String, private _operationID : String, private _resultName){}
+
+  get BuildID(){
+    return this._buildID;
+  }
+
+  get OperationID(){
+    return this._operationID;
+  }
+
+  get ResultName(){
+    return this._resultName;
   }
 }

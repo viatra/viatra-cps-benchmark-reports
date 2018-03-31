@@ -24,6 +24,7 @@ import { Scale } from '../../model/defaultScale';
 import { Subscriber } from 'rxjs/Subscriber';
 import { DiagramLabel } from '../container/container.component';
 import { scan } from 'rxjs/operators/scan';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class DiagramService {
@@ -40,7 +41,7 @@ export class DiagramService {
   public configPath : string = `config/diagram.config.json`;
   private _defaultScale: Array<Scale>;
   private _newScenario: Scenario;
-  constructor(private _jsonService: JsonService,private _colorService: ColorService, private _configservice: ConfigService) {
+  constructor(private _jsonService: JsonService,private _colorService: ColorService, private _configservice: ConfigService, private _router: Router) {
     this._title = new Array<Title>();
     this._selectionUpdate = new EventEmitter<SelectionUpdateEvent>();
     this._legendUpdate = new EventEmitter<LegendUpdateEvent>();
@@ -80,6 +81,10 @@ export class DiagramService {
 
   }
 
+  public addScenario(scenario : Scenario){
+    this._scenarios.push(scenario);
+  }
+
    public runScenario(index: number,type: string): Observable<Boolean>{
      return new Observable((observer) => {
       this._title = new Array<Title>();
@@ -89,7 +94,11 @@ export class DiagramService {
           let scenario;
            if(event === "Scenario"){
             let scenario = this.Scenarios[index]; 
+            if(scenario === null || scenario === undefined){
+              this._router.navigate(["/"])
+            }else{
             this.addDiagrams(scenario,observer);
+            }
           }
         });
        }
@@ -99,11 +108,15 @@ export class DiagramService {
         case "loaded":
           scenario = this._scenarios[index];
         break;
-        case "create":
-          scenario = this._newScenario;
+        case "created":
+          scenario = this._scenarios[this._scenarios.length - 1];
       }
+      if(scenario === null || scenario === undefined){
+        this._router.navigate(["/"])
+      }else{
       this.addDiagrams(scenario,observer);
     }
+  }
     });
   }
 
@@ -223,6 +236,7 @@ export class DiagramService {
     let contains = opened.find(id =>{
       return id === benchmark.operationID
     });
+
     if(contains){
       this.addTitle(build,benchmark,true);
       return true;

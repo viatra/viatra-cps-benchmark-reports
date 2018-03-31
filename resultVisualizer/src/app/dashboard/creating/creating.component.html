@@ -28,7 +28,7 @@
                 <div class="col col-lg-12" *ngFor="let result of results">
                         <h4>{{result.BuildName}}</h4>
             <div class="col col-lg-12 build-list" [dragula]='"result"' [dragulaModel]='result.Results' id="{{result.BuildName}}">
-                <div class="build-list-element" *ngFor='let res of result.Results'  id="{{result.BuildName}}"  [innerHtml]='res'>
+                <div class="build-list-element" *ngFor='let res of result.Results'  id="{{result.BuildName}}"  [innerHtml]='res.ResultName'>
                 </div>
       </div>
                 </div>
@@ -40,14 +40,14 @@
                 <div class="col col-lg-12">
                 <h4>Show</h4>
             <div class="col col-lg-12 build-list" [dragula]='"result"' [dragulaModel]='shows'>
-                <div class="build-list-element" *ngFor='let show of shows'  [innerHtml]='show'>
+                <div class="build-list-element" *ngFor='let show of shows'  [innerHtml]='show.ResultName'>
                 </div>
             </div>
                 </div>
             <div class="col col-lg-12 hideComponent">
                 <h4>Hide</h4>
                 <div class="col col-lg-12 build-list" [dragula]='"result"' [dragulaModel]='hides'>
-                    <div class="build-list-element" *ngFor='let hide of hides'  [innerHtml]='hide'>
+                    <div class="build-list-element" *ngFor='let hide of hides'  [innerHtml]='hide.ResultName'>
                     </div>
                 </div>
                 </div>

@@ -3,10 +3,10 @@ export class Scenario {
 }
 
 
-class Diagram {
+export class Diagram {
     constructor(public build: String, public result : Result){}
 }
 
-class Result{
+export class Result{
     constructor(public opened: Array<String>, public closed: Array<String>){}
 }
