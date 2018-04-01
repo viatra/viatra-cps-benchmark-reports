@@ -6,7 +6,7 @@
         <h4><a routerLink="/"  class="home-link"><span class="glyphicon glyphicon-home home"></span></a></h4>
     </div>
     <app-slider  *ngIf="showSlider == true"></app-slider>
-      <ul class="nav navbar-nav navbar-right menu">
+      <ul class="nav navbar-nav navbar-right menu" *ngIf="showSlider == true">
         <li  class="dropdown" appDropDown><a  class="dropdown-toggle" role="button"><span class="glyphicon glyphicon-list"></span> </a>
         <ul class="dropdown-menu">
           <li class="menu-item" (click)="select('diagramTitle')"><span [ngClass]="title.diagramTitle"></span> Diagram title</li>

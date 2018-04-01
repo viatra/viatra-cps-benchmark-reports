@@ -5,6 +5,7 @@ import { ChartComponent } from 'angular2-chartjs';
 import { DiagramService, SelectionUpdateEvent, LegendUpdateEvent } from '../service/diagram.service';
 import { Scale } from '../../model/defaultScale';
 import { MatDialog } from '@angular/material';
+import { ComponentService, ClassUpdateEvent } from '../../component.service';
 
 @Component({
   selector: 'app-diagram',
@@ -18,9 +19,44 @@ export class DiagramComponent implements OnInit, OnChanges {
   @Input() default: number;
   private _prev;
   private _prevMetric;
+
+  ngClass : any;
+  parent : string;
+
+
+  private _ngClass = {
+    "col12"  : {
+      "col": true,
+      "col-lg-12": true
+    },  
+    "col6" :{
+      "col": true,
+      "col-lg-6": true
+    },
+    "col4" : {
+      "col": true,
+      "col-lg-4": true
+    },
+    "line": {
+      "inline" : true
+    }
+  }
+
+
+
   diagrams : Array<Diagram>;
-  ngClass: any;
-  constructor(private _diagramService: DiagramService,public _dialog: MatDialog) {
+
+  constructor(private _diagramService: DiagramService,public _dialog: MatDialog, private _componentService: ComponentService) {
+    this.ngClass = this._ngClass["col12"];
+    this.parent = "row"
+    this._componentService.ClassUpdate.subscribe((event: ClassUpdateEvent)=>{
+      this.ngClass = this._ngClass[event.ngClass];
+      if(event.ngClass == "line"){
+        this.parent = "line";
+      }else{
+        this.parent = "row"
+      }
+    })
     this._prev = -9;
     this.diagrams = new Array<Diagram>();
     this._diagramService.SelectiponUpdateEvent.subscribe((selectionUpdateEvent: SelectionUpdateEvent) =>{
@@ -33,13 +69,10 @@ export class DiagramComponent implements OnInit, OnChanges {
           this.changeScale(diagram.scale,diagram);
         }
         this.diagrams.push(diagram);
-        this.updateClass();
       }else if(selectionUpdateEvent.EventType == "Removed"){
         this.diagrams.splice(this.diagrams.indexOf(selectionUpdateEvent.Diagram),1);
-        this.updateClass();
       }else if(selectionUpdateEvent.EventType == "Clear"){
         this.diagrams = new Array<Diagram>();
-        this.updateClass();
       }
     });
     this.updateLegend();
@@ -72,12 +105,6 @@ export class DiagramComponent implements OnInit, OnChanges {
     
   }
 
-  updateClass(){
-    this.ngClass= {
-      "col" : true,
-      "col-lg-12" : true
-    }
-  }
   ngOnInit() {
 
   }
@@ -129,6 +156,8 @@ export class DiagramComponent implements OnInit, OnChanges {
     styleUrls: ['./diagram.component.css']
   })
   export class GridSelectionDialog {
+
+    constructor(private _componentService: ComponentService){}
     selectedGrid: string;
 
     grids = [
@@ -137,4 +166,24 @@ export class DiagramComponent implements OnInit, OnChanges {
       'two',
       'three',
     ];
+
+    selectGrid(){
+      console.log(this.selectedGrid);
+      let ngClass = "";
+      switch(this.selectedGrid){
+        case "row":
+          ngClass =  "col12";
+        break;
+        case "two":
+          ngClass = "col6";
+        break;
+        case "three":
+          ngClass = "col4";
+        break;
+        case "line":
+         ngClass = "line";
+        break;
+      }
+      this._componentService.updateClass(ngClass);
+    }
   }

@@ -276,9 +276,14 @@ export class DiagramService {
 
 
    public getColor(toolName: String): string{
-    return this._colors.find((color: Color)=>{
+    let color =  this._colors.find((color: Color)=>{
       return color.ToolName === toolName;
     }).Color;
+
+    if(color === null || color === undefined){
+      color = "rgba(0, 0, 0, 1)"
+    }
+    return color;
    }
 
    private addTitle(build: Build,benchmark : Benchmark,opened: boolean){
