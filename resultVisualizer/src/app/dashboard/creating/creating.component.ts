@@ -23,11 +23,11 @@ export class CreatingComponent implements OnInit {
   builds : Array<string>
   selects: Array<string>;
   step : number;
-
+  scenarioTitle: String;
   results : Array<BuildResult>;
   shows : Array<SelectionResult>;
   hides: Array<SelectionResult>;
-
+  private _diagrams: Array<Diagram>;
   constructor(private _jsonService: JsonService, private _dragulaService: DragulaService,private _diagramService: DiagramService, private _router: Router) { 
     this.back = new EventEmitter<null>();
     this.builds = new Array<string>();
@@ -55,6 +55,8 @@ export class CreatingComponent implements OnInit {
 
   public clickedBack(){
     this.back.emit();
+    this.disabled = false;
+    this.next["disabled"] = this.disabled;
     this.step--;
   }
 
@@ -80,7 +82,7 @@ export class CreatingComponent implements OnInit {
         })
         break;
         case 2:
-          let diagList = new Array<Diagram>();
+          this._diagrams = new Array<Diagram>();
           let hideMap = new Map<String,Result>()
           this.hides.forEach(hide=>{
             hideMap.set(hide.BuildID,new Result(new Array<String>(),new Array<String>()));
@@ -101,21 +103,44 @@ export class CreatingComponent implements OnInit {
                 value.opened.push(show.OperationID)
               }
             })
-            diagList.push(new Diagram(key,value));
+            this._diagrams.push(new Diagram(key,value));
           })
-          this._diagramService.addScenario(new Scenario(diagList,"custom"));
-          this._router.navigate(['diagrams'], { queryParams: { 'scenario': 1, "type": "created" } });
+        break;
+
+        case 3: 
+        this._diagramService.addScenario(new Scenario(this._diagrams,this.scenarioTitle));
+        this._router.navigate(['diagrams'], { queryParams: { 'scenario': 1, "type": "created" } });
         break;
       }
+      this.disabled = true;
+      this.next["disabled"] = this.disabled;
       this.step++;
     }
   }
 
    private onDropModel(args) {
     let [el, target, source] = args;
-    this.disabled =  this.selects.length === 0;
+    switch(this.step){
+      case 1:
+      this.disabled =  this.selects.length === 0;
+      break;
+      case 2:
+      this.disabled = this.shows.length === 0 && this.hides.length === 0;
+      break;
+      case 3:
+      this.disabled = this.scenarioTitle === "";
+      break;
+    }
+    this.next["disabled"] = this.disabled;
+
+  }
+
+  public updateScenarioTitle(){
+    this.disabled = this.scenarioTitle === "";
     this.next["disabled"] = this.disabled;
   }
+
+
 
 
 

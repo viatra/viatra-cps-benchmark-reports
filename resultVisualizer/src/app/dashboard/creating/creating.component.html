@@ -53,6 +53,12 @@
                 </div>
         </div>
     </ng-container>
+    <ng-container *ngSwitchCase="3">
+            <div class="form-group">
+                    <label for="usr">Title:</label>
+                    <input type="text" class="form-control" id="usr" (ngModelChange)="updateScenarioTitle()" [(ngModel)]="scenarioTitle">
+                  </div>
+    </ng-container>
 </div>
 
 <div class="col col-lg-1">
