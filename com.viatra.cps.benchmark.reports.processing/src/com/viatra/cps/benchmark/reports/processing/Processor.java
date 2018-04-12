@@ -46,7 +46,7 @@ public class Processor {
 
 		this.aggregatorConfiguration.forEach(aggConfig -> {
 			Operation last = null;
-			Operation tmp = new JSonSerializer(file, aggConfig.getID(), aggConfig.getTitle());
+			Operation tmp = new JSonSerializer(file, aggConfig.getID());
 			List<OperationConfig> opconf = aggConfig.getOperations(false);
 			for (OperationConfig opconfig : opconf) {
 				if (last == null) {

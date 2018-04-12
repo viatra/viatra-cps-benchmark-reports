@@ -5,7 +5,12 @@
 	<groupId>com.viatra.cps.benchmark.reports</groupId>
 	<artifactId>com.viatra.cps.benchmark.reports.processing</artifactId>
 	<version>0.0.1</version>
-	<packaging>jar</packaging>
+	<repositories>
+    <repository>
+        <id>eu</id>
+        <url>file://${project.basedir}/src/</url>
+    </repository>
+</repositories>
 	<dependencies>
 		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
 		<dependency>
@@ -19,14 +24,24 @@
 			<artifactId>commons-math3</artifactId>
 			<version>3.6.1</version>
 		</dependency>
+
 		<dependency>
 			<groupId>eu.mondo.sam</groupId>
 			<artifactId>eu.mondo.sam.core</artifactId>
 			<version>0.1.0-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
-	
+
 	<build>
+		<directory>target</directory>
+ 		<finalName>${project.artifactId}-${project.version}</finalName>
+ 		<testOutputDirectory>target/test-classes</testOutputDirectory>
+ 		<sourceDirectory>src</sourceDirectory>
+ <testResources>
+		 <testResource>
+				 <directory>test</directory>
+		 </testResource>
+ </testResources>
 	<plugins>
 	         <plugin>
               <artifactId>maven-assembly-plugin</artifactId>
@@ -67,8 +82,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>2.3.2</version>
 				<configuration>
-					<source>${jdk.version}</source>
-					<target>${jdk.version}</target>
+					<source>1.8</source>
+					<target>1.8</target>
 				</configuration>
 			</plugin>
 
@@ -89,7 +104,7 @@
 				  </archive>
 				</configuration>
 			</plugin>
-          
+
 	</plugins>
 </build>
 </project>

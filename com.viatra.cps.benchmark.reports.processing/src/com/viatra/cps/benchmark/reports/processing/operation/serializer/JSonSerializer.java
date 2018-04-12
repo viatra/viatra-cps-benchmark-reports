@@ -37,11 +37,11 @@ public class JSonSerializer implements Operation {
 	protected File json;
 	protected Map<String, Map<Integer, PhaseResult>> map;
 
-	public JSonSerializer(File out, String ID, String title) {
+	public JSonSerializer(File out, String ID) {
 		this.lock = new Object();
 		this.running = false;
 		this.json = out;
-		this.result = new AggregataedResult(ID, "", "", title);
+		this.result = new AggregataedResult(ID, "", "");
 		this.map = new HashMap<>();
 	}
 

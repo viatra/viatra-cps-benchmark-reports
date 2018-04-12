@@ -14,17 +14,17 @@ public class AggregataedResult {
 
 	@JsonProperty("tool")
 	protected List<Tool> tool;
-	
-	
+
+
 	public AggregataedResult() {
 		tool = new ArrayList<>();
 	}
 
-	public AggregataedResult(String operation, String xLabel, String yLabel, String title) {
+	public AggregataedResult(String operation, String xLabel, String yLabel) {
 		this.operationID = operation;
 
 	}
-	
+
 
 	public String getOperation() {
 		return operationID;
@@ -41,6 +41,6 @@ public class AggregataedResult {
 
 	public void setTool(List<Tool> tool) {
 		this.tool = tool;
-	}	
+	}
 
 }
