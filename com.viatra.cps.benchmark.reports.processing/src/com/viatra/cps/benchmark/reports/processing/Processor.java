@@ -24,23 +24,24 @@ import eu.mondo.sam.core.results.BenchmarkResult;
 public class Processor {
 	List<AggregatorConfiguration> aggregatorConfiguration;
 	ObjectMapper mapper;
-
+	String aggResult;
 	public Processor() {
 		mapper = new ObjectMapper();
 	}
 
-	public void loadBenchmarkResults(File benchmarkResults)
+	public void loadBenchmarkResults(File config,String aggResult)
 			throws JsonParseException, JsonMappingException, IOException {
-		this.aggregatorConfiguration = mapper.readValue(new File("aggregatorConfig.json"),
+		this.aggResult = aggResult;
+		this.aggregatorConfiguration = mapper.readValue(config,
 				new TypeReference<List<AggregatorConfiguration>>() {
 				});
 	}
 
-	public void process() throws JsonParseException, JsonMappingException, IOException {
-		File file = new File("Aggresults.json");
+	public void process(File results) throws JsonParseException, JsonMappingException, IOException {
+		File file = new File(aggResult);
 		mapper.writeValue(file, new ArrayList<>());
 
-		List<BenchmarkResult> benchmarkResults = mapper.readValue(new File("result.json"),
+		List<BenchmarkResult> benchmarkResults = mapper.readValue(results,
 				new TypeReference<List<BenchmarkResult>>() {
 				});
 

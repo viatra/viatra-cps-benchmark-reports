@@ -87,7 +87,7 @@ public class JSonSerializer implements Operation {
 			sizekeys.forEach(size -> {
 				Result res = new Result(size);
 				MetricResult metric = this.map.get(tool).get(size).getMetrics().get(0);
-				metric.setValue(metric.getValue() / 1000000.0);
+				metric.setValue(metric.getValue());
 				res.setMetrics(metric);
 				results.add(res);
 			});
