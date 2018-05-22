@@ -13,7 +13,7 @@ public class Main {
 
 	public static void main(String[] args) {
 		// create Options object
-		Options options = new Options();
+		/*Options options = new Options();
 
 		// add t option
 		options.addOption("r", "results", true, "Mondo-Sam result's path");
@@ -25,15 +25,15 @@ public class Main {
 			String resultPath = cmd.getOptionValue("r");
 			String configPath = cmd.getOptionValue("c");
 			String aggresult = cmd.getOptionValue("a");
-			
-			Processor process = new Processor();
-			process.loadBenchmarkResults(new File(configPath), aggresult);
-			process.process(new File(resultPath));
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+			*/
+			Processor process = new Processor("testBuild");
+			try {
+				process.loadBenchmarkResults(new File("aggregatorConfig.json"), "Aggresults.json");
+				process.process(new File("result.json"));
+				process.updateBuildConfig();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 	}
 }

@@ -2,9 +2,6 @@ package com.viatra.cps.benchmark.reports.processing;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,25 +22,39 @@ public class Processor {
 	List<AggregatorConfiguration> aggregatorConfiguration;
 	ObjectMapper mapper;
 	String aggResult;
-	public Processor() {
+	String buildName;
+
+	public Processor(String buildName) {
+		this.buildName = buildName;
 		mapper = new ObjectMapper();
 	}
 
-	public void loadBenchmarkResults(File config,String aggResult)
+	public void loadBenchmarkResults(File config, String aggResult)
 			throws JsonParseException, JsonMappingException, IOException {
 		this.aggResult = aggResult;
-		this.aggregatorConfiguration = mapper.readValue(config,
-				new TypeReference<List<AggregatorConfiguration>>() {
-				});
+		this.aggregatorConfiguration = mapper.readValue(config, new TypeReference<List<AggregatorConfiguration>>() {
+		});
+	}
+
+	public void updateBuildConfig() {
+		File buildsJson = new File("../resultVisualizer/src/config/builds.json");
+			List<String> builds;
+			try {
+				builds = mapper.readValue(buildsJson, new TypeReference<List<String>>() {});
+				builds.add(this.buildName);
+				mapper.writeValue(buildsJson, builds);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 	}
 
 	public void process(File results) throws JsonParseException, JsonMappingException, IOException {
 		File file = new File(aggResult);
 		mapper.writeValue(file, new ArrayList<>());
 
-		List<BenchmarkResult> benchmarkResults = mapper.readValue(results,
-				new TypeReference<List<BenchmarkResult>>() {
-				});
+		List<BenchmarkResult> benchmarkResults = mapper.readValue(results, new TypeReference<List<BenchmarkResult>>() {
+		});
 
 		this.aggregatorConfiguration.forEach(aggConfig -> {
 			Operation last = null;
