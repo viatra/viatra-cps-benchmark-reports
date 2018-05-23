@@ -21,8 +21,10 @@ import eu.mondo.sam.core.results.BenchmarkResult;
 public class Processor {
 	List<AggregatorConfiguration> aggregatorConfiguration;
 	ObjectMapper mapper;
+	Object lock;
 	String aggResult;
 	String buildName;
+	int counter;
 
 	public Processor(String buildName) {
 		this.buildName = buildName;
@@ -55,10 +57,12 @@ public class Processor {
 
 		List<BenchmarkResult> benchmarkResults = mapper.readValue(results, new TypeReference<List<BenchmarkResult>>() {
 		});
-
+		counter = aggregatorConfiguration.size();
+		lock = new Object();
 		this.aggregatorConfiguration.forEach(aggConfig -> {
 			Operation last = null;
-			Operation tmp = new JSonSerializer(file, aggConfig.getID());
+			JSonSerializer tmp = new JSonSerializer(file, aggConfig.getID());
+			tmp.setProcessor(this);
 			List<OperationConfig> opconf = aggConfig.getOperations(false);
 			for (OperationConfig opconfig : opconf) {
 				if (last == null) {
@@ -68,8 +72,7 @@ public class Processor {
 					last = OperationFactory.createOperation(last, opconfig.getType(), opconfig.getFilter(),
 							opconfig.getAttribute());
 				}
-			}
-			;
+			};
 			last.start();
 			List<BenchmarkResult> list = benchmarkResults.subList(0, benchmarkResults.size());
 			for (BenchmarkResult res : list) {
@@ -77,5 +80,24 @@ public class Processor {
 			}
 			last.stop();
 		});
+
+		while (counter > 0) {
+			synchronized (lock) {
+				try {
+					lock.wait();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
+	public void chainEnd(String ID) {
+		synchronized (lock) {
+			counter--;
+			System.out.println("Opoeration:" + ID + " done. " + counter + " operation left");
+			lock.notify();
+		}
 	}
 }
