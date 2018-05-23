@@ -39,7 +39,7 @@ public class Main {
 			Processor process = new Processor(buildName, buildTemplate, diagramTemplate, diagramConfig, builds);
 			try {
 				process.loadBenchmarkResults(new File(configPath),
-						aggresult + "/" + buildName + "/results.json");
+						aggresult + "/" + buildName);
 				process.process(new File(resultPath));
 			} catch (IOException e) {
 				// TODO Auto-generated catch block

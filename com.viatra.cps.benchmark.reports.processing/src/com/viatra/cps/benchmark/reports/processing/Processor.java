@@ -112,10 +112,10 @@ public class Processor {
 
 	public void process(File results) throws JsonParseException, JsonMappingException, IOException {
 
-		if (!new File(this.aggResult ).exists()) {
+		if (!new File(this.aggResult).exists()) {
 			Files.createDirectories(Paths.get(this.aggResult));
 		}
-		File file = new File(this.aggResult);
+		File file = new File(this.aggResult + "/results.json");
 		mapper.writeValue(file, new ArrayList<>());
 
 		List<BenchmarkResult> benchmarkResults = mapper.readValue(results, new TypeReference<List<BenchmarkResult>>() {
