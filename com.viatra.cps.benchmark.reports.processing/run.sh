@@ -1,3 +1,4 @@
+#!/bin/bash
 read -a builds
 resultsLocation=$1
 case=$2
