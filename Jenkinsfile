@@ -1,15 +1,15 @@
 pipeline {
     agent any
-
     stages {
-        stage('Build') {
+        stage('Build Processor') {
             steps {
-                echo 'Building..'
+                mvn -f .\com.viatra.cps.benchmark.reports.processing\pom.xml install
+                
             }
         }
-        stage('Test') {
-            steps {
-                echo 'Testing..'
+        state('Build Visualizer'){
+            steps{
+                npm run  build --prefix .\resultVisualizer\
             }
         }
         stage('Deploy') {
