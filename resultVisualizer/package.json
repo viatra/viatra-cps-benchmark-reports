@@ -5,11 +5,11 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "./node_modules/.bin/ng build  --prod --base-href 'https://viatra.github.io/viatra-cps-benchmark-reports/",
+    "build": "./node_modules/.bin/ng build  --prod --base-href 'https://viatra.github.io/viatra-cps-benchmark-reports/'",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "deploy": "./node_modules/.bin/ngh --no-silent --repo=git@github.com:viatra/viatra-cps-benchmark-reports.git" 
+    "deploy": "./node_modules/.bin/ngh --no-silent --repo='git@github.com:viatra/viatra-cps-benchmark-reports.git'" 
   },
   "private": true,
   "dependencies": {
