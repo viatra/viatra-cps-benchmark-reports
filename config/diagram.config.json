@@ -1,317 +1,3237 @@
-{   
-    "ToolColor":[{
-        "ToolName": "BATCH_OPTIMIZED-TEMPLATE",
-        "Color": "rgba(191, 63, 63, 1)"
-    },
-    {
-        "ToolName": "INCR_VIATRA_TRANSFORMATION-TEMPLATE",
-        "Color": "rgba(63, 63, 191, 1)"
-    },
-    {
-        "ToolName": "BATCH_VIATRA_QUERY_RETE-TEMPLATE",
-        "Color": "rgba(12, 12, 38, 1)"
-    },
-    {
-        "ToolName": "BATCH_VIATRA_QUERY_LOCAL_SEARCH_GENERIC-TEMPLATE",
-        "Color": "rgba(172, 11, 161, 1)"
-    },
-    {
-        "ToolName": "BATCH_VIATRA_QUERY_LOCAL_SEARCH-TEMPLATE",
-        "Color": "rgba(50, 82, 45, 1)"
-    },
-    {
-        "ToolName": "BATCH_VIATRA_QUERY_LOCAL_SEARCH_WO_INDEXER-TEMPLATE",
-        "Color": "rgba(50, 82, 45, 1)"
-    },
-    {
-        "ToolName": "BATCH_VIATRA_TRANSFORMATION-TEMPLATE",
-        "Color": "rgba(50, 82, 45, 1)"
-    },
-    {
-        "ToolName": "INCR_VIATRA_QUERY_RESULT_TRACEABILITY-TEMPLATE",
-        "Color": "rgba(50, 82, 45, 1)"
-    },
-    {
-        "ToolName": "INCR_VIATRA_EXPLICIT_TRACEABILITY-TEMPLATE",
-        "Color": "rgba(50, 82, 45, 1)"
-    },
-    {
-        "ToolName": "INCR_VIATRA_AGGREGATED-TEMPLATE",
-        "Color": "rgba(50, 82, 45, 1)"
-    },
-    {
-        "ToolName": "BATCH_VIATRA_QUERY_LOCAL_SEARCH_TRACE_STATS-TEMPLATE",
-        "Color": "rgba(50, 82, 45, 1)"
-    },
-    {
-        "ToolName": "BATCH_VIATRA_QUERY_LOCAL_SEARCH_DUMB_PLANNER-TEMPLATE",
-        "Color": "rgba(50, 82, 45, 1)"
-    },
-    {
-        "ToolName": "BATCH_SIMPLE-TEMPLATE",
-        "Color": "rgba(50, 82, 45, 1)"
-    },
-    {
-        "ToolName": "BATCH_VIATRA_QUERY_LOCAL_SEARCH_NO_FLAT-TEMPLATE",
-        "Color": "rgba(50, 82, 45, 1)"
-    }],
-    "ResultConfig": {
-        "Scale":[{
-            "Metric" :"Time",
-            "DefaultScale" : -9
-        },{
-            "Metric" :"Memory",
-            "DefaultScale" : 1
-        }],
-        "Build" : [{
-            "Name": "m2m-reduced-build186",
-            "ID": "1",
-            "ResultData" :[{
-                "DiagramType": "line",
-                "OperationID": "1",
-                "Title": "Generation",
-                "XLabel": "Size",
-                "YLabel": "Time",
-                "Metric": "Time"
-            },
-            {
-                "DiagramType": "line",
-                "OperationID": "2",
-                "Title": "Init M2M",
-                "XLabel": "Size",
-                "YLabel": "Time",
-                "Metric": "Time"
-            },
-            {
-                "DiagramType": "line",
-                "OperationID": "3",
-                "Title": "Full workflow",
-                "XLabel": "Size",
-                "YLabel": "Time",
-                "Metric": "Time"
-            },
-            {
-                "DiagramType": "line",
-                "OperationID": "4",
-                "Title": "Modify M2M",
-                "XLabel": "Size",
-                "YLabel": "Time",
-                "Metric": "Time"
-            },
-            {
-                "DiagramType": "line",
-                "OperationID": "5",
-                "Title": "Persistent memory after M2M",
-                "XLabel": "Size",
-                "YLabel": "Memory",
-                "Metric": "Memory"
-            },
-            {
-                "DiagramType": "line",
-                "OperationID": "6",
-                "Title": "Peak memory during M2M",
-                "XLabel": "Size",
-                "YLabel": "PeakMemory",
-                "Metric": "Memory"
-            },
-            {
-                "DiagramType": "line",
-                "OperationID": "7",
-                "Title": "Average memory during M2M",
-                "XLabel": "Size",
-                "YLabel": "AverageMemory",
-                "Metric": "Memory"
-            },
-            {
-                "DiagramType": "line",
-                "OperationID": "8",
-                "Title": "Persistent memory after Initialization",
-                "XLabel": "Size",
-                "YLabel": "Memory",
-                "Metric": "Memory"
-            },
-            {
-                "DiagramType": "line",
-                "OperationID": "9",
-                "Title": "Peak memory during Initialization",
-                "XLabel": "Size",
-                "YLabel": "PeakMemory",
-                "Metric": "Memory"
-            },
-            {
-                "DiagramType": "line",
-                "OperationID": "10",
-                "Title": "Average memory during Initialization",
-                "XLabel": "Size",
-                "YLabel": "AverageMemory",
-                "Metric": "Memory"
-            }]
-        },{
-            "Name": "m2m-reduced-build185",
-            "ID": "2",
-            "ResultData" :[{
-                "DiagramType": "line",
-                "OperationID": "1",
-                "Title": "Generation",
-                "XLabel": "Size",
-                "YLabel": "Time",
-                "Metric": "Time"
-            },
-            {
-                "DiagramType": "line",
-                "OperationID": "2",
-                "Title": "Init M2M",
-                "XLabel": "Size",
-                "YLabel": "Time",
-                "Metric": "Time"
-            },
-            {
-                "DiagramType": "line",
-                "OperationID": "3",
-                "Title": "Full workflow",
-                "XLabel": "Size",
-                "YLabel": "Time",
-                "Metric": "Time"
-            },
-            {
-                "DiagramType": "line",
-                "OperationID": "4",
-                "Title": "Modify M2M",
-                "XLabel": "Size",
-                "YLabel": "Time",
-                "Metric": "Time"
-            },
-            {
-                "DiagramType": "line",
-                "OperationID": "5",
-                "Title": "Persistent memory after M2M",
-                "XLabel": "Size",
-                "YLabel": "Memory",
-                "Metric": "Memory"
-            },
-            {
-                "DiagramType": "line",
-                "OperationID": "6",
-                "Title": "Peak memory during M2M",
-                "XLabel": "Size",
-                "YLabel": "PeakMemory",
-                "Metric": "Memory"
-            },
-            {
-                "DiagramType": "line",
-                "OperationID": "7",
-                "Title": "Average memory during M2M",
-                "XLabel": "Size",
-                "YLabel": "AverageMemory",
-                "Metric": "Memory"
-            },
-            {
-                "DiagramType": "line",
-                "OperationID": "8",
-                "Title": "Persistent memory after Initialization",
-                "XLabel": "Size",
-                "YLabel": "Memory",
-                "Metric": "Memory"
-            },
-            {
-                "DiagramType": "line",
-                "OperationID": "9",
-                "Title": "Peak memory during Initialization",
-                "XLabel": "Size",
-                "YLabel": "PeakMemory",
-                "Metric": "Memory"
-            },
-            {
-                "DiagramType": "line",
-                "OperationID": "10",
-                "Title": "Average memory during Initialization",
-                "XLabel": "Size",
-                "YLabel": "AverageMemory",
-                "Metric": "Memory"
-            }]
-        },{
-            "Name": "m2m-reduced-build184",
-            "ID": "3",
-            "ResultData" :[{
-                "DiagramType": "line",
-                "OperationID": "1",
-                "Title": "Generation",
-                "XLabel": "Size",
-                "YLabel": "Time",
-                "Metric": "Time"
-            },
-            {
-                "DiagramType": "line",
-                "OperationID": "2",
-                "Title": "Init M2M",
-                "XLabel": "Size",
-                "YLabel": "Time",
-                "Metric": "Time"
-            },
-            {
-                "DiagramType": "line",
-                "OperationID": "3",
-                "Title": "Full workflow",
-                "XLabel": "Size",
-                "YLabel": "Time",
-                "Metric": "Time"
-            },
-            {
-                "DiagramType": "line",
-                "OperationID": "4",
-                "Title": "Modify M2M",
-                "XLabel": "Size",
-                "YLabel": "Time",
-                "Metric": "Time"
-            },
-            {
-                "DiagramType": "line",
-                "OperationID": "5",
-                "Title": "Persistent memory after M2M",
-                "XLabel": "Size",
-                "YLabel": "Memory",
-                "Metric": "Memory"
-            },
-            {
-                "DiagramType": "line",
-                "OperationID": "6",
-                "Title": "Peak memory during M2M",
-                "XLabel": "Size",
-                "YLabel": "PeakMemory",
-                "Metric": "Memory"
-            },
-            {
-                "DiagramType": "line",
-                "OperationID": "7",
-                "Title": "Average memory during M2M",
-                "XLabel": "Size",
-                "YLabel": "AverageMemory",
-                "Metric": "Memory"
-            },
-            {
-                "DiagramType": "line",
-                "OperationID": "8",
-                "Title": "Persistent memory after Initialization",
-                "XLabel": "Size",
-                "YLabel": "Memory",
-                "Metric": "Memory"
-            },
-            {
-                "DiagramType": "line",
-                "OperationID": "9",
-                "Title": "Peak memory during Initialization",
-                "XLabel": "Size",
-                "YLabel": "PeakMemory",
-                "Metric": "Memory"
-            },
-            {
-                "DiagramType": "line",
-                "OperationID": "10",
-                "Title": "Average memory during Initialization",
-                "XLabel": "Size",
-                "YLabel": "AverageMemory",
-                "Metric": "Memory"
-            }]
-        }]
-    }
+{
+  "ResultConfig" : {
+    "Scale" : [ {
+      "Metric" : "Time",
+      "DefaultScale" : -9
+    }, {
+      "Metric" : "Memory",
+      "DefaultScale" : 1
+    } ],
+    "Build" : [ {
+      "Name" : "m2m-reduced-201608100818-build57",
+      "ID" : 1,
+      "ResultData" : [ {
+        "DiagramType" : "line",
+        "OperationID" : "1",
+        "Title" : "Generation",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "2",
+        "Title" : "Init M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "3",
+        "Title" : "Full workflow",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "4",
+        "Title" : "Modify M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "5",
+        "Title" : "Persistent memory after M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "6",
+        "Title" : "Peak memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "7",
+        "Title" : "Average memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "8",
+        "Title" : "Persistent memory after Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "9",
+        "Title" : "Peak memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "10",
+        "Title" : "Average memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      } ]
+    }, {
+      "Name" : "m2m-reduced-201608121241-build59",
+      "ID" : 2,
+      "ResultData" : [ {
+        "DiagramType" : "line",
+        "OperationID" : "1",
+        "Title" : "Generation",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "2",
+        "Title" : "Init M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "3",
+        "Title" : "Full workflow",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "4",
+        "Title" : "Modify M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "5",
+        "Title" : "Persistent memory after M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "6",
+        "Title" : "Peak memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "7",
+        "Title" : "Average memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "8",
+        "Title" : "Persistent memory after Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "9",
+        "Title" : "Peak memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "10",
+        "Title" : "Average memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      } ]
+    }, {
+      "Name" : "m2m-reduced-201609121410-build64",
+      "ID" : 3,
+      "ResultData" : [ {
+        "DiagramType" : "line",
+        "OperationID" : "1",
+        "Title" : "Generation",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "2",
+        "Title" : "Init M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "3",
+        "Title" : "Full workflow",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "4",
+        "Title" : "Modify M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "5",
+        "Title" : "Persistent memory after M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "6",
+        "Title" : "Peak memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "7",
+        "Title" : "Average memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "8",
+        "Title" : "Persistent memory after Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "9",
+        "Title" : "Peak memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "10",
+        "Title" : "Average memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      } ]
+    }, {
+      "Name" : "m2m-reduced-201609140954-build67",
+      "ID" : 4,
+      "ResultData" : [ {
+        "DiagramType" : "line",
+        "OperationID" : "1",
+        "Title" : "Generation",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "2",
+        "Title" : "Init M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "3",
+        "Title" : "Full workflow",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "4",
+        "Title" : "Modify M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "5",
+        "Title" : "Persistent memory after M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "6",
+        "Title" : "Peak memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "7",
+        "Title" : "Average memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "8",
+        "Title" : "Persistent memory after Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "9",
+        "Title" : "Peak memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "10",
+        "Title" : "Average memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      } ]
+    }, {
+      "Name" : "m2m-reduced-201609161129-build69",
+      "ID" : 5,
+      "ResultData" : [ {
+        "DiagramType" : "line",
+        "OperationID" : "1",
+        "Title" : "Generation",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "2",
+        "Title" : "Init M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "3",
+        "Title" : "Full workflow",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "4",
+        "Title" : "Modify M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "5",
+        "Title" : "Persistent memory after M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "6",
+        "Title" : "Peak memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "7",
+        "Title" : "Average memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "8",
+        "Title" : "Persistent memory after Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "9",
+        "Title" : "Peak memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "10",
+        "Title" : "Average memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      } ]
+    }, {
+      "Name" : "m2m-reduced-201612021551-build70",
+      "ID" : 6,
+      "ResultData" : [ {
+        "DiagramType" : "line",
+        "OperationID" : "1",
+        "Title" : "Generation",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "2",
+        "Title" : "Init M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "3",
+        "Title" : "Full workflow",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "4",
+        "Title" : "Modify M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "5",
+        "Title" : "Persistent memory after M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "6",
+        "Title" : "Peak memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "7",
+        "Title" : "Average memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "8",
+        "Title" : "Persistent memory after Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "9",
+        "Title" : "Peak memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "10",
+        "Title" : "Average memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      } ]
+    }, {
+      "Name" : "m2m-reduced-201705041315-build82",
+      "ID" : 7,
+      "ResultData" : [ {
+        "DiagramType" : "line",
+        "OperationID" : "1",
+        "Title" : "Generation",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "2",
+        "Title" : "Init M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "3",
+        "Title" : "Full workflow",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "4",
+        "Title" : "Modify M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "5",
+        "Title" : "Persistent memory after M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "6",
+        "Title" : "Peak memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "7",
+        "Title" : "Average memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "8",
+        "Title" : "Persistent memory after Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "9",
+        "Title" : "Peak memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "10",
+        "Title" : "Average memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      } ]
+    }, {
+      "Name" : "m2m-reduced-201705100843-build84",
+      "ID" : 8,
+      "ResultData" : [ {
+        "DiagramType" : "line",
+        "OperationID" : "1",
+        "Title" : "Generation",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "2",
+        "Title" : "Init M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "3",
+        "Title" : "Full workflow",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "4",
+        "Title" : "Modify M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "5",
+        "Title" : "Persistent memory after M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "6",
+        "Title" : "Peak memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "7",
+        "Title" : "Average memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "8",
+        "Title" : "Persistent memory after Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "9",
+        "Title" : "Peak memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "10",
+        "Title" : "Average memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      } ]
+    }, {
+      "Name" : "m2m-reduced-201705240939-build90",
+      "ID" : 9,
+      "ResultData" : [ {
+        "DiagramType" : "line",
+        "OperationID" : "1",
+        "Title" : "Generation",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "2",
+        "Title" : "Init M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "3",
+        "Title" : "Full workflow",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "4",
+        "Title" : "Modify M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "5",
+        "Title" : "Persistent memory after M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "6",
+        "Title" : "Peak memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "7",
+        "Title" : "Average memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "8",
+        "Title" : "Persistent memory after Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "9",
+        "Title" : "Peak memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "10",
+        "Title" : "Average memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      } ]
+    }, {
+      "Name" : "m2m-reduced-201705251802-build94",
+      "ID" : 10,
+      "ResultData" : [ {
+        "DiagramType" : "line",
+        "OperationID" : "1",
+        "Title" : "Generation",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "2",
+        "Title" : "Init M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "3",
+        "Title" : "Full workflow",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "4",
+        "Title" : "Modify M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "5",
+        "Title" : "Persistent memory after M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "6",
+        "Title" : "Peak memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "7",
+        "Title" : "Average memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "8",
+        "Title" : "Persistent memory after Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "9",
+        "Title" : "Peak memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "10",
+        "Title" : "Average memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      } ]
+    }, {
+      "Name" : "m2m-reduced-201705260507-build95",
+      "ID" : 11,
+      "ResultData" : [ {
+        "DiagramType" : "line",
+        "OperationID" : "1",
+        "Title" : "Generation",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "2",
+        "Title" : "Init M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "3",
+        "Title" : "Full workflow",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "4",
+        "Title" : "Modify M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "5",
+        "Title" : "Persistent memory after M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "6",
+        "Title" : "Peak memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "7",
+        "Title" : "Average memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "8",
+        "Title" : "Persistent memory after Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "9",
+        "Title" : "Peak memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "10",
+        "Title" : "Average memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      } ]
+    }, {
+      "Name" : "m2m-reduced-201705261532-build103",
+      "ID" : 12,
+      "ResultData" : [ {
+        "DiagramType" : "line",
+        "OperationID" : "1",
+        "Title" : "Generation",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "2",
+        "Title" : "Init M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "3",
+        "Title" : "Full workflow",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "4",
+        "Title" : "Modify M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "5",
+        "Title" : "Persistent memory after M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "6",
+        "Title" : "Peak memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "7",
+        "Title" : "Average memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "8",
+        "Title" : "Persistent memory after Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "9",
+        "Title" : "Peak memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "10",
+        "Title" : "Average memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      } ]
+    }, {
+      "Name" : "m2m-reduced-201705280647-build105",
+      "ID" : 13,
+      "ResultData" : [ {
+        "DiagramType" : "line",
+        "OperationID" : "1",
+        "Title" : "Generation",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "2",
+        "Title" : "Init M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "3",
+        "Title" : "Full workflow",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "4",
+        "Title" : "Modify M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "5",
+        "Title" : "Persistent memory after M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "6",
+        "Title" : "Peak memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "7",
+        "Title" : "Average memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "8",
+        "Title" : "Persistent memory after Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "9",
+        "Title" : "Peak memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "10",
+        "Title" : "Average memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      } ]
+    }, {
+      "Name" : "m2m-reduced-201705291058-build107",
+      "ID" : 14,
+      "ResultData" : [ {
+        "DiagramType" : "line",
+        "OperationID" : "1",
+        "Title" : "Generation",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "2",
+        "Title" : "Init M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "3",
+        "Title" : "Full workflow",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "4",
+        "Title" : "Modify M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "5",
+        "Title" : "Persistent memory after M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "6",
+        "Title" : "Peak memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "7",
+        "Title" : "Average memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "8",
+        "Title" : "Persistent memory after Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "9",
+        "Title" : "Peak memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "10",
+        "Title" : "Average memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      } ]
+    }, {
+      "Name" : "m2m-reduced-201705302158-build111",
+      "ID" : 15,
+      "ResultData" : [ {
+        "DiagramType" : "line",
+        "OperationID" : "1",
+        "Title" : "Generation",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "2",
+        "Title" : "Init M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "3",
+        "Title" : "Full workflow",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "4",
+        "Title" : "Modify M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "5",
+        "Title" : "Persistent memory after M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "6",
+        "Title" : "Peak memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "7",
+        "Title" : "Average memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "8",
+        "Title" : "Persistent memory after Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "9",
+        "Title" : "Peak memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "10",
+        "Title" : "Average memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      } ]
+    }, {
+      "Name" : "m2m-reduced-201706020242-build114",
+      "ID" : 16,
+      "ResultData" : [ {
+        "DiagramType" : "line",
+        "OperationID" : "1",
+        "Title" : "Generation",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "2",
+        "Title" : "Init M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "3",
+        "Title" : "Full workflow",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "4",
+        "Title" : "Modify M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "5",
+        "Title" : "Persistent memory after M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "6",
+        "Title" : "Peak memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "7",
+        "Title" : "Average memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "8",
+        "Title" : "Persistent memory after Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "9",
+        "Title" : "Peak memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "10",
+        "Title" : "Average memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      } ]
+    }, {
+      "Name" : "m2m-reduced-201706061645-build129",
+      "ID" : 17,
+      "ResultData" : [ {
+        "DiagramType" : "line",
+        "OperationID" : "1",
+        "Title" : "Generation",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "2",
+        "Title" : "Init M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "3",
+        "Title" : "Full workflow",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "4",
+        "Title" : "Modify M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "5",
+        "Title" : "Persistent memory after M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "6",
+        "Title" : "Peak memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "7",
+        "Title" : "Average memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "8",
+        "Title" : "Persistent memory after Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "9",
+        "Title" : "Peak memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "10",
+        "Title" : "Average memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      } ]
+    }, {
+      "Name" : "m2m-reduced-201706091837-build130",
+      "ID" : 18,
+      "ResultData" : [ {
+        "DiagramType" : "line",
+        "OperationID" : "1",
+        "Title" : "Generation",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "2",
+        "Title" : "Init M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "3",
+        "Title" : "Full workflow",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "4",
+        "Title" : "Modify M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "5",
+        "Title" : "Persistent memory after M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "6",
+        "Title" : "Peak memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "7",
+        "Title" : "Average memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "8",
+        "Title" : "Persistent memory after Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "9",
+        "Title" : "Peak memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "10",
+        "Title" : "Average memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      } ]
+    }, {
+      "Name" : "m2m-reduced-201706272103-build133",
+      "ID" : 19,
+      "ResultData" : [ {
+        "DiagramType" : "line",
+        "OperationID" : "1",
+        "Title" : "Generation",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "2",
+        "Title" : "Init M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "3",
+        "Title" : "Full workflow",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "4",
+        "Title" : "Modify M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "5",
+        "Title" : "Persistent memory after M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "6",
+        "Title" : "Peak memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "7",
+        "Title" : "Average memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "8",
+        "Title" : "Persistent memory after Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "9",
+        "Title" : "Peak memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "10",
+        "Title" : "Average memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      } ]
+    }, {
+      "Name" : "m2m-reduced-201707101916-build134",
+      "ID" : 20,
+      "ResultData" : [ {
+        "DiagramType" : "line",
+        "OperationID" : "1",
+        "Title" : "Generation",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "2",
+        "Title" : "Init M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "3",
+        "Title" : "Full workflow",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "4",
+        "Title" : "Modify M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "5",
+        "Title" : "Persistent memory after M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "6",
+        "Title" : "Peak memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "7",
+        "Title" : "Average memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "8",
+        "Title" : "Persistent memory after Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "9",
+        "Title" : "Peak memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "10",
+        "Title" : "Average memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      } ]
+    }, {
+      "Name" : "m2m-reduced-201708031400-build142",
+      "ID" : 21,
+      "ResultData" : [ {
+        "DiagramType" : "line",
+        "OperationID" : "1",
+        "Title" : "Generation",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "2",
+        "Title" : "Init M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "3",
+        "Title" : "Full workflow",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "4",
+        "Title" : "Modify M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "5",
+        "Title" : "Persistent memory after M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "6",
+        "Title" : "Peak memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "7",
+        "Title" : "Average memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "8",
+        "Title" : "Persistent memory after Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "9",
+        "Title" : "Peak memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "10",
+        "Title" : "Average memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      } ]
+    }, {
+      "Name" : "m2m-reduced-201708031624-build143",
+      "ID" : 22,
+      "ResultData" : [ {
+        "DiagramType" : "line",
+        "OperationID" : "1",
+        "Title" : "Generation",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "2",
+        "Title" : "Init M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "3",
+        "Title" : "Full workflow",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "4",
+        "Title" : "Modify M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "5",
+        "Title" : "Persistent memory after M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "6",
+        "Title" : "Peak memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "7",
+        "Title" : "Average memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "8",
+        "Title" : "Persistent memory after Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "9",
+        "Title" : "Peak memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "10",
+        "Title" : "Average memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      } ]
+    }, {
+      "Name" : "m2m-reduced-201708032015-build144",
+      "ID" : 23,
+      "ResultData" : [ {
+        "DiagramType" : "line",
+        "OperationID" : "1",
+        "Title" : "Generation",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "2",
+        "Title" : "Init M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "3",
+        "Title" : "Full workflow",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "4",
+        "Title" : "Modify M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "5",
+        "Title" : "Persistent memory after M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "6",
+        "Title" : "Peak memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "7",
+        "Title" : "Average memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "8",
+        "Title" : "Persistent memory after Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "9",
+        "Title" : "Peak memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "10",
+        "Title" : "Average memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      } ]
+    }, {
+      "Name" : "m2m-reduced-201708071958-build154",
+      "ID" : 24,
+      "ResultData" : [ {
+        "DiagramType" : "line",
+        "OperationID" : "1",
+        "Title" : "Generation",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "2",
+        "Title" : "Init M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "3",
+        "Title" : "Full workflow",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "4",
+        "Title" : "Modify M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "5",
+        "Title" : "Persistent memory after M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "6",
+        "Title" : "Peak memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "7",
+        "Title" : "Average memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "8",
+        "Title" : "Persistent memory after Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "9",
+        "Title" : "Peak memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "10",
+        "Title" : "Average memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      } ]
+    }, {
+      "Name" : "m2m-reduced-201709182025-build167",
+      "ID" : 25,
+      "ResultData" : [ {
+        "DiagramType" : "line",
+        "OperationID" : "1",
+        "Title" : "Generation",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "2",
+        "Title" : "Init M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "3",
+        "Title" : "Full workflow",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "4",
+        "Title" : "Modify M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "5",
+        "Title" : "Persistent memory after M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "6",
+        "Title" : "Peak memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "7",
+        "Title" : "Average memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "8",
+        "Title" : "Persistent memory after Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "9",
+        "Title" : "Peak memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "10",
+        "Title" : "Average memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      } ]
+    }, {
+      "Name" : "m2m-reduced-201709191324-build168",
+      "ID" : 26,
+      "ResultData" : [ {
+        "DiagramType" : "line",
+        "OperationID" : "1",
+        "Title" : "Generation",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "2",
+        "Title" : "Init M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "3",
+        "Title" : "Full workflow",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "4",
+        "Title" : "Modify M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "5",
+        "Title" : "Persistent memory after M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "6",
+        "Title" : "Peak memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "7",
+        "Title" : "Average memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "8",
+        "Title" : "Persistent memory after Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "9",
+        "Title" : "Peak memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "10",
+        "Title" : "Average memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      } ]
+    }, {
+      "Name" : "m2m-reduced-201709222001-build170",
+      "ID" : 27,
+      "ResultData" : [ {
+        "DiagramType" : "line",
+        "OperationID" : "1",
+        "Title" : "Generation",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "2",
+        "Title" : "Init M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "3",
+        "Title" : "Full workflow",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "4",
+        "Title" : "Modify M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "5",
+        "Title" : "Persistent memory after M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "6",
+        "Title" : "Peak memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "7",
+        "Title" : "Average memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "8",
+        "Title" : "Persistent memory after Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "9",
+        "Title" : "Peak memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "10",
+        "Title" : "Average memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      } ]
+    }, {
+      "Name" : "m2m-reduced-201709291941-build171",
+      "ID" : 28,
+      "ResultData" : [ {
+        "DiagramType" : "line",
+        "OperationID" : "1",
+        "Title" : "Generation",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "2",
+        "Title" : "Init M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "3",
+        "Title" : "Full workflow",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "4",
+        "Title" : "Modify M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "5",
+        "Title" : "Persistent memory after M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "6",
+        "Title" : "Peak memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "7",
+        "Title" : "Average memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "8",
+        "Title" : "Persistent memory after Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "9",
+        "Title" : "Peak memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "10",
+        "Title" : "Average memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      } ]
+    }, {
+      "Name" : "m2m-reduced-201709292200-build172",
+      "ID" : 29,
+      "ResultData" : [ {
+        "DiagramType" : "line",
+        "OperationID" : "1",
+        "Title" : "Generation",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "2",
+        "Title" : "Init M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "3",
+        "Title" : "Full workflow",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "4",
+        "Title" : "Modify M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "5",
+        "Title" : "Persistent memory after M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "6",
+        "Title" : "Peak memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "7",
+        "Title" : "Average memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "8",
+        "Title" : "Persistent memory after Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "9",
+        "Title" : "Peak memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "10",
+        "Title" : "Average memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      } ]
+    }, {
+      "Name" : "m2m-reduced-201709300018-build173",
+      "ID" : 30,
+      "ResultData" : [ {
+        "DiagramType" : "line",
+        "OperationID" : "1",
+        "Title" : "Generation",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "2",
+        "Title" : "Init M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "3",
+        "Title" : "Full workflow",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "4",
+        "Title" : "Modify M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "5",
+        "Title" : "Persistent memory after M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "6",
+        "Title" : "Peak memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "7",
+        "Title" : "Average memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "8",
+        "Title" : "Persistent memory after Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "9",
+        "Title" : "Peak memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "10",
+        "Title" : "Average memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      } ]
+    }, {
+      "Name" : "m2m-reduced-201709300238-build174",
+      "ID" : 31,
+      "ResultData" : [ {
+        "DiagramType" : "line",
+        "OperationID" : "1",
+        "Title" : "Generation",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "2",
+        "Title" : "Init M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "3",
+        "Title" : "Full workflow",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "4",
+        "Title" : "Modify M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "5",
+        "Title" : "Persistent memory after M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "6",
+        "Title" : "Peak memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "7",
+        "Title" : "Average memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "8",
+        "Title" : "Persistent memory after Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "9",
+        "Title" : "Peak memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "10",
+        "Title" : "Average memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      } ]
+    }, {
+      "Name" : "m2m-reduced-201709300457-build175",
+      "ID" : 32,
+      "ResultData" : [ {
+        "DiagramType" : "line",
+        "OperationID" : "1",
+        "Title" : "Generation",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "2",
+        "Title" : "Init M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "3",
+        "Title" : "Full workflow",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "4",
+        "Title" : "Modify M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "5",
+        "Title" : "Persistent memory after M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "6",
+        "Title" : "Peak memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "7",
+        "Title" : "Average memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "8",
+        "Title" : "Persistent memory after Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "9",
+        "Title" : "Peak memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "10",
+        "Title" : "Average memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      } ]
+    }, {
+      "Name" : "m2m-reduced-201709301854-build176",
+      "ID" : 33,
+      "ResultData" : [ {
+        "DiagramType" : "line",
+        "OperationID" : "1",
+        "Title" : "Generation",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "2",
+        "Title" : "Init M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "3",
+        "Title" : "Full workflow",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "4",
+        "Title" : "Modify M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "5",
+        "Title" : "Persistent memory after M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "6",
+        "Title" : "Peak memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "7",
+        "Title" : "Average memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "8",
+        "Title" : "Persistent memory after Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "9",
+        "Title" : "Peak memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "10",
+        "Title" : "Average memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      } ]
+    }, {
+      "Name" : "m2m-reduced-201710021923-build177",
+      "ID" : 34,
+      "ResultData" : [ {
+        "DiagramType" : "line",
+        "OperationID" : "1",
+        "Title" : "Generation",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "2",
+        "Title" : "Init M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "3",
+        "Title" : "Full workflow",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "4",
+        "Title" : "Modify M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "5",
+        "Title" : "Persistent memory after M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "6",
+        "Title" : "Peak memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "7",
+        "Title" : "Average memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "8",
+        "Title" : "Persistent memory after Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "9",
+        "Title" : "Peak memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "10",
+        "Title" : "Average memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      } ]
+    }, {
+      "Name" : "m2m-reduced-201710051500-build178",
+      "ID" : 35,
+      "ResultData" : [ {
+        "DiagramType" : "line",
+        "OperationID" : "1",
+        "Title" : "Generation",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "2",
+        "Title" : "Init M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "3",
+        "Title" : "Full workflow",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "4",
+        "Title" : "Modify M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "5",
+        "Title" : "Persistent memory after M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "6",
+        "Title" : "Peak memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "7",
+        "Title" : "Average memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "8",
+        "Title" : "Persistent memory after Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "9",
+        "Title" : "Peak memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "10",
+        "Title" : "Average memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      } ]
+    }, {
+      "Name" : "m2m-reduced-201710061855-build179",
+      "ID" : 36,
+      "ResultData" : [ {
+        "DiagramType" : "line",
+        "OperationID" : "1",
+        "Title" : "Generation",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "2",
+        "Title" : "Init M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "3",
+        "Title" : "Full workflow",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "4",
+        "Title" : "Modify M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "5",
+        "Title" : "Persistent memory after M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "6",
+        "Title" : "Peak memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "7",
+        "Title" : "Average memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "8",
+        "Title" : "Persistent memory after Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "9",
+        "Title" : "Peak memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "10",
+        "Title" : "Average memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      } ]
+    }, {
+      "Name" : "m2m-reduced-201710062218-build180",
+      "ID" : 37,
+      "ResultData" : [ {
+        "DiagramType" : "line",
+        "OperationID" : "1",
+        "Title" : "Generation",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "2",
+        "Title" : "Init M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "3",
+        "Title" : "Full workflow",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "4",
+        "Title" : "Modify M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "5",
+        "Title" : "Persistent memory after M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "6",
+        "Title" : "Peak memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "7",
+        "Title" : "Average memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "8",
+        "Title" : "Persistent memory after Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "9",
+        "Title" : "Peak memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "10",
+        "Title" : "Average memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      } ]
+    }, {
+      "Name" : "m2m-reduced-201710081545-build181",
+      "ID" : 38,
+      "ResultData" : [ {
+        "DiagramType" : "line",
+        "OperationID" : "1",
+        "Title" : "Generation",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "2",
+        "Title" : "Init M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "3",
+        "Title" : "Full workflow",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "4",
+        "Title" : "Modify M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "5",
+        "Title" : "Persistent memory after M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "6",
+        "Title" : "Peak memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "7",
+        "Title" : "Average memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "8",
+        "Title" : "Persistent memory after Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "9",
+        "Title" : "Peak memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "10",
+        "Title" : "Average memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      } ]
+    }, {
+      "Name" : "m2m-reduced-201710091821-build182",
+      "ID" : 39,
+      "ResultData" : [ {
+        "DiagramType" : "line",
+        "OperationID" : "1",
+        "Title" : "Generation",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "2",
+        "Title" : "Init M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "3",
+        "Title" : "Full workflow",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "4",
+        "Title" : "Modify M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "5",
+        "Title" : "Persistent memory after M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "6",
+        "Title" : "Peak memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "7",
+        "Title" : "Average memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "8",
+        "Title" : "Persistent memory after Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "9",
+        "Title" : "Peak memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "10",
+        "Title" : "Average memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      } ]
+    }, {
+      "Name" : "m2m-reduced-201710100059-build184",
+      "ID" : 40,
+      "ResultData" : [ {
+        "DiagramType" : "line",
+        "OperationID" : "1",
+        "Title" : "Generation",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "2",
+        "Title" : "Init M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "3",
+        "Title" : "Full workflow",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "4",
+        "Title" : "Modify M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "5",
+        "Title" : "Persistent memory after M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "6",
+        "Title" : "Peak memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "7",
+        "Title" : "Average memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "8",
+        "Title" : "Persistent memory after Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "9",
+        "Title" : "Peak memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "10",
+        "Title" : "Average memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      } ]
+    }, {
+      "Name" : "m2m-reduced-201710132319-build185",
+      "ID" : 41,
+      "ResultData" : [ {
+        "DiagramType" : "line",
+        "OperationID" : "1",
+        "Title" : "Generation",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "2",
+        "Title" : "Init M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "3",
+        "Title" : "Full workflow",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "4",
+        "Title" : "Modify M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "5",
+        "Title" : "Persistent memory after M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "6",
+        "Title" : "Peak memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "7",
+        "Title" : "Average memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "8",
+        "Title" : "Persistent memory after Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "9",
+        "Title" : "Peak memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "10",
+        "Title" : "Average memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      } ]
+    }, {
+      "Name" : "m2m-reduced-201710141036-build186",
+      "ID" : 42,
+      "ResultData" : [ {
+        "DiagramType" : "line",
+        "OperationID" : "1",
+        "Title" : "Generation",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "2",
+        "Title" : "Init M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "3",
+        "Title" : "Full workflow",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "4",
+        "Title" : "Modify M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "5",
+        "Title" : "Persistent memory after M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "6",
+        "Title" : "Peak memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "7",
+        "Title" : "Average memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "8",
+        "Title" : "Persistent memory after Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "9",
+        "Title" : "Peak memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "10",
+        "Title" : "Average memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      } ]
+    }, {
+      "Name" : "m2m-reduced-201805172037-build195",
+      "ID" : 43,
+      "ResultData" : [ {
+        "DiagramType" : "line",
+        "OperationID" : "1",
+        "Title" : "Generation",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "2",
+        "Title" : "Init M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "3",
+        "Title" : "Full workflow",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "4",
+        "Title" : "Modify M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Time",
+        "Metric" : "Time"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "5",
+        "Title" : "Persistent memory after M2M",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "6",
+        "Title" : "Peak memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "7",
+        "Title" : "Average memory during M2M",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "8",
+        "Title" : "Persistent memory after Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "Memory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "9",
+        "Title" : "Peak memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "PeakMemory",
+        "Metric" : "Memory"
+      }, {
+        "DiagramType" : "line",
+        "OperationID" : "10",
+        "Title" : "Average memory during Initialization",
+        "XLabel" : "Size",
+        "YLabel" : "AverageMemory",
+        "Metric" : "Memory"
+      } ]
+    } ]
+  },
+  "ToolColor" : [ {
+    "ToolName" : "BATCH_OPTIMIZED-TEMPLATE",
+    "Color" : "rgba(191, 63, 63, 1)"
+  }, {
+    "ToolName" : "INCR_VIATRA_TRANSFORMATION-TEMPLATE",
+    "Color" : "rgba(63, 63, 191, 1)"
+  }, {
+    "ToolName" : "BATCH_VIATRA_QUERY_RETE-TEMPLATE",
+    "Color" : "rgba(12, 12, 38, 1)"
+  }, {
+    "ToolName" : "BATCH_VIATRA_QUERY_LOCAL_SEARCH_GENERIC-TEMPLATE",
+    "Color" : "rgba(172, 11, 161, 1)"
+  }, {
+    "ToolName" : "BATCH_VIATRA_QUERY_LOCAL_SEARCH-TEMPLATE",
+    "Color" : "rgba(50, 82, 45, 1)"
+  }, {
+    "ToolName" : "BATCH_VIATRA_QUERY_LOCAL_SEARCH_WO_INDEXER-TEMPLATE",
+    "Color" : "rgba(50, 82, 45, 1)"
+  }, {
+    "ToolName" : "BATCH_VIATRA_TRANSFORMATION-TEMPLATE",
+    "Color" : "rgba(50, 82, 45, 1)"
+  }, {
+    "ToolName" : "INCR_VIATRA_QUERY_RESULT_TRACEABILITY-TEMPLATE",
+    "Color" : "rgba(50, 82, 45, 1)"
+  }, {
+    "ToolName" : "INCR_VIATRA_EXPLICIT_TRACEABILITY-TEMPLATE",
+    "Color" : "rgba(50, 82, 45, 1)"
+  }, {
+    "ToolName" : "INCR_VIATRA_AGGREGATED-TEMPLATE",
+    "Color" : "rgba(50, 82, 45, 1)"
+  }, {
+    "ToolName" : "BATCH_VIATRA_QUERY_LOCAL_SEARCH_TRACE_STATS-TEMPLATE",
+    "Color" : "rgba(50, 82, 45, 1)"
+  }, {
+    "ToolName" : "BATCH_VIATRA_QUERY_LOCAL_SEARCH_DUMB_PLANNER-TEMPLATE",
+    "Color" : "rgba(50, 82, 45, 1)"
+  }, {
+    "ToolName" : "BATCH_SIMPLE-TEMPLATE",
+    "Color" : "rgba(50, 82, 45, 1)"
+  }, {
+    "ToolName" : "BATCH_VIATRA_QUERY_LOCAL_SEARCH_NO_FLAT-TEMPLATE",
+    "Color" : "rgba(50, 82, 45, 1)"
+  } ]
 }
