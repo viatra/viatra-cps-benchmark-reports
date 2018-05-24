@@ -30,5 +30,29 @@ pipeline {
                 sh './com.viatra.cps.benchmark.reports.processing/run.sh "./viatra-cps-benchmark-results/" "m2m-reduced" "./com.viatra.cps.benchmark.reports.processing/aggregatorConfig.json" "./" "./com.viatra.cps.benchmark.reports.processing/build.config.template.json" "./com.viatra.cps.benchmark.reports.processing/diagram.config.template.json" "./com.viatra.cps.benchmark.reports.processing" < ./com.viatra.cps.benchmark.reports.processing/builds.txt'
             }
         }
+        stage('Initialize visualizer'){
+            steps{
+                nodejs(nodeJSInstallationName: 'Latest'){
+                    sh 'npm --prefix ./visualizer'
+                }
+            }
+        }
+        stage('Build visualizer'){
+            steps{
+                nodejs(nodeJSInstallationName: 'Latest'){
+                    sh 'npm --prefix ./visualizer run build' 
+                }
+            }
+        }
+        stage('Deploy'){
+            steps{
+                nodejs(nodeJSInstallationName: 'Latest'){
+                    sshagent(['24f0908d-7662-4e93-80cc-1143b7f92ff1']) {
+                        sh 'npm --prefix ./visualizer run deploy' 
+                    }
+
+                }
+            }
+        }
     }
 }
