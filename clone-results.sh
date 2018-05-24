@@ -1,7 +1,4 @@
 #!/bin/bash
-
-cd "$( cd "$( dirname "$0" )" && pwd )/../.."
-
 # Clone results repository if needed
 if [ -d "viatra-cps-benchmark-results" ]; then
   # Repo exists, update
