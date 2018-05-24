@@ -25,6 +25,10 @@ pipeline {
                 }
             }
         }
-
+        stege('Process'){
+            steps{
+                sh './com.viatra.cps.benchmark.reports.processing/run.sh "./viatra-cps-benchmark-results/" "m2m-reduced" "./com.viatra.cps.benchmark.reports.processing/aggregatorConfig.json" "./com.viatra.cps.benchmark.reports.processing/build.config.template.json" "./com.viatra.cps.benchmark.reports.processing/diagram.config.template.json" < ./com.viatra.cps.benchmark.reports.processing/builds.txt'
+            }
+        }
     }
 }
