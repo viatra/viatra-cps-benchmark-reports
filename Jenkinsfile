@@ -52,8 +52,8 @@ pipeline {
         }
         stage('Deploy'){
             steps{
-                nodejs(nodeJSInstallationName: 'Latest'){
-                    sshagent(['24f0908d-7662-4e93-80cc-1143b7f92ff1']) {
+                sshagent(['24f0908d-7662-4e93-80cc-1143b7f92ff1']) {
+                    nodejs(nodeJSInstallationName: 'Latest'){
                         sh '''
                         cd ./resultVisualizer
                         npm run deploy
