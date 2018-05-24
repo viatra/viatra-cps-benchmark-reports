@@ -33,7 +33,7 @@ pipeline {
         stage('Initialize visualizer'){
             steps{
                 nodejs(nodeJSInstallationName: 'Latest'){
-                    sh 'npm --prefix ./visualizer'
+                    sh 'npm --prefix ./visualizer install' 
                 }
             }
         }
