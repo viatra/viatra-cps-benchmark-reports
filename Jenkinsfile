@@ -33,14 +33,17 @@ pipeline {
         stage('Initialize visualizer'){
             steps{
                 nodejs(nodeJSInstallationName: 'Latest'){
-                    sh 'npm --prefix ./visualizer install' 
+                    sh '''
+                    cd ./resultVisualizer
+                    npm  install
+                    ''' 
                 }
             }
         }
         stage('Build visualizer'){
             steps{
                 nodejs(nodeJSInstallationName: 'Latest'){
-                    sh 'npm --prefix ./visualizer run build' 
+                    sh 'npm  run build' 
                 }
             }
         }
@@ -48,7 +51,7 @@ pipeline {
             steps{
                 nodejs(nodeJSInstallationName: 'Latest'){
                     sshagent(['24f0908d-7662-4e93-80cc-1143b7f92ff1']) {
-                        sh 'npm --prefix ./visualizer run deploy' 
+                        sh 'npm run deploy' 
                     }
 
                 }
