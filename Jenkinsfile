@@ -18,15 +18,13 @@ pipeline {
                  sh 'mvn -f "./com.viatra.cps.benchmark.reports.processing/pom.xml" install'
             }
         }
-        stage('Build Visualizer'){
+        stage('Update viatra-cps-benchmark-results') {
             steps {
-                sh 'npm run  build --prefix "./resultVisualizer/"'
+                sshagent(['24f0908d-7662-4e93-80cc-1143b7f92ff1']) {
+                    sh "./clone-results.sh"
+                }
             }
         }
-        stage('Deploy') {
-            steps {
-                echo 'Deploying....'
-            }
-        }
+
     }
 }
