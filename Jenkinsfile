@@ -3,13 +3,13 @@ pipeline {
     stages {
         stage('Build Processor') {
             steps {
-                mvn -f ./com.viatra.cps.benchmark.reports.processing/pom.xml install
+                mvn -f "./com.viatra.cps.benchmark.reports.processing/pom.xml" install
                 
             }
         }
         state('Build Visualizer'){
             steps{
-                npm run  build --prefix ./resultVisualizer/
+                npm run  build --prefix "./resultVisualizer/"
             }
         }
         stage('Deploy') {
