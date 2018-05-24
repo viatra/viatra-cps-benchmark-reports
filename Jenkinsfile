@@ -56,7 +56,7 @@ pipeline {
                     sshagent(['24f0908d-7662-4e93-80cc-1143b7f92ff1']) {
                         sh '''
                         cd ./resultVisualizer
-                        npm  deploy
+                        npm run deploy
                         ''' 
                     }
 
