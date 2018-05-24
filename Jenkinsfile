@@ -1,15 +1,26 @@
 pipeline {
     agent any
-    stages {
+    tools { 
+        maven 'Maven 3.3.9' 
+        jdk 'jdk8' 
+    }
+        stages {
+        stage ('Initialize') {
+            steps {
+                sh '''
+                    echo "PATH = ${PATH}"
+                    echo "M2_HOME = ${M2_HOME}"
+                ''' 
+            }
+        }
         stage('Build Processor') {
             steps {
-                mvn -f "./com.viatra.cps.benchmark.reports.processing/pom.xml" install
-                
+                 sh 'mvn -f "./com.viatra.cps.benchmark.reports.processing/pom.xml" install'
             }
         }
         state('Build Visualizer'){
-            steps{
-                npm run  build --prefix "./resultVisualizer/"
+            steps {
+                sh 'npm run  build --prefix "./resultVisualizer/"'
             }
         }
         stage('Deploy') {
