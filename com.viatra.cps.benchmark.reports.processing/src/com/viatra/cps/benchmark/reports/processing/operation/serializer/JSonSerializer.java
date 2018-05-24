@@ -142,6 +142,7 @@ public class JSonSerializer implements Operation {
 	public boolean start() {
 		try {
 			this.thread = new Thread(this);
+			this.thread.setDaemon(true);
 			this.queue = new ConcurrentLinkedQueue<>();
 			this.running = true;
 			this.thread.start();

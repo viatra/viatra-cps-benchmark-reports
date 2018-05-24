@@ -38,6 +38,7 @@ public abstract class NumericOperation implements Operation {
 				this.filter.start();
 			}
 			this.thread = new Thread(this);
+			this.thread.setDaemon(true);
 			this.lock = new Object();
 			this.queue = new ConcurrentLinkedQueue<>();
 			this.running = true;

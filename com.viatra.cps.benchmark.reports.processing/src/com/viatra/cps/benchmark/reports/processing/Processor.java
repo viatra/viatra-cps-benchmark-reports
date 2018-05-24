@@ -35,6 +35,7 @@ public class Processor {
 	String builds;
 	String diagramConfig;
 	Boolean updateDiagConfig;
+	Boolean timeout;
 	int counter;
 
 	public Processor(String buildName, String buildTemplate, String digramTemplate, String diagramConfig, String builds,
@@ -45,6 +46,7 @@ public class Processor {
 		this.diagramConfig = diagramConfig;
 		this.builds = builds;
 		this.updateDiagConfig = updateDiagConfig;
+		this.timeout = false;
 		mapper = new ObjectMapper();
 	}
 
@@ -154,10 +156,15 @@ public class Processor {
 			last.stop();
 		});
 
-		while (counter > 0) {
+		while (counter > 0 && !this.timeout) {
+			int tmp = counter;
 			synchronized (lock) {
 				try {
-					lock.wait();
+					lock.wait(10000);
+					if(tmp == counter) {
+						this.timeout = true;
+						System.err.println(this.buildName + " timeout");
+					}
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

@@ -44,6 +44,7 @@ public abstract class Filter implements Operation {
 		try {
 			synchronized (this.lock) {
 				this.thread = new Thread(this);
+				this.thread.setDaemon(true);
 				this.queue = new ConcurrentLinkedQueue<>();
 				this.running = true;
 				this.thread.start();
