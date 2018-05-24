@@ -2,7 +2,7 @@ pipeline {
     agent any
     tools { 
         maven 'Maven 3.3.9' 
-        jdk 'jdk8' 
+        jdk 'OpenJDK 8' 
     }
         stages {
         stage ('Initialize') {
@@ -18,7 +18,7 @@ pipeline {
                  sh 'mvn -f "./com.viatra.cps.benchmark.reports.processing/pom.xml" install'
             }
         }
-        state('Build Visualizer'){
+        stage('Build Visualizer'){
             steps {
                 sh 'npm run  build --prefix "./resultVisualizer/"'
             }
