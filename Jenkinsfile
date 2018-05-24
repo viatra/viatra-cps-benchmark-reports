@@ -43,7 +43,10 @@ pipeline {
         stage('Build visualizer'){
             steps{
                 nodejs(nodeJSInstallationName: 'Latest'){
-                    sh 'npm  run build' 
+                    sh '''
+                    cd ./resultVisualizer
+                    npm  run build
+                    ''' 
                 }
             }
         }
@@ -51,7 +54,10 @@ pipeline {
             steps{
                 nodejs(nodeJSInstallationName: 'Latest'){
                     sshagent(['24f0908d-7662-4e93-80cc-1143b7f92ff1']) {
-                        sh 'npm run deploy' 
+                        sh '''
+                        cd ./resultVisualizer
+                        npm  deploy
+                        ''' 
                     }
 
                 }
