@@ -34,15 +34,17 @@ public class Processor {
 	String digramTemplate;
 	String builds;
 	String diagramConfig;
+	Boolean updateDiagConfig;
 	int counter;
 
-	public Processor(String buildName, String buildTemplate, String digramTemplate, String diagramConfig,
-			String builds) {
+	public Processor(String buildName, String buildTemplate, String digramTemplate, String diagramConfig, String builds,
+			Boolean updateDiagConfig) {
 		this.buildName = buildName;
 		this.buildTemplate = buildTemplate;
 		this.digramTemplate = digramTemplate;
 		this.diagramConfig = diagramConfig;
 		this.builds = builds;
+		this.updateDiagConfig = updateDiagConfig;
 		mapper = new ObjectMapper();
 	}
 
@@ -91,11 +93,18 @@ public class Processor {
 			build.setId(buildId);
 			build.setName(buildName);
 			DiagramConfig diagramConfig;
-			if (diagramConfigJson.exists()) {
-				diagramConfig = mapper.readValue(diagramConfigJson, DiagramConfig.class);
-			} else {
+			if (!diagramConfigJson.exists() || this.updateDiagConfig) {
 				File digramConfigTemplate = new File(this.digramTemplate);
-				diagramConfig = mapper.readValue(digramConfigTemplate, DiagramConfig.class);
+				if (!diagramConfigJson.exists()) {
+					diagramConfig = mapper.readValue(digramConfigTemplate, DiagramConfig.class);
+				} else {
+					diagramConfig = mapper.readValue(diagramConfigJson, DiagramConfig.class);
+					DiagramConfig tmp = mapper.readValue(digramConfigTemplate, DiagramConfig.class);
+					diagramConfig.setToolColors(tmp.getToolColors());
+					mapper.writeValue(diagramConfigJson, diagramConfig);
+				}
+			} else {
+				diagramConfig = mapper.readValue(diagramConfigJson, DiagramConfig.class);
 			}
 
 			if (!diagramConfig.getResultConfig().getBuilds().stream().filter(savedBuild -> {

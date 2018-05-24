@@ -23,6 +23,7 @@ public class Main {
 		options.addOption("dt", "digram-config-template", true, "Diagram Config Template's path");
 		options.addOption("bs", "builds", true, "Builds.json's path");
 		options.addOption("dc", "diagram-config", true, "Diagram config's path");
+		options.addOption("u","update-config",false,"Update diagram config");
 
 		CommandLineParser parser = new DefaultParser();
 		CommandLine cmd;
@@ -36,7 +37,8 @@ public class Main {
 			String diagramTemplate = cmd.getOptionValue("dt");
 			String builds = cmd.getOptionValue("bs");
 			String diagramConfig = cmd.getOptionValue("dc");
-			Processor process = new Processor(buildName, buildTemplate, diagramTemplate, diagramConfig, builds);
+			Boolean updateDiagConfig = cmd.hasOption("u");
+			Processor process = new Processor(buildName, buildTemplate, diagramTemplate, diagramConfig, builds,updateDiagConfig);
 			try {
 				process.loadBenchmarkResults(new File(configPath),
 						aggresult + "/" + buildName);
