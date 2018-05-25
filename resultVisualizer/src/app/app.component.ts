@@ -29,12 +29,14 @@ export class AppComponent implements OnInit{
       "diagramTitle" : {
       "glyphicon" : true,
       "glyphicon-eye-open": true,
-      "glyphicon-eye-close": false
+      "glyphicon-eye-close": false,
+      "missing": false
     },
       "legendTitle":  {
       "glyphicon" : true,
       "glyphicon-eye-open": true,
-      "glyphicon-eye-close": false
+      "glyphicon-eye-close": false,   
+      "missing": false
     }
   }
     this._router.events.subscribe(event=>{
