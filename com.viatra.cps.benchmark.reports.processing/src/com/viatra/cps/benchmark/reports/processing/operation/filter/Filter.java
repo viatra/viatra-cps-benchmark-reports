@@ -1,7 +1,7 @@
 package com.viatra.cps.benchmark.reports.processing.operation.filter;
 
 import java.util.List;
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.LinkedBlockingDeque;
 
 import com.viatra.cps.benchmark.reports.processing.operation.Operation;
 import eu.mondo.sam.core.results.BenchmarkResult;
@@ -11,25 +11,28 @@ public abstract class Filter implements Operation {
 	protected Thread thread;
 	protected Boolean running;
 	protected Object lock;
-	protected ConcurrentLinkedQueue<BenchmarkResult> queue;
+	protected LinkedBlockingDeque<BenchmarkResult> queue;
 	protected Operation next;
 	protected Boolean contained;
+	protected String id;
 
-	public Filter(List<Object> elements, Operation next, Boolean contained) {
+	public Filter(List<Object> elements, Operation next, Boolean contained, String id) {
 		this.elements = elements;
+		this.id = id;
 		this.contained = contained;
 		this.next = next;
 		this.running = false;
 		this.lock = new Object();
 	}
 
-	public Filter(List<Object> elements, Boolean contained) {
+	public Filter(List<Object> elements, Boolean contained, String id) {
 		this.elements = elements;
+		this.id = id;
 		this.contained = contained;
 		this.running = false;
 		this.lock = new Object();
 	}
-	
+
 	public Thread getThread() {
 		return thread;
 	}
@@ -42,19 +45,17 @@ public abstract class Filter implements Operation {
 	@Override
 	public boolean start() {
 		try {
-			synchronized (this.lock) {
-				this.thread = new Thread(this);
-				this.thread.setDaemon(true);
-				this.queue = new ConcurrentLinkedQueue<>();
-				this.running = true;
-				this.thread.start();
-				if (!this.contained) {
-					return this.next.start();
-				}
+			this.thread = new Thread(this);
+			this.thread.setDaemon(true);
+			this.queue = new LinkedBlockingDeque<>();
+			this.running = true;
+			this.thread.start();
+			if (!this.contained) {
+				return this.next.start();
 			}
-
 			return true;
 		} catch (IllegalThreadStateException e) {
+			e.printStackTrace();
 			return false;
 		}
 	}
@@ -69,12 +70,12 @@ public abstract class Filter implements Operation {
 
 	@Override
 	public void stop() {
-		synchronized (lock) {
+		synchronized (this.lock) {
 			this.running = false;
 			this.lock.notify();
 		}
 	}
-	
+
 	protected BenchmarkResult createBenchmarkResult(BenchmarkResult benchmarkResult) {
 		BenchmarkResult newRes = new BenchmarkResult();
 		newRes.setCaseDescriptor(benchmarkResult.getCaseDescriptor());

@@ -14,50 +14,51 @@ import com.viatra.cps.benchmark.reports.processing.operation.numeric.Summary;
 
 public class OperationFactory {
 	public static Operation createOperation(Operation next, String operationType, List<Object> elements,
-			String attribute) {
+			String attribute, String id) {
 		Filter filter = null;
 		switch (operationType) {
 		case "Average":
-			filter = createFilter(elements, null, true, attribute);
+			filter = createFilter(elements, null, true, attribute, id);
 			if (filter == null) {
 				return null;
 			}
-			NumericOperation avg = new Average(filter, next);
+			NumericOperation avg = new Average(filter, next,id);
 			filter.setNext(avg);
 			return avg;
 		case "Mean":
-			filter = createFilter(elements, null, true, attribute);
+			filter = createFilter(elements, null, true, attribute, id);
 			if (filter == null) {
 				return null;
 			}
-			NumericOperation mean = new Mean(filter, next);
+			NumericOperation mean = new Mean(filter, next,id);
 			filter.setNext(mean);
 			return mean;
 		case "Summary":
-			filter = createFilter(elements, null, true, attribute);
+			filter = createFilter(elements, null, true, attribute, id);
 			if (filter == null) {
 				return null;
 			}
-			NumericOperation sum = new Summary(filter, next);
+			NumericOperation sum = new Summary(filter, next,id);
 			filter.setNext(sum);
 			return sum;
 		case "Filter":
-			return createFilter(elements, next, false, attribute);
+			return createFilter(elements, next, false, attribute, id);
 		default:
 			return null;
 		}
 	}
 
-	private static Filter createFilter(List<Object> elements, Operation next, Boolean contained, String type) {
+	private static Filter createFilter(List<Object> elements, Operation next, Boolean contained, String type,
+			String id) {
 		switch (type) {
 		case "Metric":
-			return new MetricFilter(elements, next, contained);
+			return new MetricFilter(elements, next, contained, id);
 		case "Phase-Name":
-			return new PhaseNameFilter(elements, next, contained);
+			return new PhaseNameFilter(elements, next, contained, id);
 		case "Tool":
-			return new ToolFilter(elements, next, contained);
+			return new ToolFilter(elements, next, contained, id);
 		case "RunIndex":
-			return new RunIndexFilter(elements, next, contained);
+			return new RunIndexFilter(elements, next, contained, id);
 		default:
 			return null;
 		}

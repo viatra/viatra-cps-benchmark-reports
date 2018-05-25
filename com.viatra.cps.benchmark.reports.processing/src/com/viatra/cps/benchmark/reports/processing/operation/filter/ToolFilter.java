@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import com.viatra.cps.benchmark.reports.processing.operation.Operation;
 import com.viatra.cps.benchmark.reports.processing.operation.numeric.NumericOperation;
@@ -14,13 +15,13 @@ import eu.mondo.sam.core.results.BenchmarkResult;
 public class ToolFilter extends Filter {
 	private Map<String, Map<Integer, Map<Integer, List<BenchmarkResult>>>> benchmarkMap;
 
-	public ToolFilter(List<Object> elements, Boolean contained) {
-		super(elements, contained);
+	public ToolFilter(List<Object> elements, Boolean contained, String id) {
+		super(elements, contained, id);
 		this.benchmarkMap = new HashMap<>();
 	}
 
-	public ToolFilter(List<Object> elements, Operation next, Boolean contained) {
-		super(elements, next, contained);
+	public ToolFilter(List<Object> elements, Operation next, Boolean contained, String id) {
+		super(elements, next, contained, id);
 		this.benchmarkMap = new HashMap<>();
 	}
 
@@ -28,18 +29,12 @@ public class ToolFilter extends Filter {
 	public void run() {
 		while (this.running || !this.queue.isEmpty()) {
 			BenchmarkResult benchmarkResult = null;
-			synchronized (this.lock) {
-				if (this.queue.isEmpty()) {
-					try {
-						lock.wait();
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-				benchmarkResult = this.queue.poll();
+			try {
+				benchmarkResult = this.queue.poll(10, TimeUnit.MILLISECONDS);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-
 			if (benchmarkResult != null) {
 				if (this.elements.size() > 0) {
 					if (this.isNeeded(benchmarkResult, elements)) {

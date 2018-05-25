@@ -3,7 +3,6 @@ package com.viatra.cps.benchmark.reports.processing;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -141,10 +140,10 @@ public class Processor {
 			for (OperationConfig opconfig : opconf) {
 				if (last == null) {
 					last = OperationFactory.createOperation(tmp, opconfig.getType(), opconfig.getFilter(),
-							opconfig.getAttribute());
+							opconfig.getAttribute(),aggConfig.getID());
 				} else {
 					last = OperationFactory.createOperation(last, opconfig.getType(), opconfig.getFilter(),
-							opconfig.getAttribute());
+							opconfig.getAttribute(),aggConfig.getID());
 				}
 			}
 			;

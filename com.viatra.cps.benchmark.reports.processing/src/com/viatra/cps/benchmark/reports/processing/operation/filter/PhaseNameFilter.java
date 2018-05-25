@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import com.viatra.cps.benchmark.reports.processing.operation.Operation;
 import com.viatra.cps.benchmark.reports.processing.operation.numeric.NumericOperation;
@@ -16,29 +17,23 @@ public class PhaseNameFilter extends Filter {
 
 	private Map<String, List<PhaseResult>> phaseMap;
 
-	public PhaseNameFilter(List<Object> elements, Boolean contained) {
-		super(elements, contained);
+	public PhaseNameFilter(List<Object> elements, Boolean contained, String id) {
+		super(elements, contained, id);
 	}
 
-	public PhaseNameFilter(List<Object> elements, Operation next, Boolean contained) {
-		super(elements, next, contained);
+	public PhaseNameFilter(List<Object> elements, Operation next, Boolean contained, String id) {
+		super(elements, next, contained, id);
 	}
 
 	@Override
 	public void run() {
 		while (this.running || !this.queue.isEmpty()) {
 			BenchmarkResult benchmarkResult = null;
-			synchronized (this.lock) {
-				// Wait for result
-				if (this.queue.isEmpty()) {
-					try {
-						this.lock.wait();
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-				}
-				// Work on result
-				benchmarkResult = this.queue.poll();
+			try {
+				benchmarkResult = this.queue.poll(10, TimeUnit.MILLISECONDS);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 			if (benchmarkResult != null) {
 				this.phaseMap = new HashMap<>();
@@ -85,8 +80,6 @@ public class PhaseNameFilter extends Filter {
 		}
 		phaseList.add(phaseResult);
 	}
-
-
 
 	private Boolean isNeeded(PhaseResult phaseResult, List<Object> elements) {
 		Boolean need = elements.stream().filter(phaseName -> {

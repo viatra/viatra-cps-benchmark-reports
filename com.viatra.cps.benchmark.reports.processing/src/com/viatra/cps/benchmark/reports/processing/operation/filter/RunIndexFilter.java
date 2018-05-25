@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import com.viatra.cps.benchmark.reports.processing.operation.Operation;
 import com.viatra.cps.benchmark.reports.processing.operation.numeric.NumericOperation;
@@ -15,13 +16,13 @@ public class RunIndexFilter extends Filter {
 
 	private Map<String, Map<Integer, List<BenchmarkResult>>> benchmarkMap;
 
-	public RunIndexFilter(List<Object> elements, Operation next, Boolean contained) {
-		super(elements, next, contained);
+	public RunIndexFilter(List<Object> elements, Operation next, Boolean contained, String id) {
+		super(elements, next, contained, id);
 		this.benchmarkMap = new HashMap<>();
 	}
 
-	public RunIndexFilter(List<Object> elements, Boolean contained) {
-		super(elements, contained);
+	public RunIndexFilter(List<Object> elements, Boolean contained, String id) {
+		super(elements, contained, id);
 		this.benchmarkMap = new HashMap<>();
 	}
 
@@ -29,16 +30,11 @@ public class RunIndexFilter extends Filter {
 	public void run() {
 		while (this.running || !this.queue.isEmpty()) {
 			BenchmarkResult benchmarkResult = null;
-			synchronized (this.lock) {
-				if (this.queue.isEmpty()) {
-					try {
-						lock.wait();
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-				benchmarkResult = this.queue.poll();
+			try {
+				benchmarkResult = this.queue.poll(10, TimeUnit.MILLISECONDS);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 			if (benchmarkResult != null) {
 
@@ -53,6 +49,7 @@ public class RunIndexFilter extends Filter {
 			}
 		}
 		this.calculate();
+
 	}
 
 	private void calculate() {

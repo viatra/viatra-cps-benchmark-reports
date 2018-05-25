@@ -8,37 +8,28 @@ import eu.mondo.sam.core.results.PhaseResult;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 public class MetricFilter extends Filter {
 
-	public MetricFilter(List<Object> elements, Operation next, Boolean contained) {
-		super(elements, next, contained);
+	public MetricFilter(List<Object> elements, Operation next, Boolean contained, String id) {
+		super(elements, next, contained, id);
 	}
 
-	public MetricFilter(List<Object> elements, Boolean contained) {
-		super(elements, contained);
-	}
-	
-	@Override
-	public boolean start() {
-		super.start();
-		return true;
+	public MetricFilter(List<Object> elements, Boolean contained, String id) {
+		super(elements, contained, id);
 	}
 
 	@Override
 	public void run() {
 		while (this.running || !this.queue.isEmpty()) {
 			BenchmarkResult benchmarkResult = null;
-			synchronized (this.lock) {
-				if (this.queue.isEmpty()) {
-					try {
-						this.lock.wait();
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-				}
-				benchmarkResult = this.queue.poll();
+			try {
+				benchmarkResult = this.queue.poll(10, TimeUnit.MILLISECONDS);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 			if (benchmarkResult != null) {
 				BenchmarkResult filteredResult = this.createBenchmarkResult(benchmarkResult);

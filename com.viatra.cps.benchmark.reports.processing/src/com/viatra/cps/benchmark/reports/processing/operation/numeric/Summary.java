@@ -11,19 +11,21 @@ import eu.mondo.sam.core.results.PhaseResult;
 
 public class Summary extends NumericOperation {
 
-	public Summary(Filter filter, Operation next) {
-		super(filter, next);
+	public Summary(Filter filter, Operation next, String id) {
+		super(filter, next, id);
 	}
 
-	public Summary(Filter filter) {
-		super(filter);
+	public Summary(Filter filter, String id) {
+		super(filter, id);
 	}
 
 	@Override
 	public void calculate() {
 		next.start();
 		try {
-			this.filter.getThread().join();
+			if (filter.getThread().isAlive()) {
+				this.filter.getThread().join();
+			}
 			while (!queue.isEmpty()) {
 				Double sum = 0.0;
 				BenchmarkResult res = queue.poll();

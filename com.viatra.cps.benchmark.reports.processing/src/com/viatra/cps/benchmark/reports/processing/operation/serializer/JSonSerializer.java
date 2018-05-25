@@ -30,6 +30,7 @@ public class JSonSerializer implements Operation {
 	public Thread getThread() {
 		return thread;
 	}
+
 	protected Processor processor;
 	protected Boolean running;
 	protected Object lock;
@@ -45,7 +46,7 @@ public class JSonSerializer implements Operation {
 		this.result = new AggregataedResult(ID, "", "");
 		this.map = new HashMap<>();
 	}
-	
+
 	public void setProcessor(Processor p) {
 		this.processor = p;
 	}
@@ -63,8 +64,8 @@ public class JSonSerializer implements Operation {
 						e.printStackTrace();
 					}
 				}
-				benchmarkResult = this.queue.poll();
 			}
+			benchmarkResult = this.queue.poll();
 			if (benchmarkResult != null) {
 				this.addToMap(benchmarkResult);
 			}
@@ -170,7 +171,7 @@ public class JSonSerializer implements Operation {
 
 	@Override
 	public void setNext(Operation next) {
-		//Do nothing
+		// Do nothing
 	}
 
 }

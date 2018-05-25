@@ -12,17 +12,20 @@ public abstract class NumericOperation implements Operation {
 	protected Thread thread;
 	protected Boolean running;
 	protected Object lock;
+	protected String id;
 	protected ConcurrentLinkedQueue<BenchmarkResult> queue;
 	protected Operation next;
 
-	public NumericOperation(Filter filter, Operation next) {
+	public NumericOperation(Filter filter, Operation next, String id) {
 		this.filter = filter;
 		this.next = next;
 		this.running = false;
+		this.id = id;
 	}
 
-	public NumericOperation(Filter filter) {
+	public NumericOperation(Filter filter, String id) {
 		this.filter = filter;
+		this.id = id;
 		this.running = false;
 	}
 
@@ -43,9 +46,9 @@ public abstract class NumericOperation implements Operation {
 			this.queue = new ConcurrentLinkedQueue<>();
 			this.running = true;
 			this.thread.start();
-
 			return true;
 		} catch (IllegalThreadStateException e) {
+			e.printStackTrace();
 			return false;
 		}
 	}

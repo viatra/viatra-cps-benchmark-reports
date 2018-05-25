@@ -13,16 +13,17 @@ import eu.mondo.sam.core.results.PhaseResult;
 
 public class Mean extends NumericOperation {
 
-	public Mean(Filter filter, Operation next) {
-		super(filter, next);
+	public Mean(Filter filter, Operation next,String id) {
+		super(filter, next,id);
 	}
 
 	@Override
 	protected void calculate() {
-
 		next.start();
 		try {
-			this.filter.getThread().join();
+			if (filter.getThread().isAlive()) {
+				this.filter.getThread().join();
+			}
 			while (!queue.isEmpty()) {
 				DescriptiveStatistics descriptiveStatistics = new DescriptiveStatistics();
 				BenchmarkResult res = queue.poll();
