@@ -21,6 +21,7 @@
 }
 
 .selected {
+    width: 30%;
     border-left: 1px solid #888888;
     margin-bottom: 10px;
 }
@@ -114,7 +115,7 @@ hr{
 .custom-group{
     width: 60%;
     text-align: center;
-    margin-left: 20%;
+    margin-left: 25%;
 }
 
 select {
@@ -125,4 +126,13 @@ select {
 
 .disabled {
     color: #888888;
+}
+
+.top{
+    top: 1;
+    position: fixed;
+    text-align: center;
+}
+.right{
+    right: 20.15%;
 }
