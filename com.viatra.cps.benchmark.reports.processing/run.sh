@@ -27,18 +27,4 @@ if [ -d "results" ]; then
   cd results
   git fetch
   git reset origin/Results --hard
-  cd ..
-else
-  # Clone repo
-  git clone git@github.com:viatra/viatra-cps-benchmark-reports.git results 
-fi
-cd ./results
-git checkout Results
-cd ..
-cp -r ./${case} ./results/${case}
-cp ./builds.json  ./results/builds.json
-cd ./results
-#git add .
-#git commit -m "upload new Results: ${case}"
-#git push
 
