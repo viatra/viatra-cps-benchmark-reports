@@ -35,7 +35,7 @@ fi
 cd ./results
 git checkout Results
 cd ..
-cp -rt ./${case} ./results/
+cp -r ./${case} ./results/${case}
 cat ./builds.json >> ./results/builds.json
 cd ./results
 git add .
