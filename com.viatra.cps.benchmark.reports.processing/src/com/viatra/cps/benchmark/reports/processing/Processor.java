@@ -3,6 +3,7 @@ package com.viatra.cps.benchmark.reports.processing;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -69,6 +70,7 @@ public class Processor {
 				cases = mapper.readValue(buildsJson, new TypeReference<List<Case>>() {
 				});
 			} else {
+				Files.createDirectories(Paths.get(this.builds).getParent());
 				cases = new ArrayList<>();
 			}
 			Optional<Case> c = cases.stream().filter(tmp -> tmp.getCaseName().equals(this.caseName)).findFirst();
@@ -117,7 +119,8 @@ public class Processor {
 			Build build = mapper.readValue(buildTemplate, Build.class);
 			build.setId(buildId);
 			build.setName(buildName);
-			File resultsJson = new File("results.json");
+			Files.createDirectories(Paths.get(this.caseName + "/" + this.buildName));
+			File resultsJson = new File(this.caseName + "/" + this.buildName + "/results.json");
 			mapper.writeValue(resultsJson, build);
 		} catch (Exception e) {
 			e.printStackTrace();
