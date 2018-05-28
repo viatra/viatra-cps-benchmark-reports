@@ -27,4 +27,9 @@ if [ -d "results" ]; then
   cd results
   git fetch
   git reset origin/Results --hard
+  cd ..
+else
+  # Clone repo
+  git clone git@github.com:viatra/viatra-cps-benchmark-reports.git results 
+fi
 
