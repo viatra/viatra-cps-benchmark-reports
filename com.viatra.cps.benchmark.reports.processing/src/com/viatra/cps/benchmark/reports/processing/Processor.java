@@ -34,20 +34,18 @@ public class Processor {
 	String buildName;
 	String buildTemplate;
 	String digramTemplate;
-	String builds;
 	String diagramConfig;
 	Boolean updateDiagConfig;
 	Boolean timeout;
 	String caseName;
 	int counter;
 
-	public Processor(String buildName, String buildTemplate, String digramTemplate, String diagramConfig, String builds,
+	public Processor(String buildName, String buildTemplate, String digramTemplate, String diagramConfig,
 			Boolean updateDiagConfig, String caseName) {
 		this.buildName = buildName;
 		this.buildTemplate = buildTemplate;
 		this.digramTemplate = digramTemplate;
 		this.diagramConfig = diagramConfig;
-		this.builds = builds;
 		this.caseName = caseName;
 		this.updateDiagConfig = updateDiagConfig;
 		this.timeout = false;
@@ -111,7 +109,11 @@ public class Processor {
 			// Updated diagram configuration
 			File diagramConfigJson = new File(this.digramTemplate);
 			DiagramConfig diagramConfig = mapper.readValue(diagramConfigJson, DiagramConfig.class);
-			mapper.writeValue(diagramConfigJson, diagramConfig);
+			File newConfig = new File(this.diagramConfig);
+			if (!newConfig.exists()) {
+				Files.createDirectories(Paths.get(this.diagramConfig).getParent());
+			}
+			mapper.writeValue(newConfig, diagramConfig);
 
 			// Save new build config
 			File buildTemplate = new File(this.buildTemplate);

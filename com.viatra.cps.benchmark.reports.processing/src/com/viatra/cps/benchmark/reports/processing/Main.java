@@ -22,7 +22,6 @@ public class Main {
 		options.addOption("a", "aggregated-results", true, "AggregatedResults's path");
 		options.addOption("bt", "build-template", true, "Build template");
 		options.addOption("dt", "digram-config-template", true, "Diagram Config Template's path");
-		options.addOption("bs", "builds", true, "Builds.json's path");
 		options.addOption("dc", "diagram-config", true, "Diagram config's path");
 		options.addOption("u","update-config",false,"Update diagram config");
 
@@ -37,10 +36,9 @@ public class Main {
 			String buildName = cmd.getOptionValue("b");
 			String buildTemplate = cmd.getOptionValue("bt");
 			String diagramTemplate = cmd.getOptionValue("dt");
-			String builds = cmd.getOptionValue("bs");
 			String diagramConfig = cmd.getOptionValue("dc");
 			Boolean updateDiagConfig = cmd.hasOption("u");
-			Processor process = new Processor(buildName, buildTemplate, diagramTemplate, diagramConfig, builds,updateDiagConfig,caseName);
+			Processor process = new Processor(buildName, buildTemplate, diagramTemplate, diagramConfig,updateDiagConfig,caseName);
 			try {
 				process.loadBenchmarkResults(new File(configPath),
 						aggresult + "/" + buildName);
