@@ -26,7 +26,7 @@ if [ -d "results" ]; then
   # Repo exists, update
   cd results
   git fetch
-  git reset origin/results --hard
+  git reset origin/Results --hard
   cd ..
 else
   # Clone repo
@@ -35,7 +35,7 @@ fi
 cd ./results
 git checkout Results
 cp -rt ../${case} ./
-cp -rt ../build.json ./
+cp -rt ../builds.json ./
 git add .
 git commit -m "upload new Results: ${case}"
 git push
