@@ -62,7 +62,7 @@ public class Processor {
 	public String updateBuildConfig() {
 		File buildsJson = new File("builds.json");
 		List<Case> cases;
-		String id;
+		String id = "undefined";
 		try {
 			if (buildsJson.exists()) {
 				cases = mapper.readValue(buildsJson, new TypeReference<List<Case>>() {
@@ -75,8 +75,8 @@ public class Processor {
 				List<String> builds = c.get().getBuilds();
 				if (!builds.stream().filter(build -> build.equals(buildName)).findFirst().isPresent()) {
 					builds.add(this.buildName);
+					id = this.caseName + "_" + c.get().getBuilds().size();
 				}
-				id = this.caseName + "_" + c.get().getBuilds().size();
 			} else {
 				Case newCase = new Case();
 				List<String> buildsList = new ArrayList<>();
@@ -120,9 +120,12 @@ public class Processor {
 			Build build = mapper.readValue(buildTemplate, Build.class);
 			build.setId(buildId);
 			build.setName(buildName);
-			Files.createDirectories(Paths.get(this.caseName + "/" + this.buildName));
-			File resultsJson = new File(this.caseName + "/" + this.buildName + "/build.config.json");
-			mapper.writeValue(resultsJson, build);
+			File conf = new File(this.caseName + "/" + this.buildName + "/build.config.json");
+			if(!conf.exists() ) {
+				Files.createDirectories(Paths.get(this.caseName + "/" + this.buildName));
+				File resultsJson = new File(this.caseName + "/" + this.buildName + "/build.config.json");
+				mapper.writeValue(resultsJson, build);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

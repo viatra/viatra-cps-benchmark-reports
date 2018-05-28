@@ -19,7 +19,7 @@ echo "Update Digram Config: " $updateConfig
 for build in "${builds[@]}"
 do
   echo "$build"
-  java -jar "$jarLocation/com.viatra.cps.benchmark.reports.processing-0.0.1-jar-with-dependencies.jar"  -r "${resultsLocation}/$case/$build/results.json" -c "${aggregatorConfig}" -a "${resultVisualizerLocation}/resultVisualizer/src/results/" -bt "${buildConfigTemplate}" -dt "${diagramConfigTemplate}" -bs "${resultVisualizerLocation}/resultVisualizer/src/config/builds.json" -dc "${resultVisualizerLocation}/resultVisualizer/src/config/diagram.config.json" -b "$build" -ca "${case}" -u ${updateConfig}
+  java -jar "$jarLocation/com.viatra.cps.benchmark.reports.processing-0.0.1-jar-with-dependencies.jar"  -r "${resultsLocation}/$case/$build/results.json" -c "${aggregatorConfig}" -a "${resultVisualizerLocation}/resultVisualizer/src/results/" -bt "${buildConfigTemplate}" -dt "${diagramConfigTemplate}"  -dc "${resultVisualizerLocation}/resultVisualizer/src/config/diagram.config.json" -b "$build" -ca "${case}" -u ${updateConfig}
 done
 
 if [ -d "results" ]; then
@@ -41,3 +41,4 @@ cd ./results
 git add .
 git commit -m "upload new Results: ${case}"
 git push
+
