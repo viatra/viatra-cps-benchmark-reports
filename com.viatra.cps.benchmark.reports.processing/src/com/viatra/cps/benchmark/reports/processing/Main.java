@@ -18,6 +18,7 @@ public class Main {
 		options.addOption("b", "build-name", true, "Build's name");
 		options.addOption("r", "results", true, "Mondo-Sam result's path");
 		options.addOption("c", "config", true, "AggregatedConfigouration's path");
+		options.addOption("ca", "case", true, "CaseName");
 		options.addOption("a", "aggregated-results", true, "AggregatedResults's path");
 		options.addOption("bt", "build-template", true, "Build template");
 		options.addOption("dt", "digram-config-template", true, "Diagram Config Template's path");
@@ -31,6 +32,7 @@ public class Main {
 			cmd = parser.parse(options, args);
 			String resultPath = cmd.getOptionValue("r");
 			String configPath = cmd.getOptionValue("c");
+			String caseName = cmd.getOptionValue("ca");
 			String aggresult = cmd.getOptionValue("a");
 			String buildName = cmd.getOptionValue("b");
 			String buildTemplate = cmd.getOptionValue("bt");
@@ -38,7 +40,7 @@ public class Main {
 			String builds = cmd.getOptionValue("bs");
 			String diagramConfig = cmd.getOptionValue("dc");
 			Boolean updateDiagConfig = cmd.hasOption("u");
-			Processor process = new Processor(buildName, buildTemplate, diagramTemplate, diagramConfig, builds,updateDiagConfig);
+			Processor process = new Processor(buildName, buildTemplate, diagramTemplate, diagramConfig, builds,updateDiagConfig,caseName);
 			try {
 				process.loadBenchmarkResults(new File(configPath),
 						aggresult + "/" + buildName);

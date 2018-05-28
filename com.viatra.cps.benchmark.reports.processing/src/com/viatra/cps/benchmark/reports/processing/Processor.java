@@ -35,15 +35,17 @@ public class Processor {
 	String diagramConfig;
 	Boolean updateDiagConfig;
 	Boolean timeout;
+	String caseName;
 	int counter;
 
 	public Processor(String buildName, String buildTemplate, String digramTemplate, String diagramConfig, String builds,
-			Boolean updateDiagConfig) {
+			Boolean updateDiagConfig, String caseName) {
 		this.buildName = buildName;
 		this.buildTemplate = buildTemplate;
 		this.digramTemplate = digramTemplate;
 		this.diagramConfig = diagramConfig;
 		this.builds = builds;
+		this.caseName = caseName;
 		this.updateDiagConfig = updateDiagConfig;
 		this.timeout = false;
 		mapper = new ObjectMapper();
@@ -88,36 +90,23 @@ public class Processor {
 		mapper.configure(SerializationConfig.Feature.AUTO_DETECT_GETTERS, false);
 		try {
 			Integer buildId = updateBuildConfig();
-			File diagramConfigJson = new File(this.diagramConfig);
+
+			// Updated diagram configuration
+			File diagramConfigJson = new File(this.digramTemplate);
+			DiagramConfig diagramConfig = mapper.readValue(diagramConfigJson, DiagramConfig.class);
+			mapper.writeValue(diagramConfigJson, diagramConfig);
+
+			// Save new build config
 			File buildTemplate = new File(this.buildTemplate);
 			Build build = mapper.readValue(buildTemplate, Build.class);
 			build.setId(buildId);
 			build.setName(buildName);
-			DiagramConfig diagramConfig;
-			if (!diagramConfigJson.exists() || this.updateDiagConfig) {
-				File digramConfigTemplate = new File(this.digramTemplate);
-				if (!diagramConfigJson.exists()) {
-					diagramConfig = mapper.readValue(digramConfigTemplate, DiagramConfig.class);
-				} else {
-					diagramConfig = mapper.readValue(diagramConfigJson, DiagramConfig.class);
-					DiagramConfig tmp = mapper.readValue(digramConfigTemplate, DiagramConfig.class);
-					diagramConfig.setToolColors(tmp.getToolColors());
-					mapper.writeValue(diagramConfigJson, diagramConfig);
-				}
-			} else {
-				diagramConfig = mapper.readValue(diagramConfigJson, DiagramConfig.class);
-			}
-
-			if (!diagramConfig.getResultConfig().getBuilds().stream().filter(savedBuild -> {
-				return savedBuild.getName().equals(buildName);
-			}).findFirst().isPresent()) {
-				diagramConfig.getResultConfig().getBuilds().add(build);
-				mapper.writeValue(diagramConfigJson, diagramConfig);
-			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			File resultsJson = new File("results.json");
+			mapper.writeValue(resultsJson, build);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
 	}
 
 	public void process(File results) throws JsonParseException, JsonMappingException, IOException {
@@ -140,10 +129,10 @@ public class Processor {
 			for (OperationConfig opconfig : opconf) {
 				if (last == null) {
 					last = OperationFactory.createOperation(tmp, opconfig.getType(), opconfig.getFilter(),
-							opconfig.getAttribute(),aggConfig.getID());
+							opconfig.getAttribute(), aggConfig.getID());
 				} else {
 					last = OperationFactory.createOperation(last, opconfig.getType(), opconfig.getFilter(),
-							opconfig.getAttribute(),aggConfig.getID());
+							opconfig.getAttribute(), aggConfig.getID());
 				}
 			}
 			;
@@ -160,7 +149,7 @@ public class Processor {
 			synchronized (lock) {
 				try {
 					lock.wait(10000);
-					if(tmp == counter) {
+					if (tmp == counter) {
 						this.timeout = true;
 						System.err.println(this.buildName + " timeout");
 					}
