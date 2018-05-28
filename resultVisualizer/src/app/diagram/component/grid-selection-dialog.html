@@ -1,7 +1,0 @@
-<mat-radio-group class="center" [(ngModel)]="selectedGrid">
-        <mat-radio-button class="col col-lg-6" *ngFor="let grid of grids" [value]="grid">
-         <img src="assets/{{grid}}.png">
-        </mat-radio-button>
-      </mat-radio-group>
-      <div class="col col-lg-12 center select-button">
-            <button mat-button="" mat-dialog-close="" type="button" class="mat-button" aria-label="Close dialog"><span class="mat-button-wrapper"  (click)="selectGrid()">Select</span><div class="mat-button-ripple mat-ripple" matripple=""></div><div class="mat-button-focus-overlay"></div></button>  
