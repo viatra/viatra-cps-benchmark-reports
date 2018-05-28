@@ -64,14 +64,14 @@
                     <div class="col col-lg-12">
                         <h4>Show</h4>
                         <div class="col col-lg-12 build-list" [dragula]='"operation"' [dragulaModel]='shows'>
-                            <div class="build-list-element" *ngFor='let show of shows' [innerHtml]='show.ResultName'>
+                            <div class="build-list-element" *ngFor='let show of shows' [innerHtml]='show.title'>
                             </div>
                         </div>
                     </div>
                     <div class="col col-lg-12 hideComponent">
                         <h4>Hide</h4>
                         <div class="col col-lg-12 build-list" [dragula]='"operation"' [dragulaModel]='hides'>
-                            <div class="build-list-element" *ngFor='let hide of hides' [innerHtml]='hide.ResultName'>
+                            <div class="build-list-element" *ngFor='let hide of hides' [innerHtml]='hide.title'>
                             </div>
                         </div>
                     </div>

@@ -82,11 +82,11 @@ export class DiagramService {
         });
 
     }
-/*
+
     public addScenario(scenario: Scenario) {
         this._scenarios.push(scenario);
     }
-
+/*
     public runScenario(index: number, type: string): Observable<Boolean> {
         return new Observable((observer) => {
             this._title = new Array<Title>();

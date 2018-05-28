@@ -4,9 +4,6 @@ export class Scenario {
 
 
 export class Diagram {
-    constructor(public caseName: String, public build: String, public result : Result){}
+    constructor(public caseName: string, public buildName: string, public operationid: string,public opened: boolean){}
 }
 
-export class Result{
-    constructor(public opened: Array<String>, public closed: Array<String>){}
-}
