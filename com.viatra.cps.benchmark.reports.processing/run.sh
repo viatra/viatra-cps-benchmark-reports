@@ -36,7 +36,7 @@ cd ./results
 git checkout Results
 cd ..
 cp -r ./${case} ./results/${case}
-cat ./builds.json >> ./results/builds.json
+cp ./builds.json  ./results/builds.json
 cd ./results
 git add .
 git commit -m "upload new Results: ${case}"
