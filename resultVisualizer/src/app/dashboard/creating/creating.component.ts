@@ -4,7 +4,7 @@ import { ResultsData } from '../../model/resultData';
 import { DragulaService } from 'ng2-dragula';
 import { Benchmark } from '../../model/benchmark';
 import { DiagramService } from '../../diagram/service/diagram.service';
-import { Scenario, Diagram, Result } from '../../model/scenario';
+import { Scenario, Diagram } from '../../model/scenario';
 import { Router } from '@angular/router'
 import { BuildConfigService } from '../../services/build.config.service';
 

@@ -16,7 +16,6 @@ import { Observable } from 'rxjs/Observable';
 import { take } from 'rxjs/operator/take';
 import { Config } from '../../model/config';
 import { Color } from '../../model/color';
-import { ResultConfig } from '../../model/resultConfig';
 import { ConfigService } from '../../services/config.service';
 import { Build } from '../../model/build';
 import { ResultsData } from '../../model/resultData';
@@ -25,11 +24,11 @@ import { Subscriber } from 'rxjs/Subscriber';
 import { DiagramLabel } from '../container/container.component';
 import { scan } from 'rxjs/operators/scan';
 import { Router } from '@angular/router';
+import { BuildConfigService } from '../../services/build.config.service';
 
 @Injectable()
 export class DiagramService {
     private _selectedTitle: string;
-    private _benchmarks: Array<Benchmark>;
     private _selectionUpdate: EventEmitter<SelectionUpdateEvent>;
     private _legendUpdate: EventEmitter<LegendUpdateEvent>;
     private _initEvent: EventEmitter<String>;
@@ -37,36 +36,27 @@ export class DiagramService {
     private _scenarios: Array<Scenario>;
     private _title: Array<Title>;
     private _colors: Array<Color>;
-    private _resultConfig: ResultConfig;
     public configPath: string = `config/diagram.config.json`;
     private _defaultScale: Array<Scale>;
     private _newScenario: Scenario;
-    constructor(private _jsonService: JsonService, private _colorService: ColorService, private _configservice: ConfigService, private _router: Router) {
+    constructor(private _jsonService: JsonService, private _colorService: ColorService, private _configservice: ConfigService, private _router: Router, private _buildConfigService: BuildConfigService) {
         this._title = new Array<Title>();
         this._selectionUpdate = new EventEmitter<SelectionUpdateEvent>();
         this._legendUpdate = new EventEmitter<LegendUpdateEvent>();
         this._initEvent = new EventEmitter<null>();
         this._scenarios = new Array<Scenario>();
-      /*  this._colorService.getColors(this.configPath).subscribe((colors: Color[]) => {
+
+        this._colorService.getColors(this.configPath).subscribe((colors: Color[]) => {
             this._colors = colors;
         });
-        this._jsonService.getScenarios().subscribe((scenarios: any[]) => {
-            let sc = new Array<Scenario>();
-            scenarios.forEach((element => {
-                sc.push(element.scenario)
-            }))
-            this._scenarios = sc;
-            this._initEvent.emit("Scenario");
-        });
-        this._configservice.getResultConfig(this.configPath).subscribe((resultConfig: ResultConfig) => {
-            this._resultConfig = resultConfig;
-            this._defaultScale = this._resultConfig.Scale
+
+        this._configservice.getResultConfig(this.configPath).subscribe((scales: Array<Scale>) => {
+            this._defaultScale = scales
             this._defaultScale.forEach(scale => {
                 scale.ActualScale = scale.DefaultScale;
             })
             this._initEvent.emit("Config");
         });
-        */
     }
 
 
@@ -86,58 +76,39 @@ export class DiagramService {
     public addScenario(scenario: Scenario) {
         this._scenarios.push(scenario);
     }
-/*
     public runScenario(index: number, type: string): Observable<Boolean> {
+        console.log("run scenario")
         return new Observable((observer) => {
             this._title = new Array<Title>();
             this._diagrams = new Array<Diagram>();
-            if ((this._scenarios === null || this._scenarios === undefined || this._scenarios.length == 0) && type === "loaded") {
-                this.InitEvent.subscribe(event => {
-                    let scenario;
-                    if (event === "Scenario") {
-                        let scenario = this.Scenarios[index];
-                        if (scenario === null || scenario === undefined) {
-                            this._router.navigate(["/"])
-                        } else {
-                            this.addDiagrams(scenario, observer);
-                        }
-                    }
-                });
-            }
-            else {
                 let scenario;
                 switch (type) {
-                    case "loaded":
-                        scenario = this._scenarios[index];
-                        break;
                     case "created":
                         scenario = this._scenarios[this._scenarios.length - 1];
                 }
+                console.log(scenario)
                 if (scenario === null || scenario === undefined) {
                     this._router.navigate(["/"])
                 } else {
                     this.addDiagrams(scenario, observer);
                 }
-            }
-        });
+            })
     }
 
     private addDiagrams(scenario: Scenario, observer: Subscriber<Boolean>) {
         this._selectionUpdate.emit(new SelectionUpdateEvent("Clear", null));
         scenario.diagrams.forEach((diag, index) => {
-            this.getBuild(diag.build).subscribe(build => {
-                this._jsonService.getResults(build.Name).subscribe((benchmarks: Benchmark[]) => {
-                    this._benchmarks = benchmarks;
-                    this.createDiagramList(build, diag.result.opened, diag.result.closed);
+            this._jsonService.getResults(diag.caseName, diag.buildName).subscribe((benchmarks: Benchmark[]) => {
+                this._buildConfigService.getFullBuildConfig(diag.caseName, diag.buildName, configs => {
+                    this.createDiagram(benchmarks.find((benchmark => benchmark.operationID === diag.operationid)), diag.opened, configs.ResultData.find((config => config.OperationID === diag.operationid)), configs.ID)
                     if (index === scenario.diagrams.length - 1) {
                         observer.next(true);
                         observer.complete();
                     }
-                });
+                })
             });
         });
     }
-*/
     public getScale() {
         return this._defaultScale;
     }
@@ -153,29 +124,6 @@ export class DiagramService {
             }
         })
     }
-
-    public getBuild(buildId: String): Observable<Build> {
-        return new Observable((observer) => {
-            if (this._resultConfig === null || this._resultConfig === undefined) {
-                this.InitEvent.subscribe(event => {
-                    if (event === "Config") {
-                        let build = this._resultConfig.Build.find((build: Build) => {
-                            return build.ID === buildId;
-                        });
-                        observer.next(build);
-                    }
-                });
-            } else {
-                let build = this._resultConfig.Build.find((build: Build) => {
-                    return build.ID === buildId;
-                });
-                observer.next(build);
-            }
-        })
-
-
-    }
-
 
     get InitEvent() {
         return this._initEvent;
@@ -210,55 +158,26 @@ export class DiagramService {
         this._selectionUpdate.emit(new SelectionUpdateEvent(type, diagram));
     }
 
-    private createDiagramList(build: Build, opened: Array<String>, closed: Array<String>) {
-        this._benchmarks.forEach((benchmark: Benchmark) => {
-            let add = this.OpenedDiagram(build, opened, benchmark)
-            if (add || this.ClosedDiagram(build, closed, benchmark)) {
-                var data = new Data();
-                let tools: Tool[] = benchmark.tool;
-                if (tools.length > 0) {
-                    let maxSizeTool: Tool = this.getMaxSizeTool(benchmark);
-                    data.labels = this.getSizes(maxSizeTool);
-                    let index = 0;
-                    data.datasets = new Array<Dataset>();
-                    tools.forEach((tool: Tool) => {
-                        data.datasets.push(this.getDataSet(tool, index));
-                        index++;
-                    });
-                    let operation = this.resolveOperation(build.ResultData, benchmark.operationID);
-                    let newDiagram = new Diagram(operation.DiagramType, data, this.getOption(operation.YLabel, operation.XLabel), `${operation.Title} (${build.ID})`, operation.Metric);
-                    this._diagrams.push(newDiagram)
-                    if (add) {
-                        this._selectionUpdate.emit(new SelectionUpdateEvent("Added", newDiagram));
-                    }
-                }
+    private createDiagram(result: Benchmark, opened: boolean, operation: any, id: string) {
+        if (result) {
+            var data = new Data();
+            let tools: Tool[] = result.tool;
+            if (tools.length > 0) {
+                let maxSizeTool: Tool = this.getMaxSizeTool(result);
+                data.labels = this.getSizes(maxSizeTool);
+                let index = 0;
+                data.datasets = new Array<Dataset>();
+                tools.forEach((tool: Tool) => {
+                    data.datasets.push(this.getDataSet(tool, index));
+                    index++;
+                });
+                let newDiagram = new Diagram(operation.DiagramType, data, this.getOption(operation.YLabel, operation.XLabel), `${operation.Title} (${id})`, operation.Metric);
+                this._diagrams.push(newDiagram)
+                this._selectionUpdate.emit(new SelectionUpdateEvent("Added", newDiagram));
             }
-        });
-    }
-
-    private OpenedDiagram(build: Build, opened: Array<String>, benchmark: Benchmark): boolean {
-        let contains = opened.find(id => {
-            return id === benchmark.operationID
-        });
-
-        if (contains) {
-            this.addTitle(build, benchmark, true);
-            return true;
         }
-        return false;
     }
 
-    private ClosedDiagram(build: Build, closed: Array<String>, benchmark: Benchmark): boolean {
-        let contains = closed.find(id => {
-            return id === benchmark.operationID
-        });
-        if (contains) {
-
-            this.addTitle(build, benchmark, false);
-            return true;
-        }
-        return false;
-    }
 
     private getDataSet(tool: Tool, index: number) {
         let dataset: Dataset = new Dataset();
@@ -310,13 +229,6 @@ export class DiagramService {
     public resolveOperation(resultDatas: Array<ResultsData>, operationID: String) {
         return resultDatas.find((resultData: ResultsData) => {
             return resultData.OperationID === operationID;
-        })
-    }
-
-
-    public getResultData(buildName: string) {
-        return this._resultConfig.Build.find(config => {
-            return config.Name == buildName
         })
     }
 

@@ -8,10 +8,10 @@ import 'rxjs/Rx';
 export class ColorService {
 
 
-  constructor(private _jsonService: JsonService) {}
+  constructor(private _jsonService: JsonService) { }
 
-  public getColors(configPath: string){
-  //  return this._jsonService.getDiagramConfig(configPath).map((config: Config)=> config.ToolColor);
+  public getColors(configPath: string) {
+    return this._jsonService.getDiagramConfig(configPath).map((config: Config) => config.ToolColor);
   }
 
 }

@@ -5,11 +5,11 @@ import { Config } from '../model/config';
 @Injectable()
 export class ConfigService {
 
-  constructor(private _jsonService: JsonService) {}
+  constructor(private _jsonService: JsonService) { }
 
-  public getResultConfig(configPath : string){
-   /* return this._jsonService.getDiagramConfig(configPath).map((config : Config) =>{
-     return config.ResultConfig
-    } ); */
+  public getResultConfig(configPath: string) {
+    return this._jsonService.getDiagramConfig(configPath).map((config: Config) => {
+      return config.Scale
+    });
   }
 }
