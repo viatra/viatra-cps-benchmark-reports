@@ -68,6 +68,9 @@ public class Processor {
 				cases = mapper.readValue(buildsJson, new TypeReference<List<Case>>() {
 				});
 			} else {
+				if(!buildsJson.getParentFile().exists()) {
+				Files.createDirectories(Paths.get("./results/results"));
+				}
 				cases = new ArrayList<>();
 			}
 			Optional<Case> c = cases.stream().filter(tmp -> tmp.getCaseName().equals(this.caseName)).findFirst();
@@ -121,7 +124,7 @@ public class Processor {
 			build.setId(buildId);
 			build.setName(buildName);
 			File conf = new File(this.caseName + "/" + this.buildName + "/build.config.json");
-			if(!conf.exists() ) {
+			if (!conf.exists()) {
 				Files.createDirectories(Paths.get(this.caseName + "/" + this.buildName));
 				File resultsJson = new File(this.caseName + "/" + this.buildName + "/build.config.json");
 				mapper.writeValue(resultsJson, build);
