@@ -4,7 +4,7 @@ pipeline {
         maven 'Maven 3.3.9' 
         jdk 'OpenJDK 8' 
     }
-       /* stages {
+        stages {
         stage ('Initialize') {
             steps {
                 sh '''
@@ -31,7 +31,7 @@ pipeline {
                     sh './com.viatra.cps.benchmark.reports.processing/run.sh "./viatra-cps-benchmark-results/" "m2m-reduced" "./com.viatra.cps.benchmark.reports.processing/aggregatorConfig.json" "./" "./com.viatra.cps.benchmark.reports.processing/build.config.template.json" "./com.viatra.cps.benchmark.reports.processing/diagram.config.template.json" "./com.viatra.cps.benchmark.reports.processing" < ./com.viatra.cps.benchmark.reports.processing/builds.txt'
                 }
             }
-        }*/
+        }
         stage('Initialize visualizer'){
             steps{
                 nodejs(nodeJSInstallationName: 'Latest'){

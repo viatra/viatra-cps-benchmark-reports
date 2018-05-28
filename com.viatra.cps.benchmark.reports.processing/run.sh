@@ -38,7 +38,7 @@ cd ..
 cp -r ./${case} ./results/${case}
 cp ./builds.json  ./results/builds.json
 cd ./results
-git add .
-git commit -m "upload new Results: ${case}"
-git push
+#git add .
+#git commit -m "upload new Results: ${case}"
+#git push
 
