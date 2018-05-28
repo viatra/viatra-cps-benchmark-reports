@@ -6,6 +6,7 @@ import { Benchmark } from '../../model/benchmark';
 import { DiagramService } from '../../diagram/service/diagram.service';
 import { Scenario, Diagram, Result } from '../../model/scenario';
 import { Router } from '@angular/router'
+import { BuildConfigService } from '../../services/build.config.service';
 
 @Component({
   selector: 'app-creating',
@@ -13,47 +14,50 @@ import { Router } from '@angular/router'
   styleUrls: ['../dashboard/dashboard.component.css']
 })
 export class CreatingComponent implements OnInit {
-  @Output() back : EventEmitter<null>
+  @Output() back: EventEmitter<null>
   next = {
-    "glyphicon" :true,
-    "glyphicon-arrow-right" : true,
-    "disabled" : true
+    "glyphicon": true,
+    "glyphicon-arrow-right": true,
+    "disabled": true
   }
-  disabled : boolean;
-  builds : Array<string>
-  selects: Array<string>;
-  step : number;
+  disabled: boolean;
+  builds: Array<{ caseName: string, builds: Array<{ caseName: string, buildName: string }> }>;
+  selectedBuilds: Array<{ caseName: string, buildName: string }>;
+  selectedCases: Array<string>;
+  step: number;
+  cases: Array<String>;
   scenarioTitle: String;
-  results : Array<BuildResult>;
-  shows : Array<SelectionResult>;
+  operations: Array<{ buildName: string ,operations: Array<{ operationid: string, title: string, caseName: string, buildName: string}> }>;
+  shows: Array<SelectionResult>;
   hides: Array<SelectionResult>;
   private _diagrams: Array<Diagram>;
-  constructor(private _jsonService: JsonService, private _dragulaService: DragulaService,private _diagramService: DiagramService, private _router: Router) { 
+  constructor(private _buildConfigService: BuildConfigService, private _dragulaService: DragulaService, private _diagramService: DiagramService, private _router: Router) {
     this.back = new EventEmitter<null>();
-    this.builds = new Array<string>();
-    this.selects = new Array<string>();
-
-    this.results =  new Array<BuildResult>();
-    this.shows =  new Array<SelectionResult>();
-    this.hides =  new Array<SelectionResult>();
+    this.builds = new Array<{ caseName: string, builds: Array<{ caseName: string, buildName: string }> }>();
+    this.cases = new Array<string>();
+    this.selectedCases = new Array<string>();
+    this.selectedBuilds = new Array<{ caseName: string, buildName: string }>();
+    this.operations = new Array<{ buildName: string ,operations: Array<{ operationid: string, title: string, caseName: string, buildName: string}> }>();
+    this.shows = new Array<SelectionResult>();
+    this.hides = new Array<SelectionResult>();
 
     this.disabled = true;
-    this.step = 1;
+    this.step = 0;
     const bag: any = this._dragulaService.find('result');
-    if (bag !== undefined ) this._dragulaService.destroy('result');
+    if (bag !== undefined) this._dragulaService.destroy('result');
     this._dragulaService.setOptions('result', {
       accepts: (el, target, source, sibling) => {
         return target.id === ""
       },
-      revertOnSpill: true 
-      });
+      revertOnSpill: true
+    });
 
     this._dragulaService.dropModel.subscribe((value) => {
       this.onDropModel(value.slice(1));
     });
   }
 
-  public clickedBack(){
+  public clickedBack() {
     this.back.emit();
     this.disabled = false;
     this.next["disabled"] = this.disabled;
@@ -61,26 +65,27 @@ export class CreatingComponent implements OnInit {
   }
 
 
-  public select(){
-    if(!this.disabled){
-      switch(this.step){
-        case 1: 
-        this.results = new Array<BuildResult>();
-        this.shows =  new Array<SelectionResult>();
-        this.hides =  new Array<SelectionResult>();
-        this.selects.forEach(select=>{
-          this._jsonService.getResults(select).subscribe((res: Array<Benchmark>)=>{
-            let result = new Array<SelectionResult>();
-         
-            res.forEach(element => {
-              let build = this._diagramService.getResultData(select);
-              let operation = this._diagramService.resolveOperation(build.ResultData,element.operationID);
-              result.push(new SelectionResult(build.ID,operation.OperationID,`${operation.Title} (${build.ID})`));
-            });
-            this.results.push(new BuildResult(select,result));
+  public select() {
+    if (!this.disabled) {
+      switch (this.step) {
+        case 0:
+          this.selectedCases.forEach(selectedCase => {
+            this._buildConfigService.getBuildsbyCase(selectedCase, builds => {
+              this.builds.push({ caseName: selectedCase, builds: builds })
+            })
           })
-        })
-        break;
+          break;
+        case 1:
+          this.shows = new Array<SelectionResult>();
+          this.hides = new Array<SelectionResult>();
+          this.selectedBuilds.forEach(select => {
+            this._buildConfigService.getBuildConfig(select.caseName, select.buildName, (buildConfig => {
+              this.operations.push(buildConfig);
+            })
+            )
+          })
+          break;
+        /*
         case 2:
           this._diagrams = new Array<Diagram>();
           let hideMap = new Map<String,Result>()
@@ -110,7 +115,7 @@ export class CreatingComponent implements OnInit {
         case 3: 
         this._diagramService.addScenario(new Scenario(this._diagrams,this.scenarioTitle));
         this._router.navigate(['diagrams'], { queryParams: { 'scenario': 1, "type": "created" } });
-        break;
+        break;*/
       }
       this.disabled = true;
       this.next["disabled"] = this.disabled;
@@ -118,24 +123,27 @@ export class CreatingComponent implements OnInit {
     }
   }
 
-   private onDropModel(args) {
+  private onDropModel(args) {
     let [el, target, source] = args;
-    switch(this.step){
+    switch (this.step) {
+      case 0:
+        this.disabled = this.selectedCases.length === 0;
+        break;
       case 1:
-      this.disabled =  this.selects.length === 0;
-      break;
+        this.disabled = this.selectedBuilds.length === 0;
+        break;
       case 2:
-      this.disabled = this.shows.length === 0 && this.hides.length === 0;
-      break;
+        this.disabled = this.shows.length === 0 && this.hides.length === 0;
+        break;
       case 3:
-      this.disabled = this.scenarioTitle === "";
-      break;
+        this.disabled = this.scenarioTitle === "";
+        break;
     }
     this.next["disabled"] = this.disabled;
 
   }
 
-  public updateScenarioTitle(){
+  public updateScenarioTitle() {
     this.disabled = this.scenarioTitle === "";
     this.next["disabled"] = this.disabled;
   }
@@ -145,37 +153,41 @@ export class CreatingComponent implements OnInit {
 
 
   ngOnInit() {
-    this._jsonService.getBuilds().subscribe((builds : Array<string>)=>{
-      this.builds = builds;
-    });
+    this._buildConfigService.getCaseName((cases => {
+      this.cases = cases;
+    }))
   }
 }
 
-class BuildResult{
-  constructor(private _buildName: string, private _results : Array<SelectionResult>){}
+class BuildResult {
+  constructor(private _caseName, private _buildName: string, private _results: Array<SelectionResult>) { }
 
-  get BuildName(){
+  get BuildName() {
     return this._buildName;
   }
 
-  get Results(){
+  get Results() {
     return this._results;
+  }
+
+  get CaseName() {
+    return this._caseName;
   }
 }
 
 
-class SelectionResult{
-  constructor(private _buildID: String, private _operationID : String, private _resultName){}
+class SelectionResult {
+  constructor(private _buildID: String, private _operationID: String, private _resultName) { }
 
-  get BuildID(){
+  get BuildID() {
     return this._buildID;
   }
 
-  get OperationID(){
+  get OperationID() {
     return this._operationID;
   }
 
-  get ResultName(){
+  get ResultName() {
     return this._resultName;
   }
 }

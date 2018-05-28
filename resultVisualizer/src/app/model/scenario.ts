@@ -4,7 +4,7 @@ export class Scenario {
 
 
 export class Diagram {
-    constructor(public build: String, public result : Result){}
+    constructor(public caseName: String, public build: String, public result : Result){}
 }
 
 export class Result{

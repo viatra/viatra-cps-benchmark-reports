@@ -28,6 +28,7 @@ import { DragulaModule }  from 'ng2-dragula';
 import { DropDownDirective } from './directive/drop-down.directive'
 import { ComponentService } from './component.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BuildConfigService } from './services/build.config.service';
 const appRoutes: Routes = [
   { path: '', component: DashboardComponent },
   { path: 'diagrams', component: ContainerComponent},
@@ -71,7 +72,8 @@ const appRoutes: Routes = [
     DiagramService, 
     ConfigService, 
     SliderService,
-    ComponentService
+    ComponentService,
+    BuildConfigService
   ],
   bootstrap: [AppComponent]
 })

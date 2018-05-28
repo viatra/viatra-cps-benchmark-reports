@@ -1,76 +1,102 @@
 <div class="col col-lg-12 scenario">
     <div class="col col-lg-2"></div>
-  <div class="col col-lg-8 bordered">
-<div class="col col-lg-12">
-    <h1>Create scenario </h1><h3>Select builds</h3>
-    <hr />
-  </div>
-<div class="col col-lg-12 center" [ngSwitch]="step">
-<ng-container *ngSwitchCase="1">
-    <div class="col col-lg-6 build">
-        <h4>Builds</h4>
-        <div class="col col-lg-12 build-list" [dragula]='"build"' [dragulaModel]='builds'>
-            <div class="build-list-element" *ngFor='let build of builds'  [innerHtml]='build'>
-            </div>
-  </div>
-    </div>
-    <div class="col col-lg-6 selected top right">
-            <h4>Select</h4>
-        <div class="col col-lg-12 build-list " [dragula]='"build"' [dragulaModel]='selects'>
-            <div class="build-list-element" *ngFor='let selected of selects'  [innerHtml]='selected'>
-            </div>
-  </div>
-    </div>
-</ng-container>
-<ng-container *ngSwitchCase="2">
-        <div class="col col-lg-6 build">
-            <div class="col col-lg-12"> <h3>Results</h3></div>
-                <div class="col col-lg-12" *ngFor="let result of results">
-                        <h4>{{result.BuildName}}</h4>
-            <div class="col col-lg-12 build-list" [dragula]='"result"' [dragulaModel]='result.Results' id="{{result.BuildName}}">
-                <div class="build-list-element" *ngFor='let res of result.Results'  id="{{result.BuildName}}"  [innerHtml]='res.ResultName'>
-                </div>
-      </div>
-                </div>
+    <div class="col col-lg-8 bordered">
+        <div class="col col-lg-12">
+            <h1>Create scenario </h1>
+            <h3>Select Cases</h3>
+            <hr />
         </div>
-        <div class="col col-lg-6 selected top right">
-            <div class="col col-lg-12">
-                <h3>Diagrams</h3>
-                </div>
-                <div class="col col-lg-12">
-                <h4>Show</h4>
-            <div class="col col-lg-12 build-list" [dragula]='"result"' [dragulaModel]='shows'>
-                <div class="build-list-element" *ngFor='let show of shows'  [innerHtml]='show.ResultName'>
-                </div>
-            </div>
-                </div>
-            <div class="col col-lg-12 hideComponent">
-                <h4>Hide</h4>
-                <div class="col col-lg-12 build-list" [dragula]='"result"' [dragulaModel]='hides'>
-                    <div class="build-list-element" *ngFor='let hide of hides'  [innerHtml]='hide.ResultName'>
+        <div class="col col-lg-12 center" [ngSwitch]="step">
+            <ng-container *ngSwitchCase="0">
+                <div class="col col-lg-6 build">
+                    <h4>Cases</h4>
+                    <div class="col col-lg-12 build-list" [dragula]='"case"' [dragulaModel]='cases'>
+                        <div class="build-list-element" *ngFor='let case of cases' [innerHtml]='case'>
+                        </div>
                     </div>
                 </div>
+                <div class="col col-lg-6 selected top right">
+                    <h4>Select</h4>
+                    <div class="col col-lg-12 build-list " [dragula]='"case"' [dragulaModel]='selectedCases'>
+                        <div class="build-list-element" *ngFor='let selectedCase of selectedCases' [innerHtml]='selectedCases'>
+                        </div>
+                    </div>
                 </div>
-        </div>
-    </ng-container>
-    <ng-container *ngSwitchCase="3">
-            <div class="form-group">
+            </ng-container>
+            <ng-container *ngSwitchCase="1">
+                <div class="col col-lg-6 build">
+                    <div class="col col-lg-12">
+                        <h3>Builds</h3>
+                    </div>
+                    <div class="col col-lg-12" *ngFor='let case of builds'>
+                        <h4>{{case.caseName}}</h4>
+                        <div class="col col-lg-12 build-list" [dragula]='"build"' [dragulaModel]='case.builds'>
+                            <div class="build-list-element" *ngFor='let build of case.builds' [innerHtml]='build.buildName'>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col col-lg-6 selected top right">
+                    <h4>Select</h4>
+                    <div class="col col-lg-12 build-list " [dragula]='"build"' [dragulaModel]='selectedBuilds'>
+                        <div class="build-list-element" *ngFor='let selected of selectedBuilds' [innerHtml]='selected.buildName'>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+            <ng-container *ngSwitchCase="2">
+                <div class="col col-lg-6 build">
+                    <div class="col col-lg-12">
+                        <h3>Operations</h3>
+                    </div>
+                    <div class="col col-lg-12" *ngFor='let operation of operations'>
+                        <h4>{{operation.buildName}}</h4>
+                        <div class="col col-lg-12 build-list" [dragula]='"operation"' [dragulaModel]='operation.operations'>
+                            <div class="build-list-element" *ngFor='let oper of operation.operations' [innerHtml]='oper.title'>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col col-lg-6 selected top right">
+                    <div class="col col-lg-12">
+                        <h3>Diagrams</h3>
+                    </div>
+                    <div class="col col-lg-12">
+                        <h4>Show</h4>
+                        <div class="col col-lg-12 build-list" [dragula]='"operation"' [dragulaModel]='shows'>
+                            <div class="build-list-element" *ngFor='let show of shows' [innerHtml]='show.ResultName'>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col col-lg-12 hideComponent">
+                        <h4>Hide</h4>
+                        <div class="col col-lg-12 build-list" [dragula]='"operation"' [dragulaModel]='hides'>
+                            <div class="build-list-element" *ngFor='let hide of hides' [innerHtml]='hide.ResultName'>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+            <ng-container *ngSwitchCase="3">
+                <div class="form-group">
                     <label for="usr">Title:</label>
                     <input type="text" class="form-control" id="usr" (ngModelChange)="updateScenarioTitle()" [(ngModel)]="scenarioTitle">
-                  </div>
-    </ng-container>
-</div>
+                </div>
+            </ng-container>
+        </div>
 
-<div class="col col-lg-1">
-        <span class="glyphicon glyphicon-arrow-left"  routerLink="/" *ngIf="step === 1; else elseBlock"></span>
-        <ng-template #elseBlock><span class="glyphicon glyphicon-arrow-left" (click)="clickedBack()"></span></ng-template>
-   
-</div>
-<div class="col col-lg-10">
-</div>
-<div class="col col-lg-1">
-    <span [ngClass]="next"  (click)="select()"></span>
-</div>
+        <div class="col col-lg-1">
+            <span class="glyphicon glyphicon-arrow-left" routerLink="/" *ngIf="step === 1; else elseBlock"></span>
+            <ng-template #elseBlock>
+                <span class="glyphicon glyphicon-arrow-left" (click)="clickedBack()"></span>
+            </ng-template>
 
-  </div>
+        </div>
+        <div class="col col-lg-10">
+        </div>
+        <div class="col col-lg-1">
+            <span [ngClass]="next" (click)="select()"></span>
+        </div>
+
+    </div>
 </div>

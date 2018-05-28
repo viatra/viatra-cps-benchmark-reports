@@ -60,7 +60,7 @@ export class ContainerComponent implements OnInit {
     })
   }
 
-  ngOnInit() {
+  ngOnInit() {/*
     this.titles = new Array<DiagramLabel>();
     let scenario =  this._route.snapshot.queryParams['scenario'];
     let type = this._route.snapshot.queryParams['type'];
@@ -79,9 +79,10 @@ export class ContainerComponent implements OnInit {
    this._sliderService.ScaleChangeEvent.subscribe(scale =>{
      this.scale = scale;
    })
-  }
+  }*/
 
   }
+}
 
   export class DiagramLabel{
     constructor(public title :string,public ngClass : Glyphicon, public ID: String){}

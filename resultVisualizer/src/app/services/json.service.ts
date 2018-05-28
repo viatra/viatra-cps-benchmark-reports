@@ -6,19 +6,23 @@ import 'rxjs/Rx';
 export class JsonService {
  
   constructor(private http: Http) {}
-  getResults(build: string) {
-    return this.http.get(`results/${build}/results.json`).map((res:Response) => res.json());
+  getResults(caseName: String,build: string) {
+    return this.http.get(`results/${caseName}/${build}/results.json`).map((res:Response) => res.json());
   }
 
   getScenarios(){
     return this.http.get(`config/example.scenario.json`).map((res:Response) => res.json());
   }
-
+/*
   getDiagramConfig(configPath: string){
     return this.http.get(configPath).map((res:Response) => res.json());
+  }*/
+
+  getBuildConfig(caseName: String,build: string) {
+    return this.http.get(`results/${caseName}/${build}/build.config.json`).map((res:Response) => res.json());
   }
 
   getBuilds(){
-    return this.http.get("config/builds.json").map((res :Response) => res.json());
+    return this.http.get('results/builds.json').map((res :Response) => res.json());
   }
 }

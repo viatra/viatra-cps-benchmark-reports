@@ -47,7 +47,7 @@ export class DiagramService {
         this._legendUpdate = new EventEmitter<LegendUpdateEvent>();
         this._initEvent = new EventEmitter<null>();
         this._scenarios = new Array<Scenario>();
-        this._colorService.getColors(this.configPath).subscribe((colors: Color[]) => {
+      /*  this._colorService.getColors(this.configPath).subscribe((colors: Color[]) => {
             this._colors = colors;
         });
         this._jsonService.getScenarios().subscribe((scenarios: any[]) => {
@@ -66,7 +66,9 @@ export class DiagramService {
             })
             this._initEvent.emit("Config");
         });
+        */
     }
+
 
     get Scenarios() {
         return this._scenarios;
@@ -80,7 +82,7 @@ export class DiagramService {
         });
 
     }
-
+/*
     public addScenario(scenario: Scenario) {
         this._scenarios.push(scenario);
     }
@@ -135,7 +137,7 @@ export class DiagramService {
             });
         });
     }
-
+*/
     public getScale() {
         return this._defaultScale;
     }
