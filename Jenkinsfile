@@ -46,7 +46,7 @@ pipeline {
             steps{
                 nodejs(nodeJSInstallationName: 'Latest'){
                     sh '''
-                    cp -r ./com.viatra.cps.benchmark.reports.processing/results ./resultVisualizer/src/results
+                    cp -r ./results ./resultVisualizer/src/results
                     cd ./resultVisualizer
                     npm  run build
                     ''' 
