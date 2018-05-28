@@ -23,6 +23,6 @@ export class JsonService {
   }
 
   getBuilds(){
-    return this.http.get('results/builds.json').map((res :Response) => res.json());
+    return this.http.get('config/builds.json').map((res :Response) => res.json());
   }
 }
