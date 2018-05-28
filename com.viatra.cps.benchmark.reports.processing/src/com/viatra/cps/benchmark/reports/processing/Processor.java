@@ -60,7 +60,7 @@ public class Processor {
 	}
 
 	public String updateBuildConfig() {
-		File buildsJson = new File("builds.json");
+		File buildsJson = new File("./results/results/builds.json");
 		List<Case> cases;
 		String id = "undefined";
 		try {
