@@ -32,4 +32,9 @@ else
   # Clone repo
   git clone git@github.com:viatra/viatra-cps-benchmark-reports.git results 
 fi
+cd ./results
+git checkout Results
+cd ..
+cp -rf ./${case} ./results/${case}
+cp ./builds.json  ./results/builds.json
 
