@@ -10,7 +10,7 @@ public class Build {
 	protected String name;
 
 	@JsonProperty("ID")
-	protected Integer id;
+	protected String id;
 
 	@JsonProperty("ResultData")
 	protected List<ResultData> resultData;
@@ -31,11 +31,11 @@ public class Build {
 		this.name = name;
 	}
 
-	public Integer getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 }

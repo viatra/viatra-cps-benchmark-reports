@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -15,6 +16,7 @@ import org.codehaus.jackson.type.TypeReference;
 
 import com.viatra.cps.benchmark.reports.processing.models.AggregatorConfiguration;
 import com.viatra.cps.benchmark.reports.processing.models.Build;
+import com.viatra.cps.benchmark.reports.processing.models.Case;
 import com.viatra.cps.benchmark.reports.processing.models.DiagramConfig;
 import com.viatra.cps.benchmark.reports.processing.models.OperationConfig;
 import com.viatra.cps.benchmark.reports.processing.operation.Operation;
@@ -58,21 +60,35 @@ public class Processor {
 		});
 	}
 
-	public Integer updateBuildConfig() {
+	public String updateBuildConfig() {
 		File buildsJson = new File(this.builds);
-		List<String> builds;
+		List<Case> cases;
+		String id;
 		try {
 			if (buildsJson.exists()) {
-				builds = mapper.readValue(buildsJson, new TypeReference<List<String>>() {
+				cases = mapper.readValue(buildsJson, new TypeReference<List<Case>>() {
 				});
 			} else {
-				builds = new ArrayList<>();
+				cases = new ArrayList<>();
 			}
-			if (!builds.stream().filter(build -> build.equals(buildName)).findFirst().isPresent()) {
-				builds.add(this.buildName);
-				mapper.writeValue(buildsJson, builds);
+			Optional<Case> c = cases.stream().filter(tmp -> tmp.getCaseName().equals(this.caseName)).findFirst();
+			if (c.isPresent()) {
+				List<String> builds = c.get().getBuilds();
+				if (!builds.stream().filter(build -> build.equals(buildName)).findFirst().isPresent()) {
+					builds.add(this.buildName);
+				}
+				id = this.caseName + "_" + c.get().getBuilds().size();
+			} else {
+				Case newCase = new Case();
+				List<String> buildsList = new ArrayList<>();
+				buildsList.add(this.buildName);
+				newCase.setBuilds(buildsList);
+				newCase.setCaseName(this.caseName);
+				cases.add(newCase);
+				id = this.caseName + "_" + 1;
 			}
-			return builds.size();
+			mapper.writeValue(buildsJson, cases);
+			return id;
 		} catch (
 
 		IOException e) {
@@ -89,7 +105,7 @@ public class Processor {
 		mapper.configure(SerializationConfig.Feature.AUTO_DETECT_FIELDS, false);
 		mapper.configure(SerializationConfig.Feature.AUTO_DETECT_GETTERS, false);
 		try {
-			Integer buildId = updateBuildConfig();
+			String buildId = updateBuildConfig();
 
 			// Updated diagram configuration
 			File diagramConfigJson = new File(this.digramTemplate);
