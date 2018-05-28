@@ -22,10 +22,20 @@ do
   java -jar "$jarLocation/com.viatra.cps.benchmark.reports.processing-0.0.1-jar-with-dependencies.jar"  -r "${resultsLocation}/$case/$build/results.json" -c "${aggregatorConfig}" -a "${resultVisualizerLocation}/resultVisualizer/src/results/" -bt "${buildConfigTemplate}" -dt "${diagramConfigTemplate}" -bs "${resultVisualizerLocation}/resultVisualizer/src/config/builds.json" -dc "${resultVisualizerLocation}/resultVisualizer/src/config/diagram.config.json" -b "$build" -ca "${case}" -u ${updateConfig}
 done
 
-git clone git@github.com:viatra/viatra-cps-benchmark-reports.git results 
-git checkout Results
-cp -r ./${case} ./results
+if [ -d "results" ]; then
+  # Repo exists, update
+  cd results
+  git fetch
+  git reset origin/results --hard
+  cd ..
+else
+  # Clone repo
+  git clone git@github.com:viatra/viatra-cps-benchmark-reports.git results 
+fi
 cd ./results
+git checkout Results
+cp -rt ../${case} ./
+cp -rt ../build.json ./
 git add .
 git commit -m "upload new Results: ${case}"
 git push

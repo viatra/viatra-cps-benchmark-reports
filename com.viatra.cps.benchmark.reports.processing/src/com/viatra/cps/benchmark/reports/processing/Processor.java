@@ -62,7 +62,7 @@ public class Processor {
 	}
 
 	public String updateBuildConfig() {
-		File buildsJson = new File(this.builds);
+		File buildsJson = new File("builds.json");
 		List<Case> cases;
 		String id;
 		try {
@@ -70,7 +70,6 @@ public class Processor {
 				cases = mapper.readValue(buildsJson, new TypeReference<List<Case>>() {
 				});
 			} else {
-				Files.createDirectories(Paths.get(this.builds).getParent());
 				cases = new ArrayList<>();
 			}
 			Optional<Case> c = cases.stream().filter(tmp -> tmp.getCaseName().equals(this.caseName)).findFirst();
@@ -120,7 +119,7 @@ public class Processor {
 			build.setId(buildId);
 			build.setName(buildName);
 			Files.createDirectories(Paths.get(this.caseName + "/" + this.buildName));
-			File resultsJson = new File(this.caseName + "/" + this.buildName + "/results.json");
+			File resultsJson = new File(this.caseName + "/" + this.buildName + "/build.config.json");
 			mapper.writeValue(resultsJson, build);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -129,11 +128,11 @@ public class Processor {
 	}
 
 	public void process(File results) throws JsonParseException, JsonMappingException, IOException {
-
-		if (!new File(this.aggResult).exists()) {
-			Files.createDirectories(Paths.get(this.aggResult));
+		File file = new File(this.caseName + "/" + this.buildName + "/results.json");
+		if (!file.exists()) {
+			Files.createDirectories(Paths.get(this.caseName + "/" + this.buildName));
 		}
-		File file = new File(this.aggResult + "/results.json");
+
 		mapper.writeValue(file, new ArrayList<>());
 
 		List<BenchmarkResult> benchmarkResults = mapper.readValue(results, new TypeReference<List<BenchmarkResult>>() {
