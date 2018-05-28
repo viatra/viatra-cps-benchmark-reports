@@ -13,10 +13,10 @@ export class JsonService {
   getScenarios(){
     return this.http.get(`config/example.scenario.json`).map((res:Response) => res.json());
   }
-/*
+  
   getDiagramConfig(configPath: string){
     return this.http.get(configPath).map((res:Response) => res.json());
-  }*/
+  }
 
   getBuildConfig(caseName: String,build: string) {
     return this.http.get(`results/${caseName}/${build}/build.config.json`).map((res:Response) => res.json());

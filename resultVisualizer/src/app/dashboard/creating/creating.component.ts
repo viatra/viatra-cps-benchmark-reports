@@ -86,7 +86,6 @@ export class CreatingComponent implements OnInit {
           })
           break;
         case 2:
-          console.log(this.shows)
           this._diagrams = new Array<Diagram>();
           this.shows.forEach(element => {
             this._diagrams.push({ caseName: element.caseName, buildName: element.buildName, operationid: element.operationid, opened: true });

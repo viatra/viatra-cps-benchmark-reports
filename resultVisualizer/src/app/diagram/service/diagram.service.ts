@@ -76,35 +76,29 @@ export class DiagramService {
     public addScenario(scenario: Scenario) {
         this._scenarios.push(scenario);
     }
-    public runScenario(index: number, type: string): Observable<Boolean> {
-        console.log("run scenario")
-        return new Observable((observer) => {
-            this._title = new Array<Title>();
-            this._diagrams = new Array<Diagram>();
-                let scenario;
-                switch (type) {
-                    case "created":
-                        scenario = this._scenarios[this._scenarios.length - 1];
-                }
-                console.log(scenario)
-                if (scenario === null || scenario === undefined) {
-                    this._router.navigate(["/"])
-                } else {
-                    this.addDiagrams(scenario, observer);
-                }
-            })
+    public runScenario(index: number, type: string, callback: any) {
+        this._title = new Array<Title>();
+        this._diagrams = new Array<Diagram>();
+        let scenario;
+        switch (type) {
+            case "created":
+                scenario = this._scenarios[this._scenarios.length - 1];
+        }
+        if (scenario === null || scenario === undefined) {
+            this._router.navigate(["/"])
+        } else {
+            this.addDiagrams(scenario, callback);
+        }
+
     }
 
-    private addDiagrams(scenario: Scenario, observer: Subscriber<Boolean>) {
+    private addDiagrams(scenario: Scenario, callback: any) {
         this._selectionUpdate.emit(new SelectionUpdateEvent("Clear", null));
-        scenario.diagrams.forEach((diag, index) => {
+        scenario.diagrams.forEach((diag) => {
             this._jsonService.getResults(diag.caseName, diag.buildName).subscribe((benchmarks: Benchmark[]) => {
                 this._buildConfigService.getFullBuildConfig(diag.caseName, diag.buildName, configs => {
                     this.createDiagram(benchmarks.find((benchmark => benchmark.operationID === diag.operationid)), diag.opened, configs.ResultData.find((config => config.OperationID === diag.operationid)), configs.ID)
-                    if (index === scenario.diagrams.length - 1) {
-                        observer.next(true);
-                        observer.complete();
-                    }
+                    callback();
                 })
             });
         });
@@ -173,8 +167,11 @@ export class DiagramService {
                 });
                 let newDiagram = new Diagram(operation.DiagramType, data, this.getOption(operation.YLabel, operation.XLabel), `${operation.Title} (${id})`, operation.Metric);
                 this._diagrams.push(newDiagram)
-                this._selectionUpdate.emit(new SelectionUpdateEvent("Added", newDiagram));
+                if (opened) {
+                    this._selectionUpdate.emit(new SelectionUpdateEvent("Added", newDiagram));
+                }
             }
+            this.addTitle(id, operation.Title, operation.OperationID, opened, tools.length === 0)
         }
     }
 
@@ -209,21 +206,20 @@ export class DiagramService {
         return color;
     }
 
-    private addTitle(build: Build, benchmark: Benchmark, opened: boolean) {
-        let tmp = this.resolveOperation(build.ResultData, benchmark.operationID);
+    private addTitle(id: string, title: string, OperationID: string, opened: boolean, missing: boolean) {
         let ngClass = opened ? {
             "glyphicon": true,
             "glyphicon-eye-open": true,
             "glyphicon-eye-close": false,
-            "missing": (benchmark.tool.length === 0) ? true : false
+            "missing": missing ? true : false
         } :
             {
                 "glyphicon": true,
                 "glyphicon-eye-open": false,
                 "glyphicon-eye-close": true,
-                "missing": (benchmark.tool.length === 0) ? true : false
+                "missing": missing ? true : false
             }
-        this._title.push(new Title(`${tmp.Title} (${build.ID})`, ngClass, tmp.OperationID))
+        this._title.push(new Title(`${title} (${id})`, ngClass, OperationID))
     }
 
     public resolveOperation(resultDatas: Array<ResultsData>, operationID: String) {
