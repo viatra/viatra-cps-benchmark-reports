@@ -23,7 +23,7 @@ do
 done
 
 git clone git@github.com:viatra/viatra-cps-benchmark-reports.git results 
-git checkout results
+git checkout Results
 cp -r ./${case} ./results
 cd ./results
 git add .
