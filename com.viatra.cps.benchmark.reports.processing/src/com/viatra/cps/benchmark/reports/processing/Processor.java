@@ -65,7 +65,7 @@ public class Processor {
 		this.visualizerConfiguration = this.loadVisualizerConfiguration(new File(visualizerConfigPath));
 
 		// Load or create Builds.json
-		this.builds = this.loadBuilds(new File(buildsPath+ "/builds.json"));
+		this.builds = this.loadBuilds(new File(buildsPath + "/builds.json"));
 
 		// Load diagram configuration template
 		this.diagramConfiguration = this.loadDiagramConfigurationTemplate(new File(diagramConfigTemplatePath));
@@ -214,19 +214,19 @@ public class Processor {
 
 	public void process(List<BenchmarkResult> results, String caseName, String scenario)
 			throws JsonParseException, JsonMappingException, IOException {
-		
-		System.out.println("Start to process: " + this.buildId +"/"+caseName+"/"+scenario);
-		if (!Files.exists(Paths.get(this.resutOutputPath.toString(), caseName, scenario))) {
-			Files.createDirectories(Paths.get(this.resutOutputPath.toString(), caseName, scenario));
+
+		System.out.println("Start to process: " + this.buildId + "/" + caseName + "/" + scenario);
+		if (!Files.exists(Paths.get(this.resutOutputPath.toString(), this.buildId, caseName, scenario))) {
+			Files.createDirectories(Paths.get(this.resutOutputPath.toString(), this.buildId, caseName, scenario));
 		}
 
 		counter = this.configuration.size();
 		lock = new Object();
 		this.configuration.forEach(aggConfig -> {
 			Operation last = null;
-			JSonSerializer tmp = new JSonSerializer(
-					Paths.get(this.resutOutputPath.toString(), caseName, scenario, "results.json").toFile(),
-					aggConfig.getID());
+			JSonSerializer tmp = new JSonSerializer(Paths
+					.get(this.resutOutputPath.toString(), this.buildId, caseName, scenario, "results.json").toFile(),
+					aggConfig.getID(), this.buildId + "/" + caseName + "/" + scenario);
 			tmp.setProcessor(this);
 			List<OperationConfig> opconf = aggConfig.getOperations(false);
 			for (OperationConfig opconfig : opconf) {
@@ -261,6 +261,73 @@ public class Processor {
 					e.printStackTrace();
 				}
 			}
+		}
+		this.updateBuilds(caseName, scenario);
+	}
+
+	public void updateBuilds(String caseName, String scenario) {
+		if (this.builds.size() > 0) {
+			Builds build = this.builds.stream().filter(b -> b.getBuildId().equals(this.buildId)).findFirst().get();
+			if (build != null) {
+				Case caseElement = build.getCases().stream().filter(c -> c.getCaseName().equals(caseName)).findFirst()
+						.get();
+				if (caseElement != null) {
+					if (!caseElement.getScenarios().stream().filter(s -> s.equals(scenario)).findFirst().isPresent()) {
+						if (caseElement.getScenarios().size() == 0) {
+							List<String> scenarios = new ArrayList<>();
+							scenarios.add(scenario);
+							caseElement.setScenarios(scenarios);
+						} else {
+							caseElement.getScenarios().add(scenario);
+						}
+					}
+				} else {
+					List<String> scenarios = new ArrayList<>();
+					scenarios.add(scenario);
+					caseElement = new Case();
+					caseElement.setCaseName(caseName);
+					caseElement.setScenarios(scenarios);
+
+					if (build.getCases().size() == 0) {
+						build.setCases(new ArrayList<>());
+					}
+					build.getCases().add(caseElement);
+				}
+			} else {
+				List<String> scenarios = new ArrayList<>();
+				scenarios.add(scenario);
+				Case caseElement = new Case();
+				caseElement.setCaseName(caseName);
+				caseElement.setScenarios(scenarios);
+				build = new Builds();
+				build.setBuildId(this.buildId);
+				build.setCases(new ArrayList<>());
+				build.getCases().add(caseElement);
+				this.builds.add(build);
+			}
+		} else {
+			List<String> scenarios = new ArrayList<>();
+			scenarios.add(scenario);
+			Case caseElement = new Case();
+			caseElement.setCaseName(caseName);
+			caseElement.setScenarios(scenarios);
+			Builds build = new Builds();
+			build.setBuildId(this.buildId);
+			build.setCases(new ArrayList<>());
+			build.getCases().add(caseElement);
+			this.builds.add(build);
+		}
+
+		try {
+			mapper.configure(SerializationConfig.Feature.FAIL_ON_EMPTY_BEANS, false);
+			mapper.configure(SerializationConfig.Feature.INDENT_OUTPUT, true);
+			// turn off autodetection
+			mapper.configure(SerializationConfig.Feature.AUTO_DETECT_FIELDS, false);
+			mapper.configure(SerializationConfig.Feature.AUTO_DETECT_GETTERS, false);
+			mapper.writeValue(new File(this.resutOutputPath.toString() + "/builds.json"), this.builds);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 

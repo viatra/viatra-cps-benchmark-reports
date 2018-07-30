@@ -11,12 +11,12 @@
 	{
 		"type": "Summary",
 		"attribute": "Tool",
-		"filter": ["BATCH_VIATRA_QUERY_RETE-TEMPLATE"]
+		"filter": []
 	},
 	{
 		"type": "Summary",
 		"attribute": "Phase-Name",
-		"filter": ["Generation"]
+		"filter": ["IndexRepository"]
 	},
 	{
 		"type": "Filter", 
@@ -41,7 +41,7 @@
 	{
 		"type": "Summary",
 		"attribute": "Phase-Name",
-		"filter": ["Initialization", "M2MTransformation1"]
+		"filter": ["ResultSetRetrievalPhase"]
 	},
 	{
 		"type": "Filter", 
@@ -66,12 +66,12 @@
 	{
 		"type": "Summary",
 		"attribute": "Phase-Name",
-		"filter": ["Initialization","M2MTransformation1","M2MTransformation2","Modification"]
+		"filter": ["ResultSetRetrievalPhase"]
 	},
 	{
 		"type": "Filter", 
  		"attribute": "Metric", 
-		"filter": ["Time"] 
+		"filter": ["MatchSetSize"] 
 	} ]
 },
 {
@@ -91,12 +91,12 @@
 	{
 		"type": "Summary",
 		"attribute": "Phase-Name",
-		"filter": ["M2MTransformation2", "Modification"]
+		"filter": ["MatcherInitPhase"]
 	},
 	{
 		"type": "Filter", 
  		"attribute": "Metric", 
-		"filter": ["Time"] 
+		"filter": ["Time"]
 	} ]
 },
 {
@@ -116,136 +116,11 @@
 	{
 		"type": "Average",
 		"attribute": "Phase-Name",
-		"filter": ["M2MTransformation1"]
+		"filter": ["MatcherInitPhase"]
 	},
 	{
 		"type": "Filter", 
  		"attribute": "Metric", 
-		"filter": ["Memory"] 
-	} ]
-},
-{
-	"ID": "6",
-	"OperationChain": 
-	[
-	{
-		"type": "Mean",
-		"attribute": "RunIndex",
-		"filter": []
-	},
-	{
-		"type": "Summary",
-		"attribute": "Tool",
-		"filter": []
-	},
-	{
-		"type": "Average",
-		"attribute": "Phase-Name",
-		"filter": ["M2MTransformation1"]
-	},
-	{
-		"type": "Filter", 
- 		"attribute": "Metric", 
-		"filter": ["PeakMemory"] 
-	} ]
-},
-{
-	"ID": "7",
-	"OperationChain": 
-	[
-	{
-		"type": "Mean",
-		"attribute": "RunIndex",
-		"filter": []
-	},
-	{
-		"type": "Summary",
-		"attribute": "Tool",
-		"filter": []
-	},
-	{
-		"type": "Average",
-		"attribute": "Phase-Name",
-		"filter": ["M2MTransformation1"]
-	},
-	{
-		"type": "Filter", 
- 		"attribute": "Metric", 
-		"filter": ["AverageMemory"] 
-	} ]
-},
-{
-	"ID": "8",
-	"OperationChain": 
-	[
-	{
-		"type": "Mean",
-		"attribute": "RunIndex",
-		"filter": []
-	},
-	{
-		"type": "Summary",
-		"attribute": "Tool",
-		"filter": []
-	},
-	{
-		"type": "Average",
-		"attribute": "Phase-Name",
-		"filter": ["Initialization"]
-	},
-	{
-		"type": "Filter", 
- 		"attribute": "Metric", 
-		"filter": ["Memory"] 
-	} ]
-},
-{
-	"ID": "9",
-	"OperationChain": 
-	[
-	{
-		"type": "Mean",
-		"attribute": "RunIndex",
-		"filter": []
-	},
-	{
-		"type": "Summary",
-		"attribute": "Tool",
-		"filter": []
-	},
-	{
-		"type": "Average",
-		"attribute": "Phase-Name",
-		"filter": ["Initialization"]
-	},
-	{
-		"type": "Filter", 
- 		"attribute": "Metric", 
-		"filter": ["PeakMemory"] 
-	} ]
-},
-{
-	"ID": "10",
-	"OperationChain": 
-	[
-	{
-		"type": "Mean",
-		"attribute": "RunIndex",
-		"filter": []
-	},
-	{
-		"type": "Summary",
-		"attribute": "Tool",
-		"filter": []
-	},
-	{
-		"type": "Average",
-		"attribute": "Phase-Name",
-		"filter": ["Initialization"]
-	},
-	{
-		"type": "Filter", 
- 		"attribute": "Metric", 
-		"filter": ["AverageMemory"] 
+		"filter": ["MatchSetSize"] 
 	} ]
 }]

@@ -10,6 +10,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.stream.Collectors;
 
+import org.codehaus.jackson.JsonParser.Feature;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
 import org.codehaus.jackson.type.TypeReference;
@@ -38,13 +39,32 @@ public class JSonSerializer implements Operation {
 	protected AggregataedResult result;
 	protected File json;
 	protected Map<String, Map<Integer, PhaseResult>> map;
-
-	public JSonSerializer(File out, String ID) {
+	protected String path;
+	protected ObjectMapper mapper;
+	public JSonSerializer(File out, String ID, String path) {
 		this.lock = new Object();
 		this.running = false;
 		this.json = out;
-		this.result = new AggregataedResult(ID, "", "");
+		this.path = path;
+		this.result = new AggregataedResult(ID, path);
 		this.map = new HashMap<>();
+		
+		
+		this.mapper = new ObjectMapper();
+		// to enable standard indentation ("pretty-printing"):
+		mapper.configure(SerializationConfig.Feature.FAIL_ON_EMPTY_BEANS, false);
+		mapper.configure(SerializationConfig.Feature.INDENT_OUTPUT, true);
+		// turn off autodetection
+		mapper.configure(SerializationConfig.Feature.AUTO_DETECT_FIELDS, false);
+		mapper.configure(SerializationConfig.Feature.AUTO_DETECT_GETTERS, false);
+		mapper.configure(Feature.AUTO_CLOSE_SOURCE, true);
+		try {
+			mapper.writeValue(json, new ArrayList<>());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 	public void setProcessor(Processor p) {
@@ -91,19 +111,20 @@ public class JSonSerializer implements Operation {
 				Tool newTool = new Tool(tool);
 				Set<Integer> sizekeys = this.map.get(tool).keySet();
 				final List<Result> results = new ArrayList<>();
-
-				sizekeys.forEach(size -> {
-					Result res = new Result(size);
-					MetricResult metric = this.map.get(tool).get(size).getMetrics().get(0);
-					metric.setValue(metric.getValue());
-					res.setMetrics(metric);
-					results.add(res);
-				});
-				List<Result> sortedResult = results.stream()
-						.sorted((object1, object2) -> object1.getSize().compareTo(object2.getSize()))
-						.collect(Collectors.toList());
-				newTool.setResults(sortedResult);
-				tools.add(newTool);
+				if (!sizekeys.isEmpty()) {
+					sizekeys.forEach(size -> {
+						Result res = new Result(size);
+						MetricResult metric = this.map.get(tool).get(size).getMetrics().get(0);
+						metric.setValue(metric.getValue());
+						res.setMetrics(metric);
+						results.add(res);
+					});
+					List<Result> sortedResult = results.stream()
+							.sorted((object1, object2) -> object1.getSize().compareTo(object2.getSize()))
+							.collect(Collectors.toList());
+					newTool.setResults(sortedResult);
+					tools.add(newTool);
+				}
 			});
 			this.result.setTool(tools);
 			this.append();
@@ -111,26 +132,18 @@ public class JSonSerializer implements Operation {
 	}
 
 	private void append() {
-		ObjectMapper mapper = new ObjectMapper();
-		// to enable standard indentation ("pretty-printing"):
-		mapper.configure(SerializationConfig.Feature.FAIL_ON_EMPTY_BEANS, false);
-		mapper.configure(SerializationConfig.Feature.INDENT_OUTPUT, true);
-		// turn off autodetection
-		mapper.configure(SerializationConfig.Feature.AUTO_DETECT_FIELDS, false);
-		mapper.configure(SerializationConfig.Feature.AUTO_DETECT_GETTERS, false);
 		List<AggregataedResult> tmp = null;
 		try {
 			synchronized (json) {
 				if (json.exists()) {
-					tmp = mapper.readValue(json, new TypeReference<List<AggregataedResult>>() {
+					tmp = this.mapper.readValue(json, new TypeReference<List<AggregataedResult>>() {
 					});
-
 				}
 				if (tmp == null) {
 					tmp = new ArrayList<>();
 				}
 				tmp.add(this.result);
-				mapper.writeValue(json, tmp);
+				this.mapper.writeValue(json, tmp);
 			}
 
 		} catch (IOException e) {
