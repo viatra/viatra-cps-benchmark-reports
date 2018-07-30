@@ -224,9 +224,13 @@ public class Processor {
 		lock = new Object();
 		this.configuration.forEach(aggConfig -> {
 			Operation last = null;
-			JSonSerializer tmp = new JSonSerializer(Paths
-					.get(this.resutOutputPath.toString(), this.buildId, caseName, scenario, "results.json").toFile(),
-					aggConfig.getID(), this.buildId + "/" + caseName + "/" + scenario);
+			JSonSerializer tmp = new JSonSerializer(
+					Paths.get(this.resutOutputPath.toString(), this.buildId, caseName, scenario, "results.json").toFile(),
+					Paths.get(this.resutOutputPath.toString(), this.buildId, caseName, scenario, "diagram.config.json").toFile(),
+					aggConfig.getID(), this.buildId + "/" + caseName + "/" + scenario,
+					this.diagramConfiguration,
+					caseName,
+					scenario);
 			tmp.setProcessor(this);
 			List<OperationConfig> opconf = aggConfig.getOperations(false);
 			for (OperationConfig opconfig : opconf) {

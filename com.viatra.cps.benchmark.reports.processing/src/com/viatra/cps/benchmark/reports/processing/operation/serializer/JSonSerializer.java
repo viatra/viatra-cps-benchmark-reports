@@ -17,8 +17,11 @@ import org.codehaus.jackson.type.TypeReference;
 
 import com.viatra.cps.benchmark.reports.processing.Processor;
 import com.viatra.cps.benchmark.reports.processing.models.AggregataedResult;
+import com.viatra.cps.benchmark.reports.processing.models.Diagrams;
 import com.viatra.cps.benchmark.reports.processing.models.Tool;
 import com.viatra.cps.benchmark.reports.processing.models.Result;
+import com.viatra.cps.benchmark.reports.processing.models.ResultData;
+import com.viatra.cps.benchmark.reports.processing.models.Results;
 import com.viatra.cps.benchmark.reports.processing.operation.Operation;
 
 import eu.mondo.sam.core.results.BenchmarkResult;
@@ -40,14 +43,24 @@ public class JSonSerializer implements Operation {
 	protected File json;
 	protected Map<String, Map<Integer, PhaseResult>> map;
 	protected String path;
+	protected File digramConfiguration;
 	protected ObjectMapper mapper;
-	public JSonSerializer(File out, String ID, String path) {
+	protected Diagrams config;
+	protected Diagrams template;
+	protected String caseName;
+	protected String scenario;
+	public JSonSerializer(File out,File digramConfiguration, String ID, String path,Diagrams template,String caseName,String scenario) {
 		this.lock = new Object();
 		this.running = false;
 		this.json = out;
 		this.path = path;
-		this.result = new AggregataedResult(ID, path);
+		this.caseName = caseName;
+		this.scenario = scenario;
+		this.template = template;
+		this.result = new AggregataedResult(ID);
+		this.config = new Diagrams(path);
 		this.map = new HashMap<>();
+		this.digramConfiguration = digramConfiguration;
 		
 		
 		this.mapper = new ObjectMapper();
@@ -59,7 +72,8 @@ public class JSonSerializer implements Operation {
 		mapper.configure(SerializationConfig.Feature.AUTO_DETECT_GETTERS, false);
 		mapper.configure(Feature.AUTO_CLOSE_SOURCE, true);
 		try {
-			mapper.writeValue(json, new ArrayList<>());
+			mapper.writeValue(digramConfiguration, this.config);
+			mapper.writeValue(json, new Results(path));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -132,18 +146,22 @@ public class JSonSerializer implements Operation {
 	}
 
 	private void append() {
-		List<AggregataedResult> tmp = null;
+		Results tmp = null;
 		try {
 			synchronized (json) {
 				if (json.exists()) {
-					tmp = this.mapper.readValue(json, new TypeReference<List<AggregataedResult>>() {
-					});
+					tmp = this.mapper.readValue(json, Results.class);
 				}
-				if (tmp == null) {
-					tmp = new ArrayList<>();
-				}
-				tmp.add(this.result);
+				tmp.getResults().add(this.result);
 				this.mapper.writeValue(json, tmp);
+			}
+			synchronized (this.config) {
+				this.config = this.mapper.readValue(digramConfiguration, Diagrams.class);
+				List<ResultData> resultDatas = this.template.getResultData();
+				ResultData dataTemplate = resultDatas.stream().filter(resultData-> resultData.getOperationId().equals(this.result.getOperation())).findFirst().get();
+				dataTemplate.setTitle(dataTemplate.getTitle().replaceAll("CASENAME", this.caseName).replaceAll("SCENARIO", this.scenario));
+				this.config.getResultData().add(dataTemplate);
+				this.mapper.writeValue(digramConfiguration, this.config);
 			}
 
 		} catch (IOException e) {
