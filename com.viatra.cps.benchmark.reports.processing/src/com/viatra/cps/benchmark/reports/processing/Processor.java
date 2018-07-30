@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Stream;
 
 import org.codehaus.jackson.JsonParseException;
@@ -31,7 +32,6 @@ import com.viatra.cps.benchmark.reports.processing.operation.serializer.JSonSeri
 import eu.mondo.sam.core.results.BenchmarkResult;
 
 public class Processor {
-	List<AggregatorConfiguration> aggregatorConfiguration;
 	ObjectMapper mapper;
 	Object lock;
 	Boolean timeout;
@@ -41,12 +41,14 @@ public class Processor {
 	List<AggregatorConfiguration> configuration;
 	VisualizerConfiguration visualizerConfiguration;
 	Diagrams diagramConfiguration;
+	String buildId;
 
 	List<Builds> builds;
 
 	public Processor(String buildId, String resultInputPath, String resultOutputPath, String configPath,
 			String diagramConfigTemplatePath, String visualizerConfigPath, String buildsPath) {
 
+		this.buildId = buildId;
 		// Initialize objectmapper
 		mapper = new ObjectMapper();
 
@@ -63,7 +65,7 @@ public class Processor {
 		this.visualizerConfiguration = this.loadVisualizerConfiguration(new File(visualizerConfigPath));
 
 		// Load or create Builds.json
-		this.builds = this.loadBuilds(new File(buildsPath));
+		this.builds = this.loadBuilds(new File(buildsPath+ "/builds.json"));
 
 		// Load diagram configuration template
 		this.diagramConfiguration = this.loadDiagramConfigurationTemplate(new File(diagramConfigTemplatePath));
@@ -139,6 +141,8 @@ public class Processor {
 
 	public void start() {
 
+		// Check inputs
+
 		if (!Files.exists(this.resultInputPath)) {
 			System.err.println("Result input path is not exists");
 			System.exit(1);
@@ -154,6 +158,7 @@ public class Processor {
 			System.exit(1);
 		}
 
+		// Load and separate benchmark results
 		Map<String, Map<String, List<BenchmarkResult>>> caseScenarioMap = new HashMap<>();
 
 		try (Stream<Path> paths = Files.walk(this.resultInputPath)) {
@@ -190,26 +195,38 @@ public class Processor {
 			System.err.println("Cannot load input results");
 			System.exit(2);
 		}
-		System.out.println("End");
-	}
-	
-	/*
 
-	public void process(File results) throws JsonParseException, JsonMappingException, IOException {
-		File file = new File(this.caseName + "/" + this.buildName + "/results.json");
-		if (!file.exists()) {
-			Files.createDirectories(Paths.get(this.caseName + "/" + this.buildName));
+		Set<String> cases = caseScenarioMap.keySet();
+		cases.forEach(caseName -> {
+			Map<String, List<BenchmarkResult>> scenairoMap = caseScenarioMap.get(caseName);
+			Set<String> scenarios = scenairoMap.keySet();
+			scenarios.forEach(scenario -> {
+				List<BenchmarkResult> results = scenairoMap.get(scenario);
+				try {
+					this.process(results, caseName, scenario);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			});
+		});
+	}
+
+	public void process(List<BenchmarkResult> results, String caseName, String scenario)
+			throws JsonParseException, JsonMappingException, IOException {
+		
+		System.out.println("Start to process: " + this.buildId +"/"+caseName+"/"+scenario);
+		if (!Files.exists(Paths.get(this.resutOutputPath.toString(), caseName, scenario))) {
+			Files.createDirectories(Paths.get(this.resutOutputPath.toString(), caseName, scenario));
 		}
 
-		mapper.writeValue(file, new ArrayList<>());
-
-		List<BenchmarkResult> benchmarkResults = mapper.readValue(results, new TypeReference<List<BenchmarkResult>>() {
-		});
-		counter = aggregatorConfiguration.size();
+		counter = this.configuration.size();
 		lock = new Object();
-		this.aggregatorConfiguration.forEach(aggConfig -> {
+		this.configuration.forEach(aggConfig -> {
 			Operation last = null;
-			JSonSerializer tmp = new JSonSerializer(file, aggConfig.getID());
+			JSonSerializer tmp = new JSonSerializer(
+					Paths.get(this.resutOutputPath.toString(), caseName, scenario, "results.json").toFile(),
+					aggConfig.getID());
 			tmp.setProcessor(this);
 			List<OperationConfig> opconf = aggConfig.getOperations(false);
 			for (OperationConfig opconfig : opconf) {
@@ -223,7 +240,7 @@ public class Processor {
 			}
 			;
 			last.start();
-			List<BenchmarkResult> list = benchmarkResults.subList(0, benchmarkResults.size());
+			List<BenchmarkResult> list = results.subList(0, results.size());
 			for (BenchmarkResult res : list) {
 				last.addResult(res);
 			}
@@ -237,7 +254,7 @@ public class Processor {
 					lock.wait(10000);
 					if (tmp == counter) {
 						this.timeout = true;
-						System.err.println(this.buildName + " timeout");
+						System.err.println(this.buildId + "/" + caseName + "/" + scenario + "/" + counter + " timeout");
 					}
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
@@ -245,8 +262,7 @@ public class Processor {
 				}
 			}
 		}
-		updateDiagramConfig();
-	}*/
+	}
 
 	public void chainEnd(String ID) {
 		synchronized (lock) {

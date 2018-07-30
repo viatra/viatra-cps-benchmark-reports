@@ -85,27 +85,29 @@ public class JSonSerializer implements Operation {
 
 	private void save() {
 		Set<String> toolKeys = this.map.keySet();
-		List<Tool> tools = new ArrayList<>();
-		toolKeys.forEach(tool -> {
-			Tool newTool = new Tool(tool);
-			Set<Integer> sizekeys = this.map.get(tool).keySet();
-			final List<Result> results = new ArrayList<>();
+		if (!toolKeys.isEmpty()) {
+			List<Tool> tools = new ArrayList<>();
+			toolKeys.forEach(tool -> {
+				Tool newTool = new Tool(tool);
+				Set<Integer> sizekeys = this.map.get(tool).keySet();
+				final List<Result> results = new ArrayList<>();
 
-			sizekeys.forEach(size -> {
-				Result res = new Result(size);
-				MetricResult metric = this.map.get(tool).get(size).getMetrics().get(0);
-				metric.setValue(metric.getValue());
-				res.setMetrics(metric);
-				results.add(res);
+				sizekeys.forEach(size -> {
+					Result res = new Result(size);
+					MetricResult metric = this.map.get(tool).get(size).getMetrics().get(0);
+					metric.setValue(metric.getValue());
+					res.setMetrics(metric);
+					results.add(res);
+				});
+				List<Result> sortedResult = results.stream()
+						.sorted((object1, object2) -> object1.getSize().compareTo(object2.getSize()))
+						.collect(Collectors.toList());
+				newTool.setResults(sortedResult);
+				tools.add(newTool);
 			});
-			List<Result> sortedResult = results.stream()
-					.sorted((object1, object2) -> object1.getSize().compareTo(object2.getSize()))
-					.collect(Collectors.toList());
-			newTool.setResults(sortedResult);
-			tools.add(newTool);
-		});
-		this.result.setTool(tools);
-		this.append();
+			this.result.setTool(tools);
+			this.append();
+		}
 	}
 
 	private void append() {
@@ -120,7 +122,6 @@ public class JSonSerializer implements Operation {
 		try {
 			synchronized (json) {
 				if (json.exists()) {
-
 					tmp = mapper.readValue(json, new TypeReference<List<AggregataedResult>>() {
 					});
 
