@@ -4,10 +4,7 @@ import java.util.List;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 
-public class Build {
-
-	@JsonProperty("Name")
-	protected String name;
+public class Diagrams {
 
 	@JsonProperty("ID")
 	protected String id;
@@ -21,14 +18,6 @@ public class Build {
 
 	public void setResultData(List<ResultData> resultData) {
 		this.resultData = resultData;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public String getId() {

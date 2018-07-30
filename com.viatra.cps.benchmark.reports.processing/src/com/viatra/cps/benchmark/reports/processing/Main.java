@@ -13,43 +13,45 @@ public class Main {
 
 	public static void main(String[] args) {
 		// create Options object
-		Options options = new Options();
-		// add t option
-		options.addOption("b", "build-name", true, "Build's name");
-		options.addOption("r", "results", true, "Mondo-Sam result's path");
-		options.addOption("c", "config", true, "AggregatedConfigouration's path");
-		options.addOption("ca", "case", true, "CaseName");
-		options.addOption("a", "aggregated-results", true, "AggregatedResults's path");
-		options.addOption("bt", "build-template", true, "Build template");
-		options.addOption("dt", "digram-config-template", true, "Diagram Config Template's path");
-		options.addOption("dc", "diagram-config", true, "Diagram config's path");
-		options.addOption("u","update-config",false,"Update diagram config");
-
+		/*
+		 * Options options = new Options(); // add t option options.addOption("b",
+		 * "build-name", true, "Build's name"); options.addOption("r", "results", true,
+		 * "Mondo-Sam result's path"); options.addOption("c", "config", true,
+		 * "AggregatedConfigouration's path"); options.addOption("ca", "case", true,
+		 * "CaseName"); options.addOption("a", "aggregated-results", true,
+		 * "AggregatedResults's path"); options.addOption("bt", "build-template", true,
+		 * "Build template"); options.addOption("dt", "digram-config-template", true,
+		 * "Diagram Config Template's path"); options.addOption("dc", "diagram-config",
+		 * true, "Diagram config's path");
+		 * options.addOption("u","update-config",false,"Update diagram config");
+		 */
 		CommandLineParser parser = new DefaultParser();
 		CommandLine cmd;
+
+		// Process
+		String buildId = "IQS_1";
+		String resultInputPath = "./IQS_1";
+		String resultOutputPath = "../resultVisualizer/src/results";
+		String configPath = "./config.json";
+		String diagramConfigTemplatePath = "./diagramConfigTemplate.json";
+
+		// Visualize
+		String visualizerConfigPath = "./visualizerConfig.json";
+		String buildsPath = "../resultVisualizer/src/results";
+
 		try {
-			cmd = parser.parse(options, args);
-			String resultPath = cmd.getOptionValue("r");
-			String configPath = cmd.getOptionValue("c");
-			String caseName = cmd.getOptionValue("ca");
-			String aggresult = cmd.getOptionValue("a");
-			String buildName = cmd.getOptionValue("b");
-			String buildTemplate = cmd.getOptionValue("bt");
-			String diagramTemplate = cmd.getOptionValue("dt");
-			String diagramConfig = cmd.getOptionValue("dc");
-			Boolean updateDiagConfig = cmd.hasOption("u");
-			Processor process = new Processor(buildName, buildTemplate, diagramTemplate, diagramConfig,updateDiagConfig,caseName);
-			try {
-				process.loadBenchmarkResults(new File(configPath),
-						aggresult + "/" + buildName);
-				process.process(new File(resultPath));
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		} catch (ParseException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+			/*
+			 * cmd = parser.parse(options, args); String resultPath =
+			 * cmd.getOptionValue("r"); String configPath = cmd.getOptionValue("c"); String
+			 * caseName = cmd.getOptionValue("ca"); String aggresult =
+			 * cmd.getOptionValue("a"); String buildName = cmd.getOptionValue("b"); String
+			 * buildTemplate = cmd.getOptionValue("bt"); String diagramTemplate =
+			 * cmd.getOptionValue("dt"); String diagramConfig = cmd.getOptionValue("dc");
+			 * Boolean updateDiagConfig = cmd.hasOption("u");
+			 */
+			Processor process = new Processor(buildId,resultInputPath,resultOutputPath,configPath,diagramConfigTemplatePath,visualizerConfigPath,buildsPath);
+			process.start();
+		}catch (Exception e) {
+			e.printStackTrace();		}
 	}
 }

@@ -6,8 +6,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -16,9 +19,10 @@ import org.codehaus.jackson.map.SerializationConfig;
 import org.codehaus.jackson.type.TypeReference;
 
 import com.viatra.cps.benchmark.reports.processing.models.AggregatorConfiguration;
-import com.viatra.cps.benchmark.reports.processing.models.Build;
+import com.viatra.cps.benchmark.reports.processing.models.Diagrams;
+import com.viatra.cps.benchmark.reports.processing.models.Builds;
 import com.viatra.cps.benchmark.reports.processing.models.Case;
-import com.viatra.cps.benchmark.reports.processing.models.DiagramConfig;
+import com.viatra.cps.benchmark.reports.processing.models.VisualizerConfiguration;
 import com.viatra.cps.benchmark.reports.processing.models.OperationConfig;
 import com.viatra.cps.benchmark.reports.processing.operation.Operation;
 import com.viatra.cps.benchmark.reports.processing.operation.OperationFactory;
@@ -30,107 +34,166 @@ public class Processor {
 	List<AggregatorConfiguration> aggregatorConfiguration;
 	ObjectMapper mapper;
 	Object lock;
-	String aggResult;
-	String buildName;
-	String buildTemplate;
-	String digramTemplate;
-	String diagramConfig;
-	Boolean updateDiagConfig;
 	Boolean timeout;
-	String caseName;
 	int counter;
+	Path resultInputPath;
+	Path resutOutputPath;
+	List<AggregatorConfiguration> configuration;
+	VisualizerConfiguration visualizerConfiguration;
+	Diagrams diagramConfiguration;
 
-	public Processor(String buildName, String buildTemplate, String digramTemplate, String diagramConfig,
-			Boolean updateDiagConfig, String caseName) {
-		this.buildName = buildName;
-		this.buildTemplate = buildTemplate;
-		this.digramTemplate = digramTemplate;
-		this.diagramConfig = diagramConfig;
-		this.caseName = caseName;
-		this.updateDiagConfig = updateDiagConfig;
-		this.timeout = false;
+	List<Builds> builds;
+
+	public Processor(String buildId, String resultInputPath, String resultOutputPath, String configPath,
+			String diagramConfigTemplatePath, String visualizerConfigPath, String buildsPath) {
+
+		// Initialize objectmapper
 		mapper = new ObjectMapper();
+
+		// Set input path
+		this.resultInputPath = Paths.get(resultInputPath);
+
+		// Set output path
+		this.resutOutputPath = Paths.get(resultOutputPath);
+
+		// Load configuration
+		this.configuration = this.loadConfiguration(new File(configPath));
+
+		// Load or create visualizer configuration
+		this.visualizerConfiguration = this.loadVisualizerConfiguration(new File(visualizerConfigPath));
+
+		// Load or create Builds.json
+		this.builds = this.loadBuilds(new File(buildsPath));
+
+		// Load diagram configuration template
+		this.diagramConfiguration = this.loadDiagramConfigurationTemplate(new File(diagramConfigTemplatePath));
+
+		this.timeout = false;
 	}
 
-	public void loadBenchmarkResults(File config, String aggResult)
-			throws JsonParseException, JsonMappingException, IOException {
-		this.aggResult = aggResult;
-		this.aggregatorConfiguration = mapper.readValue(config, new TypeReference<List<AggregatorConfiguration>>() {
-		});
-	}
-
-	public String updateBuildConfig() {
-		File buildsJson = new File("builds.json");
-		List<Case> cases;
-		String id = "undefined";
-		try {
-			if (buildsJson.exists()) {
-				cases = mapper.readValue(buildsJson, new TypeReference<List<Case>>() {
-				});
-			} else {
-				cases = new ArrayList<>();
+	private Diagrams loadDiagramConfigurationTemplate(File diagramConfigTemplate) {
+		Diagrams diagrams;
+		if (diagramConfigTemplate.exists()) {
+			try {
+				diagrams = mapper.readValue(diagramConfigTemplate, Diagrams.class);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				diagrams = null;
 			}
-			Optional<Case> c = cases.stream().filter(tmp -> tmp.getCaseName().equals(this.caseName)).findFirst();
-			if (c.isPresent()) {
-				List<String> builds = c.get().getBuilds();
-				if (!builds.stream().filter(build -> build.equals(buildName)).findFirst().isPresent()) {
-					builds.add(this.buildName);
-					id = this.caseName + "_" + c.get().getBuilds().size();
-				}
-			} else {
-				Case newCase = new Case();
-				List<String> buildsList = new ArrayList<>();
-				buildsList.add(this.buildName);
-				newCase.setBuilds(buildsList);
-				newCase.setCaseName(this.caseName);
-				cases.add(newCase);
-				id = this.caseName + "_" + 1;
-			}
-			mapper.writeValue(buildsJson, cases);
-			return id;
-		} catch (
-
-		IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return null;
+		} else {
+			diagrams = null;
 		}
+		return diagrams;
 	}
 
-	public void updateDiagramConfig() {
-		mapper.configure(SerializationConfig.Feature.FAIL_ON_EMPTY_BEANS, false);
-		mapper.configure(SerializationConfig.Feature.INDENT_OUTPUT, true);
-		// turn off autodetection
-		mapper.configure(SerializationConfig.Feature.AUTO_DETECT_FIELDS, false);
-		mapper.configure(SerializationConfig.Feature.AUTO_DETECT_GETTERS, false);
-		try {
-			String buildId = updateBuildConfig();
-
-			// Updated diagram configuration
-			File diagramConfigJson = new File(this.digramTemplate);
-			DiagramConfig diagramConfig = mapper.readValue(diagramConfigJson, DiagramConfig.class);
-			File newConfig = new File(this.diagramConfig);
-			if (!newConfig.exists()) {
-				Files.createDirectories(Paths.get(this.diagramConfig).getParent());
+	private List<Builds> loadBuilds(File buildsJson) {
+		List<Builds> builds;
+		if (buildsJson.exists()) {
+			try {
+				builds = this.mapper.readValue(buildsJson, new TypeReference<List<Builds>>() {
+				});
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				builds = new ArrayList<>();
 			}
-			mapper.writeValue(newConfig, diagramConfig);
+		} else {
+			builds = new ArrayList<>();
+		}
+		return builds;
+	}
 
-			// Save new build config
-			File buildTemplate = new File(this.buildTemplate);
-			Build build = mapper.readValue(buildTemplate, Build.class);
-			build.setId(buildId);
-			build.setName(buildName);
-			File conf = new File(this.caseName + "/" + this.buildName + "/build.config.json");
-			if(!conf.exists() ) {
-				Files.createDirectories(Paths.get(this.caseName + "/" + this.buildName));
-				File resultsJson = new File(this.caseName + "/" + this.buildName + "/build.config.json");
-				mapper.writeValue(resultsJson, build);
+	private VisualizerConfiguration loadVisualizerConfiguration(File visualizerConfigurationFile) {
+		VisualizerConfiguration visualizerConfiguration;
+		if (visualizerConfigurationFile.exists()) {
+			try {
+				visualizerConfiguration = mapper.readValue(visualizerConfigurationFile, VisualizerConfiguration.class);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				visualizerConfiguration = new VisualizerConfiguration();
 			}
+		} else {
+			visualizerConfiguration = new VisualizerConfiguration();
+		}
+		return visualizerConfiguration;
+	}
+
+	private List<AggregatorConfiguration> loadConfiguration(File configFile) {
+		List<AggregatorConfiguration> config;
+		if (configFile.exists()) {
+			try {
+				config = this.mapper.readValue(configFile, new TypeReference<List<AggregatorConfiguration>>() {
+				});
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				config = null;
+			}
+		} else {
+			config = null;
+		}
+		return config;
+	}
+
+	public void start() {
+
+		if (!Files.exists(this.resultInputPath)) {
+			System.err.println("Result input path is not exists");
+			System.exit(1);
+		}
+
+		if (this.configuration == null) {
+			System.err.println("Configuration not exists or invalid");
+			System.exit(1);
+		}
+
+		if (this.diagramConfiguration == null) {
+			System.err.println("Diagram configuration template not exists or invalid");
+			System.exit(1);
+		}
+
+		Map<String, Map<String, List<BenchmarkResult>>> caseScenarioMap = new HashMap<>();
+
+		try (Stream<Path> paths = Files.walk(this.resultInputPath)) {
+			paths.filter(Files::isRegularFile).forEach((path) -> {
+				try {
+					BenchmarkResult result = mapper.readValue(path.toFile(), BenchmarkResult.class);
+					Map<String, List<BenchmarkResult>> scenarioMap = caseScenarioMap
+							.get(result.getCaseDescriptor().getCaseName());
+					if (scenarioMap != null) {
+						List<BenchmarkResult> benchmarkList = (List<BenchmarkResult>) scenarioMap
+								.get(result.getCaseDescriptor().getScenario());
+						if (benchmarkList != null) {
+							benchmarkList.add(result);
+						} else {
+							benchmarkList = new ArrayList<>();
+							benchmarkList.add(result);
+							scenarioMap.put(result.getCaseDescriptor().getScenario(), benchmarkList);
+						}
+					} else {
+						List<BenchmarkResult> resultList = new ArrayList<>();
+						resultList.add(result);
+						scenarioMap = new HashMap<>();
+						scenarioMap.put(result.getCaseDescriptor().getScenario(), resultList);
+						caseScenarioMap.put(result.getCaseDescriptor().getCaseName(), scenarioMap);
+					}
+				} catch (IOException e) {
+					e.printStackTrace();
+					System.err.println("Cannot load all result");
+					System.exit(3);
+				}
+			});
 		} catch (Exception e) {
 			e.printStackTrace();
+			System.err.println("Cannot load input results");
+			System.exit(2);
 		}
-
+		System.out.println("End");
 	}
+	
+	/*
 
 	public void process(File results) throws JsonParseException, JsonMappingException, IOException {
 		File file = new File(this.caseName + "/" + this.buildName + "/results.json");
@@ -183,7 +246,7 @@ public class Processor {
 			}
 		}
 		updateDiagramConfig();
-	}
+	}*/
 
 	public void chainEnd(String ID) {
 		synchronized (lock) {
