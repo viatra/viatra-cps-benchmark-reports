@@ -1,6 +1,10 @@
 import { Tool } from "./tool";
 
 export class Benchmark {
-    operationID: string;
-    tool: Tool[];
+    Path: string;
+    public Results: Results[];
+}
+
+export class Results{
+    constructor(public operationID: string, public tool: Tool[]){}
 }

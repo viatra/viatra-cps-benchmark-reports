@@ -1,9 +1,8 @@
 export class DiagramSet {
-    constructor(public diagrams : Array<Diagram>, public name : String){}
+    constructor(public Diagrams : Array<Diagram>, public Title : String){}
 }
 
-
 export class Diagram {
-    constructor(public caseName: string, public buildName: string, public operationid: string,public opened: boolean){}
+    constructor(public CaseName: string, public Build: string,public Scenario: string, public OperationId: string,public Opened: boolean){}
 }
 

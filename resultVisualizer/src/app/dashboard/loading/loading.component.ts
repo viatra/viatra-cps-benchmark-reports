@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { Scenario } from '../../model/scenario';
+import { DiagramSet } from '../../model/diagramSet';
 import { DiagramService } from '../../diagram/service/diagram.service';
 import { Router } from '@angular/router';
 
@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
   styleUrls: ['../dashboard/dashboard.component.css']
 })
 export class LoadingComponent implements OnInit {
-  scenarios : Array<Scenario>
+  scenarios : Array<DiagramSet>
   selected : number;
   @Output() back : EventEmitter<null>
   constructor(private _diagramService : DiagramService, private _router : Router) {
@@ -18,7 +18,6 @@ export class LoadingComponent implements OnInit {
       if(event == "Scenario"){
         this.scenarios = this._diagramService.Scenarios;
         this.selected = 0;
-        console.log(this.scenarios);
       }
     })
     this.scenarios = this._diagramService.Scenarios;
@@ -34,8 +33,7 @@ export class LoadingComponent implements OnInit {
 
 
   public selectionChange(scenario :string){
-    console.log(scenario);
-    this.selected = this.scenarios.findIndex((sc: Scenario, index: number,scenarios : Scenario[]) =>{
+    this.selected = this.scenarios.findIndex((sc: DiagramSet, index: number,scenarios : DiagramSet[]) =>{
       return sc.name == scenario;
     })
   }

@@ -55,8 +55,8 @@ export class BuildConfigService {
         }
     }
 
-    public getBuildConfig(caseName: string, buildName: string, callback: any) {
-        this._jsonService.getBuildConfig(caseName, buildName).subscribe(buildconfig => {
+    public getBuildConfig(caseName: string, buildName: string,scenario:string, callback: any) {
+        this._jsonService.getBuildConfig(caseName, buildName,scenario).subscribe(buildconfig => {
             let operations = new Array<{ operationid: string, title: string, caseName: string, buildName: string }>()
             buildconfig.ResultData.forEach(element => {
                 operations.push({ operationid: element.OperationID, title: element.Title, caseName: caseName, buildName: buildName })
@@ -64,8 +64,8 @@ export class BuildConfigService {
             callback({ buildName: buildName, operations });
         })
     }
-    public getFullBuildConfig(caseName: string, buildName: string, callback: any) {
-        this._jsonService.getBuildConfig(caseName, buildName).subscribe(buildconfig => {
+    public getFullBuildConfig(caseName: string, buildName: string,scenario: string, callback: any) {
+        this._jsonService.getBuildConfig(caseName, buildName,scenario).subscribe(buildconfig => {
             callback(buildconfig);
         })
     }
