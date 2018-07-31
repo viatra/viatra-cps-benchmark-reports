@@ -34,7 +34,7 @@ export class LoadingComponent implements OnInit {
 
   public selectionChange(scenario :string){
     this.selected = this.scenarios.findIndex((sc: DiagramSet, index: number,scenarios : DiagramSet[]) =>{
-      return sc.name == scenario;
+      return sc.Title == scenario;
     })
   }
 

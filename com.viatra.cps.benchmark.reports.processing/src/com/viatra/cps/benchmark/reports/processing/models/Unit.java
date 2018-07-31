@@ -27,6 +27,6 @@ public class Unit {
 
 	public Unit() {
 		this.value = 1.0;
-		this.label = "unit";
+		this.label = "u";
 	}
 }

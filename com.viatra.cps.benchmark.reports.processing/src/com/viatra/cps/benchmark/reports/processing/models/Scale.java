@@ -47,7 +47,7 @@ public class Scale {
 	public Scale(String metric) {
 		this.units = new ArrayList<>();
 		this.metric = metric;
-		this.defaultScale = "unit";
+		this.defaultScale = "u";
 		this.units.add(new Unit());
 	}
 
