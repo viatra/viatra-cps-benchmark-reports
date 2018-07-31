@@ -17,6 +17,8 @@ import org.codehaus.jackson.type.TypeReference;
 
 import com.viatra.cps.benchmark.reports.processing.Processor;
 import com.viatra.cps.benchmark.reports.processing.models.AggregataedResult;
+import com.viatra.cps.benchmark.reports.processing.models.DiagramDescriptor;
+import com.viatra.cps.benchmark.reports.processing.models.DiagramSet;
 import com.viatra.cps.benchmark.reports.processing.models.Diagrams;
 import com.viatra.cps.benchmark.reports.processing.models.Tool;
 import com.viatra.cps.benchmark.reports.processing.models.Result;
@@ -49,11 +51,20 @@ public class JSonSerializer implements Operation {
 	protected Diagrams template;
 	protected String caseName;
 	protected String scenario;
-	public JSonSerializer(File out,File digramConfiguration, String ID, String path,Diagrams template,String caseName,String scenario) {
+	protected List<DiagramSet> dashboard;
+	protected File dashboardConfogurationFile;
+	protected String buildId;
+
+	public JSonSerializer(File out, File digramConfiguration, String ID, String path, Diagrams template,
+			String caseName, String scenario, List<DiagramSet> dashboard, File dashboardConfogurationFile,
+			String buildId) {
 		this.lock = new Object();
 		this.running = false;
+		this.buildId = buildId;
 		this.json = out;
 		this.path = path;
+		this.dashboard = dashboard;
+		this.dashboardConfogurationFile = dashboardConfogurationFile;
 		this.caseName = caseName;
 		this.scenario = scenario;
 		this.template = template;
@@ -61,8 +72,7 @@ public class JSonSerializer implements Operation {
 		this.config = new Diagrams(path);
 		this.map = new HashMap<>();
 		this.digramConfiguration = digramConfiguration;
-		
-		
+
 		this.mapper = new ObjectMapper();
 		// to enable standard indentation ("pretty-printing"):
 		mapper.configure(SerializationConfig.Feature.FAIL_ON_EMPTY_BEANS, false);
@@ -78,7 +88,7 @@ public class JSonSerializer implements Operation {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	public void setProcessor(Processor p) {
@@ -158,17 +168,31 @@ public class JSonSerializer implements Operation {
 			synchronized (this.config) {
 				this.config = this.mapper.readValue(digramConfiguration, Diagrams.class);
 				List<ResultData> resultDatas = this.template.getResultData();
-				ResultData dataTemplate = resultDatas.stream().filter(resultData-> resultData.getOperationId().equals(this.result.getOperation())).findFirst().get();
-				dataTemplate.setTitle(dataTemplate.getTitle().replaceAll("CASENAME", this.caseName).replaceAll("SCENARIO", this.scenario));
+				ResultData dataTemplate = resultDatas.stream()
+						.filter(resultData -> resultData.getOperationId().equals(this.result.getOperation()))
+						.findFirst().get();
+				dataTemplate.setTitle(dataTemplate.getTitle().replaceAll("CASENAME", this.caseName)
+						.replaceAll("SCENARIO", this.scenario));
 				this.config.getResultData().add(dataTemplate);
 				this.mapper.writeValue(digramConfiguration, this.config);
 			}
 
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			synchronized (this.dashboardConfogurationFile) {
+				DiagramSet diagSet = this.dashboard.stream()
+						.filter(diagramSet -> diagramSet.getTitle().equals(this.buildId)).findFirst().get();
+				if (!diagSet.getDiagrams().stream().filter(diagram -> {
+					return diagram.getBuild().equals(this.buildId) && diagram.getCaseName().equals(this.caseName)
+							&& diagram.getOperationId().equals(this.result.getOperation())
+							&& diagram.getScenario().equals(this.scenario);
+				}).findFirst().isPresent()) {
+					diagSet.getDiagrams().add(new DiagramDescriptor(this.caseName, this.buildId, this.scenario,
+							this.result.getOperation(), true));
+					mapper.writeValue(this.dashboardConfogurationFile, this.dashboard);
+				}
+			}
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	@Override

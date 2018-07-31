@@ -1,4 +1,4 @@
-export class Scenario {
+export class DiagramSet {
     constructor(public diagrams : Array<Diagram>, public name : String){}
 }
 

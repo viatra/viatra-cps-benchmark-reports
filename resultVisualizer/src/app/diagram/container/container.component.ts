@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { DiagramService, Glyphicon } from '../service/diagram.service';
-import { ActivatedRoute } from '@angular/router/';
-import { Scenario } from '../../model/scenario';
+import { ActivatedRoute } from '@angular/router';
+import { DiagramSet } from '../../model/diagramSet';
 import { Scale } from '../../model/defaultScale';
 import { SliderService } from '../../slider/slider.service';
 import { Diagram } from '../model/diagram';

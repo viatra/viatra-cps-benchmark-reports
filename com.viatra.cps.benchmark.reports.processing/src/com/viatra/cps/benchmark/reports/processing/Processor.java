@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -22,6 +23,7 @@ import com.viatra.cps.benchmark.reports.processing.models.AggregatorConfiguratio
 import com.viatra.cps.benchmark.reports.processing.models.Diagrams;
 import com.viatra.cps.benchmark.reports.processing.models.Builds;
 import com.viatra.cps.benchmark.reports.processing.models.Case;
+import com.viatra.cps.benchmark.reports.processing.models.DiagramSet;
 import com.viatra.cps.benchmark.reports.processing.models.VisualizerConfiguration;
 import com.viatra.cps.benchmark.reports.processing.models.OperationConfig;
 import com.viatra.cps.benchmark.reports.processing.models.Scale;
@@ -44,7 +46,9 @@ public class Processor {
 	Diagrams diagramConfiguration;
 	String buildId;
 	File visualizerConfigurationFile;
+	File dashboardConfigurationFile;
 	List<Builds> builds;
+	List<DiagramSet> diagramSet;
 
 	public Processor(String buildId, String resultInputPath, String resultOutputPath, String configPath,
 			String diagramConfigTemplatePath, String visualizerConfigPath, String buildsPath) {
@@ -71,7 +75,32 @@ public class Processor {
 		// Load diagram configuration template
 		this.diagramConfiguration = this.loadDiagramConfigurationTemplate(new File(diagramConfigTemplatePath));
 
+		this.diagramSet = this.loadDiagramSet(new File(this.resutOutputPath + "/dashboard.json"));
+
 		this.timeout = false;
+	}
+
+	private List<DiagramSet> loadDiagramSet(File dashboard) {
+		List<DiagramSet> diagrams;
+		this.dashboardConfigurationFile = dashboard;
+		if (dashboard.exists()) {
+			try {
+				diagrams = mapper.readValue(dashboard, new TypeReference<List<DiagramSet>>() {
+				});
+				if (!diagrams.stream().filter(diagramSet -> diagramSet.getTitle().equals(this.buildId)).findFirst()
+						.isPresent()) {
+					diagrams.add(new DiagramSet(this.buildId));
+				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				diagrams = null;
+			}
+		} else {
+			diagrams = new ArrayList<>();
+			diagrams.add(new DiagramSet(this.buildId));
+		}
+		return diagrams;
 	}
 
 	private Diagrams loadDiagramConfigurationTemplate(File diagramConfigTemplate) {
@@ -165,6 +194,11 @@ public class Processor {
 			System.exit(1);
 		}
 
+		if (this.diagramSet == null) {
+			System.err.println("Dashboard configuration is invalid");
+			System.exit(1);
+		}
+
 		// Load and separate benchmark results
 		Map<String, Map<String, List<BenchmarkResult>>> caseScenarioMap = new HashMap<>();
 
@@ -237,7 +271,8 @@ public class Processor {
 		if (this.visualizerConfiguration.getToolColors().size() == 0) {
 			this.visualizerConfiguration.getToolColors().add(new ToolColor(result.getCaseDescriptor().getTool()));
 		} else if (!this.visualizerConfiguration.getToolColors().stream()
-				.filter(tool -> tool.getToolName().equals(result.getCaseDescriptor().getTool())).findFirst().isPresent()) {
+				.filter(tool -> tool.getToolName().equals(result.getCaseDescriptor().getTool())).findFirst()
+				.isPresent()) {
 			this.visualizerConfiguration.getToolColors().add(new ToolColor(result.getCaseDescriptor().getTool()));
 		}
 	}
@@ -260,7 +295,7 @@ public class Processor {
 					Paths.get(this.resutOutputPath.toString(), this.buildId, caseName, scenario, "diagram.config.json")
 							.toFile(),
 					aggConfig.getID(), this.buildId + "/" + caseName + "/" + scenario, this.diagramConfiguration,
-					caseName, scenario);
+					caseName, scenario, this.diagramSet, this.dashboardConfigurationFile, this.buildId);
 			tmp.setProcessor(this);
 			List<OperationConfig> opconf = aggConfig.getOperations(false);
 			for (OperationConfig opconfig : opconf) {
@@ -301,7 +336,11 @@ public class Processor {
 
 	public void updateBuilds(String caseName, String scenario) {
 		if (this.builds.size() > 0) {
-			Builds build = this.builds.stream().filter(b -> b.getBuildId().equals(this.buildId)).findFirst().get();
+			Builds build = null;
+			Optional<Builds> option = this.builds.stream().filter(b -> b.getBuildId().equals(this.buildId)).findFirst();
+			if (option.isPresent()) {
+				build = option.get();
+			}
 			if (build != null) {
 				Case caseElement = build.getCases().stream().filter(c -> c.getCaseName().equals(caseName)).findFirst()
 						.get();
