@@ -171,9 +171,11 @@ public class JSonSerializer implements Operation {
 				ResultData dataTemplate = resultDatas.stream()
 						.filter(resultData -> resultData.getOperationId().equals(this.result.getOperation()))
 						.findFirst().get();
-				dataTemplate.setTitle(dataTemplate.getTitle().replaceAll("CASENAME", this.caseName)
+				
+				ResultData resultData = (ResultData) dataTemplate.clone();
+				resultData.setTitle(resultData.getTitle().replaceAll("CASENAME", this.caseName)
 						.replaceAll("SCENARIO", this.scenario));
-				this.config.getResultData().add(dataTemplate);
+				this.config.getResultData().add(resultData);
 				this.mapper.writeValue(digramConfiguration, this.config);
 			}
 

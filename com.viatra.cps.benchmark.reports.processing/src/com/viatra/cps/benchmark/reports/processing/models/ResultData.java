@@ -2,7 +2,7 @@ package com.viatra.cps.benchmark.reports.processing.models;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 
-public class ResultData {
+public class ResultData implements Cloneable{
 	
 	@JsonProperty("DiagramType")
 	protected String diagramType;
@@ -69,5 +69,10 @@ public class ResultData {
 	public void setMetric(String metric) {
 		Metric = metric;
 	}
+	
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
 	
 }
