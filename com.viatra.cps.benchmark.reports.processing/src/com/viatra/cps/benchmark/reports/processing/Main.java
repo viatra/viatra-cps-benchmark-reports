@@ -36,7 +36,7 @@ public class Main {
 		String diagramConfigTemplatePath = "./diagramConfigTemplate.json";
 
 		// Visualize
-		String visualizerConfigPath = "./visualizerConfig.json";
+		String visualizerConfigPath = "../resultVisualizer/src/config/config.json";
 		String buildsPath = "../resultVisualizer/src/results";
 
 		try {

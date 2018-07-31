@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -25,6 +24,8 @@ import com.viatra.cps.benchmark.reports.processing.models.Builds;
 import com.viatra.cps.benchmark.reports.processing.models.Case;
 import com.viatra.cps.benchmark.reports.processing.models.VisualizerConfiguration;
 import com.viatra.cps.benchmark.reports.processing.models.OperationConfig;
+import com.viatra.cps.benchmark.reports.processing.models.Scale;
+import com.viatra.cps.benchmark.reports.processing.models.ToolColor;
 import com.viatra.cps.benchmark.reports.processing.operation.Operation;
 import com.viatra.cps.benchmark.reports.processing.operation.OperationFactory;
 import com.viatra.cps.benchmark.reports.processing.operation.serializer.JSonSerializer;
@@ -42,7 +43,7 @@ public class Processor {
 	VisualizerConfiguration visualizerConfiguration;
 	Diagrams diagramConfiguration;
 	String buildId;
-
+	File visualizerConfigurationFile;
 	List<Builds> builds;
 
 	public Processor(String buildId, String resultInputPath, String resultOutputPath, String configPath,
@@ -108,13 +109,14 @@ public class Processor {
 
 	private VisualizerConfiguration loadVisualizerConfiguration(File visualizerConfigurationFile) {
 		VisualizerConfiguration visualizerConfiguration;
+		this.visualizerConfigurationFile = visualizerConfigurationFile;
 		if (visualizerConfigurationFile.exists()) {
 			try {
 				visualizerConfiguration = mapper.readValue(visualizerConfigurationFile, VisualizerConfiguration.class);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-				visualizerConfiguration = new VisualizerConfiguration();
+				visualizerConfiguration = null;
 			}
 		} else {
 			visualizerConfiguration = new VisualizerConfiguration();
@@ -158,6 +160,11 @@ public class Processor {
 			System.exit(1);
 		}
 
+		if (this.visualizerConfiguration == null) {
+			System.err.println("Visualizer configuration is invalid");
+			System.exit(1);
+		}
+
 		// Load and separate benchmark results
 		Map<String, Map<String, List<BenchmarkResult>>> caseScenarioMap = new HashMap<>();
 
@@ -165,6 +172,7 @@ public class Processor {
 			paths.filter(Files::isRegularFile).forEach((path) -> {
 				try {
 					BenchmarkResult result = mapper.readValue(path.toFile(), BenchmarkResult.class);
+					this.updateVisualizerConfig(result);
 					Map<String, List<BenchmarkResult>> scenarioMap = caseScenarioMap
 							.get(result.getCaseDescriptor().getCaseName());
 					if (scenarioMap != null) {
@@ -210,6 +218,28 @@ public class Processor {
 				}
 			});
 		});
+		try {
+			mapper.writeValue(this.visualizerConfigurationFile, this.visualizerConfiguration);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public void updateVisualizerConfig(BenchmarkResult result) {
+		result.getPhaseResults().forEach(phaseResult -> phaseResult.getMetrics().forEach(metric -> {
+			if (!this.visualizerConfiguration.getScales().stream()
+					.filter(scale -> scale.getMetric().equals(metric.getName())).findFirst().isPresent()) {
+				this.visualizerConfiguration.getScales().add(new Scale(metric.getName()));
+			}
+		}));
+
+		if (this.visualizerConfiguration.getToolColors().size() == 0) {
+			this.visualizerConfiguration.getToolColors().add(new ToolColor(result.getCaseDescriptor().getTool()));
+		} else if (!this.visualizerConfiguration.getToolColors().stream()
+				.filter(tool -> tool.getToolName().equals(result.getCaseDescriptor().getTool())).findFirst().isPresent()) {
+			this.visualizerConfiguration.getToolColors().add(new ToolColor(result.getCaseDescriptor().getTool()));
+		}
 	}
 
 	public void process(List<BenchmarkResult> results, String caseName, String scenario)
@@ -225,12 +255,12 @@ public class Processor {
 		this.configuration.forEach(aggConfig -> {
 			Operation last = null;
 			JSonSerializer tmp = new JSonSerializer(
-					Paths.get(this.resutOutputPath.toString(), this.buildId, caseName, scenario, "results.json").toFile(),
-					Paths.get(this.resutOutputPath.toString(), this.buildId, caseName, scenario, "diagram.config.json").toFile(),
-					aggConfig.getID(), this.buildId + "/" + caseName + "/" + scenario,
-					this.diagramConfiguration,
-					caseName,
-					scenario);
+					Paths.get(this.resutOutputPath.toString(), this.buildId, caseName, scenario, "results.json")
+							.toFile(),
+					Paths.get(this.resutOutputPath.toString(), this.buildId, caseName, scenario, "diagram.config.json")
+							.toFile(),
+					aggConfig.getID(), this.buildId + "/" + caseName + "/" + scenario, this.diagramConfiguration,
+					caseName, scenario);
 			tmp.setProcessor(this);
 			List<OperationConfig> opconf = aggConfig.getOperations(false);
 			for (OperationConfig opconfig : opconf) {

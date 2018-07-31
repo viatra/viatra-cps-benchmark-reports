@@ -1,5 +1,7 @@
 package com.viatra.cps.benchmark.reports.processing.models;
 
+import java.util.Random;
+
 import org.codehaus.jackson.annotate.JsonProperty;
 
 public class ToolColor {
@@ -24,5 +26,23 @@ public class ToolColor {
 
 	public String getColor() {
 		return this.color;
+	}
+
+	public ToolColor() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public ToolColor(String tool) {
+		this.toolName = tool;
+		this.color = this.generateColor();
+	}
+
+	private String generateColor() {
+		Random rand = new Random();
+		int r = rand.nextInt(255);
+		int g = rand.nextInt(255);
+		int b = rand.nextInt(255);
+
+		return "rgba(" + r + "," + g + "," + b + ",1)";
 	}
 }
