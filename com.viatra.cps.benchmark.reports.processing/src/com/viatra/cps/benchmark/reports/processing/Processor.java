@@ -287,13 +287,13 @@ public class Processor {
 
 		counter = this.configuration.size();
 		lock = new Object();
+		File resultJson = Paths.get(this.resutOutputPath.toString(), this.buildId, caseName, scenario, "results.json").toFile();
+		File diagramJson = Paths.get(this.resutOutputPath.toString(), this.buildId, caseName, scenario, "diagram.config.json").toFile();
 		this.configuration.forEach(aggConfig -> {
 			Operation last = null;
 			JSonSerializer tmp = new JSonSerializer(
-					Paths.get(this.resutOutputPath.toString(), this.buildId, caseName, scenario, "results.json")
-							.toFile(),
-					Paths.get(this.resutOutputPath.toString(), this.buildId, caseName, scenario, "diagram.config.json")
-							.toFile(),
+					resultJson,
+					diagramJson,
 					aggConfig.getID(), this.buildId + "/" + caseName + "/" + scenario, this.diagramConfiguration,
 					caseName, scenario, this.diagramSet, this.dashboardConfigurationFile, this.buildId);
 			tmp.setProcessor(this);
