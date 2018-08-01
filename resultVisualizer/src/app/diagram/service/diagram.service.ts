@@ -173,7 +173,12 @@ export class DiagramService {
                     data.datasets.push(this.getDataSet(tool, index, this.getSizesAsNumber(maxSizeTool)));
                     index++;
                 });
-                let newDiagram = new Diagram(operation.DiagramType, data, this.getOption(operation.YLabel, operation.XLabel, this.getSizesAsNumber(maxSizeTool)), `${operation.Title} (${id})`, operation.Metric);
+                let newDiagram = new Diagram(operation.DiagramType, 
+                    data, 
+                    this.getOption(operation.YLabel, operation.XLabel, this.getSizesAsNumber(maxSizeTool),
+                    operation.XType,
+                    operation.YType,
+                ), `${operation.Title} (${id})`, operation.Metric);
                 this._diagrams.push(newDiagram)
                 if (opened) {
                     this._selectionUpdate.emit(new SelectionUpdateEvent("Added", newDiagram));
@@ -184,7 +189,7 @@ export class DiagramService {
     }
 
 
-    private getDataSet(tool: Tool, index: number,sizes: Number[]) {
+    private getDataSet(tool: Tool, index: number, sizes: Number[]) {
         let dataset: Dataset = new Dataset();
         dataset.lineTension = 0;
         dataset.data = new Array();
@@ -194,7 +199,7 @@ export class DiagramService {
         dataset.backgroundColor = this.getColor(tool.name);
         let i = 0;
         tool.results.forEach((result: Result) => {
-            dataset.data.push(({y: result.metric.MetricValue,x:sizes[i]}));
+            dataset.data.push(({ y: result.metric.MetricValue, x: sizes[i] }));
             i++;
         });
         return dataset;
@@ -264,7 +269,7 @@ export class DiagramService {
         return max;
     }
 
-    getOption(yLabel: string, xLabel: string, sizes: Number[]): Option {
+    getOption(yLabel: string, xLabel: string, sizes: Number[], typeX: string, typeY: string): Option {
         return {
             maintainAspectRatio: true,
             legend: {
@@ -283,7 +288,7 @@ export class DiagramService {
                         display: true,
                         labelString: yLabel,
                     },
-                    type: "logarithmic"
+                    type: typeY
                 }],
                 xAxes: [{
                     scaleLabel: {
@@ -297,7 +302,7 @@ export class DiagramService {
                         display: true,
                         maxTicksLimit: sizes.length,
                     },
-                    type: "logarithmic"
+                    type: typeX
                 }]
             }
         }

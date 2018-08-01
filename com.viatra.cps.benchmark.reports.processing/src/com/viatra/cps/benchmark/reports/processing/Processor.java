@@ -342,8 +342,11 @@ public class Processor {
 				build = option.get();
 			}
 			if (build != null) {
-				Case caseElement = build.getCases().stream().filter(c -> c.getCaseName().equals(caseName)).findFirst()
-						.get();
+				Case caseElement = null;
+				Optional<Case> optional = build.getCases().stream().filter(c -> c.getCaseName().equals(caseName)).findFirst();
+				if(optional.isPresent()) {
+					caseElement = optional.get();
+				}
 				if (caseElement != null) {
 					if (!caseElement.getScenarios().stream().filter(s -> s.equals(scenario)).findFirst().isPresent()) {
 						if (caseElement.getScenarios().size() == 0) {

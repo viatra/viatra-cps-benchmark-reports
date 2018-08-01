@@ -21,6 +21,31 @@ public class ResultData implements Cloneable{
 	
 	@JsonProperty("Metric")
 	protected String Metric;
+	
+	
+	@JsonProperty("XType")
+	protected String xType;
+	
+	
+	public String getxType() {
+		return xType;
+	}
+
+	public void setxType(String xType) {
+		this.xType = xType;
+	}
+
+	public String getXtype() {
+		return xtype;
+	}
+
+	public void setXtype(String xtype) {
+		this.xtype = xtype;
+	}
+
+	@JsonProperty("YType")
+	protected String xtype;
+	
 
 	public String getDiagramType() {
 		return diagramType;
