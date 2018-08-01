@@ -9,12 +9,12 @@ export class BuildConfigService {
     private _buildist: Array<BuildList>;
     constructor(private _jsonService: JsonService) { }
 
-    public getCaseName(callback: any) {
+    public getBuildNames(callback: any) {
         if (!this._buildist) {
             this._jsonService.getBuilds().subscribe(results => {
                 this._buildist = results;
                 callback(results.map(build => {
-                    return build.CaseName
+                    return build.BuildId
                 })
                 )
             })

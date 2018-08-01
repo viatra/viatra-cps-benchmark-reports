@@ -21,8 +21,8 @@ export class CreatingComponent implements OnInit {
     "disabled": true
   }
   disabled: boolean;
-  builds: Array<{ caseName: string, builds: Array<{ caseName: string, buildName: string }> }>;
-  selectedBuilds: Array<{ caseName: string, buildName: string }>;
+  builds: Array<string>;
+  selectedBuilds: Array<string>;
   selectedCases: Array<string>;
   step: number;
   cases: Array<String>;
@@ -33,10 +33,10 @@ export class CreatingComponent implements OnInit {
   private _diagrams: Array<Diagram>;
   constructor(private _buildConfigService: BuildConfigService, private _dragulaService: DragulaService, private _diagramService: DiagramService, private _router: Router) {
     this.back = new EventEmitter<null>();
-    this.builds = new Array<{ caseName: string, builds: Array<{ caseName: string, buildName: string }> }>();
+    this.builds = new Array<string>();
     this.cases = new Array<string>();
     this.selectedCases = new Array<string>();
-    this.selectedBuilds = new Array<{ caseName: string, buildName: string }>();
+    this.selectedBuilds = new Array<string>();
     this.operations = new Array<{ buildName: string, operations: Array<{ operationid: string, title: string, caseName: string, buildName: string }> }>();
     this.shows = new Array<{ operationid: string, title: string, scenario: string, caseName: string, buildName: string }>();
     this.hides = new Array<{ operationid: string, title: string, scenario: string, caseName: string, buildName: string }>();
@@ -64,6 +64,15 @@ export class CreatingComponent implements OnInit {
     this.step--;
   }
 
+  public addAllBuilds() {
+    this.selectedBuilds = this.selectedBuilds.concat(this.builds);
+    this.builds = [];
+  }
+
+  public removeAllBuilds() {
+    this.builds = this.builds.concat(this.selectedBuilds);
+    this.selectedBuilds = [];
+  }
 
   public select() {
     if (!this.disabled) {
@@ -71,34 +80,34 @@ export class CreatingComponent implements OnInit {
         case 0:
           this.selectedCases.forEach(selectedCase => {
             this._buildConfigService.getBuildsbyCase(selectedCase, builds => {
-              this.builds.push({ caseName: selectedCase, builds: builds })
+              //   this.builds.push({ caseName: selectedCase, builds: builds })
             })
           })
           break;
-        case 1:
-          this.shows = new Array<{ operationid: string, caseName: string, scenario: string, title: string, buildName: string }>();
-          this.hides = new Array<{ operationid: string, caseName: string, scenario: string, title: string, buildName: string }>();
-          this.selectedBuilds.forEach(select => {
-            this._buildConfigService.getBuildConfig(select.caseName, select.buildName, (buildConfig => {
-              this.operations.push(buildConfig);
-            })
-            )
-          })
-          break;
-        case 2:
-          this._diagrams = new Array<Diagram>();
-          this.shows.forEach(element => {
-            this._diagrams.push({ caseName: element.caseName, build: element.buildName, scenario: element.scenario, operationid: element.operationid, opened: true });
-          })
-          this.hides.forEach(element => {
-            this._diagrams.push({ caseName: element.caseName, build: element.buildName, scenario: element.scenario, operationid: element.operationid, opened: false });
-          })
-          break;
-
-        case 3:
-          this._diagramService.addScenario(new DiagramSet(this._diagrams, this.scenarioTitle));
-          this._router.navigate(['diagrams'], { queryParams: { 'scenario': 1, "type": "created" } });
-          break;
+        /* case 1:
+           this.shows = new Array<{ operationid: string, caseName: string, scenario: string, title: string, buildName: string }>();
+           this.hides = new Array<{ operationid: string, caseName: string, scenario: string, title: string, buildName: string }>();
+           this.selectedBuilds.forEach(select => {
+             this._buildConfigService.getBuildConfig(select.caseName,select.scenario, select.buildName, (buildConfig => {
+               this.operations.push(buildConfig);
+             })
+             )
+           })
+           break;
+         case 2:
+           this._diagrams = new Array<Diagram>();
+           this.shows.forEach(element => {
+             this._diagrams.push({ caseName: element.caseName, build: element.buildName, scenario: element.scenario, operationid: element.operationid, opened: true });
+           })
+           this.hides.forEach(element => {
+             this._diagrams.push({ caseName: element.caseName, build: element.buildName, scenario: element.scenario, operationid: element.operationid, opened: false });
+           })
+           break;
+ 
+         case 3:
+           this._diagramService.addScenario(new DiagramSet(this._diagrams, this.scenarioTitle));
+           this._router.navigate(['diagrams'], { queryParams: { 'scenario': 1, "type": "created" } });
+           break;*/
       }
       this.disabled = true;
       this.next["disabled"] = this.disabled;
@@ -110,7 +119,7 @@ export class CreatingComponent implements OnInit {
     let [el, target, source] = args;
     switch (this.step) {
       case 0:
-        this.disabled = this.selectedCases.length === 0;
+        this.disabled = this.selectedBuilds.length === 0;
         break;
       case 1:
         this.disabled = this.selectedBuilds.length === 0;
@@ -136,8 +145,8 @@ export class CreatingComponent implements OnInit {
 
 
   ngOnInit() {
-    this._buildConfigService.getCaseName((cases => {
-      this.cases = cases;
+    this._buildConfigService.getBuildNames((builds => {
+      this.builds = builds;
     }))
   }
 }

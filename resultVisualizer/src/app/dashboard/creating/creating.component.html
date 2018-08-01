@@ -9,16 +9,18 @@
         <div class="col col-lg-12 center" [ngSwitch]="step">
             <ng-container *ngSwitchCase="0">
                 <div class="col col-lg-6 build">
-                    <h4>Cases</h4>
-                    <div class="col col-lg-12 build-list" [dragula]='"case"' [dragulaModel]='cases'>
-                        <div class="build-list-element" *ngFor='let case of cases' [innerHtml]='case'>
+                    <h4>Builds
+                        <span *ngIf="builds.length>0" class="glyphicon glyphicon-menu-right" (click)="addAllBuilds()"></span>
+                    </h4>
+                    <div class="col col-lg-12 build-list" [dragula]='"build"' [dragulaModel]='builds'>
+                        <div class="build-list-element" *ngFor='let build of builds' [innerHtml]='build'>
                         </div>
                     </div>
                 </div>
-                <div class="col col-lg-6 selected top right">
-                    <h4>Select</h4>
-                    <div class="col col-lg-12 build-list " [dragula]='"case"' [dragulaModel]='selectedCases'>
-                        <div class="build-list-element" *ngFor='let selectedCase of selectedCases' [innerHtml]='selectedCases'>
+                <div class="col col-lg-6 selected top right" [dragula]='"build"' [dragulaModel]='selectedBuilds'>
+                    <h4><span *ngIf="selectedBuilds.length>0" class="glyphicon glyphicon-menu-left" (click)="removeAllBuilds()"></span>Select </h4>
+                    <div class="col col-lg-12 build-list" >
+                        <div class="build-list-element" *ngFor='let selectedBuild of selectedBuilds' [innerHtml]='selectedBuild'>
                         </div>
                     </div>
                 </div>
