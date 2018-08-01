@@ -49,6 +49,27 @@
             <ng-container *ngSwitchCase="2">
                 <div class="col col-lg-6 build">
                     <div class="col col-lg-12">
+                        <h3>Scenarios</h3>
+                    </div>
+                    <div class="col col-lg-12" *ngFor='let case of scenarios'>
+                        <h4>{{case.caseName}}  <span *ngIf="case.scenarios.length>0" class="glyphicon glyphicon-menu-right" (click)="addAllScenarioFromCases(case.caseName)"></span></h4>
+                        <div class="col col-lg-12 build-list" [dragula]='scenario' [dragulaModel]='case.scenarios'>
+                            <div class="build-list-element" *ngFor='let scenario of case.scenarios' [innerHtml]='scenario.title'>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col col-lg-6 selected">
+                    <h4><span *ngIf="selectedScenarios.length>0" class="glyphicon glyphicon-menu-left" (click)="removeAllScenario()"></span>Select</h4>
+                    <div class="col col-lg-12 build-list " [dragula]='scenario' [dragulaModel]='selectedScenarios'>
+                        <div class="build-list-element" *ngFor='let selected of selectedScenarios' [innerHtml]='selected.title'>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+            <ng-container *ngSwitchCase="3">
+                <div class="col col-lg-6 build">
+                    <div class="col col-lg-12">
                         <h3>Operations</h3>
                     </div>
                     <div class="col col-lg-12" *ngFor='let operation of operations'>
@@ -59,7 +80,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col col-lg-6 selected top right">
+                <div class="col col-lg-6 selected">
                     <div class="col col-lg-12">
                         <h3>Diagrams</h3>
                     </div>

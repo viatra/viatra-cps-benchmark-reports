@@ -26,6 +26,8 @@ export class CreatingComponent implements OnInit {
   selectedCases: Array<{buildName :string, caseName: string}>;
   step: number;
   cases: Array<{buildName :string, cases:Array<{buildName :string, caseName: string}>}>;
+  scenarios: Array<{caseName :string, scenarios: Array<{caseName :string, title: string}>}>;
+  selectedScenarios: Array<{caseName :string, title: string}>;
   scenarioTitle: String;
   operations: Array<{ buildName: string, operations: Array<{ operationid: string, title: string, caseName: string, buildName: string }> }>;
   shows: Array<{ operationid: string, scenario: string, caseName: string, buildName: string }>;
@@ -36,7 +38,9 @@ export class CreatingComponent implements OnInit {
     this.builds = new Array<string>();
     this.cases =  new Array<{buildName :string, cases:Array<{buildName :string, caseName: string}>}>();
     this.selectedCases = new Array<{buildName :string, caseName: string}>();
+    this.selectedScenarios = new Array<{caseName :string, title: string}>();
     this.selectedBuilds = new Array<string>();
+    this.scenarios = new Array<{caseName :string, scenarios: Array<{caseName :string, title: string}>}>();
     this.operations = new Array<{ buildName: string, operations: Array<{ operationid: string, title: string, caseName: string, buildName: string }> }>();
     this.shows = new Array<{ operationid: string, title: string, scenario: string, caseName: string, buildName: string }>();
     this.hides = new Array<{ operationid: string, title: string, scenario: string, caseName: string, buildName: string }>();
@@ -88,6 +92,20 @@ export class CreatingComponent implements OnInit {
     this.next["disabled"] = this.disabled;
   }
 
+  public addAllScenarioFromCases(caseName :string){
+    let tmp =  this.scenarios.find(function(elemet){
+      return elemet.caseName === caseName
+    }).scenarios
+
+    this.selectedScenarios = this.selectedScenarios.concat(tmp)
+    this.scenarios.find(function(elemet){
+      return elemet.caseName === caseName
+    }).scenarios = []
+
+    this.disabled = false;
+    this.next["disabled"] = this.disabled;
+  }
+
   public removeAllBuilds() {
     this.builds = this.builds.concat(this.selectedBuilds);
     this.selectedBuilds = [];
@@ -106,6 +124,17 @@ export class CreatingComponent implements OnInit {
     this.selectedCases = []
   }
 
+  public removeAllScenario(){
+    let scenarios = this.scenarios;
+    this.selectedScenarios.forEach(function(scenario){
+      scenarios.find(function(elemet){
+        return elemet.caseName === scenario.caseName
+      }).scenarios.push(scenario)
+    })
+    this.scenarios = scenarios;
+    this.selectedScenarios = []
+  }
+
   public select() {
     if (!this.disabled) {
       switch (this.step) {
@@ -115,6 +144,13 @@ export class CreatingComponent implements OnInit {
              this.cases.push({ buildName: selectedBuild, cases: cases })
            })
          })
+         break;
+         case 1:
+          this.selectedCases.forEach(selectedCase =>{
+            this._buildConfigService.getScenariosByCase(selectedCase.buildName, selectedCase.caseName, scenarios=>{
+              this.scenarios.push({caseName: `${selectedCase.buildName}/${selectedCase.caseName}`, scenarios: scenarios})
+            })
+          })
          break;
        /* case 1:
           this.shows = new Array<{ operationid: string, caseName: string, scenario: string, title: string, buildName: string }>();
