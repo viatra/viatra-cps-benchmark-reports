@@ -57,10 +57,10 @@ export class DiagramService {
             })
             this._initEvent.emit("Config");
 
-        this._jsonService.getScenarios().subscribe((scenarios: Array<DiagramSet>)=>{
-            this._scenarios = scenarios
-            this._initEvent.emit("Scenario")
-        })
+            this._jsonService.getScenarios().subscribe((scenarios: Array<DiagramSet>) => {
+                this._scenarios = scenarios
+                this._initEvent.emit("Scenario")
+            })
         });
     }
 
@@ -90,7 +90,7 @@ export class DiagramService {
             case "created":
                 scenario = this._scenarios[this._scenarios.length - 1]
             case "loaded":
-            scenario = this._scenarios[index]
+                scenario = this._scenarios[index]
         }
         if (scenario === null || scenario === undefined) {
             this._router.navigate(["/"])
@@ -103,8 +103,8 @@ export class DiagramService {
     private addDiagrams(scenario: DiagramSet, callback: any) {
         this._selectionUpdate.emit(new SelectionUpdateEvent("Clear", null));
         scenario.Diagrams.forEach((diag) => {
-            this._jsonService.getResults(diag.CaseName, diag.Build,diag.Scenario).subscribe((benchmarks: Benchmark) => {
-                this._buildConfigService.getFullBuildConfig(diag.CaseName, diag.Build,diag.Scenario, configs => {
+            this._jsonService.getResults(diag.CaseName, diag.Build, diag.Scenario).subscribe((benchmarks: Benchmark) => {
+                this._buildConfigService.getFullBuildConfig(diag.CaseName, diag.Build, diag.Scenario, configs => {
                     this.createDiagram(benchmarks.Results.find((benchmark => benchmark.operationID === diag.OperationId)), diag.Opened, configs.ResultData.find((config => config.OperationID === diag.OperationId)), diag.Build)
                     callback();
                 })
@@ -170,10 +170,10 @@ export class DiagramService {
                 let index = 0;
                 data.datasets = new Array<Dataset>();
                 tools.forEach((tool: Tool) => {
-                    data.datasets.push(this.getDataSet(tool, index));
+                    data.datasets.push(this.getDataSet(tool, index, this.getSizesAsNumber(maxSizeTool)));
                     index++;
                 });
-                let newDiagram = new Diagram(operation.DiagramType, data, this.getOption(operation.YLabel, operation.XLabel), `${operation.Title} (${id})`, operation.Metric);
+                let newDiagram = new Diagram('line', data, this.getOption(operation.YLabel, operation.XLabel, this.getSizesAsNumber(maxSizeTool)), `${operation.Title} (${id})`, operation.Metric);
                 this._diagrams.push(newDiagram)
                 if (opened) {
                     this._selectionUpdate.emit(new SelectionUpdateEvent("Added", newDiagram));
@@ -184,7 +184,7 @@ export class DiagramService {
     }
 
 
-    private getDataSet(tool: Tool, index: number) {
+    private getDataSet(tool: Tool, index: number,sizes: Number[]) {
         let dataset: Dataset = new Dataset();
         dataset.lineTension = 0;
         dataset.data = new Array();
@@ -192,8 +192,10 @@ export class DiagramService {
         dataset.label = tool.name
         dataset.borderColor = this.getColor(tool.name);
         dataset.backgroundColor = this.getColor(tool.name);
+        let i = 0;
         tool.results.forEach((result: Result) => {
-            dataset.data.push((result.metric.MetricValue));
+            dataset.data.push(({y: result.metric.MetricValue,x:sizes[i]}));
+            i++;
         });
         return dataset;
     }
@@ -243,6 +245,14 @@ export class DiagramService {
         });
         return sizes;
     }
+    private getSizesAsNumber(tool: Tool): Number[] {
+        let sizes: Number[] = [];
+        tool.results.forEach((result: Result) => {
+            sizes.push(result.size);
+        });
+        return sizes;
+    }
+
 
     private getMaxSizeTool(benchmark: Results): Tool {
         let max: Tool = benchmark.tool[0];
@@ -254,7 +264,7 @@ export class DiagramService {
         return max;
     }
 
-    getOption(yLabel: string, xLabel: string): Option {
+    getOption(yLabel: string, xLabel: string, sizes: Number[]): Option {
         return {
             maintainAspectRatio: true,
             legend: {
@@ -279,7 +289,15 @@ export class DiagramService {
                     scaleLabel: {
                         display: true,
                         labelString: xLabel
-                    }
+                    },
+                    ticks: {
+                        callback: function (tick, index, ticks) {
+                            return tick.toLocaleString()
+                        },
+                        display: true,
+                        maxTicksLimit: sizes.length,
+                    },
+                    type: "logarithmic"
                 }]
             }
         }
