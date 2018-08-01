@@ -6,8 +6,8 @@
 }
 
 .center{
-    height: 65vh;
-    overflow: auto;
+    float: left;
+    position: relative;
     text-align: center;
 }
 
@@ -95,7 +95,6 @@
     border-bottom: 1px solid #888888;
 }
 
-
 hr{
     display: block;
     height: 1px;
@@ -132,12 +131,11 @@ select {
 
 .top{
     top: 1;
-    position: absolute;
+    position: fixed;
     text-align: center;
 }
-
 .right{
-    right: 0.15%;
+    right: 20.15%;
 }
 
 

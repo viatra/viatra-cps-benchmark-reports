@@ -20,35 +20,35 @@ export class BuildConfigService {
             })
         } else {
             callback(this._buildist.map(build => {
-                return build.CaseName
+                return build.BuildId
             })
             )
         }
     }
 
-    public getBuildsbyCase(caseName: string, callback: any) {
+   public getCasesByBuild(buildName: string, callback: any) {
         if (!this._buildist) {
             this._jsonService.getBuilds().subscribe(results => {
                 this._buildist = results;
                 this._buildist.forEach(element => {
-                    if (element.CaseName === caseName) {
-                        let builds = new Array<{ caseName: string, buildName: string }>()
-                        element.Builds.forEach(build => {
-                            builds.push({ caseName: caseName, buildName: build })
+                    if (element.BuildId === buildName) {
+                        let cases = new Array<{ buildName: string, caseName: string }>()
+                        element.Cases.forEach(c => {
+                            cases.push({ buildName: buildName, caseName: c.CaseName })
                         });
-                        callback(builds)
+                        callback(cases)
                         return
                     }
                 })
             })
         } else {
             this._buildist.forEach(element => {
-                if (element.CaseName === caseName) {
-                    let builds = new Array<{ caseName: string, buildName: string }>()
-                    element.Builds.forEach(build => {
-                        builds.push({ caseName: caseName, buildName: build })
+                if (element.BuildId === buildName) {
+                    let cases = new Array<{ buildName: string, caseName: string }>()
+                    element.Cases.forEach(c => {
+                        cases.push({ caseName: c.CaseName, buildName: buildName })
                     });
-                    callback(builds)
+                    callback(cases)
                     return
                 }
             })
@@ -73,5 +73,9 @@ export class BuildConfigService {
 
 
 class BuildList {
-    constructor(public CaseName: string, public Builds: Array<string>) { }
+    constructor(public BuildId: string, public Cases: Array<Cases>) { }
+}
+
+class Cases{
+    constructor(public CaseName: string,public Scenarios: Array<string>){}
 }

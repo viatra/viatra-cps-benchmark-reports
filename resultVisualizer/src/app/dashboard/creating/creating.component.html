@@ -3,7 +3,7 @@
     <div class="col col-lg-8 bordered">
         <div class="col col-lg-12">
             <h1>Create scenario </h1>
-            <h3>Select Cases</h3>
+            <h3>Select Builds</h3>
             <hr />
         </div>
         <div class="col col-lg-12 center" [ngSwitch]="step">
@@ -17,9 +17,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="col col-lg-6 selected top right" [dragula]='"build"' [dragulaModel]='selectedBuilds'>
+                <div class="col col-lg-6 selected">
                     <h4><span *ngIf="selectedBuilds.length>0" class="glyphicon glyphicon-menu-left" (click)="removeAllBuilds()"></span>Select </h4>
-                    <div class="col col-lg-12 build-list" >
+                    <div class="col col-lg-12 build-list" [dragula]='"build"' [dragulaModel]='selectedBuilds'>
                         <div class="build-list-element" *ngFor='let selectedBuild of selectedBuilds' [innerHtml]='selectedBuild'>
                         </div>
                     </div>
@@ -28,20 +28,20 @@
             <ng-container *ngSwitchCase="1">
                 <div class="col col-lg-6 build">
                     <div class="col col-lg-12">
-                        <h3>Builds</h3>
+                        <h3>Cases</h3>
                     </div>
-                    <div class="col col-lg-12" *ngFor='let case of builds'>
-                        <h4>{{case.caseName}}</h4>
-                        <div class="col col-lg-12 build-list" [dragula]='"build"' [dragulaModel]='case.builds'>
-                            <div class="build-list-element" *ngFor='let build of case.builds' [innerHtml]='build.buildName'>
+                    <div class="col col-lg-12" *ngFor='let build of cases'>
+                        <h4>{{build.buildName}}  <span *ngIf="build.cases.length>0" class="glyphicon glyphicon-menu-right" (click)="addAllCasesFromBuild(build.buildName)"></span></h4>
+                        <div class="col col-lg-12 build-list" [dragula]='case' [dragulaModel]='build.cases'>
+                            <div class="build-list-element" *ngFor='let case of build.cases' [innerHtml]='case.caseName'>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col col-lg-6 selected top right">
-                    <h4>Select</h4>
-                    <div class="col col-lg-12 build-list " [dragula]='"build"' [dragulaModel]='selectedBuilds'>
-                        <div class="build-list-element" *ngFor='let selected of selectedBuilds' [innerHtml]='selected.buildName'>
+                <div class="col col-lg-6 selected">
+                    <h4><span *ngIf="selectedCases.length>0" class="glyphicon glyphicon-menu-left" (click)="removeAllCases()"></span>Select</h4>
+                    <div class="col col-lg-12 build-list " [dragula]='case' [dragulaModel]='selectedCases'>
+                        <div class="build-list-element" *ngFor='let selected of selectedCases' [innerHtml]='selected.caseName'>
                         </div>
                     </div>
                 </div>
