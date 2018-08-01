@@ -173,7 +173,7 @@ export class DiagramService {
                     data.datasets.push(this.getDataSet(tool, index, this.getSizesAsNumber(maxSizeTool)));
                     index++;
                 });
-                let newDiagram = new Diagram('line', data, this.getOption(operation.YLabel, operation.XLabel, this.getSizesAsNumber(maxSizeTool)), `${operation.Title} (${id})`, operation.Metric);
+                let newDiagram = new Diagram(operation.DiagramType, data, this.getOption(operation.YLabel, operation.XLabel, this.getSizesAsNumber(maxSizeTool)), `${operation.Title} (${id})`, operation.Metric);
                 this._diagrams.push(newDiagram)
                 if (opened) {
                     this._selectionUpdate.emit(new SelectionUpdateEvent("Added", newDiagram));
