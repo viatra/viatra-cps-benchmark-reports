@@ -63,9 +63,9 @@ export class BuildConfigService {
                 let cases = this._buildist.find(build => build.BuildId === buildId).Cases
                 cases.forEach(element => {
                     if (element.CaseName === caseName) {
-                        let scenarios = new Array<{ caseName: string, title: string }>()
+                        let scenarios = new Array<{ id: string, buildName: string, caseName: string, scenario: string }>()
                         element.Scenarios.forEach(scenario => {
-                            scenarios.push({ caseName: `${buildId}/${caseName}`, title: scenario })
+                            scenarios.push({ id: `${buildId}/${caseName}`, buildName: buildId, caseName: caseName, scenario: scenario })
                         });
                         callback(scenarios)
                         return
@@ -76,9 +76,9 @@ export class BuildConfigService {
             let cases = this._buildist.find(build => build.BuildId === buildId).Cases
             cases.forEach(element => {
                 if (element.CaseName === caseName) {
-                    let scenarios = new Array<{ caseName: string, title: string }>()
+                    let scenarios = new Array<{ id: string, buildName: string, caseName: string, scenario: string }>()
                     element.Scenarios.forEach(scenario => {
-                        scenarios.push({ caseName: `${buildId}/${caseName}`, title: scenario })
+                        scenarios.push({ id: `${buildId}/${caseName}`, buildName: buildId, caseName: caseName, scenario: scenario })
                     });
                     callback(scenarios)
                     return
@@ -87,17 +87,17 @@ export class BuildConfigService {
         }
     }
 
-    public getBuildConfig(caseName: string, buildName: string, scenario: string, callback: any) {
-        this._jsonService.getBuildConfig(caseName, buildName, scenario).subscribe(buildconfig => {
-            let operations = new Array<{ operationid: string, title: string, caseName: string, buildName: string }>()
+    public getBuildConfig(buildName: string, caseName: string, scenario: string, callback: any) {
+        this._jsonService.getBuildConfig(buildName,caseName, scenario).subscribe(buildconfig => {
+            let operations = new Array<{id: string, operationid: string, scenario: string, title: string, caseName: string, buildName: string }>()
             buildconfig.ResultData.forEach(element => {
-                operations.push({ operationid: element.OperationID, title: element.Title, caseName: caseName, buildName: buildName })
+                operations.push({id: `${buildName}/${caseName}/${scenario}`,  operationid: element.OperationID, title: element.Title, caseName: caseName, buildName: buildName, scenario: scenario })
             });
-            callback({ buildName: buildName, operations });
+            callback(operations);
         })
     }
-    public getFullBuildConfig(caseName: string, buildName: string, scenario: string, callback: any) {
-        this._jsonService.getBuildConfig(caseName, buildName, scenario).subscribe(buildconfig => {
+    public getFullBuildConfig(buildName: string, caseName: string, scenario: string, callback: any) {
+        this._jsonService.getBuildConfig(buildName, caseName, scenario).subscribe(buildconfig => {
             callback(buildconfig);
         })
     }

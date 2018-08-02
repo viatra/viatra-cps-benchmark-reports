@@ -18,7 +18,7 @@ export class JsonService {
     return this.http.get(configPath).map((res:Response) => res.json());
   }
 
-  getBuildConfig(caseName: String,build: string,scenario: string) {
+  getBuildConfig(build: String,caseName: string,scenario: string) {
     return this.http.get(`results/${build}/${caseName}/${scenario}/diagram.config.json`).map((res:Response) => res.json());
   }
 

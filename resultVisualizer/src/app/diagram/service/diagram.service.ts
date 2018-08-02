@@ -88,9 +88,11 @@ export class DiagramService {
         let scenario;
         switch (type) {
             case "created":
-                scenario = this._scenarios[this._scenarios.length - 1]
+                scenario = this._scenarios[this._scenarios.length - 1];
+                break;
             case "loaded":
-                scenario = this._scenarios[index]
+                scenario = this._scenarios[index];
+                break;
         }
         if (scenario === null || scenario === undefined) {
             this._router.navigate(["/"])
@@ -104,7 +106,7 @@ export class DiagramService {
         this._selectionUpdate.emit(new SelectionUpdateEvent("Clear", null));
         scenario.Diagrams.forEach((diag) => {
             this._jsonService.getResults(diag.CaseName, diag.Build, diag.Scenario).subscribe((benchmarks: Benchmark) => {
-                this._buildConfigService.getFullBuildConfig(diag.CaseName, diag.Build, diag.Scenario, configs => {
+                this._buildConfigService.getFullBuildConfig(diag.Build, diag.CaseName, diag.Scenario, configs => {
                     this.createDiagram(benchmarks.Results.find((benchmark => benchmark.operationID === diag.OperationId)), diag.Opened, configs.ResultData.find((config => config.OperationID === diag.OperationId)), diag.Build)
                     callback();
                 })

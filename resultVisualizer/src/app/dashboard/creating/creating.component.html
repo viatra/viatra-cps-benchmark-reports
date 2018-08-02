@@ -52,9 +52,9 @@
                         <h3>Scenarios</h3>
                     </div>
                     <div class="col col-lg-12" *ngFor='let case of scenarios'>
-                        <h4>{{case.caseName}}  <span *ngIf="case.scenarios.length>0" class="glyphicon glyphicon-menu-right" (click)="addAllScenarioFromCases(case.caseName)"></span></h4>
+                        <h4>{{case.id}}  <span *ngIf="case.scenarios.length>0" class="glyphicon glyphicon-menu-right" (click)="addAllScenarioFromCases(case.id)"></span></h4>
                         <div class="col col-lg-12 build-list" [dragula]='scenario' [dragulaModel]='case.scenarios'>
-                            <div class="build-list-element" *ngFor='let scenario of case.scenarios' [innerHtml]='scenario.title'>
+                            <div class="build-list-element" *ngFor='let scenario of case.scenarios' [innerHtml]='scenario.scenario'>
                             </div>
                         </div>
                     </div>
@@ -62,7 +62,7 @@
                 <div class="col col-lg-6 selected">
                     <h4><span *ngIf="selectedScenarios.length>0" class="glyphicon glyphicon-menu-left" (click)="removeAllScenario()"></span>Select</h4>
                     <div class="col col-lg-12 build-list " [dragula]='scenario' [dragulaModel]='selectedScenarios'>
-                        <div class="build-list-element" *ngFor='let selected of selectedScenarios' [innerHtml]='selected.title'>
+                        <div class="build-list-element" *ngFor='let selected of selectedScenarios' [innerHtml]='selected.scenario'>
                         </div>
                     </div>
                 </div>
@@ -73,7 +73,7 @@
                         <h3>Operations</h3>
                     </div>
                     <div class="col col-lg-12" *ngFor='let operation of operations'>
-                        <h4>{{operation.buildName}}</h4>
+                        <h4>{{operation.id}}</h4>
                         <div class="col col-lg-12 build-list" [dragula]='"operation"' [dragulaModel]='operation.operations'>
                             <div class="build-list-element" *ngFor='let oper of operation.operations' [innerHtml]='oper.title'>
                             </div>
@@ -100,7 +100,7 @@
                     </div>
                 </div>
             </ng-container>
-            <ng-container *ngSwitchCase="3">
+            <ng-container *ngSwitchCase="4">
                 <div class="form-group">
                     <label for="usr">Title:</label>
                     <input type="text" class="form-control" id="usr" (ngModelChange)="updateScenarioTitle()" [(ngModel)]="scenarioTitle">
