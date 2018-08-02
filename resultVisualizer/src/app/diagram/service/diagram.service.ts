@@ -28,7 +28,6 @@ import { BuildConfigService } from '../../services/build.config.service';
 
 @Injectable()
 export class DiagramService {
-    private _selectedTitle: string;
     private _selectionUpdate: EventEmitter<SelectionUpdateEvent>;
     private _legendUpdate: EventEmitter<LegendUpdateEvent>;
     private _initEvent: EventEmitter<String>;

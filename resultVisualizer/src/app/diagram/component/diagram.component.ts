@@ -8,6 +8,7 @@ import { MatDialog } from '@angular/material';
 import { ComponentService, ClassUpdateEvent } from '../../component.service';
 import { SliderService } from '../../slider/slider.service';
 
+import * as cloneDeep from 'lodash/cloneDeep';
 @Component({
   selector: 'app-diagram',
   templateUrl: './diagram.component.html',
@@ -15,12 +16,6 @@ import { SliderService } from '../../slider/slider.service';
 })
 export class DiagramComponent implements OnInit {
   @ViewChildren(ChartComponent) chart: QueryList<ChartComponent>;
-  @Input() scale: number;
-  @Input() metric: string;
-  @Input() default: number;
-  private _prev;
-  private _prevMetric;
-
   ngClass: any;
   parent: string;
 
@@ -46,7 +41,7 @@ export class DiagramComponent implements OnInit {
 
 
   diagrams: Array<Diagram>;
-
+  private _scale: Scale;
   constructor(private _diagramService: DiagramService,
     private _sliderService: SliderService,
     public _dialog: MatDialog,
@@ -61,16 +56,12 @@ export class DiagramComponent implements OnInit {
         this.parent = "row"
       }
     })
-    this._prev = -9;
     this.diagrams = new Array<Diagram>();
     this._diagramService.SelectiponUpdateEvent.subscribe((selectionUpdateEvent: SelectionUpdateEvent) => {
       if (selectionUpdateEvent.EventType == "Added") {
-        let diagram = selectionUpdateEvent.Diagram
-        if (diagram.scale === null) {
-        } if (selectionUpdateEvent.Diagram.scale === undefined) {
-          // this.changeScale(this.default, diagram);
-        } else {
-          // this.changeScale(diagram.scale, diagram);
+        let diagram = cloneDeep(selectionUpdateEvent.Diagram)
+        if (this._scale != null) {
+          this.setScale(this._scale, diagram);
         }
         this.diagrams.push(diagram);
       } else if (selectionUpdateEvent.EventType == "Removed") {
@@ -111,17 +102,39 @@ export class DiagramComponent implements OnInit {
 
   ngOnInit() {
     this._sliderService.ScaleChangeEvent.subscribe((scale: Scale) => {
+      this._scale = scale;
       if (scale.UnitIndex != scale.PrevIndex) {
         this.changeScale(scale)
       }
     })
   }
 
+  setScale(scale: Scale, diagram: Diagram) {
+    if (diagram.metric === scale.Metric) {
+      diagram.data.datasets.forEach(dataset => {
+        let defaultIndex = scale.Units.findIndex(unit => unit.Label === scale.DefaultScale)
+        let datas = new Array<{ x: Number, y: number }>();
+        dataset.data.forEach(data => {
+          if (scale.UnitIndex > defaultIndex) {
+            for (let i = defaultIndex; i < scale.UnitIndex; i++) {
+              data.y = data.y / scale.Units[i].Value[1]
+            }
+          } else {
+            for (let i = defaultIndex; i > scale.UnitIndex; i--) {
+              data.y = data.y * scale.Units[i].Value[0]
+            }
+          }
+          datas.push({ x: data.x, y: data.y })
+        });
+        dataset.data = datas;
+      })
+    }
+  }
+
   changeScale(scale: Scale) {
     if (this.chart != null && this.chart != undefined) {
       this.diagrams.forEach(diagram => {
         if (diagram.metric === scale.Metric) {
-          diagram.scale = this.scale;
           diagram.data.datasets.forEach(dataset => {
 
             let datas = new Array<{ x: Number, y: number }>();
@@ -135,7 +148,7 @@ export class DiagramComponent implements OnInit {
                   data.y = data.y * scale.Units[i].Value[0]
                 }
               }
-              datas.push({x: data.x,y: data.y})
+              datas.push({ x: data.x, y: data.y })
             });
             dataset.data = datas;
           })
