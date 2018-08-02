@@ -24,7 +24,6 @@ export class SliderComponent implements OnInit {
 
   change(){
     this.selectedSlider.ActualScale = this.selectedSlider.Units[this.selectedSlider.UnitIndex].Label
-    console.log(this.selectedSlider)
     this._sliderService.changeScale(this.selectedSlider)
     this.selectedSlider.PrevIndex = this.selectedSlider.UnitIndex
   }
