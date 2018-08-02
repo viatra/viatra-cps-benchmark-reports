@@ -356,21 +356,6 @@ export class LegendUpdateEvent {
     }
 }
 
-export enum TimeScale {
-    "s" = 0,
-    "ms" = -3,
-    "µs" = -6,
-    "ns" = -9,
-    "ps" = -12,
-}
-
-export enum MemoryScale {
-    "B" = 1,
-    "KB" = 2,
-    "MB" = 3,
-    "GB" = 4
-}
-
 
 export interface Glyphicon {
     "missing": boolean,

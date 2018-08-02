@@ -43,7 +43,7 @@ export class ContainerComponent implements OnInit {
       "diagramTitle": false,
       "legendTitle": false
     }
-    this.scale = new Scale("Time", -9, -9, "ns");
+    this.scale = null;
     this.center = this.col7;
     this._componentservice.ComponentUpdate.subscribe((event: ComponentUpdateEvent) => {
       this.hidden[event.component] = event.hide;

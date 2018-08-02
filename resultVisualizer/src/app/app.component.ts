@@ -3,7 +3,7 @@ import { JsonService } from './services/json.service';
 import { Benchmark } from './model/benchmark';
 import { Tool } from './model/tool';
 import { Result } from './model/result';
-import { DiagramService, Title, TimeScale, MemoryScale, Glyphicon } from './diagram/service/diagram.service';
+import { DiagramService, Title, Glyphicon } from './diagram/service/diagram.service';
 import { DiagramSet } from './model/diagramSet';
 import { Scale } from './model/defaultScale';
 import { Router, UrlSegment, NavigationEnd } from '@angular/router';
