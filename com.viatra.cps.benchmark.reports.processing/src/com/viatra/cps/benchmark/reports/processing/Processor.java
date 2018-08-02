@@ -51,7 +51,7 @@ public class Processor {
 	List<DiagramSet> diagramSet;
 
 	public Processor(String buildId, String resultInputPath, String resultOutputPath, String configPath,
-			String diagramConfigTemplatePath, String visualizerConfigPath, String buildsPath) {
+			String diagramConfigTemplatePath, String visualizerConfigPath) {
 
 		this.buildId = buildId;
 		// Initialize objectmapper
@@ -67,10 +67,10 @@ public class Processor {
 		this.configuration = this.loadConfiguration(new File(configPath));
 
 		// Load or create visualizer configuration
-		this.visualizerConfiguration = this.loadVisualizerConfiguration(new File(visualizerConfigPath));
+		this.visualizerConfiguration = this.loadVisualizerConfiguration(new File(visualizerConfigPath + "/config.json"));
 
 		// Load or create Builds.json
-		this.builds = this.loadBuilds(new File(buildsPath + "/builds.json"));
+		this.builds = this.loadBuilds(new File(resultOutputPath + "/builds.json"));
 
 		// Load diagram configuration template
 		this.diagramConfiguration = this.loadDiagramConfigurationTemplate(new File(diagramConfigTemplatePath));
