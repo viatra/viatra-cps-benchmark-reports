@@ -63,6 +63,6 @@ Visualization of CPS benchmark results
   * Metric: unique name of metric
   * DefaultScale: Default unit label, must be in unit list
   * Unints: sorted list of units
-  ** Label: unit label
-  ** Value: unit value [down,up]
+    * Label: unit label
+    * Value: unit value [down,up]
 
