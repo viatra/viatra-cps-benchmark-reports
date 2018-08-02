@@ -302,7 +302,6 @@ export class DiagramService {
                             return tick.toLocaleString()
                         },
                         display: true,
-                        maxTicksLimit: sizes.length,
                     },
                     type: typeX
                 }]
