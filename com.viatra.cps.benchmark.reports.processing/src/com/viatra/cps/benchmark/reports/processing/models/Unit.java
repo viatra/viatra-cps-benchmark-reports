@@ -1,5 +1,8 @@
 package com.viatra.cps.benchmark.reports.processing.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.codehaus.jackson.annotate.JsonProperty;
 
 public class Unit {
@@ -7,7 +10,7 @@ public class Unit {
 	protected String label;
 
 	@JsonProperty("Value")
-	protected Double value;
+	protected List<Double> value;
 
 	public String getLabel() {
 		return label;
@@ -17,16 +20,18 @@ public class Unit {
 		this.label = label;
 	}
 
-	public Double getValue() {
+	public List<Double> getValue() {
 		return value;
 	}
 
-	public void setValue(Double value) {
+	public void setValue(List<Double> value) {
 		this.value = value;
 	}
 
 	public Unit() {
-		this.value = 1.0;
+		this.value = new ArrayList<>();
+		this.value.add(1.0);
+		this.value.add(1.0);
 		this.label = "u";
 	}
 }
