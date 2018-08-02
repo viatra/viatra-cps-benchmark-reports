@@ -3,7 +3,7 @@ import { JsonService } from '../../services/json.service';
 import { ResultsData } from '../../model/resultData';
 import { DragulaService } from 'ng2-dragula';
 import { Benchmark } from '../../model/benchmark';
-import { DiagramService } from '../../diagram/service/diagram.service';
+import { DiagramService, Title } from '../../diagram/service/diagram.service';
 import { DiagramSet, Diagram } from '../../model/diagramSet';
 import { Router } from '@angular/router'
 import { BuildConfigService } from '../../services/build.config.service';
@@ -29,9 +29,9 @@ export class CreatingComponent implements OnInit {
   scenarios: Array<{ id: string, scenarios: Array<{ id: string, buildName: string, caseName: string, scenario: string }> }>;
   selectedScenarios: Array<{ id: string, buildName: string, caseName: string, scenario: string }>;
   scenarioTitle: String;
-  operations: Array<{ id: string, operations: Array<{ operationid: string, title: string, caseName: string, buildName: string, scenario: string }> }>;
-  shows: Array<{ operationid: string, scenario: string, caseName: string, buildName: string }>;
-  hides: Array<{ operationid: string, scenario: string, caseName: string, buildName: string }>;
+  operations: Array<{ id: string, operations: Array<{ operationid: string, title: string, caseName: string, buildName: string, id: string, scenario: string }> }>;
+  shows: Array<{ operationid: string, title: string, id: string, scenario: string, caseName: string, buildName: string }>;
+  hides: Array<{ operationid: string, title: string, id: string, scenario: string, caseName: string, buildName: string }>;
   private _diagrams: Array<Diagram>;
   constructor(private _buildConfigService: BuildConfigService, private _dragulaService: DragulaService, private _diagramService: DiagramService, private _router: Router) {
     this.back = new EventEmitter<null>();
@@ -41,9 +41,9 @@ export class CreatingComponent implements OnInit {
     this.selectedScenarios = new Array<{ id: string, buildName: string, caseName: string, scenario: string }>();
     this.selectedBuilds = new Array<string>();
     this.scenarios = new Array<{ id: string, scenarios: Array<{ id: string, buildName: string, caseName: string, scenario: string }> }>();
-    this.operations = new Array<{ id: string, operations: Array<{ operationid: string, title: string, caseName: string, buildName: string, scenario: string }> }>();
-    this.shows = new Array<{ operationid: string, title: string, scenario: string, caseName: string, buildName: string }>();
-    this.hides = new Array<{ operationid: string, title: string, scenario: string, caseName: string, buildName: string }>();
+    this.operations = new Array<{ id: string, operations: Array<{ operationid: string, title: string, caseName: string, id: string, buildName: string, scenario: string }> }>();
+    this.shows = new Array<{ operationid: string, title: string, id: string, scenario: string, caseName: string, buildName: string }>();
+    this.hides = new Array<{ operationid: string, title: string, id: string, scenario: string, caseName: string, buildName: string }>();
 
     this.disabled = true;
     this.step = 0;
@@ -106,6 +106,34 @@ export class CreatingComponent implements OnInit {
     this.next["disabled"] = this.disabled;
   }
 
+  public addAllOperationToOpen(id: string) {
+    let tmp = this.operations.find(function (elemet) {
+      return elemet.id === id
+    }).operations
+
+    this.shows = this.shows.concat(tmp)
+    this.operations.find(function (elemet) {
+      return elemet.id === id
+    }).operations = []
+
+    this.disabled = false;
+    this.next["disabled"] = this.disabled;
+  }
+
+  public addAllOperationToClose(id: string) {
+    let tmp = this.operations.find(function (elemet) {
+      return elemet.id === id
+    }).operations
+
+    this.hides = this.hides.concat(tmp)
+    this.operations.find(function (elemet) {
+      return elemet.id === id
+    }).operations = []
+
+    this.disabled = false;
+    this.next["disabled"] = this.disabled;
+  }
+
   public removeAllBuilds() {
     this.builds = this.builds.concat(this.selectedBuilds);
     this.selectedBuilds = [];
@@ -139,6 +167,33 @@ export class CreatingComponent implements OnInit {
     this.next["disabled"] = this.disabled;
   }
 
+  public removeAllOperationFromOpen() {
+    let operations = this.operations;
+    this.shows.forEach(function (operation) {
+      operations.find(function (elemet) {
+        return elemet.id === operation.id
+      }).operations.push(operation)
+    })
+    this.operations = operations;
+    this.shows = []
+    this.disabled = true;
+    this.next["disabled"] = this.disabled;
+  }
+
+  
+  public removeAllOperationFromClose() {
+    let operations = this.operations;
+    this.hides.forEach(function (operation) {
+      operations.find(function (elemet) {
+        return elemet.id === operation.id
+      }).operations.push(operation)
+    })
+    this.operations = operations;
+    this.hides = []
+    this.disabled = true;
+    this.next["disabled"] = this.disabled;
+  }
+
   public select() {
     if (!this.disabled) {
       switch (this.step) {
@@ -157,8 +212,8 @@ export class CreatingComponent implements OnInit {
           })
           break;
         case 2:
-          this.shows = new Array<{ operationid: string, caseName: string, scenario: string, title: string, buildName: string }>();
-          this.hides = new Array<{ operationid: string, caseName: string, scenario: string, title: string, buildName: string }>();
+          this.shows = new Array<{ operationid: string, id: string, caseName: string, scenario: string, title: string, buildName: string }>();
+          this.hides = new Array<{ operationid: string, id: string, caseName: string, scenario: string, title: string, buildName: string }>();
           this.selectedScenarios.forEach(select => {
             this._buildConfigService.getBuildConfig(select.buildName, select.caseName, select.scenario, (buildConfig => {
               this.operations.push({ id: `${select.buildName}/${select.caseName}/${select.scenario}`, operations: buildConfig });
