@@ -53,7 +53,7 @@ Visualization of CPS benchmark results
 {
     "Metric" : "Name",
     "DefaultScale" : "u", 
-    "Units" : [ { --units
+    "Units" : [ {
       "Label" : "u",
       "Value" : [ 1.0, 1.0 ]
     }]
