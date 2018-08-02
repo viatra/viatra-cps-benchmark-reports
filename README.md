@@ -32,6 +32,7 @@ Visualization of CPS benchmark results
 ##### Webserver
 
 * cd {git_repository}/resultVisualizer
+* costumize metrics in visualizer configuration
 * npm install
 * ng build [--prod --base-href ""]
 * copy build folder
@@ -41,5 +42,27 @@ Visualization of CPS benchmark results
 ##### Local
 
 * cd {git_repository}/resultVisualizer
+* costumize metrics in visualizer configuration
 * npm install
 * ng serve
+
+
+### Metric
+* Default value:
+```json
+{
+    "Metric" : "Name",
+    "DefaultScale" : "u", 
+    "Units" : [ { --units
+      "Label" : "u",
+      "Value" : [ 1.0, 1.0 ]
+    }]
+  }
+  ```
+  
+  * Metric: unique name of metric
+  * DefaultScale: Default unit label, must be in unit list
+  * Unints: sorted list of units
+  ** Label: unit label
+  ** Value: unit value [down,up]
+
