@@ -76,9 +76,6 @@ export class ContainerComponent implements OnInit {
         return 0;
       })
     });
-    this._sliderService.ScaleChangeEvent.subscribe(scale => {
-      this.scale = scale;
-    })
   }
 }
 

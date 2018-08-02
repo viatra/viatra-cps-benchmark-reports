@@ -23,12 +23,20 @@ export class SliderService {
               scale.Interval = scale.Units.length - 1;
               scale.ActualScale = scale.DefaultScale;
               scale.UnitIndex = scale.Units.findIndex(unit => unit.Label === scale.ActualScale)
+              scale.PrevIndex = scale.UnitIndex
             })
             this._initEvent.emit();
             break;
         }
       })
-    };
+    } else {
+      this._scales.forEach(scale => {
+        scale.Interval = scale.Units.length - 1;
+        scale.ActualScale = scale.DefaultScale;
+        scale.UnitIndex = scale.Units.findIndex(unit => unit.Label === scale.ActualScale)
+        scale.PrevIndex = scale.UnitIndex
+      })
+    }
   }
   get Scales() {
     return this._scales;

@@ -6,13 +6,14 @@ import { DiagramService, SelectionUpdateEvent, LegendUpdateEvent } from '../serv
 import { Scale } from '../../model/defaultScale';
 import { MatDialog } from '@angular/material';
 import { ComponentService, ClassUpdateEvent } from '../../component.service';
+import { SliderService } from '../../slider/slider.service';
 
 @Component({
   selector: 'app-diagram',
   templateUrl: './diagram.component.html',
   styleUrls: ['./diagram.component.css']
 })
-export class DiagramComponent implements OnInit, OnChanges {
+export class DiagramComponent implements OnInit {
   @ViewChildren(ChartComponent) chart: QueryList<ChartComponent>;
   @Input() scale: number;
   @Input() metric: string;
@@ -46,7 +47,10 @@ export class DiagramComponent implements OnInit, OnChanges {
 
   diagrams: Array<Diagram>;
 
-  constructor(private _diagramService: DiagramService, public _dialog: MatDialog, private _componentService: ComponentService) {
+  constructor(private _diagramService: DiagramService,
+    private _sliderService: SliderService,
+    public _dialog: MatDialog,
+    private _componentService: ComponentService) {
     this.ngClass = this._ngClass["col12"];
     this.parent = "row"
     this._componentService.ClassUpdate.subscribe((event: ClassUpdateEvent) => {
@@ -64,9 +68,9 @@ export class DiagramComponent implements OnInit, OnChanges {
         let diagram = selectionUpdateEvent.Diagram
         if (diagram.scale === null) {
         } if (selectionUpdateEvent.Diagram.scale === undefined) {
-          this.changeScale(this.default, diagram);
+          // this.changeScale(this.default, diagram);
         } else {
-          this.changeScale(diagram.scale, diagram);
+          // this.changeScale(diagram.scale, diagram);
         }
         this.diagrams.push(diagram);
       } else if (selectionUpdateEvent.EventType == "Removed") {
@@ -106,42 +110,37 @@ export class DiagramComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-
+    this._sliderService.ScaleChangeEvent.subscribe((scale: Scale) => {
+      if (scale.UnitIndex != scale.PrevIndex) {
+        this.changeScale(scale)
+      }
+    })
   }
 
-  ngOnChanges() {
-    if (this.metric == this._prevMetric) {
-
-      this.diagrams.forEach(diagram => {
-        this.changeScale(this._prev, diagram);
-      });
-    }
-    this._prevMetric = this.metric;
-    this._prev = this.scale;
-
-  }
-  changeScale(prev: number, diagram: Diagram) {
+  changeScale(scale: Scale) {
     if (this.chart != null && this.chart != undefined) {
-      if (diagram.metric === this.metric) {
-        diagram.scale = this.scale;
-        diagram.data.datasets.forEach(dataset => {
-          let change = prev - this.scale;
-          if (change != 0) {
+      this.diagrams.forEach(diagram => {
+        if (diagram.metric === scale.Metric) {
+          diagram.scale = this.scale;
+          diagram.data.datasets.forEach(dataset => {
+
             let datas = new Array<{ x: Number, y: number }>();
             dataset.data.forEach(data => {
-              switch (diagram.metric) {
-                case "Time":
-                  datas.push({ y: data.y * (Math.pow(10, change)), x: data.x });
-                  break;
-                case "Memory":
-                  datas.push({ y: data.y * (Math.pow(Math.pow(2, 10), change)), x: data.x })
-                  break;
+              if (scale.UnitIndex > scale.PrevIndex) {
+                for (let i = scale.PrevIndex; i < scale.UnitIndex; i++) {
+                  data.y = data.y / scale.Units[i].Value[1]
+                }
+              } else {
+                for (let i = scale.PrevIndex; i > scale.UnitIndex; i--) {
+                  data.y = data.y * scale.Units[i].Value[0]
+                }
               }
+              datas.push({x: data.x,y: data.y})
             });
             dataset.data = datas;
-          }
-        });
-      }
+          })
+        }
+      })
       this.chart.forEach(c => {
         c.chart.update();
       })

@@ -4,6 +4,7 @@ export class Scale {
         public DefaultScale: string,
         public Interval: number,
         public UnitIndex: number,
+        public PrevIndex: number,
         public Units: Array<Unit>) { }
 }
 
