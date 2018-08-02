@@ -29,13 +29,13 @@ export class SliderComponent implements OnInit {
     this.selectedSlider.PrevIndex = this.selectedSlider.UnitIndex
   }
 
-  /*public changeSlider(slider: string){
+  public changeSlider(slider: string){
     this.selectedSlider =  this.scales.find(scale =>{
       return scale.Metric === slider;
      });
-     this.change(this.selectedSlider);
+     this.change();
       this._sliderService.changeScale(this.selectedSlider);
-    }*/
+    }
 
   ngOnInit() {
     this.scales = this._sliderService.Scales;
