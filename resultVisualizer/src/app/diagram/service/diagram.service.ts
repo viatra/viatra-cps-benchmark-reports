@@ -200,7 +200,7 @@ export class DiagramService {
         dataset.backgroundColor = this.getColor(tool.name);
         let i = 0;
         tool.results.forEach((result: Result) => {
-            dataset.data.push(({ y: result.metric.MetricValue, x: sizes[i] }));
+            dataset.data.push(({ y: result.metric.MetricValue, x: result.size }));
             i++;
         });
         return dataset;
