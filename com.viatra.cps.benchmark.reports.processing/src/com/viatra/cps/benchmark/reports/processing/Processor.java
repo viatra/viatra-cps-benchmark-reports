@@ -26,6 +26,7 @@ import com.viatra.cps.benchmark.reports.processing.models.Case;
 import com.viatra.cps.benchmark.reports.processing.models.DiagramSet;
 import com.viatra.cps.benchmark.reports.processing.models.VisualizerConfiguration;
 import com.viatra.cps.benchmark.reports.processing.models.OperationConfig;
+import com.viatra.cps.benchmark.reports.processing.models.Results;
 import com.viatra.cps.benchmark.reports.processing.models.Scale;
 import com.viatra.cps.benchmark.reports.processing.models.ToolColor;
 import com.viatra.cps.benchmark.reports.processing.operation.Operation;
@@ -56,6 +57,12 @@ public class Processor {
 		this.buildId = buildId;
 		// Initialize objectmapper
 		mapper = new ObjectMapper();
+		
+		mapper.configure(SerializationConfig.Feature.FAIL_ON_EMPTY_BEANS, false);
+		mapper.configure(SerializationConfig.Feature.INDENT_OUTPUT, true);
+		// turn off autodetection
+		mapper.configure(SerializationConfig.Feature.AUTO_DETECT_FIELDS, false);
+		mapper.configure(SerializationConfig.Feature.AUTO_DETECT_GETTERS, false);
 
 		// Set input path
 		this.resultInputPath = Paths.get(resultInputPath);
@@ -289,13 +296,15 @@ public class Processor {
 		lock = new Object();
 		File resultJson = Paths.get(this.resutOutputPath.toString(), this.buildId, caseName, scenario, "results.json").toFile();
 		File diagramJson = Paths.get(this.resutOutputPath.toString(), this.buildId, caseName, scenario, "diagram.config.json").toFile();
+		mapper.writeValue(diagramJson, new Diagrams(this.buildId + "/" + caseName + "/" + scenario));
+		mapper.writeValue(resultJson, new Results(this.buildId + "/" + caseName + "/" + scenario));
 		this.configuration.forEach(aggConfig -> {
 			Operation last = null;
 			JSonSerializer tmp = new JSonSerializer(
 					resultJson,
 					diagramJson,
 					aggConfig.getID(), this.buildId + "/" + caseName + "/" + scenario, this.diagramConfiguration,
-					caseName, scenario, this.diagramSet, this.dashboardConfigurationFile, this.buildId);
+					caseName, scenario, this.diagramSet, this.dashboardConfigurationFile, this.buildId,this.mapper);
 			tmp.setProcessor(this);
 			List<OperationConfig> opconf = aggConfig.getOperations(false);
 			for (OperationConfig opconfig : opconf) {
@@ -395,11 +404,6 @@ public class Processor {
 		}
 
 		try {
-			mapper.configure(SerializationConfig.Feature.FAIL_ON_EMPTY_BEANS, false);
-			mapper.configure(SerializationConfig.Feature.INDENT_OUTPUT, true);
-			// turn off autodetection
-			mapper.configure(SerializationConfig.Feature.AUTO_DETECT_FIELDS, false);
-			mapper.configure(SerializationConfig.Feature.AUTO_DETECT_GETTERS, false);
 			mapper.writeValue(new File(this.resutOutputPath.toString() + "/builds.json"), this.builds);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

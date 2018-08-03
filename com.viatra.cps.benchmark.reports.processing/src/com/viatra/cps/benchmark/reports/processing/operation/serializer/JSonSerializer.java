@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 import org.codehaus.jackson.JsonParser.Feature;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
-import org.codehaus.jackson.type.TypeReference;
+import org.codehaus.jackson.JsonGenerator;
 
 import com.viatra.cps.benchmark.reports.processing.Processor;
 import com.viatra.cps.benchmark.reports.processing.models.AggregataedResult;
@@ -57,7 +57,8 @@ public class JSonSerializer implements Operation {
 
 	public JSonSerializer(File out, File digramConfiguration, String ID, String path, Diagrams template,
 			String caseName, String scenario, List<DiagramSet> dashboard, File dashboardConfogurationFile,
-			String buildId) {
+			String buildId,
+			ObjectMapper mapper) {
 		this.lock = new Object();
 		this.running = false;
 		this.buildId = buildId;
@@ -73,21 +74,8 @@ public class JSonSerializer implements Operation {
 		this.map = new HashMap<>();
 		this.digramConfiguration = digramConfiguration;
 
-		this.mapper = new ObjectMapper();
+		this.mapper = mapper;
 		// to enable standard indentation ("pretty-printing"):
-		mapper.configure(SerializationConfig.Feature.FAIL_ON_EMPTY_BEANS, false);
-		mapper.configure(SerializationConfig.Feature.INDENT_OUTPUT, true);
-		// turn off autodetection
-		mapper.configure(SerializationConfig.Feature.AUTO_DETECT_FIELDS, false);
-		mapper.configure(SerializationConfig.Feature.AUTO_DETECT_GETTERS, false);
-		mapper.configure(Feature.AUTO_CLOSE_SOURCE, true);
-		try {
-			mapper.writeValue(digramConfiguration, this.config);
-			mapper.writeValue(json, new Results(path));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 
 	}
 
