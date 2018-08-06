@@ -19,11 +19,12 @@ if [ -d "${outputResults}" ]; then
 rm -rf ${outputResults}
 else
 mkdir ${outputResults}
+fi
 
 for build in "${builds[@]}"
 do
   echo "$build"
-  java -jar "$jarLocation/com.viatra.cps.benchmark.reports.processing-0.0.1-jar-with-dependencies.jar"  -b "${BuildID}" -i "${inputResults}/${BuildID}/${build}/json" -o "${outputResults}" -p "${processingConfig}" -d "${diagramConfigTemplate}" -v "${visualizerConfiguration}"
+  java -jar "$jarLocation/com.viatra.cps.benchmark.reports.processing-0.0.1-jar-with-dependencies.jar"  -b "${build}" -i "${inputResults}/${BuildID}/${build}/json" -o "${outputResults}" -p "${processingConfig}" -d "${diagramConfigTemplate}" -v "${visualizerConfiguration}"
 done
 
 
