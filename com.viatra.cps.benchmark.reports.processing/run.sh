@@ -41,6 +41,5 @@ fi
 cd ./results
 git checkout Results
 cd ..
-cp -rf ./${BuildID} ./results/${BuildID}
-cp ./builds.json  ./results/builds.json
+cp -rf ./out ./results/
 
