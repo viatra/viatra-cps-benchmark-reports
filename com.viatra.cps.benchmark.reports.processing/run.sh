@@ -43,3 +43,5 @@ git checkout Results
 cd ..
 cp -rf ./out ./results/
 
+git push git@github.com:viatra/viatra-cps-benchmark-reports.git Results
+
