@@ -57,7 +57,7 @@ public class Processor {
 		this.buildId = buildId;
 		// Initialize objectmapper
 		mapper = new ObjectMapper();
-		
+
 		mapper.configure(SerializationConfig.Feature.FAIL_ON_EMPTY_BEANS, false);
 		mapper.configure(SerializationConfig.Feature.INDENT_OUTPUT, true);
 		// turn off autodetection
@@ -74,7 +74,8 @@ public class Processor {
 		this.configuration = this.loadConfiguration(new File(configPath));
 
 		// Load or create visualizer configuration
-		this.visualizerConfiguration = this.loadVisualizerConfiguration(new File(visualizerConfigPath + "/config.json"));
+		this.visualizerConfiguration = this
+				.loadVisualizerConfiguration(new File(visualizerConfigPath + "/config.json"));
 
 		// Load or create Builds.json
 		this.builds = this.loadBuilds(new File(resultOutputPath + "/builds.json"));
@@ -211,36 +212,40 @@ public class Processor {
 
 		try (Stream<Path> paths = Files.walk(this.resultInputPath)) {
 			paths.filter(Files::isRegularFile).forEach((path) -> {
-				try {
-					BenchmarkResult result = mapper.readValue(path.toFile(), BenchmarkResult.class);
-					this.updateVisualizerConfig(result);
-					Map<String, List<BenchmarkResult>> scenarioMap = caseScenarioMap
-							.get(result.getCaseDescriptor().getCaseName());
-					if (scenarioMap != null) {
-						List<BenchmarkResult> benchmarkList = (List<BenchmarkResult>) scenarioMap
-								.get(result.getCaseDescriptor().getScenario());
-						if (benchmarkList != null) {
-							benchmarkList.add(result);
+				String extension = path.toFile().getName().substring(path.toFile().getName().lastIndexOf(".") + 1);
+				// Checks if there is any extension after the last . in your input
+				if (extension.isEmpty() || !extension.equals("json")) {
+					System.out.println(path.toFile().getName() + " is not a json file");
+				} else {
+					try {
+						BenchmarkResult result = mapper.readValue(path.toFile(), BenchmarkResult.class);
+						this.updateVisualizerConfig(result);
+						Map<String, List<BenchmarkResult>> scenarioMap = caseScenarioMap
+								.get(result.getCaseDescriptor().getCaseName());
+						if (scenarioMap != null) {
+							List<BenchmarkResult> benchmarkList = (List<BenchmarkResult>) scenarioMap
+									.get(result.getCaseDescriptor().getScenario());
+							if (benchmarkList != null) {
+								benchmarkList.add(result);
+							} else {
+								benchmarkList = new ArrayList<>();
+								benchmarkList.add(result);
+								scenarioMap.put(result.getCaseDescriptor().getScenario(), benchmarkList);
+							}
 						} else {
-							benchmarkList = new ArrayList<>();
-							benchmarkList.add(result);
-							scenarioMap.put(result.getCaseDescriptor().getScenario(), benchmarkList);
+							List<BenchmarkResult> resultList = new ArrayList<>();
+							resultList.add(result);
+							scenarioMap = new HashMap<>();
+							scenarioMap.put(result.getCaseDescriptor().getScenario(), resultList);
+							caseScenarioMap.put(result.getCaseDescriptor().getCaseName(), scenarioMap);
 						}
-					} else {
-						List<BenchmarkResult> resultList = new ArrayList<>();
-						resultList.add(result);
-						scenarioMap = new HashMap<>();
-						scenarioMap.put(result.getCaseDescriptor().getScenario(), resultList);
-						caseScenarioMap.put(result.getCaseDescriptor().getCaseName(), scenarioMap);
+					} catch (IOException e) {
+						System.err.println("Cannot load all result");
+						System.exit(3);
 					}
-				} catch (IOException e) {
-					e.printStackTrace();
-					System.err.println("Cannot load all result");
-					System.exit(3);
 				}
 			});
 		} catch (Exception e) {
-			e.printStackTrace();
 			System.err.println("Cannot load input results");
 			System.exit(2);
 		}
@@ -294,17 +299,17 @@ public class Processor {
 
 		counter = this.configuration.size();
 		lock = new Object();
-		File resultJson = Paths.get(this.resutOutputPath.toString(), this.buildId, caseName, scenario, "results.json").toFile();
-		File diagramJson = Paths.get(this.resutOutputPath.toString(), this.buildId, caseName, scenario, "diagram.config.json").toFile();
+		File resultJson = Paths.get(this.resutOutputPath.toString(), this.buildId, caseName, scenario, "results.json")
+				.toFile();
+		File diagramJson = Paths
+				.get(this.resutOutputPath.toString(), this.buildId, caseName, scenario, "diagram.config.json").toFile();
 		mapper.writeValue(diagramJson, new Diagrams(this.buildId + "/" + caseName + "/" + scenario));
 		mapper.writeValue(resultJson, new Results(this.buildId + "/" + caseName + "/" + scenario));
 		this.configuration.forEach(aggConfig -> {
 			Operation last = null;
-			JSonSerializer tmp = new JSonSerializer(
-					resultJson,
-					diagramJson,
-					aggConfig.getID(), this.buildId + "/" + caseName + "/" + scenario, this.diagramConfiguration,
-					caseName, scenario, this.diagramSet, this.dashboardConfigurationFile, this.buildId,this.mapper);
+			JSonSerializer tmp = new JSonSerializer(resultJson, diagramJson, aggConfig.getID(),
+					this.buildId + "/" + caseName + "/" + scenario, this.diagramConfiguration, caseName, scenario,
+					this.diagramSet, this.dashboardConfigurationFile, this.buildId, this.mapper);
 			tmp.setProcessor(this);
 			List<OperationConfig> opconf = aggConfig.getOperations(false);
 			for (OperationConfig opconfig : opconf) {
@@ -352,8 +357,9 @@ public class Processor {
 			}
 			if (build != null) {
 				Case caseElement = null;
-				Optional<Case> optional = build.getCases().stream().filter(c -> c.getCaseName().equals(caseName)).findFirst();
-				if(optional.isPresent()) {
+				Optional<Case> optional = build.getCases().stream().filter(c -> c.getCaseName().equals(caseName))
+						.findFirst();
+				if (optional.isPresent()) {
 					caseElement = optional.get();
 				}
 				if (caseElement != null) {
