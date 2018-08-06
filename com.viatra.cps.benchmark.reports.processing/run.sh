@@ -14,7 +14,6 @@ echo "Processing configuration:"$processingConfig
 echo "Visualizer configuration: "$visualizerConfiguration
 echo "Digram Config Template: "$diagramConfigTemplate
 echo "Jar location: " $jarLocation
-
 for build in "${builds[@]}"
 do
   echo "$build"
@@ -30,12 +29,11 @@ if [ -d "results" ]; then
   cd ..
 else
   # Clone repo
-  git clone git@github.com:viatra/viatra-cps-benchmark-reports.git results 
+  git clone  git@github.com:viatra/viatra-cps-benchmark-reports.git results 
 fi
 cd ./results
 git checkout Results
 cd ..
-
 cp -rf ./${BuildID} ./results/${BuildID}
 cp ./builds.json  ./results/builds.json
 
