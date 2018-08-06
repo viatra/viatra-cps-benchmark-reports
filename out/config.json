@@ -1,0 +1,50 @@
+{
+  "ToolColor" : [ {
+    "ToolName" : "BATCH_VIATRA_QUERY_LOCAL_SEARCH_TRACE_STATS-TEMPLATE",
+    "Color" : "rgba(155,130,44,1)"
+  }, {
+    "ToolName" : "INCR_VIATRA_TRANSFORMATION-TEMPLATE",
+    "Color" : "rgba(195,232,115,1)"
+  }, {
+    "ToolName" : "BATCH_OPTIMIZED-TEMPLATE",
+    "Color" : "rgba(150,76,145,1)"
+  }, {
+    "ToolName" : "BATCH_VIATRA_QUERY_RETE-TEMPLATE",
+    "Color" : "rgba(23,229,23,1)"
+  }, {
+    "ToolName" : "BATCH_VIATRA_QUERY_LOCAL_SEARCH-TEMPLATE",
+    "Color" : "rgba(95,220,132,1)"
+  }, {
+    "ToolName" : "BATCH_VIATRA_QUERY_LOCAL_SEARCH_GENERIC-TEMPLATE",
+    "Color" : "rgba(104,254,126,1)"
+  } ],
+  "Scale" : [ {
+    "Metric" : "Time",
+    "DefaultScale" : "u",
+    "Units" : [ {
+      "Label" : "u",
+      "Value" : [ 1.0, 1.0 ]
+    } ]
+  }, {
+    "Metric" : "Memory",
+    "DefaultScale" : "u",
+    "Units" : [ {
+      "Label" : "u",
+      "Value" : [ 1.0, 1.0 ]
+    } ]
+  }, {
+    "Metric" : "PeakMemory",
+    "DefaultScale" : "u",
+    "Units" : [ {
+      "Label" : "u",
+      "Value" : [ 1.0, 1.0 ]
+    } ]
+  }, {
+    "Metric" : "AverageMemory",
+    "DefaultScale" : "u",
+    "Units" : [ {
+      "Label" : "u",
+      "Value" : [ 1.0, 1.0 ]
+    } ]
+  } ]
+}
