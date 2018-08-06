@@ -7,32 +7,42 @@ export class Option {
 
 
 interface Scales {
-    yAxes: Array<yAxes>;
+    yAxes: Array<Axes>;
     xAxes: Array<Axes>;
 }
 
 
-interface Legend{
+interface Legend {
     position?: string;
     display?: boolean;
 }
 
-interface yAxes extends Axes{
+interface yAxes extends Axes {
     ticks: Ticks;
     type: string;
 }
 
-interface Ticks{
-    callback: (tick, index, ticks) => number;
-    min: number;
+interface Ticks {
+    callback?: (tick, index, ticks) => number | Number;
+    min?: number | Number;
+    max?: Number;
+    autoSkip?: boolean;
+    padding?: number;
+    source?: string;
+    stepSize?: Number;
+    maxTicksLimit?: number;
+    display?: boolean;
 }
 
-interface Axes{
-    scaleLabel: ScaleLabel;
+interface Axes {
+    scaleLabel?: ScaleLabel;
+    ticks?: Ticks;
+    type?: string;
+    distribution?: string;
 }
 
 
-interface ScaleLabel{
+interface ScaleLabel {
     display: boolean;
     labelString: string;
 }

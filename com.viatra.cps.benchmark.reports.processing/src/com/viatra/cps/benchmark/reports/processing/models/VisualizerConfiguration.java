@@ -1,10 +1,11 @@
 package com.viatra.cps.benchmark.reports.processing.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 
-public class DiagramConfig {
+public class VisualizerConfiguration {
 
 	@JsonProperty("ToolColor")
 	protected List<ToolColor> toolColors;
@@ -26,5 +27,10 @@ public class DiagramConfig {
 
 	public void setScales(List<Scale> scales) {
 		this.scales = scales;
+	}
+	
+	public VisualizerConfiguration() {
+		this.scales = new ArrayList<>();
+		this.toolColors = new ArrayList<>();
 	}
 }

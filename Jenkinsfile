@@ -28,7 +28,7 @@ pipeline {
         stage('Process'){
             steps{
                 sshagent(['24f0908d-7662-4e93-80cc-1143b7f92ff1']) {
-                    sh './com.viatra.cps.benchmark.reports.processing/run.sh "./viatra-cps-benchmark-results/" "m2m-reduced" "./com.viatra.cps.benchmark.reports.processing/aggregatorConfig.json" "./" "./com.viatra.cps.benchmark.reports.processing/build.config.template.json" "./com.viatra.cps.benchmark.reports.processing/diagram.config.template.json" "./com.viatra.cps.benchmark.reports.processing" < ./com.viatra.cps.benchmark.reports.processing/builds.txt'
+                    sh './com.viatra.cps.benchmark.reports.processing/run.sh "m2m-reduced" "./viatra-cps-benchmark-results"  "./com.viatra.cps.benchmark.reports.processing/config.json" "./out" "./com.viatra.cps.benchmark.reports.processing/diagramConfigTemplate.json" "./out" "./com.viatra.cps.benchmark.reports.processing" < ./com.viatra.cps.benchmark.reports.processing/builds.txt'
                 }
             }
         }
@@ -46,7 +46,11 @@ pipeline {
             steps{
                 nodejs(nodeJSInstallationName: 'Latest'){
                     sh '''
-                    cp -rf ./results/results ./resultVisualizer/src
+                    rm -rf ./resultVisualizer/src/results
+                    cp -rf ./results/out ./resultVisualizer/src/results
+                    cp  ./results/out/builds.json ./resultVisualizer/src/results/builds.json
+                    cp  ./results/out/dashboard.json ./resultVisualizer/src/results/dashboard.json
+                    cp ./results/out/config.json ./resultVisualizer/src/config/config.json
                     cd ./resultVisualizer
                     npm  run build
                     ''' 

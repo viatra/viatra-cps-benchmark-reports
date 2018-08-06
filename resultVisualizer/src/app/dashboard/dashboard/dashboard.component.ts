@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Scenario } from '../../model/scenario';
+import { DiagramSet } from '../../model/diagramSet';
 import { DiagramService } from '../../diagram/service/diagram.service';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';

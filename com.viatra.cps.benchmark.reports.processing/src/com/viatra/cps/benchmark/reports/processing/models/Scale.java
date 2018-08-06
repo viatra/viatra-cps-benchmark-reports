@@ -1,5 +1,8 @@
 package com.viatra.cps.benchmark.reports.processing.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.codehaus.jackson.annotate.JsonProperty;
 
 public class Scale {
@@ -8,7 +11,18 @@ public class Scale {
 	protected String metric;
 	
 	@JsonProperty("DefaultScale")
-	protected Integer defaultScale;
+	protected String defaultScale;
+	
+	@JsonProperty("Units")
+	protected List<Unit> units;
+	
+	public List<Unit> getUnits() {
+		return units;
+	}
+
+	public void setUnits(List<Unit> units) {
+		this.units = units;
+	}
 
 	public String getMetric() {
 		return metric;
@@ -18,12 +32,23 @@ public class Scale {
 		this.metric = metric;
 	}
 
-	public Integer getDefaultScale() {
+	public String getDefaultScale() {
 		return defaultScale;
 	}
 
-	public void setDefaultScale(Integer defaultScale) {
+	public void setDefaultScale(String defaultScale) {
 		this.defaultScale = defaultScale;
+	}
+	
+	public Scale() {
+		this.units = new ArrayList<>();
+	}
+	
+	public Scale(String metric) {
+		this.units = new ArrayList<>();
+		this.metric = metric;
+		this.defaultScale = "u";
+		this.units.add(new Unit());
 	}
 
 }

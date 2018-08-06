@@ -1,5 +1,6 @@
 package com.viatra.cps.benchmark.reports.processing.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.codehaus.jackson.annotate.JsonProperty;
@@ -7,7 +8,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
 public class Case {
 	@JsonProperty("CaseName")
 	protected String caseName;
-	
+
 	public String getCaseName() {
 		return caseName;
 	}
@@ -16,15 +17,18 @@ public class Case {
 		this.caseName = caseName;
 	}
 
-	public List<String> getBuilds() {
-		return builds;
+	public List<String> getScenarios() {
+		return scenarios;
 	}
 
-	public void setBuilds(List<String> builds) {
-		this.builds = builds;
+	public void setScenarios(List<String> scenarios) {
+		this.scenarios = scenarios;
 	}
 
-	@JsonProperty("Builds")
-	protected List<String> builds;
+	@JsonProperty("Scenarios")
+	protected List<String> scenarios;
 
+	public Case() {
+		this.scenarios = new ArrayList<>();
+	}
 }

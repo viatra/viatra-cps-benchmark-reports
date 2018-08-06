@@ -1,5 +1,6 @@
 package com.viatra.cps.benchmark.reports.processing.models;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -19,6 +20,10 @@ public class AggregatorConfiguration {
 
 	public void setID(String iD) {
 		ID = iD;
+	}
+	
+	public AggregatorConfiguration() {
+		operationChain = new ArrayList<>();
 	}
 
 	@JsonProperty("OperationChain")

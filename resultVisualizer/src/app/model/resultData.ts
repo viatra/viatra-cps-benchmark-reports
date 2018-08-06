@@ -39,6 +39,14 @@ export class ResultsData{
         return this._yLabel;
     }
 
+    get YType(){
+        return this._yType;
+    }
+
+    get XType(){
+        return this._xType;
+    }
+
     get Metric(){
         return this._metric;
     }
@@ -48,6 +56,8 @@ export class ResultsData{
                 private _title: string,
                 private _xLabel: string,
                 private _yLabel: string,
-                private _metric: string
+                private _metric: string,
+                private _xType: string,
+                private _yType: string
                 ){}
 }

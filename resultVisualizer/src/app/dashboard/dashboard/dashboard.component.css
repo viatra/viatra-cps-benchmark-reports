@@ -6,6 +6,8 @@
 }
 
 .center{
+    float: left;
+    position: relative;
     text-align: center;
 }
 
@@ -21,7 +23,7 @@
 }
 
 .selected {
-    width: 30%;
+    width: 50%;
     border-left: 1px solid #888888;
     margin-bottom: 10px;
 }
@@ -93,7 +95,6 @@
     border-bottom: 1px solid #888888;
 }
 
-
 hr{
     display: block;
     height: 1px;
@@ -135,4 +136,22 @@ select {
 }
 .right{
     right: 20.15%;
+}
+
+
+span.glyphicon-menu-right {
+    font-size: 1em;
+}
+
+span.glyphicon-menu-left {
+    font-size: 1em;
+}
+
+
+span.glyphicon-eye-open {
+    font-size: 1em;
+}
+
+span.glyphicon-eye-close {
+    font-size: 1em;
 }

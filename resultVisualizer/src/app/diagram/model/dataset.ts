@@ -1,9 +1,9 @@
 export class Dataset {
     label: string;
-    data: number[];
+    data: Array<{ x: Number, y: number }>;
     hidden: boolean;
     borderColor: string;
-    backgroundColor: string;    
+    backgroundColor: string;
     fill: boolean;
     lineTension: number;
 }

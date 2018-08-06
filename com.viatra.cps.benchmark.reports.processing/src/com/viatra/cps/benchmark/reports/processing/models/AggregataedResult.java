@@ -15,14 +15,12 @@ public class AggregataedResult {
 	@JsonProperty("tool")
 	protected List<Tool> tool;
 
-
 	public AggregataedResult() {
 		tool = new ArrayList<>();
 	}
 
-	public AggregataedResult(String operation, String xLabel, String yLabel) {
+	public AggregataedResult(String operation) {
 		this.operationID = operation;
-
 	}
 
 

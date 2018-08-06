@@ -19,7 +19,7 @@ import { MatSliderModule} from '@angular/material/slider';
 import {MatRadioModule} from '@angular/material/radio';
 import { ContainerComponent } from './diagram/container/container.component';
 import { DashboardComponent } from './dashboard/dashboard/dashboard.component';
-import { Scenario } from './model/scenario';
+import { DiagramSet } from './model/diagramSet';
 import { SliderService } from './slider/slider.service';
 import { SliderComponent } from './slider/slider.component';
 import { LoadingComponent } from './dashboard/loading/loading.component';

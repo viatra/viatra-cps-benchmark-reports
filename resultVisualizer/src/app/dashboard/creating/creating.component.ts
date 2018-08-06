@@ -3,8 +3,8 @@ import { JsonService } from '../../services/json.service';
 import { ResultsData } from '../../model/resultData';
 import { DragulaService } from 'ng2-dragula';
 import { Benchmark } from '../../model/benchmark';
-import { DiagramService } from '../../diagram/service/diagram.service';
-import { Scenario, Diagram } from '../../model/scenario';
+import { DiagramService, Title } from '../../diagram/service/diagram.service';
+import { DiagramSet, Diagram } from '../../model/diagramSet';
 import { Router } from '@angular/router'
 import { BuildConfigService } from '../../services/build.config.service';
 
@@ -21,25 +21,29 @@ export class CreatingComponent implements OnInit {
     "disabled": true
   }
   disabled: boolean;
-  builds: Array<{ caseName: string, builds: Array<{ caseName: string, buildName: string }> }>;
-  selectedBuilds: Array<{ caseName: string, buildName: string }>;
-  selectedCases: Array<string>;
+  builds: Array<string>;
+  selectedBuilds: Array<string>;
+  selectedCases: Array<{ buildName: string, caseName: string }>;
   step: number;
-  cases: Array<String>;
+  cases: Array<{ buildName: string, cases: Array<{ buildName: string, caseName: string }> }>;
+  scenarios: Array<{ id: string, scenarios: Array<{ id: string, buildName: string, caseName: string, scenario: string }> }>;
+  selectedScenarios: Array<{ id: string, buildName: string, caseName: string, scenario: string }>;
   scenarioTitle: String;
-  operations: Array<{ buildName: string, operations: Array<{ operationid: string, title: string, caseName: string, buildName: string }> }>;
-  shows: Array<{ operationid: string, caseName: string, buildName: string }>;
-  hides: Array<{ operationid: string, caseName: string, buildName: string }>;
+  operations: Array<{ id: string, operations: Array<{ operationid: string, title: string, caseName: string, buildName: string, id: string, scenario: string }> }>;
+  shows: Array<{ operationid: string, title: string, id: string, scenario: string, caseName: string, buildName: string }>;
+  hides: Array<{ operationid: string, title: string, id: string, scenario: string, caseName: string, buildName: string }>;
   private _diagrams: Array<Diagram>;
   constructor(private _buildConfigService: BuildConfigService, private _dragulaService: DragulaService, private _diagramService: DiagramService, private _router: Router) {
     this.back = new EventEmitter<null>();
-    this.builds = new Array<{ caseName: string, builds: Array<{ caseName: string, buildName: string }> }>();
-    this.cases = new Array<string>();
-    this.selectedCases = new Array<string>();
-    this.selectedBuilds = new Array<{ caseName: string, buildName: string }>();
-    this.operations = new Array<{ buildName: string, operations: Array<{ operationid: string, title: string, caseName: string, buildName: string }> }>();
-    this.shows = new Array<{ operationid: string, title: string, caseName: string, buildName: string }>();
-    this.hides = new Array<{ operationid: string, title: string, caseName: string, buildName: string }>();
+    this.builds = new Array<string>();
+    this.cases = new Array<{ buildName: string, cases: Array<{ buildName: string, caseName: string }> }>();
+    this.selectedCases = new Array<{ buildName: string, caseName: string }>();
+    this.selectedScenarios = new Array<{ id: string, buildName: string, caseName: string, scenario: string }>();
+    this.selectedBuilds = new Array<string>();
+    this.scenarios = new Array<{ id: string, scenarios: Array<{ id: string, buildName: string, caseName: string, scenario: string }> }>();
+    this.operations = new Array<{ id: string, operations: Array<{ operationid: string, title: string, caseName: string, id: string, buildName: string, scenario: string }> }>();
+    this.shows = new Array<{ operationid: string, title: string, id: string, scenario: string, caseName: string, buildName: string }>();
+    this.hides = new Array<{ operationid: string, title: string, id: string, scenario: string, caseName: string, buildName: string }>();
 
     this.disabled = true;
     this.step = 0;
@@ -59,44 +63,175 @@ export class CreatingComponent implements OnInit {
 
   public clickedBack() {
     this.back.emit();
-    this.disabled = false;
-    this.next["disabled"] = this.disabled;
-    this.step--;
+    if (this.step === 0) {
+      this._router.navigate(['/'])
+    } else {
+      this.disabled = false;
+      this.next["disabled"] = this.disabled;
+      this.step--;
+    }
   }
 
+  public addAllBuilds() {
+    this.selectedBuilds = this.selectedBuilds.concat(this.builds);
+    this.builds = [];
+    this.disabled = false;
+    this.next["disabled"] = this.disabled;
+  }
+
+  public addAllCasesFromBuild(buildId: string) {
+    let tmp = this.cases.find(function (elemet) {
+      return elemet.buildName === buildId
+    }).cases
+    this.selectedCases = this.selectedCases.concat(tmp)
+    this.cases.find(function (elemet) {
+      return elemet.buildName === buildId
+    }).cases = []
+
+    this.disabled = false;
+    this.next["disabled"] = this.disabled;
+  }
+
+  public addAllScenarioFromCases(id: string) {
+    let tmp = this.scenarios.find(function (elemet) {
+      return elemet.id === id
+    }).scenarios
+
+    this.selectedScenarios = this.selectedScenarios.concat(tmp)
+    this.scenarios.find(function (elemet) {
+      return elemet.id === id
+    }).scenarios = []
+
+    this.disabled = false;
+    this.next["disabled"] = this.disabled;
+  }
+
+  public addAllOperationToOpen(id: string) {
+    let tmp = this.operations.find(function (elemet) {
+      return elemet.id === id
+    }).operations
+
+    this.shows = this.shows.concat(tmp)
+    this.operations.find(function (elemet) {
+      return elemet.id === id
+    }).operations = []
+
+    this.disabled = false;
+    this.next["disabled"] = this.disabled;
+  }
+
+  public addAllOperationToClose(id: string) {
+    let tmp = this.operations.find(function (elemet) {
+      return elemet.id === id
+    }).operations
+
+    this.hides = this.hides.concat(tmp)
+    this.operations.find(function (elemet) {
+      return elemet.id === id
+    }).operations = []
+
+    this.disabled = false;
+    this.next["disabled"] = this.disabled;
+  }
+
+  public removeAllBuilds() {
+    this.builds = this.builds.concat(this.selectedBuilds);
+    this.selectedBuilds = [];
+    this.disabled = true;
+    this.next["disabled"] = this.disabled;
+  }
+
+  public removeAllCases() {
+    let cases = this.cases;
+    this.selectedCases.forEach(function (c) {
+      cases.find(function (elemet) {
+        return elemet.buildName === c.buildName
+      }).cases.push(c)
+    })
+    this.cases = cases;
+    this.selectedCases = []
+    this.disabled = true;
+    this.next["disabled"] = this.disabled;
+  }
+
+  public removeAllScenario() {
+    let scenarios = this.scenarios;
+    this.selectedScenarios.forEach(function (scenario) {
+      scenarios.find(function (elemet) {
+        return elemet.id === scenario.id
+      }).scenarios.push(scenario)
+    })
+    this.scenarios = scenarios;
+    this.selectedScenarios = []
+    this.disabled = true;
+    this.next["disabled"] = this.disabled;
+  }
+
+  public removeAllOperationFromOpen() {
+    let operations = this.operations;
+    this.shows.forEach(function (operation) {
+      operations.find(function (elemet) {
+        return elemet.id === operation.id
+      }).operations.push(operation)
+    })
+    this.operations = operations;
+    this.shows = []
+    this.disabled = true;
+    this.next["disabled"] = this.disabled;
+  }
+
+  
+  public removeAllOperationFromClose() {
+    let operations = this.operations;
+    this.hides.forEach(function (operation) {
+      operations.find(function (elemet) {
+        return elemet.id === operation.id
+      }).operations.push(operation)
+    })
+    this.operations = operations;
+    this.hides = []
+    this.disabled = true;
+    this.next["disabled"] = this.disabled;
+  }
 
   public select() {
     if (!this.disabled) {
       switch (this.step) {
         case 0:
-          this.selectedCases.forEach(selectedCase => {
-            this._buildConfigService.getBuildsbyCase(selectedCase, builds => {
-              this.builds.push({ caseName: selectedCase, builds: builds })
+          this.selectedBuilds.forEach(selectedBuild => {
+            this._buildConfigService.getCasesByBuild(selectedBuild, cases => {
+              this.cases.push({ buildName: selectedBuild, cases: cases })
             })
           })
           break;
         case 1:
-          this.shows = new Array<{ operationid: string, caseName: string, title: string, buildName: string }>();
-          this.hides = new Array<{ operationid: string, caseName: string, title: string, buildName: string }>();
-          this.selectedBuilds.forEach(select => {
-            this._buildConfigService.getBuildConfig(select.caseName, select.buildName, (buildConfig => {
-              this.operations.push(buildConfig);
+          this.selectedCases.forEach(selectedCase => {
+            this._buildConfigService.getScenariosByCase(selectedCase.buildName, selectedCase.caseName, scenarios => {
+              this.scenarios.push({ id: `${selectedCase.buildName}/${selectedCase.caseName}`, scenarios: scenarios })
+            })
+          })
+          break;
+        case 2:
+          this.shows = new Array<{ operationid: string, id: string, caseName: string, scenario: string, title: string, buildName: string }>();
+          this.hides = new Array<{ operationid: string, id: string, caseName: string, scenario: string, title: string, buildName: string }>();
+          this.selectedScenarios.forEach(select => {
+            this._buildConfigService.getBuildConfig(select.buildName, select.caseName, select.scenario, (buildConfig => {
+              this.operations.push({ id: `${select.buildName}/${select.caseName}/${select.scenario}`, operations: buildConfig });
             })
             )
           })
           break;
-        case 2:
+        case 3:
           this._diagrams = new Array<Diagram>();
           this.shows.forEach(element => {
-            this._diagrams.push({ caseName: element.caseName, buildName: element.buildName, operationid: element.operationid, opened: true });
+            this._diagrams.push({ CaseName: element.caseName, Build: element.buildName, Scenario: element.scenario, OperationId: element.operationid, Opened: true });
           })
           this.hides.forEach(element => {
-            this._diagrams.push({ caseName: element.caseName, buildName: element.buildName, operationid: element.operationid, opened: false });
+            this._diagrams.push({ CaseName: element.caseName, Build: element.buildName, Scenario: element.scenario, OperationId: element.operationid, Opened: false });
           })
           break;
-
-        case 3:
-          this._diagramService.addScenario(new Scenario(this._diagrams, this.scenarioTitle));
+        case 4:
+          this._diagramService.addScenario(new DiagramSet(this._diagrams, this.scenarioTitle));
           this._router.navigate(['diagrams'], { queryParams: { 'scenario': 1, "type": "created" } });
           break;
       }
@@ -110,15 +245,18 @@ export class CreatingComponent implements OnInit {
     let [el, target, source] = args;
     switch (this.step) {
       case 0:
-        this.disabled = this.selectedCases.length === 0;
-        break;
-      case 1:
         this.disabled = this.selectedBuilds.length === 0;
         break;
+      case 1:
+        this.disabled = this.selectedCases.length === 0;
+        break;
       case 2:
-        this.disabled = this.shows.length === 0 && this.hides.length === 0;
+        this.disabled = this.selectedScenarios.length === 0;
         break;
       case 3:
+        this.disabled = this.shows.length === 0 && this.hides.length === 0;
+        break;
+      case 4:
         this.disabled = this.scenarioTitle === "";
         break;
     }
@@ -131,13 +269,9 @@ export class CreatingComponent implements OnInit {
     this.next["disabled"] = this.disabled;
   }
 
-
-
-
-
   ngOnInit() {
-    this._buildConfigService.getCaseName((cases => {
-      this.cases = cases;
+    this._buildConfigService.getBuildNames((builds => {
+      this.builds = builds;
     }))
   }
 }

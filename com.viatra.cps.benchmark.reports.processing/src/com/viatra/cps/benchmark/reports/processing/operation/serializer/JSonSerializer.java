@@ -10,14 +10,20 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.stream.Collectors;
 
+import org.codehaus.jackson.JsonParser.Feature;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
-import org.codehaus.jackson.type.TypeReference;
+import org.codehaus.jackson.JsonGenerator;
 
 import com.viatra.cps.benchmark.reports.processing.Processor;
 import com.viatra.cps.benchmark.reports.processing.models.AggregataedResult;
+import com.viatra.cps.benchmark.reports.processing.models.DiagramDescriptor;
+import com.viatra.cps.benchmark.reports.processing.models.DiagramSet;
+import com.viatra.cps.benchmark.reports.processing.models.Diagrams;
 import com.viatra.cps.benchmark.reports.processing.models.Tool;
 import com.viatra.cps.benchmark.reports.processing.models.Result;
+import com.viatra.cps.benchmark.reports.processing.models.ResultData;
+import com.viatra.cps.benchmark.reports.processing.models.Results;
 import com.viatra.cps.benchmark.reports.processing.operation.Operation;
 
 import eu.mondo.sam.core.results.BenchmarkResult;
@@ -38,13 +44,39 @@ public class JSonSerializer implements Operation {
 	protected AggregataedResult result;
 	protected File json;
 	protected Map<String, Map<Integer, PhaseResult>> map;
+	protected String path;
+	protected File digramConfiguration;
+	protected ObjectMapper mapper;
+	protected Diagrams config;
+	protected Diagrams template;
+	protected String caseName;
+	protected String scenario;
+	protected List<DiagramSet> dashboard;
+	protected File dashboardConfogurationFile;
+	protected String buildId;
 
-	public JSonSerializer(File out, String ID) {
+	public JSonSerializer(File out, File digramConfiguration, String ID, String path, Diagrams template,
+			String caseName, String scenario, List<DiagramSet> dashboard, File dashboardConfogurationFile,
+			String buildId,
+			ObjectMapper mapper) {
 		this.lock = new Object();
 		this.running = false;
+		this.buildId = buildId;
 		this.json = out;
-		this.result = new AggregataedResult(ID, "", "");
+		this.path = path;
+		this.dashboard = dashboard;
+		this.dashboardConfogurationFile = dashboardConfogurationFile;
+		this.caseName = caseName;
+		this.scenario = scenario;
+		this.template = template;
+		this.result = new AggregataedResult(ID);
+		this.config = new Diagrams(path);
 		this.map = new HashMap<>();
+		this.digramConfiguration = digramConfiguration;
+
+		this.mapper = mapper;
+		// to enable standard indentation ("pretty-printing"):
+
 	}
 
 	public void setProcessor(Processor p) {
@@ -85,58 +117,72 @@ public class JSonSerializer implements Operation {
 
 	private void save() {
 		Set<String> toolKeys = this.map.keySet();
-		List<Tool> tools = new ArrayList<>();
-		toolKeys.forEach(tool -> {
-			Tool newTool = new Tool(tool);
-			Set<Integer> sizekeys = this.map.get(tool).keySet();
-			final List<Result> results = new ArrayList<>();
-
-			sizekeys.forEach(size -> {
-				Result res = new Result(size);
-				MetricResult metric = this.map.get(tool).get(size).getMetrics().get(0);
-				metric.setValue(metric.getValue());
-				res.setMetrics(metric);
-				results.add(res);
+		if (!toolKeys.isEmpty()) {
+			List<Tool> tools = new ArrayList<>();
+			toolKeys.forEach(tool -> {
+				Tool newTool = new Tool(tool);
+				Set<Integer> sizekeys = this.map.get(tool).keySet();
+				final List<Result> results = new ArrayList<>();
+				if (!sizekeys.isEmpty()) {
+					sizekeys.forEach(size -> {
+						Result res = new Result(size);
+						MetricResult metric = this.map.get(tool).get(size).getMetrics().get(0);
+						metric.setValue(metric.getValue());
+						res.setMetrics(metric);
+						results.add(res);
+					});
+					List<Result> sortedResult = results.stream()
+							.sorted((object1, object2) -> object1.getSize().compareTo(object2.getSize()))
+							.collect(Collectors.toList());
+					newTool.setResults(sortedResult);
+					tools.add(newTool);
+				}
 			});
-			List<Result> sortedResult = results.stream()
-					.sorted((object1, object2) -> object1.getSize().compareTo(object2.getSize()))
-					.collect(Collectors.toList());
-			newTool.setResults(sortedResult);
-			tools.add(newTool);
-		});
-		this.result.setTool(tools);
-		this.append();
+			this.result.setTool(tools);
+			this.append();
+		}
 	}
 
 	private void append() {
-		ObjectMapper mapper = new ObjectMapper();
-		// to enable standard indentation ("pretty-printing"):
-		mapper.configure(SerializationConfig.Feature.FAIL_ON_EMPTY_BEANS, false);
-		mapper.configure(SerializationConfig.Feature.INDENT_OUTPUT, true);
-		// turn off autodetection
-		mapper.configure(SerializationConfig.Feature.AUTO_DETECT_FIELDS, false);
-		mapper.configure(SerializationConfig.Feature.AUTO_DETECT_GETTERS, false);
-		List<AggregataedResult> tmp = null;
+		Results tmp = null;
 		try {
 			synchronized (json) {
 				if (json.exists()) {
-
-					tmp = mapper.readValue(json, new TypeReference<List<AggregataedResult>>() {
-					});
-
+					tmp = this.mapper.readValue(json, Results.class);
 				}
-				if (tmp == null) {
-					tmp = new ArrayList<>();
-				}
-				tmp.add(this.result);
-				mapper.writeValue(json, tmp);
+				tmp.getResults().add(this.result);
+				this.mapper.writeValue(json, tmp);
+			}
+			synchronized (this.config) {
+				this.config = this.mapper.readValue(digramConfiguration, Diagrams.class);
+				List<ResultData> resultDatas = this.template.getResultData();
+				ResultData dataTemplate = resultDatas.stream()
+						.filter(resultData -> resultData.getOperationId().equals(this.result.getOperation()))
+						.findFirst().get();
+				
+				ResultData resultData = (ResultData) dataTemplate.clone();
+				resultData.setTitle(resultData.getTitle().replaceAll("CASENAME", this.caseName)
+						.replaceAll("SCENARIO", this.scenario));
+				this.config.getResultData().add(resultData);
+				this.mapper.writeValue(digramConfiguration, this.config);
 			}
 
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			synchronized (this.dashboardConfogurationFile) {
+				DiagramSet diagSet = this.dashboard.stream()
+						.filter(diagramSet -> diagramSet.getTitle().equals(this.buildId)).findFirst().get();
+				if (!diagSet.getDiagrams().stream().filter(diagram -> {
+					return diagram.getBuild().equals(this.buildId) && diagram.getCaseName().equals(this.caseName)
+							&& diagram.getOperationId().equals(this.result.getOperation())
+							&& diagram.getScenario().equals(this.scenario);
+				}).findFirst().isPresent()) {
+					diagSet.getDiagrams().add(new DiagramDescriptor(this.caseName, this.buildId, this.scenario,
+							this.result.getOperation(), true));
+					mapper.writeValue(this.dashboardConfogurationFile, this.dashboard);
+				}
+			}
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	@Override

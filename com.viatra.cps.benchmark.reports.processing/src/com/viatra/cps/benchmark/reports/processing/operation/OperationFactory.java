@@ -9,6 +9,7 @@ import com.viatra.cps.benchmark.reports.processing.operation.filter.RunIndexFilt
 import com.viatra.cps.benchmark.reports.processing.operation.filter.ToolFilter;
 import com.viatra.cps.benchmark.reports.processing.operation.numeric.Average;
 import com.viatra.cps.benchmark.reports.processing.operation.numeric.Mean;
+import com.viatra.cps.benchmark.reports.processing.operation.numeric.MeanWithDrop;
 import com.viatra.cps.benchmark.reports.processing.operation.numeric.NumericOperation;
 import com.viatra.cps.benchmark.reports.processing.operation.numeric.Summary;
 
@@ -33,6 +34,14 @@ public class OperationFactory {
 			NumericOperation mean = new Mean(filter, next,id);
 			filter.setNext(mean);
 			return mean;
+		case "Mean-Drop":
+			filter = createFilter(elements, null, true, attribute, id);
+			if (filter == null) {
+				return null;
+			}
+			NumericOperation meanDrop = new MeanWithDrop(filter, next,id);
+			filter.setNext(meanDrop);
+			return meanDrop;
 		case "Summary":
 			filter = createFilter(elements, null, true, attribute, id);
 			if (filter == null) {

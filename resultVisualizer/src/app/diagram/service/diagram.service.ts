@@ -2,7 +2,7 @@ import { Injectable, EventEmitter } from '@angular/core';
 import { Option } from '../model/option';
 import { JsonService } from '../../services/json.service';
 import { Result } from '../../model/result';
-import { Benchmark } from '../../model/benchmark';
+import { Benchmark, Results } from '../../model/benchmark';
 import { Data } from '../model/data';
 import { Tool } from '../../model/tool';
 import { Dataset } from '../model/dataset';
@@ -11,7 +11,7 @@ import { digest } from '@angular/compiler/src/i18n/serializers/xmb';
 import { Diagram } from '../model/diagram';
 import { query } from '@angular/core/src/render3/instructions';
 import { Console } from '@angular/core/src/console';
-import { Scenario } from '../../model/scenario';
+import { DiagramSet } from '../../model/diagramSet';
 import { Observable } from 'rxjs/Observable';
 import { take } from 'rxjs/operator/take';
 import { Config } from '../../model/config';
@@ -28,23 +28,22 @@ import { BuildConfigService } from '../../services/build.config.service';
 
 @Injectable()
 export class DiagramService {
-    private _selectedTitle: string;
     private _selectionUpdate: EventEmitter<SelectionUpdateEvent>;
     private _legendUpdate: EventEmitter<LegendUpdateEvent>;
     private _initEvent: EventEmitter<String>;
     private _diagrams: Array<Diagram>;
-    private _scenarios: Array<Scenario>;
+    private _scenarios: Array<DiagramSet>;
     private _title: Array<Title>;
     private _colors: Array<Color>;
-    public configPath: string = `config/diagram.config.json`;
+    public configPath: string = `config/config.json`;
     private _defaultScale: Array<Scale>;
-    private _newScenario: Scenario;
+    private _newScenario: DiagramSet;
     constructor(private _jsonService: JsonService, private _colorService: ColorService, private _configservice: ConfigService, private _router: Router, private _buildConfigService: BuildConfigService) {
         this._title = new Array<Title>();
         this._selectionUpdate = new EventEmitter<SelectionUpdateEvent>();
         this._legendUpdate = new EventEmitter<LegendUpdateEvent>();
         this._initEvent = new EventEmitter<null>();
-        this._scenarios = new Array<Scenario>();
+        this._scenarios = new Array<DiagramSet>();
 
         this._colorService.getColors(this.configPath).subscribe((colors: Color[]) => {
             this._colors = colors;
@@ -56,6 +55,11 @@ export class DiagramService {
                 scale.ActualScale = scale.DefaultScale;
             })
             this._initEvent.emit("Config");
+
+            this._jsonService.getScenarios().subscribe((scenarios: Array<DiagramSet>) => {
+                this._scenarios = scenarios
+                this._initEvent.emit("Scenario")
+            })
         });
     }
 
@@ -64,7 +68,7 @@ export class DiagramService {
         return this._scenarios;
     }
 
-    public createNewScenarion(scenario: Scenario) {
+    public createNewScenarion(scenario: DiagramSet) {
         return new Observable((observer) => {
             this._newScenario = scenario;
             observer.next();
@@ -73,9 +77,10 @@ export class DiagramService {
 
     }
 
-    public addScenario(scenario: Scenario) {
+    public addScenario(scenario: DiagramSet) {
         this._scenarios.push(scenario);
     }
+
     public runScenario(index: number, type: string, callback: any) {
         this._title = new Array<Title>();
         this._diagrams = new Array<Diagram>();
@@ -83,6 +88,10 @@ export class DiagramService {
         switch (type) {
             case "created":
                 scenario = this._scenarios[this._scenarios.length - 1];
+                break;
+            case "loaded":
+                scenario = this._scenarios[index];
+                break;
         }
         if (scenario === null || scenario === undefined) {
             this._router.navigate(["/"])
@@ -92,12 +101,12 @@ export class DiagramService {
 
     }
 
-    private addDiagrams(scenario: Scenario, callback: any) {
+    private addDiagrams(scenario: DiagramSet, callback: any) {
         this._selectionUpdate.emit(new SelectionUpdateEvent("Clear", null));
-        scenario.diagrams.forEach((diag) => {
-            this._jsonService.getResults(diag.caseName, diag.buildName).subscribe((benchmarks: Benchmark[]) => {
-                this._buildConfigService.getFullBuildConfig(diag.caseName, diag.buildName, configs => {
-                    this.createDiagram(benchmarks.find((benchmark => benchmark.operationID === diag.operationid)), diag.opened, configs.ResultData.find((config => config.OperationID === diag.operationid)), configs.ID)
+        scenario.Diagrams.forEach((diag) => {
+            this._jsonService.getResults(diag.CaseName, diag.Build, diag.Scenario).subscribe((benchmarks: Benchmark) => {
+                this._buildConfigService.getFullBuildConfig(diag.Build, diag.CaseName, diag.Scenario, configs => {
+                    this.createDiagram(benchmarks.Results.find((benchmark => benchmark.operationID === diag.OperationId)), diag.Opened, configs.ResultData.find((config => config.OperationID === diag.OperationId)), diag.Build)
                     callback();
                 })
             });
@@ -152,7 +161,7 @@ export class DiagramService {
         this._selectionUpdate.emit(new SelectionUpdateEvent(type, diagram));
     }
 
-    private createDiagram(result: Benchmark, opened: boolean, operation: any, id: string) {
+    private createDiagram(result: Results, opened: boolean, operation: any, id: string) {
         if (result) {
             var data = new Data();
             let tools: Tool[] = result.tool;
@@ -162,10 +171,15 @@ export class DiagramService {
                 let index = 0;
                 data.datasets = new Array<Dataset>();
                 tools.forEach((tool: Tool) => {
-                    data.datasets.push(this.getDataSet(tool, index));
+                    data.datasets.push(this.getDataSet(tool, index, this.getSizesAsNumber(maxSizeTool)));
                     index++;
                 });
-                let newDiagram = new Diagram(operation.DiagramType, data, this.getOption(operation.YLabel, operation.XLabel), `${operation.Title} (${id})`, operation.Metric);
+                let newDiagram = new Diagram(operation.DiagramType, 
+                    data, 
+                    this.getOption(operation.YLabel, operation.XLabel, this.getSizesAsNumber(maxSizeTool),
+                    operation.XType,
+                    operation.YType,
+                ), `${operation.Title} (${id})`, operation.Metric);
                 this._diagrams.push(newDiagram)
                 if (opened) {
                     this._selectionUpdate.emit(new SelectionUpdateEvent("Added", newDiagram));
@@ -176,7 +190,7 @@ export class DiagramService {
     }
 
 
-    private getDataSet(tool: Tool, index: number) {
+    private getDataSet(tool: Tool, index: number, sizes: Number[]) {
         let dataset: Dataset = new Dataset();
         dataset.lineTension = 0;
         dataset.data = new Array();
@@ -184,8 +198,10 @@ export class DiagramService {
         dataset.label = tool.name
         dataset.borderColor = this.getColor(tool.name);
         dataset.backgroundColor = this.getColor(tool.name);
+        let i = 0;
         tool.results.forEach((result: Result) => {
-            dataset.data.push((result.metric.MetricValue));
+            dataset.data.push(({ y: result.metric.MetricValue, x: result.size }));
+            i++;
         });
         return dataset;
     }
@@ -235,8 +251,16 @@ export class DiagramService {
         });
         return sizes;
     }
+    private getSizesAsNumber(tool: Tool): Number[] {
+        let sizes: Number[] = [];
+        tool.results.forEach((result: Result) => {
+            sizes.push(result.size);
+        });
+        return sizes;
+    }
 
-    private getMaxSizeTool(benchmark: Benchmark): Tool {
+
+    private getMaxSizeTool(benchmark: Results): Tool {
         let max: Tool = benchmark.tool[0];
         for (let i = 1; i < benchmark.tool.length; i++) {
             if (max.results.length < benchmark.tool[i].results.length) {
@@ -246,7 +270,7 @@ export class DiagramService {
         return max;
     }
 
-    getOption(yLabel: string, xLabel: string): Option {
+    getOption(yLabel: string, xLabel: string, sizes: Number[], typeX: string, typeY: string): Option {
         return {
             maintainAspectRatio: true,
             legend: {
@@ -265,13 +289,20 @@ export class DiagramService {
                         display: true,
                         labelString: yLabel,
                     },
-                    type: "logarithmic"
+                    type: typeY
                 }],
                 xAxes: [{
                     scaleLabel: {
                         display: true,
                         labelString: xLabel
-                    }
+                    },
+                    ticks: {
+                        callback: function (tick, index, ticks) {
+                            return tick.toLocaleString()
+                        },
+                        display: true,
+                    },
+                    type: typeX
                 }]
             }
         }
@@ -322,21 +353,6 @@ export class LegendUpdateEvent {
     get ToolName() {
         return this._toolName;
     }
-}
-
-export enum TimeScale {
-    "s" = 0,
-    "ms" = -3,
-    "µs" = -6,
-    "ns" = -9,
-    "ps" = -12,
-}
-
-export enum MemoryScale {
-    "B" = 1,
-    "KB" = 2,
-    "MB" = 3,
-    "GB" = 4
 }
 
 
