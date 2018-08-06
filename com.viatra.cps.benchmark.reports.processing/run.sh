@@ -7,8 +7,7 @@ outputResults=$4
 diagramConfigTemplate=$5
 visualizerConfiguration=$6
 jarLocation=$7
-echo "BuilID: "$BuildID
-echo "Input results path: "$inputResults
+
 echo "Output results path: "$outputResults
 echo "Processing configuration:"$processingConfig
 echo "Visualizer configuration: "$visualizerConfiguration
@@ -23,7 +22,8 @@ fi
 
 for build in "${builds[@]}"
 do
-  echo "$build"
+  echo "BuilID: "$build
+  echo "Input results path: ${inputResults}/${BuildID}/${build}/json"
   java -jar "$jarLocation/com.viatra.cps.benchmark.reports.processing-0.0.1-jar-with-dependencies.jar"  -b "${build}" -i "${inputResults}/${BuildID}/${build}/json" -o "${outputResults}" -p "${processingConfig}" -d "${diagramConfigTemplate}" -v "${visualizerConfiguration}"
 done
 

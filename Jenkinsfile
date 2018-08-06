@@ -28,7 +28,7 @@ pipeline {
         stage('Process'){
             steps{
                 sshagent(['24f0908d-7662-4e93-80cc-1143b7f92ff1']) {
-                    sh './com.viatra.cps.benchmark.reports.processing/run.sh "cps" "./viatra-cps-benchmark-results/"  "./com.viatra.cps.benchmark.reports.processing/config.json" "./out" "./com.viatra.cps.benchmark.reports.processing/diagramConfigTemplate.json" "./com.viatra.cps.benchmark.reports.processing/diagram.config.template.json" "./com.viatra.cps.benchmark.reports.processing" < ./com.viatra.cps.benchmark.reports.processing/builds.txt'
+                    sh './com.viatra.cps.benchmark.reports.processing/run.sh "m2m-reduced" "./viatra-cps-benchmark-results/"  "./com.viatra.cps.benchmark.reports.processing/config.json" "./out" "./com.viatra.cps.benchmark.reports.processing/diagramConfigTemplate.json" "./com.viatra.cps.benchmark.reports.processing/diagram.config.template.json" "./com.viatra.cps.benchmark.reports.processing" < ./com.viatra.cps.benchmark.reports.processing/builds.txt'
                 }
             }
         }
