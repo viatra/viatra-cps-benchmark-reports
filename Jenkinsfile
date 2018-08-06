@@ -46,8 +46,8 @@ pipeline {
             steps{
                 nodejs(nodeJSInstallationName: 'Latest'){
                     sh '''
-                    cp -rf ./results/ ./resultVisualizer/src/results/
-                    cp ./results/config.json ./resultVisualizer/src/config/config.json
+                    cp -rf ./results/out/ ./resultVisualizer/src/results/
+                    cp ./results/out/config.json ./resultVisualizer/src/config/config.json
                     cd ./resultVisualizer
                     npm  run build
                     ''' 
