@@ -1,13 +1,14 @@
 package com.viatra.cps.benchmark.reports.processing;
 
-import java.io.File;
-import java.io.IOException;
-
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.Options;
-import org.apache.commons.cli.ParseException;
+
+import io.vertx.core.Future;
+import io.vertx.core.Vertx;
+import io.vertx.core.eventbus.EventBus;
+import io.vertx.core.impl.FutureFactoryImpl;
 
 public class Main {
 
@@ -23,20 +24,37 @@ public class Main {
 		options.addOption("v", "visualizer_config", true, "Visualizer configuration path");
 		CommandLineParser parser = new DefaultParser();
 		CommandLine cmd;
-
 		try {
 
-			cmd = parser.parse(options, args);
-			String buildId = cmd.getOptionValue("b");
-			String resultInputPath = cmd.getOptionValue("i");
-			String resultOutputPath = cmd.getOptionValue("o");
-			String configPath = cmd.getOptionValue("p");
-			String diagramConfigTemplatePath = cmd.getOptionValue("d");
-			String visualizerConfigPath = cmd.getOptionValue("v");
+			/*
+			 * cmd = parser.parse(options, args); String buildId = cmd.getOptionValue("b");
+			 * String resultInputPath = cmd.getOptionValue("i"); String resultOutputPath =
+			 * cmd.getOptionValue("o"); String configPath = cmd.getOptionValue("p"); String
+			 * diagramConfigTemplatePath = cmd.getOptionValue("d"); String
+			 * visualizerConfigPath = cmd.getOptionValue("v");
+			 */
 
-			Processor process = new Processor(buildId, resultInputPath, resultOutputPath, configPath,
-					diagramConfigTemplatePath, visualizerConfigPath);
-			process.start();
+			String buildId = "0.6.0-20180814.140246";
+			String resultInputPath = "../results/0.6.0-20180814.1402461";
+			String resultOutputPath = "../resultVisualizer/src/results";
+			String configPath = "./config.json";
+			String diagramConfigTemplatePath = "./diagramConfigTemplate.json";
+			String visualizerConfigPath = "../resultVisualizer/src/config";
+
+			Vertx vertx = Vertx.vertx();
+			EventBus eventBus = vertx.eventBus();
+			Future<Void> future = Future.future();
+			ProcessorVerticle process = new ProcessorVerticle(future, buildId, resultInputPath, resultOutputPath,
+					configPath, diagramConfigTemplatePath, visualizerConfigPath);
+			vertx.deployVerticle(process, res -> {
+				if (res.succeeded()) {
+					System.out.println("Processing deployed");
+					final String deployID = res.result();
+				} else {
+					System.err.println(res.cause().getMessage());
+					System.exit(1);
+				}
+			});
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

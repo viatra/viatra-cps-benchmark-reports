@@ -15,7 +15,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
 import org.codehaus.jackson.JsonGenerator;
 
-import com.viatra.cps.benchmark.reports.processing.Processor;
+import com.viatra.cps.benchmark.reports.processing.ProcessorVerticle;
 import com.viatra.cps.benchmark.reports.processing.models.AggregataedResult;
 import com.viatra.cps.benchmark.reports.processing.models.DiagramDescriptor;
 import com.viatra.cps.benchmark.reports.processing.models.DiagramSet;
@@ -37,7 +37,7 @@ public class JSonSerializer implements Operation {
 		return thread;
 	}
 
-	protected Processor processor;
+	protected ProcessorVerticle processor;
 	protected Boolean running;
 	protected Object lock;
 	protected ConcurrentLinkedQueue<BenchmarkResult> queue;
@@ -79,7 +79,7 @@ public class JSonSerializer implements Operation {
 
 	}
 
-	public void setProcessor(Processor p) {
+	public void setProcessor(ProcessorVerticle p) {
 		this.processor = p;
 	}
 
