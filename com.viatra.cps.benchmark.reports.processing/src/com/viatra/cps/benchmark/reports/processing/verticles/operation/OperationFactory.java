@@ -1,4 +1,4 @@
-package com.viatra.cps.benchmark.reports.processing.operation;
+package com.viatra.cps.benchmark.reports.processing.verticles.operation;
 
 import java.util.List;
 

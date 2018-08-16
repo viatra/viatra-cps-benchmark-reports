@@ -16,6 +16,7 @@ import com.viatra.cps.benchmark.reports.processing.models.Message;
 import eu.mondo.sam.core.results.BenchmarkResult;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.AsyncResult;
+import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Future;
 
 public class CaseVerticle extends AbstractVerticle {
@@ -31,10 +32,11 @@ public class CaseVerticle extends AbstractVerticle {
 	private List<String> failedScenarioDeploy;
 	private List<String> deployedScenarioVerticles;
 	private Boolean failed = false;
+	private DeploymentOptions options;
 
 	public CaseVerticle(String buildId, Path outputResultsPath, String caseName,
 			Map<String, List<BenchmarkResult>> scenairoMap, ObjectMapper mapper,
-			List<AggregatorConfiguration> configuration, Diagrams diagramConfiguration) {
+			List<AggregatorConfiguration> configuration, Diagrams diagramConfiguration, DeploymentOptions options) {
 		this.buildId = buildId;
 		this.outputResultsPath = outputResultsPath;
 		this.caseName = caseName;
@@ -42,7 +44,7 @@ public class CaseVerticle extends AbstractVerticle {
 		this.mapper = mapper;
 		this.configuration = configuration;
 		this.diagramConfiguration = diagramConfiguration;
-
+		this.options = options;
 		this.failedScenarioDeploy = new ArrayList<String>();
 		this.deployedScenarioVerticles = new ArrayList<>();
 	}
@@ -54,9 +56,9 @@ public class CaseVerticle extends AbstractVerticle {
 		scenarios.forEach(scenario -> {
 			List<BenchmarkResult> results = this.scenairoMap.get(scenario);
 			ScenarioVerticle scenarioVerticle = new ScenarioVerticle(this.diagramConfiguration, this.configuration,
-					this.outputResultsPath, this.buildId, caseName, scenario, results, mapper);
+					this.outputResultsPath, this.buildId, caseName, scenario, results, mapper, this.options);
 			this.deployedScenarioVerticles.add(scenario);
-			vertx.deployVerticle(scenarioVerticle, res -> {
+			vertx.deployVerticle(scenarioVerticle, this.options, res -> {
 				this.scenarioVerticleDeployed(res, startFuture);
 			});
 		});
@@ -92,8 +94,7 @@ public class CaseVerticle extends AbstractVerticle {
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				try {
-					vertx.eventBus().send("Processor",
-							mapper.writeValueAsString(new Message("Cannot parse message in " + caseName, "")));
+					vertx.eventBus().send("Processor",mapper.writeValueAsString(new Message("Error", "Cannot parse message in " + caseName)));
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					vertx.eventBus().send("Processor", "Cannot parse message in " + caseName);

@@ -1,4 +1,4 @@
-package com.viatra.cps.benchmark.reports.processing.operation.filter;
+package com.viatra.cps.benchmark.reports.processing.verticles.operation.filter;
 
 import java.util.ArrayList;
 import java.util.HashMap;

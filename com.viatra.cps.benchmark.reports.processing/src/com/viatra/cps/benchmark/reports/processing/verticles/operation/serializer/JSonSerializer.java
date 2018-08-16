@@ -1,4 +1,4 @@
-package com.viatra.cps.benchmark.reports.processing.operation.serializer;
+package com.viatra.cps.benchmark.reports.processing.verticles.operation.serializer;
 
 import java.io.File;
 import java.io.IOException;

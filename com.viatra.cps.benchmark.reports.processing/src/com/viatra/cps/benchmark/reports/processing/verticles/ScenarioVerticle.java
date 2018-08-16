@@ -10,12 +10,32 @@ import com.viatra.cps.benchmark.reports.processing.models.Diagrams;
 
 import eu.mondo.sam.core.results.BenchmarkResult;
 import io.vertx.core.AbstractVerticle;
+import io.vertx.core.DeploymentOptions;
 
 public class ScenarioVerticle extends AbstractVerticle {
 
+	private Diagrams diagramConfiguration;
+	private List<AggregatorConfiguration> configuration;
+	private Path outputResultsPath;
+	private String buildId;
+	private String caseName;
+	private String scenario;
+	private List<BenchmarkResult> results;
+	private ObjectMapper mapper;
+	private DeploymentOptions options;
+
 	public ScenarioVerticle(Diagrams diagramConfiguration, List<AggregatorConfiguration> configuration,
 			Path outputResultsPath, String buildId, String caseName, String scenario, List<BenchmarkResult> results,
-			ObjectMapper mapper) {
+			ObjectMapper mapper, DeploymentOptions options) {
+		this.diagramConfiguration = diagramConfiguration;
+		this.configuration = configuration;
+		this.outputResultsPath = outputResultsPath;
+		this.buildId = buildId;
+		this.caseName = caseName;
+		this.scenario = scenario;
+		this.results = results;
+		this.mapper = mapper;
+		this.options = options;
 	}
 
 }

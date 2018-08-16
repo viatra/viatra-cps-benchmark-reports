@@ -9,12 +9,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
 import org.codehaus.jackson.type.TypeReference;
@@ -22,17 +19,6 @@ import org.codehaus.jackson.type.TypeReference;
 import com.viatra.cps.benchmark.reports.processing.models.AggregatorConfiguration;
 import com.viatra.cps.benchmark.reports.processing.models.Diagrams;
 import com.viatra.cps.benchmark.reports.processing.models.Message;
-import com.viatra.cps.benchmark.reports.processing.models.Builds;
-import com.viatra.cps.benchmark.reports.processing.models.Case;
-import com.viatra.cps.benchmark.reports.processing.models.DiagramSet;
-import com.viatra.cps.benchmark.reports.processing.models.VisualizerConfiguration;
-import com.viatra.cps.benchmark.reports.processing.models.OperationConfig;
-import com.viatra.cps.benchmark.reports.processing.models.Results;
-import com.viatra.cps.benchmark.reports.processing.models.Scale;
-import com.viatra.cps.benchmark.reports.processing.models.ToolColor;
-import com.viatra.cps.benchmark.reports.processing.operation.Operation;
-import com.viatra.cps.benchmark.reports.processing.operation.OperationFactory;
-import com.viatra.cps.benchmark.reports.processing.operation.serializer.JSonSerializer;
 
 import eu.mondo.sam.core.results.BenchmarkResult;
 import io.vertx.core.AbstractVerticle;
@@ -198,7 +184,7 @@ public class ProcessorVerticle extends AbstractVerticle {
 						startFuture.fail("Cannot load input results");
 					}
 				} else {
-					future.fail(res.cause());
+					future.fail(res.cause().getMessage());
 				}
 			});
 		}
@@ -236,8 +222,8 @@ public class ProcessorVerticle extends AbstractVerticle {
 			this.cases.add(caseName);
 			Map<String, List<BenchmarkResult>> scenairoMap = caseScenarioMap.get(caseName);
 			CaseVerticle caseVerticle = new CaseVerticle(this.buildId, this.resutOutputPath, caseName, scenairoMap,
-					mapper, this.configuration, this.diagramConfiguration);
-			vertx.deployVerticle(caseVerticle, res -> {
+					mapper, this.configuration, this.diagramConfiguration,this.options);
+			vertx.deployVerticle(caseVerticle, this.options, res -> {
 				this.caseVerticleDeployed(res, startFuture);
 			});
 		});
@@ -282,7 +268,7 @@ public class ProcessorVerticle extends AbstractVerticle {
 					if (res.succeeded()) {
 						future.complete();
 					} else {
-						future.fail(res.cause());
+						future.fail(res.cause().getMessage());
 					}
 				});
 			} catch (IOException e) {
