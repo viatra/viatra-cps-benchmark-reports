@@ -106,8 +106,8 @@ public class CaseVerticle extends AbstractVerticle {
 		try {
 			if (this.failed) {
 
-				vertx.eventBus().send("Processor",
-						this.mapper.writeValueAsString(new Message("Failed", this.caseName + " processing failed")));
+				vertx.eventBus().send("Processor", this.mapper.writeValueAsString(
+						new Message("Failed", this.caseName + ": Failed to process one or more scenario")));
 			} else {
 				vertx.eventBus().send("Processor", this.mapper
 						.writeValueAsString(new Message("Successfull", this.caseName + " processing successfull")));
