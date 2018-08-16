@@ -66,7 +66,7 @@ public abstract class Operation extends AbstractVerticle {
 		}
 	}
 
-	protected void sendResults(BenchmarkResult result) {
+	protected void sendResult(BenchmarkResult result) {
 		try {
 			vertx.eventBus().send(this.next,
 					this.mapper.writeValueAsString(new Message("Result", mapper.writeValueAsString(result))));

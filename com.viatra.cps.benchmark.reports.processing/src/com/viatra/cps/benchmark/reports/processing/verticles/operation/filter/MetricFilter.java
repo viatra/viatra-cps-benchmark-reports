@@ -46,6 +46,6 @@ public class MetricFilter extends Filter {
 				});
 			}
 		});
-		this.sendResults(filteredResult);
+		this.sendResult(filteredResult);
 	}
 }

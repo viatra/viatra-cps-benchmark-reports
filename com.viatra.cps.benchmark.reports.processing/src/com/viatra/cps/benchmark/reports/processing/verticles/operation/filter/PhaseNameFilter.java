@@ -29,7 +29,7 @@ public class PhaseNameFilter extends Filter {
 				this.phaseMap.get(phaseName).forEach(phase -> {
 					filteredResult.addResults(phase);
 				});
-				this.sendResults(filteredResult);
+				this.sendResult(filteredResult);
 			});
 			return null;
 		});
