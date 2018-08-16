@@ -103,7 +103,6 @@ public class JSonSerializer implements Operation {
 			}
 		}
 		this.save();
-		this.processor.chainEnd(result.getOperation());
 	}
 
 	private void addToMap(BenchmarkResult benchmarkResult) {

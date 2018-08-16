@@ -10,7 +10,6 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 
 import com.viatra.cps.benchmark.reports.processing.models.Builds;
-import com.viatra.cps.benchmark.reports.processing.models.Case;
 import com.viatra.cps.benchmark.reports.processing.models.DiagramSet;
 import com.viatra.cps.benchmark.reports.processing.models.Message;
 import com.viatra.cps.benchmark.reports.processing.models.Scale;
