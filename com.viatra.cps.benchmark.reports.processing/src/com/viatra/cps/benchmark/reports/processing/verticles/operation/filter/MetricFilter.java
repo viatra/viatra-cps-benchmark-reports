@@ -46,16 +46,6 @@ public class MetricFilter extends Filter {
 				});
 			}
 		});
-		try {
-			vertx.eventBus().send(this.next,
-					this.mapper.writeValueAsString(new Message("Result", mapper.writeValueAsString(filteredResult))));
-		} catch (IOException e) {
-			try {
-				vertx.eventBus().send(this.scenario,
-						mapper.writeValueAsString(new Message("Error", "Cannot send message " + this.ID)));
-			} catch (IOException e1) {
-				vertx.eventBus().send("Processor", "Cannot parse message in " + this.ID);
-			}
-		}
+		this.sendResults(filteredResult);
 	}
 }

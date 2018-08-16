@@ -5,69 +5,33 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 
-import com.viatra.cps.benchmark.reports.processing.operation.Operation;
-import com.viatra.cps.benchmark.reports.processing.operation.numeric.NumericOperation;
+import org.codehaus.jackson.map.ObjectMapper;
 
 import eu.mondo.sam.core.results.BenchmarkResult;
 import eu.mondo.sam.core.results.PhaseResult;
+import io.vertx.core.AsyncResult;
+import io.vertx.core.eventbus.Message;
 
 public class PhaseNameFilter extends Filter {
 
 	private Map<String, List<PhaseResult>> phaseMap;
 
-	public PhaseNameFilter(List<Object> elements, Boolean contained, String id) {
-		super(elements, contained, id);
-	}
-
-	public PhaseNameFilter(List<Object> elements, Operation next, Boolean contained, String id) {
-		super(elements, next, contained, id);
-	}
-
-	@Override
-	public void run() {
-		while (this.running || !this.queue.isEmpty()) {
-			BenchmarkResult benchmarkResult = null;
-			try {
-				benchmarkResult = this.queue.poll(10, TimeUnit.MILLISECONDS);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			if (benchmarkResult != null) {
-				this.phaseMap = new HashMap<>();
-				benchmarkResult.getPhaseResults().forEach(phaseResult -> {
-					if (this.elements.size() > 0) {
-						if (this.isNeeded(phaseResult, elements)) {
-							this.addToMap(phaseResult);
-						}
-					} else {
-						this.addToMap(phaseResult);
-					}
-				});
-				this.transform(benchmarkResult);
-			}
-		}
-		if (!this.contained && this.next != null) {
-			this.next.stop();
-		}
+	public PhaseNameFilter(List<Object> elements, String next, String id, String scenario, ObjectMapper mapper) {
+		super(elements, next, id, scenario, mapper);
 	}
 
 	private void transform(BenchmarkResult benchmarkResult) {
 		Set<String> phanesNames = this.phaseMap.keySet();
-		phanesNames.forEach(phaseName -> {
-			BenchmarkResult filteredResult = this.createBenchmarkResult(benchmarkResult);
-			this.phaseMap.get(phaseName).forEach(phase -> {
-				filteredResult.addResults(phase);
+		this.sendResultsSize(new Integer(phanesNames.size()).toString(), (AsyncResult<Message<Object>> res) -> {
+			phanesNames.forEach(phaseName -> {
+				BenchmarkResult filteredResult = this.createBenchmarkResult(benchmarkResult);
+				this.phaseMap.get(phaseName).forEach(phase -> {
+					filteredResult.addResults(phase);
+				});
+				this.sendResults(filteredResult);
 			});
-			if (next != null) {
-				if (this.contained) {
-					((NumericOperation) this.next).addFilteredResult(filteredResult);
-				} else {
-					this.next.addResult(filteredResult);
-				}
-			}
+			return null;
 		});
 
 	}
@@ -88,4 +52,18 @@ public class PhaseNameFilter extends Filter {
 		return need;
 	}
 
+	@Override
+	public void addResult(BenchmarkResult result) {
+		this.phaseMap = new HashMap<>();
+		result.getPhaseResults().forEach(phaseResult -> {
+			if (this.elements.size() > 0) {
+				if (this.isNeeded(phaseResult, elements)) {
+					this.addToMap(phaseResult);
+				}
+			} else {
+				this.addToMap(phaseResult);
+			}
+		});
+		this.transform(result);
+	}
 }

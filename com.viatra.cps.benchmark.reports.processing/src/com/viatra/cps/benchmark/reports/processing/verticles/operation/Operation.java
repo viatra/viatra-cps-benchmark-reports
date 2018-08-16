@@ -1,9 +1,12 @@
 package com.viatra.cps.benchmark.reports.processing.verticles.operation;
 
 import io.vertx.core.AbstractVerticle;
+import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;
+import io.vertx.core.shareddata.impl.AsynchronousCounter;
 
 import java.io.IOException;
+import java.util.function.Function;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
@@ -47,12 +50,7 @@ public abstract class Operation extends AbstractVerticle {
 					break;
 				}
 			} catch (IOException e) {
-				try {
-					vertx.eventBus().send(this.scenario,
-							mapper.writeValueAsString(new Message("Error", "Cannot parse message in " + this.ID)));
-				} catch (IOException e1) {
-					vertx.eventBus().send("Processor", "Cannot parse message in " + this.ID);
-				}
+				this.sendError();
 			}
 		});
 		startFuture.complete();
@@ -65,6 +63,40 @@ public abstract class Operation extends AbstractVerticle {
 			m.reply("");
 		} catch (Exception e) {
 			m.fail(20, "Cannot cast results-size to Integer");
+		}
+	}
+
+	protected void sendResults(BenchmarkResult result) {
+		try {
+			vertx.eventBus().send(this.next,
+					this.mapper.writeValueAsString(new Message("Result", mapper.writeValueAsString(result))));
+		} catch (IOException e) {
+			this.sendError();
+		}
+	}
+
+	protected void sendResultsSize(String size,
+			Function<AsyncResult<io.vertx.core.eventbus.Message<Object>>, Void> callback) {
+		try {
+			vertx.eventBus().send(this.next, mapper.writeValueAsString(new Message("Results-size", size)), res -> {
+				if (res.succeeded()) {
+					callback.apply(res);
+				} else {
+					vertx.eventBus().send(this.scenario,
+							new Message("Failed", res.cause().getMessage() + " " + this.ID));
+				}
+			});
+		} catch (IOException e) {
+			this.sendError();
+		}
+	}
+
+	protected void sendError() {
+		try {
+			vertx.eventBus().send(this.scenario,
+					mapper.writeValueAsString(new Message("Error", "Cannot parse message in " + this.ID)));
+		} catch (IOException e1) {
+			vertx.eventBus().send(this.scenario, "Cannot parse message in " + this.ID);
 		}
 	}
 }
