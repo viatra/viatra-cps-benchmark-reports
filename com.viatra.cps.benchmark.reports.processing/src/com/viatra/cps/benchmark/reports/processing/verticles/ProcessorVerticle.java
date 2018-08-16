@@ -1,4 +1,4 @@
-package com.viatra.cps.benchmark.reports.processing;
+package com.viatra.cps.benchmark.reports.processing.verticles;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,6 +21,7 @@ import org.codehaus.jackson.type.TypeReference;
 
 import com.viatra.cps.benchmark.reports.processing.models.AggregatorConfiguration;
 import com.viatra.cps.benchmark.reports.processing.models.Diagrams;
+import com.viatra.cps.benchmark.reports.processing.models.Message;
 import com.viatra.cps.benchmark.reports.processing.models.Builds;
 import com.viatra.cps.benchmark.reports.processing.models.Case;
 import com.viatra.cps.benchmark.reports.processing.models.DiagramSet;
@@ -36,6 +37,7 @@ import com.viatra.cps.benchmark.reports.processing.operation.serializer.JSonSeri
 import eu.mondo.sam.core.results.BenchmarkResult;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
+import io.vertx.core.eventbus.EventBus;
 
 public class ProcessorVerticle extends AbstractVerticle {
 	ObjectMapper mapper;
@@ -45,18 +47,19 @@ public class ProcessorVerticle extends AbstractVerticle {
 	Path resultInputPath;
 	Path resutOutputPath;
 	List<AggregatorConfiguration> configuration;
-	VisualizerConfiguration visualizerConfiguration;
+
 	Diagrams diagramConfiguration;
 	String buildId;
 	File visualizerConfigurationFile;
 	File dashboardConfigurationFile;
-	List<Builds> builds;
-	List<DiagramSet> diagramSet;
 	Future<Void> future;
+	EventBus eventBus;
+	Integer numberOfCases = 0;
+	List<String> caseIds;
 
 	public ProcessorVerticle(Future<Void> future, String buildId, String resultInputPath, String resultOutputPath,
 			String configPath, String diagramConfigTemplatePath, String visualizerConfigPath) {
-
+		this.caseIds = new ArrayList<>();
 		this.buildId = buildId;
 		// Initialize objectmapper
 		mapper = new ObjectMapper();
@@ -77,44 +80,15 @@ public class ProcessorVerticle extends AbstractVerticle {
 
 		// Load configuration
 		this.configuration = this.loadConfiguration(new File(configPath));
-
-		// Load or create visualizer configuration
-		this.visualizerConfiguration = this
-				.loadVisualizerConfiguration(new File(visualizerConfigPath + "/config.json"));
-
-		// Load or create Builds.json
-		this.builds = this.loadBuilds(new File(resultOutputPath + "/builds.json"));
-
+		
 		// Load diagram configuration template
 		this.diagramConfiguration = this.loadDiagramConfigurationTemplate(new File(diagramConfigTemplatePath));
 
-		this.diagramSet = this.loadDiagramSet(new File(this.resutOutputPath + "/dashboard.json"));
 
 		this.timeout = false;
 	}
 
-	private List<DiagramSet> loadDiagramSet(File dashboard) {
-		List<DiagramSet> diagrams;
-		this.dashboardConfigurationFile = dashboard;
-		if (dashboard.exists()) {
-			try {
-				diagrams = mapper.readValue(dashboard, new TypeReference<List<DiagramSet>>() {
-				});
-				if (!diagrams.stream().filter(diagramSet -> diagramSet.getTitle().equals(this.buildId)).findFirst()
-						.isPresent()) {
-					diagrams.add(new DiagramSet(this.buildId));
-				}
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				diagrams = null;
-			}
-		} else {
-			diagrams = new ArrayList<>();
-			diagrams.add(new DiagramSet(this.buildId));
-		}
-		return diagrams;
-	}
+
 
 	private Diagrams loadDiagramConfigurationTemplate(File diagramConfigTemplate) {
 		Diagrams diagrams;
@@ -132,39 +106,7 @@ public class ProcessorVerticle extends AbstractVerticle {
 		return diagrams;
 	}
 
-	private List<Builds> loadBuilds(File buildsJson) {
-		List<Builds> builds;
-		if (buildsJson.exists()) {
-			try {
-				builds = this.mapper.readValue(buildsJson, new TypeReference<List<Builds>>() {
-				});
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				builds = new ArrayList<>();
-			}
-		} else {
-			builds = new ArrayList<>();
-		}
-		return builds;
-	}
 
-	private VisualizerConfiguration loadVisualizerConfiguration(File visualizerConfigurationFile) {
-		VisualizerConfiguration visualizerConfiguration;
-		this.visualizerConfigurationFile = visualizerConfigurationFile;
-		if (visualizerConfigurationFile.exists()) {
-			try {
-				visualizerConfiguration = mapper.readValue(visualizerConfigurationFile, VisualizerConfiguration.class);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				visualizerConfiguration = null;
-			}
-		} else {
-			visualizerConfiguration = new VisualizerConfiguration();
-		}
-		return visualizerConfiguration;
-	}
 
 	private List<AggregatorConfiguration> loadConfiguration(File configFile) {
 		List<AggregatorConfiguration> config;
@@ -186,7 +128,7 @@ public class ProcessorVerticle extends AbstractVerticle {
 	@Override
 	public void start(Future<Void> startFuture) {
 		// Check inputs
-
+		this.eventBus = vertx.eventBus();
 		if (!Files.exists(this.resultInputPath)) {
 			startFuture.fail("Result input path is not exists");
 		} else if (this.configuration == null) {
@@ -198,6 +140,9 @@ public class ProcessorVerticle extends AbstractVerticle {
 		} else if (this.diagramSet == null) {
 			startFuture.fail("Dashboard configuration is invalid");
 		} else {
+			
+			JsonUpdateVerticle jsonUpdateVerticle = new JsonUpdateVerticle();
+			
 			// Load and separate benchmark results
 			Map<String, Map<String, List<BenchmarkResult>>> caseScenarioMap = new HashMap<>();
 
@@ -240,6 +185,7 @@ public class ProcessorVerticle extends AbstractVerticle {
 			}
 
 			Set<String> cases = caseScenarioMap.keySet();
+			numberOfCases = cases.size();
 			cases.forEach(caseName -> {
 				Map<String, List<BenchmarkResult>> scenairoMap = caseScenarioMap.get(caseName);
 				Set<String> scenarios = scenairoMap.keySet();
@@ -253,14 +199,53 @@ public class ProcessorVerticle extends AbstractVerticle {
 					}
 				});
 			});
+			
+			
+			
+			
+			
+			this.eventBus.consumer("Processor", handler -> {
+				Message message;
+				try {
+					message = this.mapper.readValue(handler.body().toString(), Message.class);
+					switch (message.getEvent()) {
+					case "Successfull":
+						System.out.println(message.getData());
+						this.numberOfCases--;
+						if (numberOfCases == 0) {
+							this.done(false, "");
+						}
+						break;
+					case "Failed":
+						System.err.println(message.getData());
+						this.numberOfCases--;
+						if (numberOfCases == 0) {
+							this.done(false, "");
+						}
+						break;
+					default:
+						System.out.println("Unexpected message: " + message.getEvent() + " - " + message.getData());
+						break;
+					}
+				} catch (Exception e) {
+					this.done(true, "Cannot parse message");
+				}
+			});
+			startFuture.complete();
+		}
+	}
+
+	private void done(Boolean error, String message) {
+		if (error) {
+			this.future.fail("Cannot parse message");
+		} else {
 			try {
 				mapper.writeValue(this.visualizerConfigurationFile, this.visualizerConfiguration);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				this.future.fail("Cannot update visualizes configuration: " + e.getMessage());
 			}
-
-			startFuture.complete();
+			this.future.complete();
 		}
 	}
 
@@ -283,8 +268,6 @@ public class ProcessorVerticle extends AbstractVerticle {
 
 	public void process(List<BenchmarkResult> results, String caseName, String scenario)
 			throws JsonParseException, JsonMappingException, IOException {
-
-		System.out.println("Start to process: " + this.buildId + "/" + caseName + "/" + scenario);
 		if (!Files.exists(Paths.get(this.resutOutputPath.toString(), this.buildId, caseName, scenario))) {
 			Files.createDirectories(Paths.get(this.resutOutputPath.toString(), this.buildId, caseName, scenario));
 		}
@@ -419,5 +402,13 @@ public class ProcessorVerticle extends AbstractVerticle {
 
 	@Override
 	public void stop(Future<Void> stopFuture) {
+		this.caseIds.forEach(id -> {
+			vertx.undeploy(id, res -> {
+				if (res.failed()) {
+					stopFuture.fail(res.cause());
+				}
+			});
+		});
+		stopFuture.complete();
 	}
 }

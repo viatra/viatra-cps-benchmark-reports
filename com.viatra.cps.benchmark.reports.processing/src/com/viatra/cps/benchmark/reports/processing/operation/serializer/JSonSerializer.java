@@ -15,7 +15,6 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
 import org.codehaus.jackson.JsonGenerator;
 
-import com.viatra.cps.benchmark.reports.processing.ProcessorVerticle;
 import com.viatra.cps.benchmark.reports.processing.models.AggregataedResult;
 import com.viatra.cps.benchmark.reports.processing.models.DiagramDescriptor;
 import com.viatra.cps.benchmark.reports.processing.models.DiagramSet;
@@ -25,6 +24,7 @@ import com.viatra.cps.benchmark.reports.processing.models.Result;
 import com.viatra.cps.benchmark.reports.processing.models.ResultData;
 import com.viatra.cps.benchmark.reports.processing.models.Results;
 import com.viatra.cps.benchmark.reports.processing.operation.Operation;
+import com.viatra.cps.benchmark.reports.processing.verticles.ProcessorVerticle;
 
 import eu.mondo.sam.core.results.BenchmarkResult;
 import eu.mondo.sam.core.results.MetricResult;

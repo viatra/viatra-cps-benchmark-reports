@@ -5,6 +5,8 @@ import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.Options;
 
+import com.viatra.cps.benchmark.reports.processing.verticles.ProcessorVerticle;
+
 import io.vertx.core.Future;
 import io.vertx.core.Vertx;
 import io.vertx.core.eventbus.EventBus;
@@ -42,14 +44,22 @@ public class Main {
 			String visualizerConfigPath = "../resultVisualizer/src/config";
 
 			Vertx vertx = Vertx.vertx();
-			EventBus eventBus = vertx.eventBus();
 			Future<Void> future = Future.future();
 			ProcessorVerticle process = new ProcessorVerticle(future, buildId, resultInputPath, resultOutputPath,
 					configPath, diagramConfigTemplatePath, visualizerConfigPath);
 			vertx.deployVerticle(process, res -> {
 				if (res.succeeded()) {
 					System.out.println("Processing deployed");
-					final String deployID = res.result();
+					final String deploymentID = res.result();
+					future.setHandler(result -> {
+						if (result.succeeded()) {
+							System.out.println("Proseccing successfull");
+							done(deploymentID, vertx);
+						} else {
+							System.err.println(result.cause());
+							done(deploymentID, vertx);
+						}
+					});
 				} else {
 					System.err.println(res.cause().getMessage());
 					System.exit(1);
@@ -58,5 +68,17 @@ public class Main {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	private static void done(String deploymentID, Vertx vertx) {
+		vertx.undeploy(deploymentID, response -> {
+			if (response.succeeded()) {
+				System.out.println("Processing undeployed");
+				System.exit(0);
+			} else {
+				System.err.println("Unexpected error while undeploying Processor:" + response.cause());
+				System.exit(1);
+			}
+		});
 	}
 }
