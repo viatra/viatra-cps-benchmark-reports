@@ -10,11 +10,8 @@ public abstract class Filter extends Operation {
 	protected List<Object> elements;
 
 	public Filter(List<Object> elements, String next, String id, String scenario, ObjectMapper mapper) {
+		super(next,id, scenario,mapper);
 		this.elements = elements;
-		this.ID = id;
-		this.next = next;
-		this.scenario = scenario;
-		this.mapper = mapper;
 	}
 
 	protected BenchmarkResult createBenchmarkResult(BenchmarkResult benchmarkResult) {

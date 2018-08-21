@@ -5,74 +5,51 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 
-import com.viatra.cps.benchmark.reports.processing.operation.Operation;
-import com.viatra.cps.benchmark.reports.processing.operation.numeric.NumericOperation;
+import org.codehaus.jackson.map.ObjectMapper;
 
 import eu.mondo.sam.core.results.BenchmarkResult;
+import io.vertx.core.AsyncResult;
+import io.vertx.core.eventbus.Message;
 
 public class ToolFilter extends Filter {
 	private Map<String, Map<Integer, Map<Integer, List<BenchmarkResult>>>> benchmarkMap;
 
-	public ToolFilter(List<Object> elements, Boolean contained, String id) {
-		super(elements, contained, id);
+	public ToolFilter(List<Object> elements, String next, String id, String scenario, ObjectMapper mapper) {
+		super(elements, next, id, scenario, mapper);
 		this.benchmarkMap = new HashMap<>();
-	}
-
-	public ToolFilter(List<Object> elements, Operation next, Boolean contained, String id) {
-		super(elements, next, contained, id);
-		this.benchmarkMap = new HashMap<>();
-	}
-
-	@Override
-	public void run() {
-		while (this.running || !this.queue.isEmpty()) {
-			BenchmarkResult benchmarkResult = null;
-			try {
-				benchmarkResult = this.queue.poll(10, TimeUnit.MILLISECONDS);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			if (benchmarkResult != null) {
-				if (this.elements.size() > 0) {
-					if (this.isNeeded(benchmarkResult, elements)) {
-						this.addToMap(benchmarkResult);
-					}
-				} else {
-					this.addToMap(benchmarkResult);
-				}
-
-			}
-		}
-		this.calculate();
 	}
 
 	private void calculate() {
 		Set<String> toolKeys = this.benchmarkMap.keySet();
-		toolKeys.forEach(tool -> {
-			Set<Integer> sizeKey = this.benchmarkMap.get(tool).keySet();
-			sizeKey.forEach(size -> {
-				Set<Integer> runKeys = this.benchmarkMap.get(tool).get(size).keySet();
-				runKeys.forEach(runIndex -> {
-					List<BenchmarkResult> results = this.benchmarkMap.get(tool).get(size).get(runIndex);
-					BenchmarkResult filteredResult = createBenchmarkResult(results.get(0));
-					results.forEach(result -> {
-						result.getPhaseResults().forEach(phaseResult -> {
-							filteredResult.addResults(phaseResult);
+		this.sendResultsSize(this.calculateResultsSize(toolKeys), (AsyncResult<Message<Object>> res) -> {
+			toolKeys.forEach(tool -> {
+				Set<Integer> sizeKey = this.benchmarkMap.get(tool).keySet();
+				sizeKey.forEach(size -> {
+					Set<Integer> runKeys = this.benchmarkMap.get(tool).get(size).keySet();
+					runKeys.forEach(runIndex -> {
+						List<BenchmarkResult> results = this.benchmarkMap.get(tool).get(size).get(runIndex);
+						BenchmarkResult filteredResult = createBenchmarkResult(results.get(0));
+						results.forEach(result -> {
+							result.getPhaseResults().forEach(phaseResult -> {
+								filteredResult.addResults(phaseResult);
+							});
 						});
+						this.sendResult(filteredResult);
 					});
-					if (this.next != null) {
-						if (this.contained) {
-							((NumericOperation) this.next).addFilteredResult(filteredResult);
-						} else {
-							this.next.addResult(filteredResult);
-						}
-					}
 				});
 			});
+			return null;
 		});
+	}
+
+	private String calculateResultsSize(Set<String> toolKeys) {
+		Integer size = 0;
+		for (String tool : toolKeys) {
+			Set<Integer> sizeKey = this.benchmarkMap.get(tool).keySet();
+			size += sizeKey.size();
+		}
+		return size.toString();
 	}
 
 	private void addToMap(BenchmarkResult benchmarkResult) {
@@ -100,5 +77,20 @@ public class ToolFilter extends Filter {
 			return ((String) element).equals(benchmarkResult.getCaseDescriptor().getTool());
 		}).findAny().isPresent();
 		return need;
+	}
+
+	@Override
+	public void addResult(BenchmarkResult result) {
+		if (this.elements.size() > 0) {
+			if (this.isNeeded(result, elements)) {
+				this.addToMap(result);
+			}
+		} else {
+			this.addToMap(result);
+		}
+		this.numberOfResults--;
+		if (this.numberOfResults == 0) {
+			this.calculate();
+		}
 	}
 }

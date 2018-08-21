@@ -21,6 +21,13 @@ public abstract class Operation extends AbstractVerticle {
 	protected Integer numberOfResults = 0;
 	protected String ID;
 
+	public Operation(String next, String id, String scenario, ObjectMapper mapper) {
+		this.ID = id;
+		this.next = next;
+		this.scenario = scenario;
+		this.mapper = mapper;
+	}
+
 	/**
 	 * Add one BenchmarkResult to operation
 	 * 
