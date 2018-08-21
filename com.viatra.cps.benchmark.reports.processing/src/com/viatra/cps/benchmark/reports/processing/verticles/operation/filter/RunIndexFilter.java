@@ -25,7 +25,6 @@ public class RunIndexFilter extends Filter {
 	private void calculate() {
 		Set<String> toolKeys = this.benchmarkMap.keySet();
 		this.sendResultsSize(this.calculateResultsSize(toolKeys), (AsyncResult<Message<Object>> res) -> {
-
 			toolKeys.forEach(tool -> {
 				Set<Integer> sizeKey = this.benchmarkMap.get(tool).keySet();
 				sizeKey.forEach(size -> {
@@ -88,6 +87,5 @@ public class RunIndexFilter extends Filter {
 		if (this.numberOfResults == 0) {
 			this.calculate();
 		}
-
 	}
 }

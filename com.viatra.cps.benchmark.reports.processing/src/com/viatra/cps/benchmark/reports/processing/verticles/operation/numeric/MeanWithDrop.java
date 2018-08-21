@@ -3,35 +3,29 @@ package com.viatra.cps.benchmark.reports.processing.verticles.operation.numeric;
 import java.util.Arrays;
 
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
-
-import com.viatra.cps.benchmark.reports.processing.operation.Operation;
-import com.viatra.cps.benchmark.reports.processing.operation.filter.Filter;
-
+import org.codehaus.jackson.map.ObjectMapper;
 import eu.mondo.sam.core.results.BenchmarkResult;
 import eu.mondo.sam.core.results.MetricResult;
 import eu.mondo.sam.core.results.PhaseResult;
+import io.vertx.core.AsyncResult;
+import io.vertx.core.eventbus.Message;
 
 public class MeanWithDrop extends Mean {
 
-	public MeanWithDrop(Filter filter, Operation next, String id) {
-		super(filter, next, id);
+	public MeanWithDrop(String next, String id, String scenario, ObjectMapper mapper) {
+		super(next, id, scenario, mapper);
 	}
 
 	@Override
 	protected void calculate() {
-		next.start();
-		try {
-			if (filter.getThread().isAlive()) {
-				this.filter.getThread().join();
-			}
-			while (!queue.isEmpty()) {
+		this.sendResultsSize(new Integer(this.results.size()).toString(), (AsyncResult<Message<Object>> res) -> {
+			for (BenchmarkResult result : this.results) {
 				DescriptiveStatistics descriptiveStatistics = new DescriptiveStatistics();
-				BenchmarkResult res = queue.poll();
 				Double min = Double.MAX_VALUE;
 				Double max = Double.MIN_VALUE;
 				PhaseResult minRes = null;
 				PhaseResult maxRes = null;
-				for (PhaseResult pRes : res.getPhaseResults()) {
+				for (PhaseResult pRes : result.getPhaseResults()) {
 					if (pRes.getMetrics().get(0).getValue() < min) {
 						min = pRes.getMetrics().get(0).getValue();
 						minRes = pRes;
@@ -41,32 +35,26 @@ public class MeanWithDrop extends Mean {
 						maxRes = pRes;
 					}
 				}
-				if (res.getPhaseResults().size() > 2) {
-					res.getPhaseResults().remove(minRes);
-					res.getPhaseResults().remove(maxRes);
+				if (result.getPhaseResults().size() > 2) {
+					result.getPhaseResults().remove(minRes);
+					result.getPhaseResults().remove(maxRes);
 				}
-				for (PhaseResult pRes : res.getPhaseResults()) {
+				for (PhaseResult pRes : result.getPhaseResults()) {
 					descriptiveStatistics.addValue(pRes.getMetrics().get(0).getValue());
 				}
-				MetricResult m = new MetricResult();
+				MetricResult metric = new MetricResult();
 
-				m.setValue(descriptiveStatistics.getMean());
-				BenchmarkResult b = new BenchmarkResult();
-				b.setCaseDescriptor(res.getCaseDescriptor());
-				PhaseResult p = new PhaseResult();
-				p.setPhaseName(res.getPhaseResults().get(0).getPhaseName());
-				p.setMetrics(Arrays.asList(m));
-				b.addResults(p);
-				next.addResult(b);
+				metric.setValue(descriptiveStatistics.getMean());
+				BenchmarkResult newResult = new BenchmarkResult();
+				newResult.setCaseDescriptor(result.getCaseDescriptor());
+				PhaseResult phase = new PhaseResult();
+				phase.setPhaseName(result.getPhaseResults().get(0).getPhaseName());
+				phase.setMetrics(Arrays.asList(metric));
+				newResult.addResults(phase);
+				this.sendResult(newResult);
 			}
-			if (this.next != null) {
-				this.next.stop();
-			}
-
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+			return null;
+		});
 	}
 
 }
