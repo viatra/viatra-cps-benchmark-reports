@@ -20,12 +20,8 @@ import com.viatra.cps.benchmark.reports.processing.models.Message;
 import com.viatra.cps.benchmark.reports.processing.models.Tool;
 import com.viatra.cps.benchmark.reports.processing.models.Result;
 import com.viatra.cps.benchmark.reports.processing.models.ResultData;
-import com.viatra.cps.benchmark.reports.processing.models.Results;
-
 import com.viatra.cps.benchmark.reports.processing.verticles.ProcessorVerticle;
-import com.viatra.cps.benchmark.reports.processing.verticles.operation.Operation;
 
-import eu.mondo.sam.core.results.BenchmarkResult;
 import eu.mondo.sam.core.results.MetricResult;
 import eu.mondo.sam.core.results.PhaseResult;
 import io.vertx.core.AbstractVerticle;
@@ -49,31 +45,28 @@ public class JSonSerializer extends AbstractVerticle {
 	protected Diagrams template;
 	protected String caseName;
 	protected String scenarioName;
-	protected List<DiagramSet> dashboard;
-	protected File dashboardConfogurationFile;
+	protected DiagramSet dashboard;
 	protected String buildId;
 	protected Map<String, Integer> opearations;
 	protected String ID;
-	protected String caseId;
+	protected String scenarioId;
 
-	public JSonSerializer(String next, String id, String caseId, ObjectMapper mapper, String scenarioName, File out,
-			File digramConfiguration, String ID, String path, Diagrams template, String caseName,
-			List<DiagramSet> dashboard, File dashboardConfogurationFile, String buildId) {
+	public JSonSerializer(String id, String scenarioId, ObjectMapper mapper, String scenarioName, File out,
+			Diagrams digramConfiguration, String path, String caseName, String buildId) {
 		this.buildId = buildId;
 		this.json = out;
 		this.path = path;
 		this.mapper = mapper;
 		this.ID = id;
-		this.caseId = caseId;
-		this.dashboard = dashboard;
-		this.dashboardConfogurationFile = dashboardConfogurationFile;
+		this.scenarioId = scenarioId;
+		this.dashboard = new DiagramSet(buildId);
 		this.caseName = caseName;
 		this.caseName = scenarioName;
-		this.template = template;
 		this.result = new ArrayList<>();
 		this.config = new Diagrams(path);
 		this.map = new HashMap<>();
-		this.digramConfiguration = digramConfiguration;
+		this.template = digramConfiguration;
+		this.digramConfiguration = new File(path + "config.json");
 		this.opearations = new HashMap<>();
 	}
 
@@ -89,14 +82,14 @@ public class JSonSerializer extends AbstractVerticle {
 						Data data = mapper.readValue(message.getData().toString(), Data.class);
 						this.addResult(data);
 					} catch (Exception e) {
-						vertx.eventBus().send(this.caseId, mapper
+						vertx.eventBus().send(this.scenarioId, mapper
 								.writeValueAsString(new Message("Error", "Cannot parse message data in " + this.ID)));
 					}
 					break;
 				case "Save":
 					this.save(m);
 				default:
-					vertx.eventBus().send(this.caseId, m);
+					vertx.eventBus().send(this.scenarioId, m);
 					break;
 				}
 			} catch (IOException e) {
@@ -108,10 +101,10 @@ public class JSonSerializer extends AbstractVerticle {
 
 	protected void sendError() {
 		try {
-			vertx.eventBus().send(this.caseId,
+			vertx.eventBus().send(this.scenarioId,
 					mapper.writeValueAsString(new Message("Error", "Cannot parse message in " + this.ID)));
 		} catch (IOException e1) {
-			vertx.eventBus().send(this.caseId, "Cannot parse message in " + this.ID);
+			vertx.eventBus().send(this.scenarioId, "Cannot parse message in " + this.ID);
 		}
 	}
 
@@ -184,19 +177,11 @@ public class JSonSerializer extends AbstractVerticle {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			DiagramSet diagSet = this.dashboard.stream()
-					.filter(diagramSet -> diagramSet.getTitle().equals(this.buildId)).findFirst().get();
-			if (!diagSet.getDiagrams().stream().filter(diagram -> {
-				return diagram.getBuild().equals(this.buildId) && diagram.getCaseName().equals(this.caseName)
-						&& diagram.getOperationId().equals(operationId)
-						&& diagram.getScenario().equals(this.scenarioName);
-			}).findFirst().isPresent()) {
-				diagSet.getDiagrams()
-						.add(new DiagramDescriptor(this.caseName, this.buildId, this.scenarioName, operationId, true));
-			}
-			if (this.map.isEmpty()) {
-				this.sendNotification();
-			}
+			this.dashboard.getDiagrams()
+					.add(new DiagramDescriptor(this.caseName, this.buildId, this.scenarioName, operationId, true));
+		}
+		if (this.map.isEmpty()) {
+			this.sendNotification();
 		}
 	}
 
@@ -204,7 +189,8 @@ public class JSonSerializer extends AbstractVerticle {
 		try {
 			this.mapper.writeValue(json, this.result);
 			this.mapper.writeValue(digramConfiguration, this.config);
-			this.mapper.writeValue(dashboardConfogurationFile, this.dashboard);
+			vertx.eventBus().send("JsonUpdater",
+					mapper.writeValueAsString(new Message("Dashboard", mapper.writeValueAsString(this.dashboard))));
 			m.reply(mapper.writeValueAsString(new Message("Successfull", "")));
 		} catch (IOException e) {
 			m.fail(20, "Cannot save json files");
@@ -225,7 +211,7 @@ public class JSonSerializer extends AbstractVerticle {
 
 	private void sendNotification() {
 		try {
-			vertx.eventBus().send(this.caseId, this.mapper.writeValueAsString(new Message("Done", "")));
+			vertx.eventBus().send(this.scenarioId, this.mapper.writeValueAsString(new Message("Done", "")));
 		} catch (IOException e) {
 			this.sendError();
 		}

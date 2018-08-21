@@ -222,7 +222,7 @@ public class ProcessorVerticle extends AbstractVerticle {
 			this.cases.add(caseName);
 			Map<String, List<BenchmarkResult>> scenairoMap = caseScenarioMap.get(caseName);
 			CaseVerticle caseVerticle = new CaseVerticle(this.buildId, this.resutOutputPath, caseName, scenairoMap,
-					mapper, this.configuration, this.diagramConfiguration,this.options);
+					mapper, this.configuration, this.diagramConfiguration, this.options);
 			vertx.deployVerticle(caseVerticle, this.options, res -> {
 				this.caseVerticleDeployed(res, startFuture);
 			});

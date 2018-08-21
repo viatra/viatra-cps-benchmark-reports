@@ -12,6 +12,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import com.viatra.cps.benchmark.reports.processing.models.AggregatorConfiguration;
 import com.viatra.cps.benchmark.reports.processing.models.Diagrams;
 import com.viatra.cps.benchmark.reports.processing.models.Message;
+import com.viatra.cps.benchmark.reports.processing.verticles.operation.serializer.JSonSerializer;
 
 import eu.mondo.sam.core.results.BenchmarkResult;
 import io.vertx.core.AbstractVerticle;
@@ -94,7 +95,8 @@ public class CaseVerticle extends AbstractVerticle {
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				try {
-					vertx.eventBus().send("Processor",mapper.writeValueAsString(new Message("Error", "Cannot parse message in " + caseName)));
+					vertx.eventBus().send("Processor",
+							mapper.writeValueAsString(new Message("Error", "Cannot parse message in " + caseName)));
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					vertx.eventBus().send("Processor", "Cannot parse message in " + caseName);
