@@ -177,7 +177,6 @@ public class ProcessorVerticle extends AbstractVerticle {
 						Set<String> cases = caseScenarioMap.keySet();
 						numberOfCases = cases.size();
 						this.deployCasesVerticles(caseScenarioMap, cases, startFuture);
-						future.complete();
 						this.waitForMessage();
 
 					} else {
@@ -204,8 +203,8 @@ public class ProcessorVerticle extends AbstractVerticle {
 			} else {
 				try {
 					startFuture.complete();
+					System.out.println("Start");
 					for (String c : this.cases) {
-
 						eventBus.send(c, mapper.writeValueAsString(new Message("Start", "")));
 					}
 				} catch (IOException e) {
@@ -224,6 +223,7 @@ public class ProcessorVerticle extends AbstractVerticle {
 			CaseVerticle caseVerticle = new CaseVerticle(this.buildId, this.resutOutputPath, caseName, scenairoMap,
 					mapper, this.configuration, this.diagramConfiguration, this.options);
 			vertx.deployVerticle(caseVerticle, this.options, res -> {
+				System.out.println("Case deployed " + caseName);
 				this.caseVerticleDeployed(res, startFuture);
 			});
 		});
@@ -250,7 +250,7 @@ public class ProcessorVerticle extends AbstractVerticle {
 					}
 					break;
 				default:
-					System.out.println("Unexpected message: " + message.getEvent() + " - " + message.getData());
+					System.out.println("Unexpected event: " + message.getEvent() + " - " + message.getData());
 					break;
 				}
 			} catch (Exception e) {

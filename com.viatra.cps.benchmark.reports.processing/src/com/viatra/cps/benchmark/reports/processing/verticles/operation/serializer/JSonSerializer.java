@@ -61,7 +61,7 @@ public class JSonSerializer extends AbstractVerticle {
 		this.scenarioId = scenarioId;
 		this.dashboard = new DiagramSet(buildId);
 		this.caseName = caseName;
-		this.caseName = scenarioName;
+		this.scenarioName = scenarioName;
 		this.result = new ArrayList<>();
 		this.config = new Diagrams(path);
 		this.map = new HashMap<>();
@@ -77,19 +77,20 @@ public class JSonSerializer extends AbstractVerticle {
 				switch (message.getEvent()) {
 				case "Header":
 					this.resultsSizeReceived(message, m);
+					break;
 				case "Result":
 					try {
 						Data data = mapper.readValue(message.getData().toString(), Data.class);
 						this.addResult(data);
 					} catch (Exception e) {
-						vertx.eventBus().send(this.scenarioId, mapper
-								.writeValueAsString(new Message("Error", "Cannot parse message data in " + this.ID)));
+						vertx.eventBus().send(this.scenarioId,
+								mapper.writeValueAsString(new Message("Error", e.getMessage() + " - " + this.ID)));
 					}
 					break;
 				case "Save":
 					this.save(m);
 				default:
-					vertx.eventBus().send(this.scenarioId, m);
+					vertx.eventBus().send(this.scenarioId, m.body().toString());
 					break;
 				}
 			} catch (IOException e) {

@@ -60,6 +60,7 @@ public class CaseVerticle extends AbstractVerticle {
 					this.outputResultsPath, this.buildId, caseName, scenario, results, mapper, this.options);
 			this.deployedScenarioVerticles.add(scenario);
 			vertx.deployVerticle(scenarioVerticle, this.options, res -> {
+				System.out.println("Scenario deployed: " + caseName + "." + scenario);
 				this.scenarioVerticleDeployed(res, startFuture);
 			});
 		});
@@ -68,8 +69,9 @@ public class CaseVerticle extends AbstractVerticle {
 				Message message = mapper.readValue(m.body().toString(), Message.class);
 				switch (message.getEvent()) {
 				case "Start":
-					for (String sceaniro : this.deployedScenarioVerticles) {
-						vertx.eventBus().send(caseName + "/" + sceaniro,
+					System.out.println("Case started: " + this.caseName);
+					for (String scenario : this.deployedScenarioVerticles) {
+						vertx.eventBus().send(caseName + "." + scenario,
 								mapper.writeValueAsString(new Message("Start", "")));
 					}
 					break;
@@ -89,7 +91,7 @@ public class CaseVerticle extends AbstractVerticle {
 					}
 					break;
 				default:
-					vertx.eventBus().send("Processor", m);
+					vertx.eventBus().send("Processor", m.body().toString());
 					break;
 				}
 			} catch (IOException e) {
@@ -108,7 +110,6 @@ public class CaseVerticle extends AbstractVerticle {
 	private void done() {
 		try {
 			if (this.failed) {
-
 				vertx.eventBus().send("Processor", this.mapper.writeValueAsString(
 						new Message("Failed", this.caseName + ": Failed to process one or more scenario")));
 			} else {

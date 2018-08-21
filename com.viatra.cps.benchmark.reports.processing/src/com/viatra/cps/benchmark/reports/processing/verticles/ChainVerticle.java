@@ -7,6 +7,8 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 
 import com.viatra.cps.benchmark.reports.processing.models.AggregatorConfiguration;
+import com.viatra.cps.benchmark.reports.processing.models.Data;
+import com.viatra.cps.benchmark.reports.processing.models.Header;
 import com.viatra.cps.benchmark.reports.processing.models.Message;
 import com.viatra.cps.benchmark.reports.processing.verticles.operation.Operation;
 import com.viatra.cps.benchmark.reports.processing.verticles.operation.OperationDescriptor;
@@ -22,7 +24,7 @@ public class ChainVerticle extends AbstractVerticle {
 	protected List<OperationDescriptor> descriptors;
 	protected Integer chainSize;
 	protected ObjectMapper mapper;
-	protected Boolean error;
+	protected Boolean error = false;
 	protected String id;
 	private DeploymentOptions options;
 
@@ -51,17 +53,35 @@ public class ChainVerticle extends AbstractVerticle {
 				message = mapper.readValue(m.body().toString(), Message.class);
 				switch (message.getEvent()) {
 				case "Start":
+					System.out.println("Chain started: " + this.id);
 					List<BenchmarkResult> results = mapper.readValue(message.getData(),
-							new TypeReference<List<AggregatorConfiguration>>() {
+							new TypeReference<List<BenchmarkResult>>() {
 							});
-					for (BenchmarkResult result : results) {
-						vertx.eventBus().send(this.descriptors.get(0).getId(),
-								mapper.writeValueAsString(new Message("Results", mapper.writeValueAsString(result))));
-					}
+					vertx.eventBus()
+							.send(this.descriptors.get(0).getId(),
+									mapper.writeValueAsString(new Message("Header",
+											mapper.writeValueAsString(new Header(results.size(), this.operationId)))),
+									res -> {
+										if (res.succeeded()) {
+											for (BenchmarkResult result : results) {
+												try {
+													vertx.eventBus().send(this.descriptors.get(0).getId(),
+															mapper.writeValueAsString(
+																	new Message("Result", mapper.writeValueAsString(
+																			new Data(this.operationId, result)))));
+												} catch (IOException e) {
+													this.sendError();
+												}
+											}
+										} else {
+											this.sendError();
+										}
+									});
+
 					break;
 
 				default:
-					vertx.eventBus().send(this.scenarioId, m);
+					vertx.eventBus().send(this.scenarioId, m.body().toString());
 				}
 			} catch (IOException e) {
 				this.sendError();

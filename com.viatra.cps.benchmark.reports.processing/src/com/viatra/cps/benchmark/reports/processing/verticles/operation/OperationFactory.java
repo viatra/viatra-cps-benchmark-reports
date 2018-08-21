@@ -1,6 +1,5 @@
 package com.viatra.cps.benchmark.reports.processing.verticles.operation;
 
-import java.util.List;
 
 import org.codehaus.jackson.map.ObjectMapper;
 

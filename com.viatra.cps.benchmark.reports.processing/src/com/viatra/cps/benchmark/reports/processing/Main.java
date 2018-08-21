@@ -37,7 +37,7 @@ public class Main {
 			 */
 
 			String buildId = "0.6.0-20180814.140246";
-			String resultInputPath = "../results/0.6.0-20180814.1402461";
+			String resultInputPath = "../results/0.6.0-20180814.140246";
 			String resultOutputPath = "../resultVisualizer/src/results";
 			String configPath = "./config.json";
 			String diagramConfigTemplatePath = "./diagramConfigTemplate.json";

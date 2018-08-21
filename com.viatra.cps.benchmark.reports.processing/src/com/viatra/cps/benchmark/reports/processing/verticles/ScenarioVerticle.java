@@ -78,12 +78,14 @@ public class ScenarioVerticle extends AbstractVerticle {
 				Integer index = 0;
 				for (String operation : operations) {
 					List<OperationDescriptor> descriptors = chains.get(operation);
-					ChainVerticle verticle = new ChainVerticle(operation, this.scenario, index, descriptors,
-							this.mapper, this.options);
+					ChainVerticle verticle = new ChainVerticle(operation, this.caseName + "." + this.scenario, index,
+							descriptors, this.mapper, this.options);
 					vertx.deployVerticle(verticle, this.options, result -> {
 						this.chainDeployed(startFuture, res.succeeded());
-						this.deployedChain++;
 						this.chains.add(operation);
+						System.out.println(
+								"Chain deployed: " + this.caseName + "." + this.scenario + "." + this.deployedChain);
+						this.deployedChain++;
 					});
 					index++;
 				}
@@ -98,6 +100,7 @@ public class ScenarioVerticle extends AbstractVerticle {
 				message = mapper.readValue(m.body().toString(), Message.class);
 				switch (message.getEvent()) {
 				case "Start":
+					System.out.println("Scenario started: " + this.caseName + "." + this.scenario);
 					for (String opeation : this.chains) {
 						vertx.eventBus().send(this.caseName + "." + this.scenario + "." + opeation, mapper
 								.writeValueAsString(new Message("Start", mapper.writeValueAsString(this.results))));
@@ -123,7 +126,7 @@ public class ScenarioVerticle extends AbstractVerticle {
 								});
 					}
 				default:
-					vertx.eventBus().send(this.caseName, m);
+					vertx.eventBus().send(this.caseName, m.body().toString());
 				}
 			} catch (IOException e) {
 				this.sendError();
@@ -160,20 +163,12 @@ public class ScenarioVerticle extends AbstractVerticle {
 		for (AggregatorConfiguration config : configuration) {
 			List<OperationDescriptor> descriptors = new ArrayList<>();
 			List<OperationConfig> configs = config.getOperations(true);
-			OperationDescriptor next = null;
+			String next = serializer;
 			for (OperationConfig operationConfig : configs) {
-				if (configs.indexOf(operationConfig) == 0) {
-					OperationDescriptor tmp = this.createOperationDescriptor(serializer, operationConfig,
-							config.getID(), configuration.indexOf(config), configs.indexOf(operationConfig));
-					descriptors.add(tmp);
-					next = tmp;
-
-				} else {
-					OperationDescriptor tmp = this.createOperationDescriptor(next.getId(), operationConfig,
-							config.getID(), configuration.indexOf(config), configs.indexOf(operationConfig));
-					descriptors.add(tmp);
-					next = tmp;
-				}
+				OperationDescriptor tmp = this.createOperationDescriptor(next, operationConfig, config.getID(),
+						configuration.indexOf(config), configs.indexOf(operationConfig));
+				descriptors.add(tmp);
+				next = tmp.getId();
 			}
 			chains.put(config.getID(), descriptors);
 		}
@@ -188,16 +183,16 @@ public class ScenarioVerticle extends AbstractVerticle {
 		if (config.getType().equals("Filter")) {
 			switch (config.getAttribute()) {
 			case "Metric":
-				return new FilterDescriptor(buildId.toString(), next, OperationType.FILTER, FilterType.METRIC,
+				return new FilterDescriptor(builder.toString(), next, OperationType.FILTER, FilterType.METRIC,
 						config.getFilter());
 			case "Phase-Name":
-				return new FilterDescriptor(buildId.toString(), next, OperationType.FILTER, FilterType.PHASENAME,
+				return new FilterDescriptor(builder.toString(), next, OperationType.FILTER, FilterType.PHASENAME,
 						config.getFilter());
 			case "RunIndex":
-				return new FilterDescriptor(buildId.toString(), next, OperationType.FILTER, FilterType.RUNINDEX,
+				return new FilterDescriptor(builder.toString(), next, OperationType.FILTER, FilterType.RUNINDEX,
 						config.getFilter());
 			case "Tool":
-				return new FilterDescriptor(buildId.toString(), next, OperationType.FILTER, FilterType.TOOL,
+				return new FilterDescriptor(builder.toString(), next, OperationType.FILTER, FilterType.TOOL,
 						config.getFilter());
 
 			default:
@@ -206,13 +201,17 @@ public class ScenarioVerticle extends AbstractVerticle {
 		} else {
 			switch (config.getType()) {
 			case "Mean":
-				return new NumericOperationDescriptor(id, next, OperationType.NUMERIC, NumericOperationType.MEAN);
+				return new NumericOperationDescriptor(builder.toString(), next, OperationType.NUMERIC,
+						NumericOperationType.MEAN);
 			case "Mean-Drop":
-				return new NumericOperationDescriptor(id, next, OperationType.NUMERIC, NumericOperationType.MEANDROP);
+				return new NumericOperationDescriptor(builder.toString(), next, OperationType.NUMERIC,
+						NumericOperationType.MEANDROP);
 			case "Average":
-				return new NumericOperationDescriptor(id, next, OperationType.NUMERIC, NumericOperationType.AVERAGE);
+				return new NumericOperationDescriptor(builder.toString(), next, OperationType.NUMERIC,
+						NumericOperationType.AVERAGE);
 			case "Summary":
-				return new NumericOperationDescriptor(id, next, OperationType.NUMERIC, NumericOperationType.SUMMARY);
+				return new NumericOperationDescriptor(builder.toString(), next, OperationType.NUMERIC,
+						NumericOperationType.SUMMARY);
 			default:
 				return null;
 			}
