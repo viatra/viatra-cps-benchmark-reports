@@ -8,10 +8,12 @@ import java.util.Set;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
+import com.viatra.cps.benchmark.reports.processing.models.Header;
+import com.viatra.cps.benchmark.reports.processing.models.Message;
+
 import eu.mondo.sam.core.results.BenchmarkResult;
 import eu.mondo.sam.core.results.PhaseResult;
 import io.vertx.core.AsyncResult;
-import io.vertx.core.eventbus.Message;
 
 public class PhaseNameFilter extends Filter {
 
@@ -23,17 +25,17 @@ public class PhaseNameFilter extends Filter {
 
 	private void transform(BenchmarkResult benchmarkResult) {
 		Set<String> phanesNames = this.phaseMap.keySet();
-		this.sendResultsSize(new Integer(phanesNames.size()).toString(), (AsyncResult<Message<Object>> res) -> {
-			phanesNames.forEach(phaseName -> {
-				BenchmarkResult filteredResult = this.createBenchmarkResult(benchmarkResult);
-				this.phaseMap.get(phaseName).forEach(phase -> {
-					filteredResult.addResults(phase);
+		this.sendResultsSize(new Header(phanesNames.size(), this.operationId),
+				(AsyncResult<io.vertx.core.eventbus.Message<Object>> res) -> {
+					phanesNames.forEach(phaseName -> {
+						BenchmarkResult filteredResult = this.createBenchmarkResult(benchmarkResult);
+						this.phaseMap.get(phaseName).forEach(phase -> {
+							filteredResult.addResults(phase);
+						});
+						this.sendResult(filteredResult);
+					});
+					return null;
 				});
-				this.sendResult(filteredResult);
-			});
-			return null;
-		});
-
 	}
 
 	private void addToMap(PhaseResult phaseResult) {

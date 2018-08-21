@@ -4,14 +4,12 @@ import eu.mondo.sam.core.results.BenchmarkResult;
 import eu.mondo.sam.core.results.MetricResult;
 import eu.mondo.sam.core.results.PhaseResult;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
-import com.viatra.cps.benchmark.reports.processing.models.Message;
 
 public class MetricFilter extends Filter {
 

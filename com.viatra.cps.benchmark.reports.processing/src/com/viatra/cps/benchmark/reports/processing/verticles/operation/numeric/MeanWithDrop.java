@@ -4,6 +4,9 @@ import java.util.Arrays;
 
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.codehaus.jackson.map.ObjectMapper;
+
+import com.viatra.cps.benchmark.reports.processing.models.Header;
+
 import eu.mondo.sam.core.results.BenchmarkResult;
 import eu.mondo.sam.core.results.MetricResult;
 import eu.mondo.sam.core.results.PhaseResult;
@@ -18,7 +21,7 @@ public class MeanWithDrop extends Mean {
 
 	@Override
 	protected void calculate() {
-		this.sendResultsSize(new Integer(this.results.size()).toString(), (AsyncResult<Message<Object>> res) -> {
+		this.sendResultsSize(new Header(results.size(), this.operationId), (AsyncResult<Message<Object>> res) -> {
 			for (BenchmarkResult result : this.results) {
 				DescriptiveStatistics descriptiveStatistics = new DescriptiveStatistics();
 				Double min = Double.MAX_VALUE;

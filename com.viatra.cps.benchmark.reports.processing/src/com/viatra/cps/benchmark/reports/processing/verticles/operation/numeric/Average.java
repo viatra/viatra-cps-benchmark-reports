@@ -3,6 +3,9 @@ package com.viatra.cps.benchmark.reports.processing.verticles.operation.numeric;
 import java.util.Arrays;
 
 import org.codehaus.jackson.map.ObjectMapper;
+
+import com.viatra.cps.benchmark.reports.processing.models.Header;
+
 import eu.mondo.sam.core.results.BenchmarkResult;
 import eu.mondo.sam.core.results.MetricResult;
 import eu.mondo.sam.core.results.PhaseResult;
@@ -17,7 +20,7 @@ public class Average extends NumericOperation {
 
 	@Override
 	public void calculate() {
-		this.sendResultsSize(new Integer(this.results.size()).toString(), (AsyncResult<Message<Object>> res) -> {
+		this.sendResultsSize(new Header(results.size(), this.operationId), (AsyncResult<Message<Object>> res) -> {
 			for (BenchmarkResult result : this.results) {
 				Double sum = 0.0;
 				Double size = new Double(result.getPhaseResults().size());

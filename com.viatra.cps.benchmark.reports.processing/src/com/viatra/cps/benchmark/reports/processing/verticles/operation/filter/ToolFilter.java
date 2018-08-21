@@ -8,9 +8,11 @@ import java.util.Set;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
+import com.viatra.cps.benchmark.reports.processing.models.Header;
+import com.viatra.cps.benchmark.reports.processing.models.Message;
+
 import eu.mondo.sam.core.results.BenchmarkResult;
 import io.vertx.core.AsyncResult;
-import io.vertx.core.eventbus.Message;
 
 public class ToolFilter extends Filter {
 	private Map<String, Map<Integer, Map<Integer, List<BenchmarkResult>>>> benchmarkMap;
@@ -22,34 +24,35 @@ public class ToolFilter extends Filter {
 
 	private void calculate() {
 		Set<String> toolKeys = this.benchmarkMap.keySet();
-		this.sendResultsSize(this.calculateResultsSize(toolKeys), (AsyncResult<Message<Object>> res) -> {
-			toolKeys.forEach(tool -> {
-				Set<Integer> sizeKey = this.benchmarkMap.get(tool).keySet();
-				sizeKey.forEach(size -> {
-					Set<Integer> runKeys = this.benchmarkMap.get(tool).get(size).keySet();
-					runKeys.forEach(runIndex -> {
-						List<BenchmarkResult> results = this.benchmarkMap.get(tool).get(size).get(runIndex);
-						BenchmarkResult filteredResult = createBenchmarkResult(results.get(0));
-						results.forEach(result -> {
-							result.getPhaseResults().forEach(phaseResult -> {
-								filteredResult.addResults(phaseResult);
+		this.sendResultsSize(new Header(calculateResultsSize(toolKeys), this.operationId),
+				(AsyncResult<io.vertx.core.eventbus.Message<Object>> res) -> {
+					toolKeys.forEach(tool -> {
+						Set<Integer> sizeKey = this.benchmarkMap.get(tool).keySet();
+						sizeKey.forEach(size -> {
+							Set<Integer> runKeys = this.benchmarkMap.get(tool).get(size).keySet();
+							runKeys.forEach(runIndex -> {
+								List<BenchmarkResult> results = this.benchmarkMap.get(tool).get(size).get(runIndex);
+								BenchmarkResult filteredResult = createBenchmarkResult(results.get(0));
+								results.forEach(result -> {
+									result.getPhaseResults().forEach(phaseResult -> {
+										filteredResult.addResults(phaseResult);
+									});
+								});
+								this.sendResult(filteredResult);
 							});
 						});
-						this.sendResult(filteredResult);
 					});
+					return null;
 				});
-			});
-			return null;
-		});
 	}
 
-	private String calculateResultsSize(Set<String> toolKeys) {
+	private Integer calculateResultsSize(Set<String> toolKeys) {
 		Integer size = 0;
 		for (String tool : toolKeys) {
 			Set<Integer> sizeKey = this.benchmarkMap.get(tool).keySet();
 			size += sizeKey.size();
 		}
-		return size.toString();
+		return size;
 	}
 
 	private void addToMap(BenchmarkResult benchmarkResult) {
