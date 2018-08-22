@@ -1,1373 +1,5 @@
 [ {
-  "operationID" : "9",
-  "tool" : [ {
-    "name" : "BATCH_OPTIMIZED-TEMPLATE",
-    "results" : [ {
-      "size" : 1,
-      "metric" : {
-        "MetricName" : "PeakMemory",
-        "MetricValue" : 3.6049312E7
-      }
-    }, {
-      "size" : 2,
-      "metric" : {
-        "MetricName" : "PeakMemory",
-        "MetricValue" : 3.1074384E7
-      }
-    }, {
-      "size" : 4,
-      "metric" : {
-        "MetricName" : "PeakMemory",
-        "MetricValue" : 5.7523936E7
-      }
-    }, {
-      "size" : 8,
-      "metric" : {
-        "MetricName" : "PeakMemory",
-        "MetricValue" : 3.0684232E7
-      }
-    }, {
-      "size" : 16,
-      "metric" : {
-        "MetricName" : "PeakMemory",
-        "MetricValue" : 3.6049064E7
-      }
-    }, {
-      "size" : 32,
-      "metric" : {
-        "MetricName" : "PeakMemory",
-        "MetricValue" : 8.1655928E7
-      }
-    }, {
-      "size" : 64,
-      "metric" : {
-        "MetricName" : "PeakMemory",
-        "MetricValue" : 3.6049128E7
-      }
-    } ]
-  }, {
-    "name" : "INCR_VIATRA_TRANSFORMATION-TEMPLATE",
-    "results" : [ {
-      "size" : 1,
-      "metric" : {
-        "MetricName" : "PeakMemory",
-        "MetricValue" : 1.00480536E8
-      }
-    }, {
-      "size" : 2,
-      "metric" : {
-        "MetricName" : "PeakMemory",
-        "MetricValue" : 5.278252E7
-      }
-    }, {
-      "size" : 4,
-      "metric" : {
-        "MetricName" : "PeakMemory",
-        "MetricValue" : 7.9003376E7
-      }
-    }, {
-      "size" : 8,
-      "metric" : {
-        "MetricName" : "PeakMemory",
-        "MetricValue" : 1.18144352E8
-      }
-    }, {
-      "size" : 16,
-      "metric" : {
-        "MetricName" : "PeakMemory",
-        "MetricValue" : 2.68011632E8
-      }
-    }, {
-      "size" : 32,
-      "metric" : {
-        "MetricName" : "PeakMemory",
-        "MetricValue" : 9.25714112E8
-      }
-    }, {
-      "size" : 64,
-      "metric" : {
-        "MetricName" : "PeakMemory",
-        "MetricValue" : 7.9003584E7
-      }
-    } ]
-  }, {
-    "name" : "BATCH_VIATRA_QUERY_RETE-TEMPLATE",
-    "results" : [ {
-      "size" : 1,
-      "metric" : {
-        "MetricName" : "PeakMemory",
-        "MetricValue" : 6.327784E7
-      }
-    }, {
-      "size" : 2,
-      "metric" : {
-        "MetricName" : "PeakMemory",
-        "MetricValue" : 6.3423416E7
-      }
-    }, {
-      "size" : 4,
-      "metric" : {
-        "MetricName" : "PeakMemory",
-        "MetricValue" : 7.4430488E7
-      }
-    }, {
-      "size" : 8,
-      "metric" : {
-        "MetricName" : "PeakMemory",
-        "MetricValue" : 5.7527568E7
-      }
-    }, {
-      "size" : 16,
-      "metric" : {
-        "MetricName" : "PeakMemory",
-        "MetricValue" : 5.7528696E7
-      }
-    }, {
-      "size" : 32,
-      "metric" : {
-        "MetricName" : "PeakMemory",
-        "MetricValue" : 5.752748E7
-      }
-    }, {
-      "size" : 64,
-      "metric" : {
-        "MetricName" : "PeakMemory",
-        "MetricValue" : 2.525789104E9
-      }
-    } ]
-  }, {
-    "name" : "BATCH_VIATRA_QUERY_LOCAL_SEARCH_GENERIC-TEMPLATE",
-    "results" : [ {
-      "size" : 1,
-      "metric" : {
-        "MetricName" : "PeakMemory",
-        "MetricValue" : 9.5528752E7
-      }
-    }, {
-      "size" : 2,
-      "metric" : {
-        "MetricName" : "PeakMemory",
-        "MetricValue" : 7.900712E7
-      }
-    }, {
-      "size" : 4,
-      "metric" : {
-        "MetricName" : "PeakMemory",
-        "MetricValue" : 7.900792E7
-      }
-    }, {
-      "size" : 8,
-      "metric" : {
-        "MetricName" : "PeakMemory",
-        "MetricValue" : 7.9007744E7
-      }
-    }, {
-      "size" : 16,
-      "metric" : {
-        "MetricName" : "PeakMemory",
-        "MetricValue" : 8.0796016E7
-      }
-    }, {
-      "size" : 32,
-      "metric" : {
-        "MetricName" : "PeakMemory",
-        "MetricValue" : 7.9009008E7
-      }
-    }, {
-      "size" : 64,
-      "metric" : {
-        "MetricName" : "PeakMemory",
-        "MetricValue" : 7.9007808E7
-      }
-    } ]
-  }, {
-    "name" : "BATCH_VIATRA_QUERY_LOCAL_SEARCH-TEMPLATE",
-    "results" : [ {
-      "size" : 1,
-      "metric" : {
-        "MetricName" : "PeakMemory",
-        "MetricValue" : 8.1525752E7
-      }
-    }, {
-      "size" : 2,
-      "metric" : {
-        "MetricName" : "PeakMemory",
-        "MetricValue" : 7.899976E7
-      }
-    }, {
-      "size" : 4,
-      "metric" : {
-        "MetricName" : "PeakMemory",
-        "MetricValue" : 7.9002816E7
-      }
-    }, {
-      "size" : 8,
-      "metric" : {
-        "MetricName" : "PeakMemory",
-        "MetricValue" : 7.9000888E7
-      }
-    }, {
-      "size" : 16,
-      "metric" : {
-        "MetricName" : "PeakMemory",
-        "MetricValue" : 7.9002264E7
-      }
-    }, {
-      "size" : 32,
-      "metric" : {
-        "MetricName" : "PeakMemory",
-        "MetricValue" : 7.9000152E7
-      }
-    }, {
-      "size" : 64,
-      "metric" : {
-        "MetricName" : "PeakMemory",
-        "MetricValue" : 7.900164E7
-      }
-    } ]
-  } ]
-}, {
-  "operationID" : "4",
-  "tool" : [ {
-    "name" : "BATCH_OPTIMIZED-TEMPLATE",
-    "results" : [ {
-      "size" : 1,
-      "metric" : {
-        "MetricName" : "Time",
-        "MetricValue" : 7.2436697E7
-      }
-    }, {
-      "size" : 2,
-      "metric" : {
-        "MetricName" : "Time",
-        "MetricValue" : 174131.0
-      }
-    }, {
-      "size" : 4,
-      "metric" : {
-        "MetricName" : "Time",
-        "MetricValue" : 7.1809189E7
-      }
-    }, {
-      "size" : 8,
-      "metric" : {
-        "MetricName" : "Time",
-        "MetricValue" : 7.1794569E7
-      }
-    }, {
-      "size" : 16,
-      "metric" : {
-        "MetricName" : "Time",
-        "MetricValue" : 7.2767721E7
-      }
-    }, {
-      "size" : 32,
-      "metric" : {
-        "MetricName" : "Time",
-        "MetricValue" : 158979.0
-      }
-    }, {
-      "size" : 64,
-      "metric" : {
-        "MetricName" : "Time",
-        "MetricValue" : 7.3688742E7
-      }
-    } ]
-  }, {
-    "name" : "INCR_VIATRA_TRANSFORMATION-TEMPLATE",
-    "results" : [ {
-      "size" : 1,
-      "metric" : {
-        "MetricName" : "Time",
-        "MetricValue" : 7.3874601E7
-      }
-    }, {
-      "size" : 2,
-      "metric" : {
-        "MetricName" : "Time",
-        "MetricValue" : 156705.0
-      }
-    }, {
-      "size" : 4,
-      "metric" : {
-        "MetricName" : "Time",
-        "MetricValue" : 7.225897E7
-      }
-    }, {
-      "size" : 8,
-      "metric" : {
-        "MetricName" : "Time",
-        "MetricValue" : 172159.0
-      }
-    }, {
-      "size" : 16,
-      "metric" : {
-        "MetricName" : "Time",
-        "MetricValue" : 218828.0
-      }
-    }, {
-      "size" : 32,
-      "metric" : {
-        "MetricName" : "Time",
-        "MetricValue" : 577012.0
-      }
-    }, {
-      "size" : 64,
-      "metric" : {
-        "MetricName" : "Time",
-        "MetricValue" : 7.2196099E7
-      }
-    } ]
-  }, {
-    "name" : "BATCH_VIATRA_QUERY_RETE-TEMPLATE",
-    "results" : [ {
-      "size" : 1,
-      "metric" : {
-        "MetricName" : "Time",
-        "MetricValue" : 310219.0
-      }
-    }, {
-      "size" : 2,
-      "metric" : {
-        "MetricName" : "Time",
-        "MetricValue" : 188679.0
-      }
-    }, {
-      "size" : 4,
-      "metric" : {
-        "MetricName" : "Time",
-        "MetricValue" : 174958.0
-      }
-    }, {
-      "size" : 8,
-      "metric" : {
-        "MetricName" : "Time",
-        "MetricValue" : 7.3283724E7
-      }
-    }, {
-      "size" : 16,
-      "metric" : {
-        "MetricName" : "Time",
-        "MetricValue" : 7.3197187E7
-      }
-    }, {
-      "size" : 32,
-      "metric" : {
-        "MetricName" : "Time",
-        "MetricValue" : 7.2448623E7
-      }
-    }, {
-      "size" : 64,
-      "metric" : {
-        "MetricName" : "Time",
-        "MetricValue" : 200134.0
-      }
-    } ]
-  }, {
-    "name" : "BATCH_VIATRA_QUERY_LOCAL_SEARCH_GENERIC-TEMPLATE",
-    "results" : [ {
-      "size" : 1,
-      "metric" : {
-        "MetricName" : "Time",
-        "MetricValue" : 238236.0
-      }
-    }, {
-      "size" : 2,
-      "metric" : {
-        "MetricName" : "Time",
-        "MetricValue" : 9467666.0
-      }
-    }, {
-      "size" : 4,
-      "metric" : {
-        "MetricName" : "Time",
-        "MetricValue" : 9654322.0
-      }
-    }, {
-      "size" : 8,
-      "metric" : {
-        "MetricName" : "Time",
-        "MetricValue" : 9346712.0
-      }
-    }, {
-      "size" : 16,
-      "metric" : {
-        "MetricName" : "Time",
-        "MetricValue" : 1.0205462E7
-      }
-    }, {
-      "size" : 32,
-      "metric" : {
-        "MetricName" : "Time",
-        "MetricValue" : 9251993.0
-      }
-    }, {
-      "size" : 64,
-      "metric" : {
-        "MetricName" : "Time",
-        "MetricValue" : 9417192.0
-      }
-    } ]
-  }, {
-    "name" : "BATCH_VIATRA_QUERY_LOCAL_SEARCH-TEMPLATE",
-    "results" : [ {
-      "size" : 1,
-      "metric" : {
-        "MetricName" : "Time",
-        "MetricValue" : 9128955.0
-      }
-    }, {
-      "size" : 2,
-      "metric" : {
-        "MetricName" : "Time",
-        "MetricValue" : 9547120.0
-      }
-    }, {
-      "size" : 4,
-      "metric" : {
-        "MetricName" : "Time",
-        "MetricValue" : 9255326.0
-      }
-    }, {
-      "size" : 8,
-      "metric" : {
-        "MetricName" : "Time",
-        "MetricValue" : 9544054.0
-      }
-    }, {
-      "size" : 16,
-      "metric" : {
-        "MetricName" : "Time",
-        "MetricValue" : 9454236.0
-      }
-    }, {
-      "size" : 32,
-      "metric" : {
-        "MetricName" : "Time",
-        "MetricValue" : 9573017.0
-      }
-    }, {
-      "size" : 64,
-      "metric" : {
-        "MetricName" : "Time",
-        "MetricValue" : 9349895.0
-      }
-    } ]
-  } ]
-}, {
-  "operationID" : "2",
-  "tool" : [ {
-    "name" : "BATCH_OPTIMIZED-TEMPLATE",
-    "results" : [ {
-      "size" : 1,
-      "metric" : {
-        "MetricName" : "Time",
-        "MetricValue" : 7.2436697E7
-      }
-    }, {
-      "size" : 2,
-      "metric" : {
-        "MetricName" : "Time",
-        "MetricValue" : 174131.0
-      }
-    }, {
-      "size" : 4,
-      "metric" : {
-        "MetricName" : "Time",
-        "MetricValue" : 7.1809189E7
-      }
-    }, {
-      "size" : 8,
-      "metric" : {
-        "MetricName" : "Time",
-        "MetricValue" : 7.1794569E7
-      }
-    }, {
-      "size" : 16,
-      "metric" : {
-        "MetricName" : "Time",
-        "MetricValue" : 7.2767721E7
-      }
-    }, {
-      "size" : 32,
-      "metric" : {
-        "MetricName" : "Time",
-        "MetricValue" : 158979.0
-      }
-    }, {
-      "size" : 64,
-      "metric" : {
-        "MetricName" : "Time",
-        "MetricValue" : 7.3688742E7
-      }
-    } ]
-  }, {
-    "name" : "INCR_VIATRA_TRANSFORMATION-TEMPLATE",
-    "results" : [ {
-      "size" : 1,
-      "metric" : {
-        "MetricName" : "Time",
-        "MetricValue" : 7.3874601E7
-      }
-    }, {
-      "size" : 2,
-      "metric" : {
-        "MetricName" : "Time",
-        "MetricValue" : 156705.0
-      }
-    }, {
-      "size" : 4,
-      "metric" : {
-        "MetricName" : "Time",
-        "MetricValue" : 7.225897E7
-      }
-    }, {
-      "size" : 8,
-      "metric" : {
-        "MetricName" : "Time",
-        "MetricValue" : 172159.0
-      }
-    }, {
-      "size" : 16,
-      "metric" : {
-        "MetricName" : "Time",
-        "MetricValue" : 218828.0
-      }
-    }, {
-      "size" : 32,
-      "metric" : {
-        "MetricName" : "Time",
-        "MetricValue" : 577012.0
-      }
-    }, {
-      "size" : 64,
-      "metric" : {
-        "MetricName" : "Time",
-        "MetricValue" : 7.2196099E7
-      }
-    } ]
-  }, {
-    "name" : "BATCH_VIATRA_QUERY_RETE-TEMPLATE",
-    "results" : [ {
-      "size" : 1,
-      "metric" : {
-        "MetricName" : "Time",
-        "MetricValue" : 310219.0
-      }
-    }, {
-      "size" : 2,
-      "metric" : {
-        "MetricName" : "Time",
-        "MetricValue" : 188679.0
-      }
-    }, {
-      "size" : 4,
-      "metric" : {
-        "MetricName" : "Time",
-        "MetricValue" : 174958.0
-      }
-    }, {
-      "size" : 8,
-      "metric" : {
-        "MetricName" : "Time",
-        "MetricValue" : 7.3283724E7
-      }
-    }, {
-      "size" : 16,
-      "metric" : {
-        "MetricName" : "Time",
-        "MetricValue" : 7.3197187E7
-      }
-    }, {
-      "size" : 32,
-      "metric" : {
-        "MetricName" : "Time",
-        "MetricValue" : 7.2448623E7
-      }
-    }, {
-      "size" : 64,
-      "metric" : {
-        "MetricName" : "Time",
-        "MetricValue" : 200134.0
-      }
-    } ]
-  }, {
-    "name" : "BATCH_VIATRA_QUERY_LOCAL_SEARCH_GENERIC-TEMPLATE",
-    "results" : [ {
-      "size" : 1,
-      "metric" : {
-        "MetricName" : "Time",
-        "MetricValue" : 238236.0
-      }
-    }, {
-      "size" : 2,
-      "metric" : {
-        "MetricName" : "Time",
-        "MetricValue" : 9467666.0
-      }
-    }, {
-      "size" : 4,
-      "metric" : {
-        "MetricName" : "Time",
-        "MetricValue" : 9654322.0
-      }
-    }, {
-      "size" : 8,
-      "metric" : {
-        "MetricName" : "Time",
-        "MetricValue" : 9346712.0
-      }
-    }, {
-      "size" : 16,
-      "metric" : {
-        "MetricName" : "Time",
-        "MetricValue" : 1.0205462E7
-      }
-    }, {
-      "size" : 32,
-      "metric" : {
-        "MetricName" : "Time",
-        "MetricValue" : 9251993.0
-      }
-    }, {
-      "size" : 64,
-      "metric" : {
-        "MetricName" : "Time",
-        "MetricValue" : 9417192.0
-      }
-    } ]
-  }, {
-    "name" : "BATCH_VIATRA_QUERY_LOCAL_SEARCH-TEMPLATE",
-    "results" : [ {
-      "size" : 1,
-      "metric" : {
-        "MetricName" : "Time",
-        "MetricValue" : 9128955.0
-      }
-    }, {
-      "size" : 2,
-      "metric" : {
-        "MetricName" : "Time",
-        "MetricValue" : 9547120.0
-      }
-    }, {
-      "size" : 4,
-      "metric" : {
-        "MetricName" : "Time",
-        "MetricValue" : 9255326.0
-      }
-    }, {
-      "size" : 8,
-      "metric" : {
-        "MetricName" : "Time",
-        "MetricValue" : 9544054.0
-      }
-    }, {
-      "size" : 16,
-      "metric" : {
-        "MetricName" : "Time",
-        "MetricValue" : 9454236.0
-      }
-    }, {
-      "size" : 32,
-      "metric" : {
-        "MetricName" : "Time",
-        "MetricValue" : 9573017.0
-      }
-    }, {
-      "size" : 64,
-      "metric" : {
-        "MetricName" : "Time",
-        "MetricValue" : 9349895.0
-      }
-    } ]
-  } ]
-}, {
-  "operationID" : "5",
-  "tool" : [ {
-    "name" : "BATCH_OPTIMIZED-TEMPLATE",
-    "results" : [ {
-      "size" : 1,
-      "metric" : {
-        "MetricName" : "Memory",
-        "MetricValue" : 1.0741152E7
-      }
-    }, {
-      "size" : 2,
-      "metric" : {
-        "MetricName" : "Memory",
-        "MetricValue" : 9361680.0
-      }
-    }, {
-      "size" : 4,
-      "metric" : {
-        "MetricName" : "Memory",
-        "MetricValue" : 1.074128E7
-      }
-    }, {
-      "size" : 8,
-      "metric" : {
-        "MetricName" : "Memory",
-        "MetricValue" : 1.073956E7
-      }
-    }, {
-      "size" : 16,
-      "metric" : {
-        "MetricName" : "Memory",
-        "MetricValue" : 1.0740856E7
-      }
-    }, {
-      "size" : 32,
-      "metric" : {
-        "MetricName" : "Memory",
-        "MetricValue" : 9701776.0
-      }
-    }, {
-      "size" : 64,
-      "metric" : {
-        "MetricName" : "Memory",
-        "MetricValue" : 1.0740536E7
-      }
-    } ]
-  }, {
-    "name" : "INCR_VIATRA_TRANSFORMATION-TEMPLATE",
-    "results" : [ {
-      "size" : 1,
-      "metric" : {
-        "MetricName" : "Memory",
-        "MetricValue" : 1.0754464E7
-      }
-    }, {
-      "size" : 2,
-      "metric" : {
-        "MetricName" : "Memory",
-        "MetricValue" : 9603760.0
-      }
-    }, {
-      "size" : 4,
-      "metric" : {
-        "MetricName" : "Memory",
-        "MetricValue" : 1.0754216E7
-      }
-    }, {
-      "size" : 8,
-      "metric" : {
-        "MetricName" : "Memory",
-        "MetricValue" : 9670080.0
-      }
-    }, {
-      "size" : 16,
-      "metric" : {
-        "MetricName" : "Memory",
-        "MetricValue" : 9761088.0
-      }
-    }, {
-      "size" : 32,
-      "metric" : {
-        "MetricName" : "Memory",
-        "MetricValue" : 9941512.0
-      }
-    }, {
-      "size" : 64,
-      "metric" : {
-        "MetricName" : "Memory",
-        "MetricValue" : 1.0753824E7
-      }
-    } ]
-  }, {
-    "name" : "BATCH_VIATRA_QUERY_RETE-TEMPLATE",
-    "results" : [ {
-      "size" : 1,
-      "metric" : {
-        "MetricName" : "Memory",
-        "MetricValue" : 9478960.0
-      }
-    }, {
-      "size" : 2,
-      "metric" : {
-        "MetricName" : "Memory",
-        "MetricValue" : 9494976.0
-      }
-    }, {
-      "size" : 4,
-      "metric" : {
-        "MetricName" : "Memory",
-        "MetricValue" : 9513448.0
-      }
-    }, {
-      "size" : 8,
-      "metric" : {
-        "MetricName" : "Memory",
-        "MetricValue" : 1.077116E7
-      }
-    }, {
-      "size" : 16,
-      "metric" : {
-        "MetricName" : "Memory",
-        "MetricValue" : 1.0771576E7
-      }
-    }, {
-      "size" : 32,
-      "metric" : {
-        "MetricName" : "Memory",
-        "MetricValue" : 1.0771512E7
-      }
-    }, {
-      "size" : 64,
-      "metric" : {
-        "MetricName" : "Memory",
-        "MetricValue" : 1.0193648E7
-      }
-    } ]
-  }, {
-    "name" : "BATCH_VIATRA_QUERY_LOCAL_SEARCH_GENERIC-TEMPLATE",
-    "results" : [ {
-      "size" : 1,
-      "metric" : {
-        "MetricName" : "Memory",
-        "MetricValue" : 9513448.0
-      }
-    }, {
-      "size" : 2,
-      "metric" : {
-        "MetricName" : "Memory",
-        "MetricValue" : 1.09144E7
-      }
-    }, {
-      "size" : 4,
-      "metric" : {
-        "MetricName" : "Memory",
-        "MetricValue" : 1.0915568E7
-      }
-    }, {
-      "size" : 8,
-      "metric" : {
-        "MetricName" : "Memory",
-        "MetricValue" : 1.0914592E7
-      }
-    }, {
-      "size" : 16,
-      "metric" : {
-        "MetricName" : "Memory",
-        "MetricValue" : 1.091436E7
-      }
-    }, {
-      "size" : 32,
-      "metric" : {
-        "MetricName" : "Memory",
-        "MetricValue" : 1.0914952E7
-      }
-    }, {
-      "size" : 64,
-      "metric" : {
-        "MetricName" : "Memory",
-        "MetricValue" : 1.0914752E7
-      }
-    } ]
-  }, {
-    "name" : "BATCH_VIATRA_QUERY_LOCAL_SEARCH-TEMPLATE",
-    "results" : [ {
-      "size" : 1,
-      "metric" : {
-        "MetricName" : "Memory",
-        "MetricValue" : 1.3462888E7
-      }
-    }, {
-      "size" : 2,
-      "metric" : {
-        "MetricName" : "Memory",
-        "MetricValue" : 1.0916312E7
-      }
-    }, {
-      "size" : 4,
-      "metric" : {
-        "MetricName" : "Memory",
-        "MetricValue" : 1.09176E7
-      }
-    }, {
-      "size" : 8,
-      "metric" : {
-        "MetricName" : "Memory",
-        "MetricValue" : 1.09162E7
-      }
-    }, {
-      "size" : 16,
-      "metric" : {
-        "MetricName" : "Memory",
-        "MetricValue" : 1.0917056E7
-      }
-    }, {
-      "size" : 32,
-      "metric" : {
-        "MetricName" : "Memory",
-        "MetricValue" : 1.0916752E7
-      }
-    }, {
-      "size" : 64,
-      "metric" : {
-        "MetricName" : "Memory",
-        "MetricValue" : 1.091632E7
-      }
-    } ]
-  } ]
-}, {
-  "operationID" : "8",
-  "tool" : [ {
-    "name" : "BATCH_OPTIMIZED-TEMPLATE",
-    "results" : [ {
-      "size" : 1,
-      "metric" : {
-        "MetricName" : "Memory",
-        "MetricValue" : 1.0741152E7
-      }
-    }, {
-      "size" : 2,
-      "metric" : {
-        "MetricName" : "Memory",
-        "MetricValue" : 9361680.0
-      }
-    }, {
-      "size" : 4,
-      "metric" : {
-        "MetricName" : "Memory",
-        "MetricValue" : 1.074128E7
-      }
-    }, {
-      "size" : 8,
-      "metric" : {
-        "MetricName" : "Memory",
-        "MetricValue" : 1.073956E7
-      }
-    }, {
-      "size" : 16,
-      "metric" : {
-        "MetricName" : "Memory",
-        "MetricValue" : 1.0740856E7
-      }
-    }, {
-      "size" : 32,
-      "metric" : {
-        "MetricName" : "Memory",
-        "MetricValue" : 9701776.0
-      }
-    }, {
-      "size" : 64,
-      "metric" : {
-        "MetricName" : "Memory",
-        "MetricValue" : 1.0740536E7
-      }
-    } ]
-  }, {
-    "name" : "INCR_VIATRA_TRANSFORMATION-TEMPLATE",
-    "results" : [ {
-      "size" : 1,
-      "metric" : {
-        "MetricName" : "Memory",
-        "MetricValue" : 1.0754464E7
-      }
-    }, {
-      "size" : 2,
-      "metric" : {
-        "MetricName" : "Memory",
-        "MetricValue" : 9603760.0
-      }
-    }, {
-      "size" : 4,
-      "metric" : {
-        "MetricName" : "Memory",
-        "MetricValue" : 1.0754216E7
-      }
-    }, {
-      "size" : 8,
-      "metric" : {
-        "MetricName" : "Memory",
-        "MetricValue" : 9670080.0
-      }
-    }, {
-      "size" : 16,
-      "metric" : {
-        "MetricName" : "Memory",
-        "MetricValue" : 9761088.0
-      }
-    }, {
-      "size" : 32,
-      "metric" : {
-        "MetricName" : "Memory",
-        "MetricValue" : 9941512.0
-      }
-    }, {
-      "size" : 64,
-      "metric" : {
-        "MetricName" : "Memory",
-        "MetricValue" : 1.0753824E7
-      }
-    } ]
-  }, {
-    "name" : "BATCH_VIATRA_QUERY_RETE-TEMPLATE",
-    "results" : [ {
-      "size" : 1,
-      "metric" : {
-        "MetricName" : "Memory",
-        "MetricValue" : 9478960.0
-      }
-    }, {
-      "size" : 2,
-      "metric" : {
-        "MetricName" : "Memory",
-        "MetricValue" : 9494976.0
-      }
-    }, {
-      "size" : 4,
-      "metric" : {
-        "MetricName" : "Memory",
-        "MetricValue" : 9513448.0
-      }
-    }, {
-      "size" : 8,
-      "metric" : {
-        "MetricName" : "Memory",
-        "MetricValue" : 1.077116E7
-      }
-    }, {
-      "size" : 16,
-      "metric" : {
-        "MetricName" : "Memory",
-        "MetricValue" : 1.0771576E7
-      }
-    }, {
-      "size" : 32,
-      "metric" : {
-        "MetricName" : "Memory",
-        "MetricValue" : 1.0771512E7
-      }
-    }, {
-      "size" : 64,
-      "metric" : {
-        "MetricName" : "Memory",
-        "MetricValue" : 1.0193648E7
-      }
-    } ]
-  }, {
-    "name" : "BATCH_VIATRA_QUERY_LOCAL_SEARCH_GENERIC-TEMPLATE",
-    "results" : [ {
-      "size" : 1,
-      "metric" : {
-        "MetricName" : "Memory",
-        "MetricValue" : 9513448.0
-      }
-    }, {
-      "size" : 2,
-      "metric" : {
-        "MetricName" : "Memory",
-        "MetricValue" : 1.09144E7
-      }
-    }, {
-      "size" : 4,
-      "metric" : {
-        "MetricName" : "Memory",
-        "MetricValue" : 1.0915568E7
-      }
-    }, {
-      "size" : 8,
-      "metric" : {
-        "MetricName" : "Memory",
-        "MetricValue" : 1.0914592E7
-      }
-    }, {
-      "size" : 16,
-      "metric" : {
-        "MetricName" : "Memory",
-        "MetricValue" : 1.091436E7
-      }
-    }, {
-      "size" : 32,
-      "metric" : {
-        "MetricName" : "Memory",
-        "MetricValue" : 1.0914952E7
-      }
-    }, {
-      "size" : 64,
-      "metric" : {
-        "MetricName" : "Memory",
-        "MetricValue" : 1.0914752E7
-      }
-    } ]
-  }, {
-    "name" : "BATCH_VIATRA_QUERY_LOCAL_SEARCH-TEMPLATE",
-    "results" : [ {
-      "size" : 1,
-      "metric" : {
-        "MetricName" : "Memory",
-        "MetricValue" : 1.3462888E7
-      }
-    }, {
-      "size" : 2,
-      "metric" : {
-        "MetricName" : "Memory",
-        "MetricValue" : 1.0916312E7
-      }
-    }, {
-      "size" : 4,
-      "metric" : {
-        "MetricName" : "Memory",
-        "MetricValue" : 1.09176E7
-      }
-    }, {
-      "size" : 8,
-      "metric" : {
-        "MetricName" : "Memory",
-        "MetricValue" : 1.09162E7
-      }
-    }, {
-      "size" : 16,
-      "metric" : {
-        "MetricName" : "Memory",
-        "MetricValue" : 1.0917056E7
-      }
-    }, {
-      "size" : 32,
-      "metric" : {
-        "MetricName" : "Memory",
-        "MetricValue" : 1.0916752E7
-      }
-    }, {
-      "size" : 64,
-      "metric" : {
-        "MetricName" : "Memory",
-        "MetricValue" : 1.091632E7
-      }
-    } ]
-  } ]
-}, {
   "operationID" : "7",
-  "tool" : [ {
-    "name" : "BATCH_OPTIMIZED-TEMPLATE",
-    "results" : [ {
-      "size" : 1,
-      "metric" : {
-        "MetricName" : "AverageMemory",
-        "MetricValue" : 3.0680584E7
-      }
-    }, {
-      "size" : 2,
-      "metric" : {
-        "MetricName" : "AverageMemory",
-        "MetricValue" : 2.0337288E7
-      }
-    }, {
-      "size" : 4,
-      "metric" : {
-        "MetricName" : "AverageMemory",
-        "MetricValue" : 4.1417784E7
-      }
-    }, {
-      "size" : 8,
-      "metric" : {
-        "MetricName" : "AverageMemory",
-        "MetricValue" : 1.9910236E7
-      }
-    }, {
-      "size" : 16,
-      "metric" : {
-        "MetricName" : "AverageMemory",
-        "MetricValue" : 3.0680336E7
-      }
-    }, {
-      "size" : 32,
-      "metric" : {
-        "MetricName" : "AverageMemory",
-        "MetricValue" : 4.9612804E7
-      }
-    }, {
-      "size" : 64,
-      "metric" : {
-        "MetricName" : "AverageMemory",
-        "MetricValue" : 3.06804E7
-      }
-    } ]
-  }, {
-    "name" : "INCR_VIATRA_TRANSFORMATION-TEMPLATE",
-    "results" : [ {
-      "size" : 1,
-      "metric" : {
-        "MetricName" : "AverageMemory",
-        "MetricValue" : 6.2898588E7
-      }
-    }, {
-      "size" : 2,
-      "metric" : {
-        "MetricName" : "AverageMemory",
-        "MetricValue" : 4.2045096E7
-      }
-    }, {
-      "size" : 4,
-      "metric" : {
-        "MetricName" : "AverageMemory",
-        "MetricValue" : 5.2159812E7
-      }
-    }, {
-      "size" : 8,
-      "metric" : {
-        "MetricName" : "AverageMemory",
-        "MetricValue" : 7.519468E7
-      }
-    }, {
-      "size" : 16,
-      "metric" : {
-        "MetricName" : "AverageMemory",
-        "MetricValue" : 1.50761336E8
-      }
-    }, {
-      "size" : 32,
-      "metric" : {
-        "MetricName" : "AverageMemory",
-        "MetricValue" : 4.92035197E8
-      }
-    }, {
-      "size" : 64,
-      "metric" : {
-        "MetricName" : "AverageMemory",
-        "MetricValue" : 5.4844384E7
-      }
-    } ]
-  }, {
-    "name" : "BATCH_VIATRA_QUERY_RETE-TEMPLATE",
-    "results" : [ {
-      "size" : 1,
-      "metric" : {
-        "MetricName" : "AverageMemory",
-        "MetricValue" : 4.7171696E7
-      }
-    }, {
-      "size" : 2,
-      "metric" : {
-        "MetricName" : "AverageMemory",
-        "MetricValue" : 4.1948552E7
-      }
-    }, {
-      "size" : 4,
-      "metric" : {
-        "MetricName" : "AverageMemory",
-        "MetricValue" : 5.2955636E7
-      }
-    }, {
-      "size" : 8,
-      "metric" : {
-        "MetricName" : "AverageMemory",
-        "MetricValue" : 4.410578E7
-      }
-    }, {
-      "size" : 16,
-      "metric" : {
-        "MetricName" : "AverageMemory",
-        "MetricValue" : 4.1422544E7
-      }
-    }, {
-      "size" : 32,
-      "metric" : {
-        "MetricName" : "AverageMemory",
-        "MetricValue" : 4.4105692E7
-      }
-    }, {
-      "size" : 64,
-      "metric" : {
-        "MetricName" : "AverageMemory",
-        "MetricValue" : 9.73377088E8
-      }
-    } ]
-  }, {
-    "name" : "BATCH_VIATRA_QUERY_LOCAL_SEARCH_GENERIC-TEMPLATE",
-    "results" : [ {
-      "size" : 1,
-      "metric" : {
-        "MetricName" : "AverageMemory",
-        "MetricValue" : 6.3316484E7
-      }
-    }, {
-      "size" : 2,
-      "metric" : {
-        "MetricName" : "AverageMemory",
-        "MetricValue" : 5.2163556E7
-      }
-    }, {
-      "size" : 4,
-      "metric" : {
-        "MetricName" : "AverageMemory",
-        "MetricValue" : 5.4848704E7
-      }
-    }, {
-      "size" : 8,
-      "metric" : {
-        "MetricName" : "AverageMemory",
-        "MetricValue" : 5.216418E7
-      }
-    }, {
-      "size" : 16,
-      "metric" : {
-        "MetricName" : "AverageMemory",
-        "MetricValue" : 6.2900308E7
-      }
-    }, {
-      "size" : 32,
-      "metric" : {
-        "MetricName" : "AverageMemory",
-        "MetricValue" : 6.5587212E7
-      }
-    }, {
-      "size" : 64,
-      "metric" : {
-        "MetricName" : "AverageMemory",
-        "MetricValue" : 5.2164244E7
-      }
-    } ]
-  }, {
-    "name" : "BATCH_VIATRA_QUERY_LOCAL_SEARCH-TEMPLATE",
-    "results" : [ {
-      "size" : 1,
-      "metric" : {
-        "MetricName" : "AverageMemory",
-        "MetricValue" : 5.4682188E7
-      }
-    }, {
-      "size" : 2,
-      "metric" : {
-        "MetricName" : "AverageMemory",
-        "MetricValue" : 5.484056E7
-      }
-    }, {
-      "size" : 4,
-      "metric" : {
-        "MetricName" : "AverageMemory",
-        "MetricValue" : 5.2159236E7
-      }
-    }, {
-      "size" : 8,
-      "metric" : {
-        "MetricName" : "AverageMemory",
-        "MetricValue" : 6.2894748E7
-      }
-    }, {
-      "size" : 16,
-      "metric" : {
-        "MetricName" : "AverageMemory",
-        "MetricValue" : 5.4843048E7
-      }
-    }, {
-      "size" : 32,
-      "metric" : {
-        "MetricName" : "AverageMemory",
-        "MetricValue" : 6.5578356E7
-      }
-    }, {
-      "size" : 64,
-      "metric" : {
-        "MetricName" : "AverageMemory",
-        "MetricValue" : 5.48424E7
-      }
-    } ]
-  } ]
-}, {
-  "operationID" : "10",
   "tool" : [ {
     "name" : "BATCH_OPTIMIZED-TEMPLATE",
     "results" : [ {
@@ -1823,7 +455,1375 @@
     } ]
   } ]
 }, {
+  "operationID" : "5",
+  "tool" : [ {
+    "name" : "BATCH_OPTIMIZED-TEMPLATE",
+    "results" : [ {
+      "size" : 1,
+      "metric" : {
+        "MetricName" : "Memory",
+        "MetricValue" : 1.0741152E7
+      }
+    }, {
+      "size" : 2,
+      "metric" : {
+        "MetricName" : "Memory",
+        "MetricValue" : 9361680.0
+      }
+    }, {
+      "size" : 4,
+      "metric" : {
+        "MetricName" : "Memory",
+        "MetricValue" : 1.074128E7
+      }
+    }, {
+      "size" : 8,
+      "metric" : {
+        "MetricName" : "Memory",
+        "MetricValue" : 1.073956E7
+      }
+    }, {
+      "size" : 16,
+      "metric" : {
+        "MetricName" : "Memory",
+        "MetricValue" : 1.0740856E7
+      }
+    }, {
+      "size" : 32,
+      "metric" : {
+        "MetricName" : "Memory",
+        "MetricValue" : 9701776.0
+      }
+    }, {
+      "size" : 64,
+      "metric" : {
+        "MetricName" : "Memory",
+        "MetricValue" : 1.0740536E7
+      }
+    } ]
+  }, {
+    "name" : "INCR_VIATRA_TRANSFORMATION-TEMPLATE",
+    "results" : [ {
+      "size" : 1,
+      "metric" : {
+        "MetricName" : "Memory",
+        "MetricValue" : 1.0754464E7
+      }
+    }, {
+      "size" : 2,
+      "metric" : {
+        "MetricName" : "Memory",
+        "MetricValue" : 9603760.0
+      }
+    }, {
+      "size" : 4,
+      "metric" : {
+        "MetricName" : "Memory",
+        "MetricValue" : 1.0754216E7
+      }
+    }, {
+      "size" : 8,
+      "metric" : {
+        "MetricName" : "Memory",
+        "MetricValue" : 9670080.0
+      }
+    }, {
+      "size" : 16,
+      "metric" : {
+        "MetricName" : "Memory",
+        "MetricValue" : 9761088.0
+      }
+    }, {
+      "size" : 32,
+      "metric" : {
+        "MetricName" : "Memory",
+        "MetricValue" : 9941512.0
+      }
+    }, {
+      "size" : 64,
+      "metric" : {
+        "MetricName" : "Memory",
+        "MetricValue" : 1.0753824E7
+      }
+    } ]
+  }, {
+    "name" : "BATCH_VIATRA_QUERY_RETE-TEMPLATE",
+    "results" : [ {
+      "size" : 1,
+      "metric" : {
+        "MetricName" : "Memory",
+        "MetricValue" : 9478960.0
+      }
+    }, {
+      "size" : 2,
+      "metric" : {
+        "MetricName" : "Memory",
+        "MetricValue" : 9494976.0
+      }
+    }, {
+      "size" : 4,
+      "metric" : {
+        "MetricName" : "Memory",
+        "MetricValue" : 9513448.0
+      }
+    }, {
+      "size" : 8,
+      "metric" : {
+        "MetricName" : "Memory",
+        "MetricValue" : 1.077116E7
+      }
+    }, {
+      "size" : 16,
+      "metric" : {
+        "MetricName" : "Memory",
+        "MetricValue" : 1.0771576E7
+      }
+    }, {
+      "size" : 32,
+      "metric" : {
+        "MetricName" : "Memory",
+        "MetricValue" : 1.0771512E7
+      }
+    }, {
+      "size" : 64,
+      "metric" : {
+        "MetricName" : "Memory",
+        "MetricValue" : 1.0193648E7
+      }
+    } ]
+  }, {
+    "name" : "BATCH_VIATRA_QUERY_LOCAL_SEARCH_GENERIC-TEMPLATE",
+    "results" : [ {
+      "size" : 1,
+      "metric" : {
+        "MetricName" : "Memory",
+        "MetricValue" : 9513448.0
+      }
+    }, {
+      "size" : 2,
+      "metric" : {
+        "MetricName" : "Memory",
+        "MetricValue" : 1.09144E7
+      }
+    }, {
+      "size" : 4,
+      "metric" : {
+        "MetricName" : "Memory",
+        "MetricValue" : 1.0915568E7
+      }
+    }, {
+      "size" : 8,
+      "metric" : {
+        "MetricName" : "Memory",
+        "MetricValue" : 1.0914592E7
+      }
+    }, {
+      "size" : 16,
+      "metric" : {
+        "MetricName" : "Memory",
+        "MetricValue" : 1.091436E7
+      }
+    }, {
+      "size" : 32,
+      "metric" : {
+        "MetricName" : "Memory",
+        "MetricValue" : 1.0914952E7
+      }
+    }, {
+      "size" : 64,
+      "metric" : {
+        "MetricName" : "Memory",
+        "MetricValue" : 1.0914752E7
+      }
+    } ]
+  }, {
+    "name" : "BATCH_VIATRA_QUERY_LOCAL_SEARCH-TEMPLATE",
+    "results" : [ {
+      "size" : 1,
+      "metric" : {
+        "MetricName" : "Memory",
+        "MetricValue" : 1.3462888E7
+      }
+    }, {
+      "size" : 2,
+      "metric" : {
+        "MetricName" : "Memory",
+        "MetricValue" : 1.0916312E7
+      }
+    }, {
+      "size" : 4,
+      "metric" : {
+        "MetricName" : "Memory",
+        "MetricValue" : 1.09176E7
+      }
+    }, {
+      "size" : 8,
+      "metric" : {
+        "MetricName" : "Memory",
+        "MetricValue" : 1.09162E7
+      }
+    }, {
+      "size" : 16,
+      "metric" : {
+        "MetricName" : "Memory",
+        "MetricValue" : 1.0917056E7
+      }
+    }, {
+      "size" : 32,
+      "metric" : {
+        "MetricName" : "Memory",
+        "MetricValue" : 1.0916752E7
+      }
+    }, {
+      "size" : 64,
+      "metric" : {
+        "MetricName" : "Memory",
+        "MetricValue" : 1.091632E7
+      }
+    } ]
+  } ]
+}, {
   "operationID" : "3",
+  "tool" : [ {
+    "name" : "BATCH_OPTIMIZED-TEMPLATE",
+    "results" : [ {
+      "size" : 1,
+      "metric" : {
+        "MetricName" : "Time",
+        "MetricValue" : 7.2436697E7
+      }
+    }, {
+      "size" : 2,
+      "metric" : {
+        "MetricName" : "Time",
+        "MetricValue" : 174131.0
+      }
+    }, {
+      "size" : 4,
+      "metric" : {
+        "MetricName" : "Time",
+        "MetricValue" : 7.1809189E7
+      }
+    }, {
+      "size" : 8,
+      "metric" : {
+        "MetricName" : "Time",
+        "MetricValue" : 7.1794569E7
+      }
+    }, {
+      "size" : 16,
+      "metric" : {
+        "MetricName" : "Time",
+        "MetricValue" : 7.2767721E7
+      }
+    }, {
+      "size" : 32,
+      "metric" : {
+        "MetricName" : "Time",
+        "MetricValue" : 158979.0
+      }
+    }, {
+      "size" : 64,
+      "metric" : {
+        "MetricName" : "Time",
+        "MetricValue" : 7.3688742E7
+      }
+    } ]
+  }, {
+    "name" : "INCR_VIATRA_TRANSFORMATION-TEMPLATE",
+    "results" : [ {
+      "size" : 1,
+      "metric" : {
+        "MetricName" : "Time",
+        "MetricValue" : 7.3874601E7
+      }
+    }, {
+      "size" : 2,
+      "metric" : {
+        "MetricName" : "Time",
+        "MetricValue" : 156705.0
+      }
+    }, {
+      "size" : 4,
+      "metric" : {
+        "MetricName" : "Time",
+        "MetricValue" : 7.225897E7
+      }
+    }, {
+      "size" : 8,
+      "metric" : {
+        "MetricName" : "Time",
+        "MetricValue" : 172159.0
+      }
+    }, {
+      "size" : 16,
+      "metric" : {
+        "MetricName" : "Time",
+        "MetricValue" : 218828.0
+      }
+    }, {
+      "size" : 32,
+      "metric" : {
+        "MetricName" : "Time",
+        "MetricValue" : 577012.0
+      }
+    }, {
+      "size" : 64,
+      "metric" : {
+        "MetricName" : "Time",
+        "MetricValue" : 7.2196099E7
+      }
+    } ]
+  }, {
+    "name" : "BATCH_VIATRA_QUERY_RETE-TEMPLATE",
+    "results" : [ {
+      "size" : 1,
+      "metric" : {
+        "MetricName" : "Time",
+        "MetricValue" : 310219.0
+      }
+    }, {
+      "size" : 2,
+      "metric" : {
+        "MetricName" : "Time",
+        "MetricValue" : 188679.0
+      }
+    }, {
+      "size" : 4,
+      "metric" : {
+        "MetricName" : "Time",
+        "MetricValue" : 174958.0
+      }
+    }, {
+      "size" : 8,
+      "metric" : {
+        "MetricName" : "Time",
+        "MetricValue" : 7.3283724E7
+      }
+    }, {
+      "size" : 16,
+      "metric" : {
+        "MetricName" : "Time",
+        "MetricValue" : 7.3197187E7
+      }
+    }, {
+      "size" : 32,
+      "metric" : {
+        "MetricName" : "Time",
+        "MetricValue" : 7.2448623E7
+      }
+    }, {
+      "size" : 64,
+      "metric" : {
+        "MetricName" : "Time",
+        "MetricValue" : 200134.0
+      }
+    } ]
+  }, {
+    "name" : "BATCH_VIATRA_QUERY_LOCAL_SEARCH_GENERIC-TEMPLATE",
+    "results" : [ {
+      "size" : 1,
+      "metric" : {
+        "MetricName" : "Time",
+        "MetricValue" : 238236.0
+      }
+    }, {
+      "size" : 2,
+      "metric" : {
+        "MetricName" : "Time",
+        "MetricValue" : 9467666.0
+      }
+    }, {
+      "size" : 4,
+      "metric" : {
+        "MetricName" : "Time",
+        "MetricValue" : 9654322.0
+      }
+    }, {
+      "size" : 8,
+      "metric" : {
+        "MetricName" : "Time",
+        "MetricValue" : 9346712.0
+      }
+    }, {
+      "size" : 16,
+      "metric" : {
+        "MetricName" : "Time",
+        "MetricValue" : 1.0205462E7
+      }
+    }, {
+      "size" : 32,
+      "metric" : {
+        "MetricName" : "Time",
+        "MetricValue" : 9251993.0
+      }
+    }, {
+      "size" : 64,
+      "metric" : {
+        "MetricName" : "Time",
+        "MetricValue" : 9417192.0
+      }
+    } ]
+  }, {
+    "name" : "BATCH_VIATRA_QUERY_LOCAL_SEARCH-TEMPLATE",
+    "results" : [ {
+      "size" : 1,
+      "metric" : {
+        "MetricName" : "Time",
+        "MetricValue" : 9128955.0
+      }
+    }, {
+      "size" : 2,
+      "metric" : {
+        "MetricName" : "Time",
+        "MetricValue" : 9547120.0
+      }
+    }, {
+      "size" : 4,
+      "metric" : {
+        "MetricName" : "Time",
+        "MetricValue" : 9255326.0
+      }
+    }, {
+      "size" : 8,
+      "metric" : {
+        "MetricName" : "Time",
+        "MetricValue" : 9544054.0
+      }
+    }, {
+      "size" : 16,
+      "metric" : {
+        "MetricName" : "Time",
+        "MetricValue" : 9454236.0
+      }
+    }, {
+      "size" : 32,
+      "metric" : {
+        "MetricName" : "Time",
+        "MetricValue" : 9573017.0
+      }
+    }, {
+      "size" : 64,
+      "metric" : {
+        "MetricName" : "Time",
+        "MetricValue" : 9349895.0
+      }
+    } ]
+  } ]
+}, {
+  "operationID" : "10",
+  "tool" : [ {
+    "name" : "BATCH_OPTIMIZED-TEMPLATE",
+    "results" : [ {
+      "size" : 1,
+      "metric" : {
+        "MetricName" : "AverageMemory",
+        "MetricValue" : 3.0680584E7
+      }
+    }, {
+      "size" : 2,
+      "metric" : {
+        "MetricName" : "AverageMemory",
+        "MetricValue" : 2.0337288E7
+      }
+    }, {
+      "size" : 4,
+      "metric" : {
+        "MetricName" : "AverageMemory",
+        "MetricValue" : 4.1417784E7
+      }
+    }, {
+      "size" : 8,
+      "metric" : {
+        "MetricName" : "AverageMemory",
+        "MetricValue" : 1.9910236E7
+      }
+    }, {
+      "size" : 16,
+      "metric" : {
+        "MetricName" : "AverageMemory",
+        "MetricValue" : 3.0680336E7
+      }
+    }, {
+      "size" : 32,
+      "metric" : {
+        "MetricName" : "AverageMemory",
+        "MetricValue" : 4.9612804E7
+      }
+    }, {
+      "size" : 64,
+      "metric" : {
+        "MetricName" : "AverageMemory",
+        "MetricValue" : 3.06804E7
+      }
+    } ]
+  }, {
+    "name" : "INCR_VIATRA_TRANSFORMATION-TEMPLATE",
+    "results" : [ {
+      "size" : 1,
+      "metric" : {
+        "MetricName" : "AverageMemory",
+        "MetricValue" : 6.2898588E7
+      }
+    }, {
+      "size" : 2,
+      "metric" : {
+        "MetricName" : "AverageMemory",
+        "MetricValue" : 4.2045096E7
+      }
+    }, {
+      "size" : 4,
+      "metric" : {
+        "MetricName" : "AverageMemory",
+        "MetricValue" : 5.2159812E7
+      }
+    }, {
+      "size" : 8,
+      "metric" : {
+        "MetricName" : "AverageMemory",
+        "MetricValue" : 7.519468E7
+      }
+    }, {
+      "size" : 16,
+      "metric" : {
+        "MetricName" : "AverageMemory",
+        "MetricValue" : 1.50761336E8
+      }
+    }, {
+      "size" : 32,
+      "metric" : {
+        "MetricName" : "AverageMemory",
+        "MetricValue" : 4.92035197E8
+      }
+    }, {
+      "size" : 64,
+      "metric" : {
+        "MetricName" : "AverageMemory",
+        "MetricValue" : 5.4844384E7
+      }
+    } ]
+  }, {
+    "name" : "BATCH_VIATRA_QUERY_RETE-TEMPLATE",
+    "results" : [ {
+      "size" : 1,
+      "metric" : {
+        "MetricName" : "AverageMemory",
+        "MetricValue" : 4.7171696E7
+      }
+    }, {
+      "size" : 2,
+      "metric" : {
+        "MetricName" : "AverageMemory",
+        "MetricValue" : 4.1948552E7
+      }
+    }, {
+      "size" : 4,
+      "metric" : {
+        "MetricName" : "AverageMemory",
+        "MetricValue" : 5.2955636E7
+      }
+    }, {
+      "size" : 8,
+      "metric" : {
+        "MetricName" : "AverageMemory",
+        "MetricValue" : 4.410578E7
+      }
+    }, {
+      "size" : 16,
+      "metric" : {
+        "MetricName" : "AverageMemory",
+        "MetricValue" : 4.1422544E7
+      }
+    }, {
+      "size" : 32,
+      "metric" : {
+        "MetricName" : "AverageMemory",
+        "MetricValue" : 4.4105692E7
+      }
+    }, {
+      "size" : 64,
+      "metric" : {
+        "MetricName" : "AverageMemory",
+        "MetricValue" : 9.73377088E8
+      }
+    } ]
+  }, {
+    "name" : "BATCH_VIATRA_QUERY_LOCAL_SEARCH_GENERIC-TEMPLATE",
+    "results" : [ {
+      "size" : 1,
+      "metric" : {
+        "MetricName" : "AverageMemory",
+        "MetricValue" : 6.3316484E7
+      }
+    }, {
+      "size" : 2,
+      "metric" : {
+        "MetricName" : "AverageMemory",
+        "MetricValue" : 5.2163556E7
+      }
+    }, {
+      "size" : 4,
+      "metric" : {
+        "MetricName" : "AverageMemory",
+        "MetricValue" : 5.4848704E7
+      }
+    }, {
+      "size" : 8,
+      "metric" : {
+        "MetricName" : "AverageMemory",
+        "MetricValue" : 5.216418E7
+      }
+    }, {
+      "size" : 16,
+      "metric" : {
+        "MetricName" : "AverageMemory",
+        "MetricValue" : 6.2900308E7
+      }
+    }, {
+      "size" : 32,
+      "metric" : {
+        "MetricName" : "AverageMemory",
+        "MetricValue" : 6.5587212E7
+      }
+    }, {
+      "size" : 64,
+      "metric" : {
+        "MetricName" : "AverageMemory",
+        "MetricValue" : 5.2164244E7
+      }
+    } ]
+  }, {
+    "name" : "BATCH_VIATRA_QUERY_LOCAL_SEARCH-TEMPLATE",
+    "results" : [ {
+      "size" : 1,
+      "metric" : {
+        "MetricName" : "AverageMemory",
+        "MetricValue" : 5.4682188E7
+      }
+    }, {
+      "size" : 2,
+      "metric" : {
+        "MetricName" : "AverageMemory",
+        "MetricValue" : 5.484056E7
+      }
+    }, {
+      "size" : 4,
+      "metric" : {
+        "MetricName" : "AverageMemory",
+        "MetricValue" : 5.2159236E7
+      }
+    }, {
+      "size" : 8,
+      "metric" : {
+        "MetricName" : "AverageMemory",
+        "MetricValue" : 6.2894748E7
+      }
+    }, {
+      "size" : 16,
+      "metric" : {
+        "MetricName" : "AverageMemory",
+        "MetricValue" : 5.4843048E7
+      }
+    }, {
+      "size" : 32,
+      "metric" : {
+        "MetricName" : "AverageMemory",
+        "MetricValue" : 6.5578356E7
+      }
+    }, {
+      "size" : 64,
+      "metric" : {
+        "MetricName" : "AverageMemory",
+        "MetricValue" : 5.48424E7
+      }
+    } ]
+  } ]
+}, {
+  "operationID" : "9",
+  "tool" : [ {
+    "name" : "BATCH_OPTIMIZED-TEMPLATE",
+    "results" : [ {
+      "size" : 1,
+      "metric" : {
+        "MetricName" : "PeakMemory",
+        "MetricValue" : 3.6049312E7
+      }
+    }, {
+      "size" : 2,
+      "metric" : {
+        "MetricName" : "PeakMemory",
+        "MetricValue" : 3.1074384E7
+      }
+    }, {
+      "size" : 4,
+      "metric" : {
+        "MetricName" : "PeakMemory",
+        "MetricValue" : 5.7523936E7
+      }
+    }, {
+      "size" : 8,
+      "metric" : {
+        "MetricName" : "PeakMemory",
+        "MetricValue" : 3.0684232E7
+      }
+    }, {
+      "size" : 16,
+      "metric" : {
+        "MetricName" : "PeakMemory",
+        "MetricValue" : 3.6049064E7
+      }
+    }, {
+      "size" : 32,
+      "metric" : {
+        "MetricName" : "PeakMemory",
+        "MetricValue" : 8.1655928E7
+      }
+    }, {
+      "size" : 64,
+      "metric" : {
+        "MetricName" : "PeakMemory",
+        "MetricValue" : 3.6049128E7
+      }
+    } ]
+  }, {
+    "name" : "INCR_VIATRA_TRANSFORMATION-TEMPLATE",
+    "results" : [ {
+      "size" : 1,
+      "metric" : {
+        "MetricName" : "PeakMemory",
+        "MetricValue" : 1.00480536E8
+      }
+    }, {
+      "size" : 2,
+      "metric" : {
+        "MetricName" : "PeakMemory",
+        "MetricValue" : 5.278252E7
+      }
+    }, {
+      "size" : 4,
+      "metric" : {
+        "MetricName" : "PeakMemory",
+        "MetricValue" : 7.9003376E7
+      }
+    }, {
+      "size" : 8,
+      "metric" : {
+        "MetricName" : "PeakMemory",
+        "MetricValue" : 1.18144352E8
+      }
+    }, {
+      "size" : 16,
+      "metric" : {
+        "MetricName" : "PeakMemory",
+        "MetricValue" : 2.68011632E8
+      }
+    }, {
+      "size" : 32,
+      "metric" : {
+        "MetricName" : "PeakMemory",
+        "MetricValue" : 9.25714112E8
+      }
+    }, {
+      "size" : 64,
+      "metric" : {
+        "MetricName" : "PeakMemory",
+        "MetricValue" : 7.9003584E7
+      }
+    } ]
+  }, {
+    "name" : "BATCH_VIATRA_QUERY_RETE-TEMPLATE",
+    "results" : [ {
+      "size" : 1,
+      "metric" : {
+        "MetricName" : "PeakMemory",
+        "MetricValue" : 6.327784E7
+      }
+    }, {
+      "size" : 2,
+      "metric" : {
+        "MetricName" : "PeakMemory",
+        "MetricValue" : 6.3423416E7
+      }
+    }, {
+      "size" : 4,
+      "metric" : {
+        "MetricName" : "PeakMemory",
+        "MetricValue" : 7.4430488E7
+      }
+    }, {
+      "size" : 8,
+      "metric" : {
+        "MetricName" : "PeakMemory",
+        "MetricValue" : 5.7527568E7
+      }
+    }, {
+      "size" : 16,
+      "metric" : {
+        "MetricName" : "PeakMemory",
+        "MetricValue" : 5.7528696E7
+      }
+    }, {
+      "size" : 32,
+      "metric" : {
+        "MetricName" : "PeakMemory",
+        "MetricValue" : 5.752748E7
+      }
+    }, {
+      "size" : 64,
+      "metric" : {
+        "MetricName" : "PeakMemory",
+        "MetricValue" : 2.525789104E9
+      }
+    } ]
+  }, {
+    "name" : "BATCH_VIATRA_QUERY_LOCAL_SEARCH_GENERIC-TEMPLATE",
+    "results" : [ {
+      "size" : 1,
+      "metric" : {
+        "MetricName" : "PeakMemory",
+        "MetricValue" : 9.5528752E7
+      }
+    }, {
+      "size" : 2,
+      "metric" : {
+        "MetricName" : "PeakMemory",
+        "MetricValue" : 7.900712E7
+      }
+    }, {
+      "size" : 4,
+      "metric" : {
+        "MetricName" : "PeakMemory",
+        "MetricValue" : 7.900792E7
+      }
+    }, {
+      "size" : 8,
+      "metric" : {
+        "MetricName" : "PeakMemory",
+        "MetricValue" : 7.9007744E7
+      }
+    }, {
+      "size" : 16,
+      "metric" : {
+        "MetricName" : "PeakMemory",
+        "MetricValue" : 8.0796016E7
+      }
+    }, {
+      "size" : 32,
+      "metric" : {
+        "MetricName" : "PeakMemory",
+        "MetricValue" : 7.9009008E7
+      }
+    }, {
+      "size" : 64,
+      "metric" : {
+        "MetricName" : "PeakMemory",
+        "MetricValue" : 7.9007808E7
+      }
+    } ]
+  }, {
+    "name" : "BATCH_VIATRA_QUERY_LOCAL_SEARCH-TEMPLATE",
+    "results" : [ {
+      "size" : 1,
+      "metric" : {
+        "MetricName" : "PeakMemory",
+        "MetricValue" : 8.1525752E7
+      }
+    }, {
+      "size" : 2,
+      "metric" : {
+        "MetricName" : "PeakMemory",
+        "MetricValue" : 7.899976E7
+      }
+    }, {
+      "size" : 4,
+      "metric" : {
+        "MetricName" : "PeakMemory",
+        "MetricValue" : 7.9002816E7
+      }
+    }, {
+      "size" : 8,
+      "metric" : {
+        "MetricName" : "PeakMemory",
+        "MetricValue" : 7.9000888E7
+      }
+    }, {
+      "size" : 16,
+      "metric" : {
+        "MetricName" : "PeakMemory",
+        "MetricValue" : 7.9002264E7
+      }
+    }, {
+      "size" : 32,
+      "metric" : {
+        "MetricName" : "PeakMemory",
+        "MetricValue" : 7.9000152E7
+      }
+    }, {
+      "size" : 64,
+      "metric" : {
+        "MetricName" : "PeakMemory",
+        "MetricValue" : 7.900164E7
+      }
+    } ]
+  } ]
+}, {
+  "operationID" : "8",
+  "tool" : [ {
+    "name" : "BATCH_OPTIMIZED-TEMPLATE",
+    "results" : [ {
+      "size" : 1,
+      "metric" : {
+        "MetricName" : "Memory",
+        "MetricValue" : 1.0741152E7
+      }
+    }, {
+      "size" : 2,
+      "metric" : {
+        "MetricName" : "Memory",
+        "MetricValue" : 9361680.0
+      }
+    }, {
+      "size" : 4,
+      "metric" : {
+        "MetricName" : "Memory",
+        "MetricValue" : 1.074128E7
+      }
+    }, {
+      "size" : 8,
+      "metric" : {
+        "MetricName" : "Memory",
+        "MetricValue" : 1.073956E7
+      }
+    }, {
+      "size" : 16,
+      "metric" : {
+        "MetricName" : "Memory",
+        "MetricValue" : 1.0740856E7
+      }
+    }, {
+      "size" : 32,
+      "metric" : {
+        "MetricName" : "Memory",
+        "MetricValue" : 9701776.0
+      }
+    }, {
+      "size" : 64,
+      "metric" : {
+        "MetricName" : "Memory",
+        "MetricValue" : 1.0740536E7
+      }
+    } ]
+  }, {
+    "name" : "INCR_VIATRA_TRANSFORMATION-TEMPLATE",
+    "results" : [ {
+      "size" : 1,
+      "metric" : {
+        "MetricName" : "Memory",
+        "MetricValue" : 1.0754464E7
+      }
+    }, {
+      "size" : 2,
+      "metric" : {
+        "MetricName" : "Memory",
+        "MetricValue" : 9603760.0
+      }
+    }, {
+      "size" : 4,
+      "metric" : {
+        "MetricName" : "Memory",
+        "MetricValue" : 1.0754216E7
+      }
+    }, {
+      "size" : 8,
+      "metric" : {
+        "MetricName" : "Memory",
+        "MetricValue" : 9670080.0
+      }
+    }, {
+      "size" : 16,
+      "metric" : {
+        "MetricName" : "Memory",
+        "MetricValue" : 9761088.0
+      }
+    }, {
+      "size" : 32,
+      "metric" : {
+        "MetricName" : "Memory",
+        "MetricValue" : 9941512.0
+      }
+    }, {
+      "size" : 64,
+      "metric" : {
+        "MetricName" : "Memory",
+        "MetricValue" : 1.0753824E7
+      }
+    } ]
+  }, {
+    "name" : "BATCH_VIATRA_QUERY_RETE-TEMPLATE",
+    "results" : [ {
+      "size" : 1,
+      "metric" : {
+        "MetricName" : "Memory",
+        "MetricValue" : 9478960.0
+      }
+    }, {
+      "size" : 2,
+      "metric" : {
+        "MetricName" : "Memory",
+        "MetricValue" : 9494976.0
+      }
+    }, {
+      "size" : 4,
+      "metric" : {
+        "MetricName" : "Memory",
+        "MetricValue" : 9513448.0
+      }
+    }, {
+      "size" : 8,
+      "metric" : {
+        "MetricName" : "Memory",
+        "MetricValue" : 1.077116E7
+      }
+    }, {
+      "size" : 16,
+      "metric" : {
+        "MetricName" : "Memory",
+        "MetricValue" : 1.0771576E7
+      }
+    }, {
+      "size" : 32,
+      "metric" : {
+        "MetricName" : "Memory",
+        "MetricValue" : 1.0771512E7
+      }
+    }, {
+      "size" : 64,
+      "metric" : {
+        "MetricName" : "Memory",
+        "MetricValue" : 1.0193648E7
+      }
+    } ]
+  }, {
+    "name" : "BATCH_VIATRA_QUERY_LOCAL_SEARCH_GENERIC-TEMPLATE",
+    "results" : [ {
+      "size" : 1,
+      "metric" : {
+        "MetricName" : "Memory",
+        "MetricValue" : 9513448.0
+      }
+    }, {
+      "size" : 2,
+      "metric" : {
+        "MetricName" : "Memory",
+        "MetricValue" : 1.09144E7
+      }
+    }, {
+      "size" : 4,
+      "metric" : {
+        "MetricName" : "Memory",
+        "MetricValue" : 1.0915568E7
+      }
+    }, {
+      "size" : 8,
+      "metric" : {
+        "MetricName" : "Memory",
+        "MetricValue" : 1.0914592E7
+      }
+    }, {
+      "size" : 16,
+      "metric" : {
+        "MetricName" : "Memory",
+        "MetricValue" : 1.091436E7
+      }
+    }, {
+      "size" : 32,
+      "metric" : {
+        "MetricName" : "Memory",
+        "MetricValue" : 1.0914952E7
+      }
+    }, {
+      "size" : 64,
+      "metric" : {
+        "MetricName" : "Memory",
+        "MetricValue" : 1.0914752E7
+      }
+    } ]
+  }, {
+    "name" : "BATCH_VIATRA_QUERY_LOCAL_SEARCH-TEMPLATE",
+    "results" : [ {
+      "size" : 1,
+      "metric" : {
+        "MetricName" : "Memory",
+        "MetricValue" : 1.3462888E7
+      }
+    }, {
+      "size" : 2,
+      "metric" : {
+        "MetricName" : "Memory",
+        "MetricValue" : 1.0916312E7
+      }
+    }, {
+      "size" : 4,
+      "metric" : {
+        "MetricName" : "Memory",
+        "MetricValue" : 1.09176E7
+      }
+    }, {
+      "size" : 8,
+      "metric" : {
+        "MetricName" : "Memory",
+        "MetricValue" : 1.09162E7
+      }
+    }, {
+      "size" : 16,
+      "metric" : {
+        "MetricName" : "Memory",
+        "MetricValue" : 1.0917056E7
+      }
+    }, {
+      "size" : 32,
+      "metric" : {
+        "MetricName" : "Memory",
+        "MetricValue" : 1.0916752E7
+      }
+    }, {
+      "size" : 64,
+      "metric" : {
+        "MetricName" : "Memory",
+        "MetricValue" : 1.091632E7
+      }
+    } ]
+  } ]
+}, {
+  "operationID" : "4",
+  "tool" : [ {
+    "name" : "BATCH_OPTIMIZED-TEMPLATE",
+    "results" : [ {
+      "size" : 1,
+      "metric" : {
+        "MetricName" : "Time",
+        "MetricValue" : 7.2436697E7
+      }
+    }, {
+      "size" : 2,
+      "metric" : {
+        "MetricName" : "Time",
+        "MetricValue" : 174131.0
+      }
+    }, {
+      "size" : 4,
+      "metric" : {
+        "MetricName" : "Time",
+        "MetricValue" : 7.1809189E7
+      }
+    }, {
+      "size" : 8,
+      "metric" : {
+        "MetricName" : "Time",
+        "MetricValue" : 7.1794569E7
+      }
+    }, {
+      "size" : 16,
+      "metric" : {
+        "MetricName" : "Time",
+        "MetricValue" : 7.2767721E7
+      }
+    }, {
+      "size" : 32,
+      "metric" : {
+        "MetricName" : "Time",
+        "MetricValue" : 158979.0
+      }
+    }, {
+      "size" : 64,
+      "metric" : {
+        "MetricName" : "Time",
+        "MetricValue" : 7.3688742E7
+      }
+    } ]
+  }, {
+    "name" : "INCR_VIATRA_TRANSFORMATION-TEMPLATE",
+    "results" : [ {
+      "size" : 1,
+      "metric" : {
+        "MetricName" : "Time",
+        "MetricValue" : 7.3874601E7
+      }
+    }, {
+      "size" : 2,
+      "metric" : {
+        "MetricName" : "Time",
+        "MetricValue" : 156705.0
+      }
+    }, {
+      "size" : 4,
+      "metric" : {
+        "MetricName" : "Time",
+        "MetricValue" : 7.225897E7
+      }
+    }, {
+      "size" : 8,
+      "metric" : {
+        "MetricName" : "Time",
+        "MetricValue" : 172159.0
+      }
+    }, {
+      "size" : 16,
+      "metric" : {
+        "MetricName" : "Time",
+        "MetricValue" : 218828.0
+      }
+    }, {
+      "size" : 32,
+      "metric" : {
+        "MetricName" : "Time",
+        "MetricValue" : 577012.0
+      }
+    }, {
+      "size" : 64,
+      "metric" : {
+        "MetricName" : "Time",
+        "MetricValue" : 7.2196099E7
+      }
+    } ]
+  }, {
+    "name" : "BATCH_VIATRA_QUERY_RETE-TEMPLATE",
+    "results" : [ {
+      "size" : 1,
+      "metric" : {
+        "MetricName" : "Time",
+        "MetricValue" : 310219.0
+      }
+    }, {
+      "size" : 2,
+      "metric" : {
+        "MetricName" : "Time",
+        "MetricValue" : 188679.0
+      }
+    }, {
+      "size" : 4,
+      "metric" : {
+        "MetricName" : "Time",
+        "MetricValue" : 174958.0
+      }
+    }, {
+      "size" : 8,
+      "metric" : {
+        "MetricName" : "Time",
+        "MetricValue" : 7.3283724E7
+      }
+    }, {
+      "size" : 16,
+      "metric" : {
+        "MetricName" : "Time",
+        "MetricValue" : 7.3197187E7
+      }
+    }, {
+      "size" : 32,
+      "metric" : {
+        "MetricName" : "Time",
+        "MetricValue" : 7.2448623E7
+      }
+    }, {
+      "size" : 64,
+      "metric" : {
+        "MetricName" : "Time",
+        "MetricValue" : 200134.0
+      }
+    } ]
+  }, {
+    "name" : "BATCH_VIATRA_QUERY_LOCAL_SEARCH_GENERIC-TEMPLATE",
+    "results" : [ {
+      "size" : 1,
+      "metric" : {
+        "MetricName" : "Time",
+        "MetricValue" : 238236.0
+      }
+    }, {
+      "size" : 2,
+      "metric" : {
+        "MetricName" : "Time",
+        "MetricValue" : 9467666.0
+      }
+    }, {
+      "size" : 4,
+      "metric" : {
+        "MetricName" : "Time",
+        "MetricValue" : 9654322.0
+      }
+    }, {
+      "size" : 8,
+      "metric" : {
+        "MetricName" : "Time",
+        "MetricValue" : 9346712.0
+      }
+    }, {
+      "size" : 16,
+      "metric" : {
+        "MetricName" : "Time",
+        "MetricValue" : 1.0205462E7
+      }
+    }, {
+      "size" : 32,
+      "metric" : {
+        "MetricName" : "Time",
+        "MetricValue" : 9251993.0
+      }
+    }, {
+      "size" : 64,
+      "metric" : {
+        "MetricName" : "Time",
+        "MetricValue" : 9417192.0
+      }
+    } ]
+  }, {
+    "name" : "BATCH_VIATRA_QUERY_LOCAL_SEARCH-TEMPLATE",
+    "results" : [ {
+      "size" : 1,
+      "metric" : {
+        "MetricName" : "Time",
+        "MetricValue" : 9128955.0
+      }
+    }, {
+      "size" : 2,
+      "metric" : {
+        "MetricName" : "Time",
+        "MetricValue" : 9547120.0
+      }
+    }, {
+      "size" : 4,
+      "metric" : {
+        "MetricName" : "Time",
+        "MetricValue" : 9255326.0
+      }
+    }, {
+      "size" : 8,
+      "metric" : {
+        "MetricName" : "Time",
+        "MetricValue" : 9544054.0
+      }
+    }, {
+      "size" : 16,
+      "metric" : {
+        "MetricName" : "Time",
+        "MetricValue" : 9454236.0
+      }
+    }, {
+      "size" : 32,
+      "metric" : {
+        "MetricName" : "Time",
+        "MetricValue" : 9573017.0
+      }
+    }, {
+      "size" : 64,
+      "metric" : {
+        "MetricName" : "Time",
+        "MetricValue" : 9349895.0
+      }
+    } ]
+  } ]
+}, {
+  "operationID" : "2",
   "tool" : [ {
     "name" : "BATCH_OPTIMIZED-TEMPLATE",
     "results" : [ {
