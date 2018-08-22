@@ -70,11 +70,11 @@ public class ChainVerticle extends AbstractVerticle {
 																	new Message("Result", mapper.writeValueAsString(
 																			new Data(this.operationId, result)))));
 												} catch (IOException e) {
-													this.sendError();
+													this.sendError(e);
 												}
 											}
 										} else {
-											this.sendError();
+											this.sendError(new Exception(res.cause()));
 										}
 									});
 
@@ -84,7 +84,7 @@ public class ChainVerticle extends AbstractVerticle {
 					vertx.eventBus().send(this.scenarioId, m.body().toString());
 				}
 			} catch (IOException e) {
-				this.sendError();
+				this.sendError(e);
 			}
 		});
 
@@ -104,12 +104,12 @@ public class ChainVerticle extends AbstractVerticle {
 		}
 	}
 
-	protected void sendError() {
+	protected void sendError(Exception e) {
 		try {
 			vertx.eventBus().send(this.scenarioId,
-					mapper.writeValueAsString(new Message("Error", "Cannot parse message in " + this.id)));
+					mapper.writeValueAsString(new Message("Error", e.getMessage())));
 		} catch (IOException e1) {
-			vertx.eventBus().send(this.scenarioId, "Cannot parse message in " + this.id);
+			vertx.eventBus().send(this.scenarioId, e.getMessage());
 		}
 	}
 }

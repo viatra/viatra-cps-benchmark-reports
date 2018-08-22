@@ -2,6 +2,8 @@ package com.viatra.cps.benchmark.reports.processing.verticles.operation.serializ
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -66,7 +68,7 @@ public class JSonSerializer extends AbstractVerticle {
 		this.config = new Diagrams(path);
 		this.map = new HashMap<>();
 		this.template = digramConfiguration;
-		this.digramConfiguration = new File(path + "config.json");
+		this.digramConfiguration = new File(path + "/" + "config.json");
 		this.opearations = new HashMap<>();
 	}
 
@@ -89,23 +91,23 @@ public class JSonSerializer extends AbstractVerticle {
 					break;
 				case "Save":
 					this.save(m);
+					break;
 				default:
 					vertx.eventBus().send(this.scenarioId, m.body().toString());
 					break;
 				}
 			} catch (IOException e) {
-				this.sendError();
+				this.sendError(e);
 			}
 		});
 		startFuture.complete();
 	}
 
-	protected void sendError() {
+	protected void sendError(Exception e) {
 		try {
-			vertx.eventBus().send(this.scenarioId,
-					mapper.writeValueAsString(new Message("Error", "Cannot parse message in " + this.ID)));
+			vertx.eventBus().send(this.scenarioId, mapper.writeValueAsString(new Message("Error", e.getMessage())));
 		} catch (IOException e1) {
-			vertx.eventBus().send(this.scenarioId, "Cannot parse message in " + this.ID);
+			vertx.eventBus().send(this.scenarioId, e.getMessage());
 		}
 	}
 
@@ -115,86 +117,94 @@ public class JSonSerializer extends AbstractVerticle {
 			this.opearations.put(header.getOperationId(), header.getSize());
 			m.reply("");
 		} catch (Exception e) {
-			m.fail(20, "Data is not a valid header");
+			m.fail(20, e.getMessage());
 		}
 	}
 
 	private void addToMap(Data data) {
 		Map<String, Map<Integer, PhaseResult>> operationMap = this.map.get(data.getOperationId());
-		if (operationMap == null) {
-			operationMap = new HashMap<>();
-			Map<Integer, PhaseResult> sizeMap = new HashMap<>();
-			sizeMap.put(data.getResult().getCaseDescriptor().getSize(), data.getResult().getPhaseResults().get(0));
-			operationMap.put(data.getResult().getCaseDescriptor().getTool(), sizeMap);
-			this.map.put(data.getOperationId(), operationMap);
-		} else {
-			Map<Integer, PhaseResult> sizeMap = operationMap.get(data.getResult().getCaseDescriptor().getTool());
-			if (sizeMap == null) {
-				sizeMap = new HashMap<>();
+		if (data.getResult().getPhaseResults().size() > 0) {
+			if (operationMap == null) {
+				operationMap = new HashMap<>();
+				Map<Integer, PhaseResult> sizeMap = new HashMap<>();
+				sizeMap.put(data.getResult().getCaseDescriptor().getSize(), data.getResult().getPhaseResults().get(0));
 				operationMap.put(data.getResult().getCaseDescriptor().getTool(), sizeMap);
+				this.map.put(data.getOperationId(), operationMap);
+			} else {
+				Map<Integer, PhaseResult> sizeMap = operationMap.get(data.getResult().getCaseDescriptor().getTool());
+				if (sizeMap == null) {
+					sizeMap = new HashMap<>();
+					operationMap.put(data.getResult().getCaseDescriptor().getTool(), sizeMap);
+				}
+				sizeMap.put(data.getResult().getCaseDescriptor().getSize(), data.getResult().getPhaseResults().get(0));
 			}
-			sizeMap.put(data.getResult().getCaseDescriptor().getSize(), data.getResult().getPhaseResults().get(0));
 		}
 	}
 
 	private void append(String operationId) {
 		AggregataedResult result = new AggregataedResult(operationId);
 		Map<String, Map<Integer, PhaseResult>> operationMap = this.map.get(operationId);
-		Set<String> toolKeys = operationMap.keySet();
-		if (!toolKeys.isEmpty()) {
-			List<Tool> tools = new ArrayList<>();
-			toolKeys.forEach(tool -> {
-				Tool newTool = new Tool(tool);
-				Set<Integer> sizekeys = operationMap.get(tool).keySet();
-				final List<Result> results = new ArrayList<>();
-				if (!sizekeys.isEmpty()) {
-					sizekeys.forEach(size -> {
-						Result res = new Result(size);
-						MetricResult metric = operationMap.get(tool).get(size).getMetrics().get(0);
-						metric.setValue(metric.getValue());
-						res.setMetrics(metric);
-						results.add(res);
-					});
-					List<Result> sortedResult = results.stream()
-							.sorted((object1, object2) -> object1.getSize().compareTo(object2.getSize()))
-							.collect(Collectors.toList());
-					newTool.setResults(sortedResult);
-					tools.add(newTool);
+		if (operationMap != null) {
+			Set<String> toolKeys = operationMap.keySet();
+			if (!toolKeys.isEmpty()) {
+				List<Tool> tools = new ArrayList<>();
+				toolKeys.forEach(tool -> {
+					Tool newTool = new Tool(tool);
+					Set<Integer> sizekeys = operationMap.get(tool).keySet();
+					final List<Result> results = new ArrayList<>();
+					if (!sizekeys.isEmpty()) {
+						sizekeys.forEach(size -> {
+							Result res = new Result(size);
+							MetricResult metric = operationMap.get(tool).get(size).getMetrics().get(0);
+							metric.setValue(metric.getValue());
+							res.setMetrics(metric);
+							results.add(res);
+						});
+						List<Result> sortedResult = results.stream()
+								.sorted((object1, object2) -> object1.getSize().compareTo(object2.getSize()))
+								.collect(Collectors.toList());
+						newTool.setResults(sortedResult);
+						tools.add(newTool);
+					}
+				});
+				result.setTool(tools);
+				this.result.add(result);
+				this.map.remove(operationId);
+				try {
+					List<ResultData> resultDatas = this.template.getResultData();
+					ResultData dataTemplate = resultDatas.stream()
+							.filter(resultData -> resultData.getOperationId().equals(operationId)).findFirst().get();
+					ResultData resultData;
+					resultData = (ResultData) dataTemplate.clone();
+					resultData.setTitle(resultData.getTitle().replaceAll("CASENAME", this.caseName)
+							.replaceAll("SCENARIO", this.scenarioName));
+					this.config.getResultData().add(resultData);
+				} catch (CloneNotSupportedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
-			});
-			result.setTool(tools);
-			this.result.add(result);
-			this.map.remove(operationId);
-			try {
-				List<ResultData> resultDatas = this.template.getResultData();
-				ResultData dataTemplate = resultDatas.stream()
-						.filter(resultData -> resultData.getOperationId().equals(operationId)).findFirst().get();
-				ResultData resultData;
-				resultData = (ResultData) dataTemplate.clone();
-				resultData.setTitle(resultData.getTitle().replaceAll("CASENAME", this.caseName).replaceAll("SCENARIO",
-						this.scenarioName));
-				this.config.getResultData().add(resultData);
-			} catch (CloneNotSupportedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				this.dashboard.getDiagrams()
+						.add(new DiagramDescriptor(this.caseName, this.buildId, this.scenarioName, operationId, true));
 			}
-			this.dashboard.getDiagrams()
-					.add(new DiagramDescriptor(this.caseName, this.buildId, this.scenarioName, operationId, true));
-		}
-		if (this.map.isEmpty()) {
-			this.sendNotification();
+			if (this.opearations.isEmpty()) {
+				this.sendNotification();
+			}
 		}
 	}
 
 	private void save(io.vertx.core.eventbus.Message<Object> m) {
 		try {
+			System.out.println(this.ID + " - Save results");
+			if (!json.exists()) {
+				Files.createDirectories(Paths.get(json.getParent()));
+			}
 			this.mapper.writeValue(json, this.result);
 			this.mapper.writeValue(digramConfiguration, this.config);
 			vertx.eventBus().send("JsonUpdater",
 					mapper.writeValueAsString(new Message("Dashboard", mapper.writeValueAsString(this.dashboard))));
 			m.reply(mapper.writeValueAsString(new Message("Successfull", "")));
 		} catch (IOException e) {
-			m.fail(20, "Cannot save json files");
+			m.fail(20, e.getMessage());
 		}
 	}
 
@@ -205,6 +215,7 @@ public class JSonSerializer extends AbstractVerticle {
 		if (numberOfResults == 0) {
 			this.opearations.remove(data.getOperationId());
 			this.append(data.getOperationId());
+			System.out.println(this.ID + " - Chain done. " + this.opearations.size() + " chain remeaning");
 		} else {
 			this.opearations.put(data.getOperationId(), numberOfResults);
 		}
@@ -214,7 +225,7 @@ public class JSonSerializer extends AbstractVerticle {
 		try {
 			vertx.eventBus().send(this.scenarioId, this.mapper.writeValueAsString(new Message("Done", "")));
 		} catch (IOException e) {
-			this.sendError();
+			this.sendError(e);
 		}
 	}
 }

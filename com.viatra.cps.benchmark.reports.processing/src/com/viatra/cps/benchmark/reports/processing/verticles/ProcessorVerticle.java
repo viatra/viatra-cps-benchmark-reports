@@ -77,8 +77,8 @@ public class ProcessorVerticle extends AbstractVerticle {
 		this.diagramConfiguration = this.loadDiagramConfigurationTemplate(new File(diagramConfigTemplatePath));
 
 		this.visualizerConfigurationFile = new File(visualizerConfigPath + "/config.json");
-		this.dashboardConfigurationFile = new File(resultInputPath + "/dashboard.json");
-		this.buildFile = new File(resultInputPath + "/builds.json");
+		this.dashboardConfigurationFile = new File(resultOutputPath + "/dashboard.json");
+		this.buildFile = new File(resultOutputPath + "/builds.json");
 		this.timeout = false;
 		this.cases = new ArrayList<>();
 	}

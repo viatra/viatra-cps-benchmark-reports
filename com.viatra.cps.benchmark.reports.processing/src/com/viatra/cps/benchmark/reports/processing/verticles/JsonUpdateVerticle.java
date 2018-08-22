@@ -85,6 +85,7 @@ public class JsonUpdateVerticle extends AbstractVerticle {
 
 	private Boolean saveVisualizer() {
 		try {
+			System.out.println("Save visualizer configuration");
 			mapper.writeValue(this.visualizerConfigurationJson, this.visualizerConfiguration);
 			return true;
 		} catch (Exception e) {
@@ -95,6 +96,7 @@ public class JsonUpdateVerticle extends AbstractVerticle {
 
 	private Boolean saveBuilds() {
 		try {
+			System.out.println("Save builds");
 			mapper.writeValue(this.buildsJson, this.builds);
 			return true;
 		} catch (Exception e) {
@@ -105,6 +107,7 @@ public class JsonUpdateVerticle extends AbstractVerticle {
 
 	private Boolean saveDashboard() {
 		try {
+			System.out.println("Save dashboard");
 			mapper.writeValue(this.dashboardJson, this.dashboard);
 			return true;
 		} catch (Exception e) {
@@ -210,7 +213,7 @@ public class JsonUpdateVerticle extends AbstractVerticle {
 					switch (message.getEvent()) {
 					case "Save":
 						if (this.saveVisualizer() && this.saveBuilds() && this.saveDashboard()) {
-							m.reply(message);
+							m.reply(mapper.writeValueAsString(new Message("Successfull", "")));
 						} else {
 							m.fail(3, "Cannot save all json");
 						}

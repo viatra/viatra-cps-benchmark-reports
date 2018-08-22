@@ -45,21 +45,17 @@ public abstract class Operation extends AbstractVerticle {
 				switch (message.getEvent()) {
 				case "Header":
 					this.resultsSizeReceived(message, m);
+					break;
 				case "Result":
-					try {
-						Data data = mapper.readValue(message.getData().toString(), Data.class);
-						this.addResult(data.getResult());
-					} catch (Exception e) {
-						vertx.eventBus().send(this.scenario, mapper
-								.writeValueAsString(new Message("Error", "Cannot parse message data in " + this.ID)));
-					}
+					Data data = mapper.readValue(message.getData().toString(), Data.class);
+					this.addResult(data.getResult());
 					break;
 				default:
-					vertx.eventBus().send(this.scenario, m);
+					vertx.eventBus().send(this.scenario, m.body().toString());
 					break;
 				}
 			} catch (IOException e) {
-				this.sendError();
+				this.sendError(e);
 			}
 		});
 		startFuture.complete();
@@ -72,7 +68,7 @@ public abstract class Operation extends AbstractVerticle {
 			this.operationId = header.getOperationId();
 			m.reply("");
 		} catch (Exception e) {
-			m.fail(20, "Data is not a valid header");
+			m.fail(20, e.getMessage());
 		}
 	}
 
@@ -81,7 +77,7 @@ public abstract class Operation extends AbstractVerticle {
 			vertx.eventBus().send(this.next, this.mapper.writeValueAsString(
 					new Message("Result", mapper.writeValueAsString(new Data(this.operationId, result)))));
 		} catch (IOException e) {
-			this.sendError();
+			this.sendError(e);
 		}
 	}
 
@@ -98,16 +94,15 @@ public abstract class Operation extends AbstractVerticle {
 						}
 					});
 		} catch (IOException e) {
-			this.sendError();
+			this.sendError(e);
 		}
 	}
 
-	protected void sendError() {
+	protected void sendError(Exception e) {
 		try {
-			vertx.eventBus().send(this.scenario,
-					mapper.writeValueAsString(new Message("Error", "Cannot parse message in " + this.ID)));
+			vertx.eventBus().send(this.scenario, mapper.writeValueAsString(new Message("Error", e.getMessage())));
 		} catch (IOException e1) {
-			vertx.eventBus().send(this.scenario, "Cannot parse message in " + this.ID);
+			vertx.eventBus().send(this.scenario, e.getMessage());
 		}
 	}
 }

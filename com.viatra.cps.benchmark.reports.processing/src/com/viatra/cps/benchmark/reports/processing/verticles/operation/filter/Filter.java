@@ -29,10 +29,10 @@ public abstract class Filter extends Operation {
 			Header header = mapper.readValue(message.getData(), Header.class);
 			this.numberOfResults = header.getSize();
 			this.operationId = header.getOperationId();
-			vertx.eventBus().send(this.next, m);
+			vertx.eventBus().send(this.next, m.body().toString());
 			m.reply("");
 		} catch (Exception e) {
-			m.fail(20, "Data is not a valid header");
+			m.fail(20, e.getMessage());
 		}
 	}
 }

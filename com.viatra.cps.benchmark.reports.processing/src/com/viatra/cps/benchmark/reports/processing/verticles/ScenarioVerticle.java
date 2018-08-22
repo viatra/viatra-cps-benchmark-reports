@@ -65,9 +65,11 @@ public class ScenarioVerticle extends AbstractVerticle {
 	public void start(Future<Void> startFuture) {
 		JSonSerializer serializer = new JSonSerializer(this.caseName + "." + this.scenario + ".serializer",
 				this.caseName + "." + this.scenario, this.mapper, this.scenario,
-				new File(this.outputResultsPath + "/" + this.caseName + "/" + this.scenario + "/results.json"),
-				this.diagramConfiguration, this.outputResultsPath + "/" + this.caseName + "/" + this.scenario,
-				this.caseName, this.buildId);
+				new File(this.outputResultsPath + "/" + this.buildId + "/" + this.caseName + "/" + this.scenario
+						+ "/results.json"),
+				this.diagramConfiguration,
+				this.outputResultsPath + "/" + this.buildId + "/" + this.caseName + "/" + this.scenario, this.caseName,
+				this.buildId);
 
 		vertx.deployVerticle(serializer, this.options, res -> {
 			if (res.succeeded()) {
@@ -107,39 +109,36 @@ public class ScenarioVerticle extends AbstractVerticle {
 					}
 					break;
 				case "Done":
-					this.deployedChain--;
-					if (deployedChain == 0) {
-						vertx.eventBus().send(this.caseName + "." + this.scenario + ".serializer",
-								mapper.writeValueAsBytes(new Message("Save", "")), res -> {
-									try {
-										if (res.succeeded()) {
-
-											vertx.eventBus().send(this.caseName,
-													mapper.writeValueAsBytes(new Message("Successfull", "")));
-										} else {
-											vertx.eventBus().send(this.caseName,
-													mapper.writeValueAsBytes(new Message("Failed", "")));
-										}
-									} catch (IOException e) {
-										this.sendError();
+					vertx.eventBus().send(this.caseName + "." + this.scenario + ".serializer",
+							mapper.writeValueAsString(new Message("Save", "")), res -> {
+								try {
+									if (res.succeeded()) {
+										vertx.eventBus().send(this.caseName,
+												mapper.writeValueAsString(new Message("Successfull", "")));
+									} else {
+										vertx.eventBus().send(this.caseName, mapper
+												.writeValueAsString(new Message("Failed", res.cause().getMessage())));
 									}
-								});
-					}
+								} catch (IOException e) {
+									this.sendError(e);
+								}
+							});
+					break;
 				default:
 					vertx.eventBus().send(this.caseName, m.body().toString());
 				}
 			} catch (IOException e) {
-				this.sendError();
+				this.sendError(e);
 			}
 		});
 	}
 
-	protected void sendError() {
+	protected void sendError(Exception e) {
 		try {
 			vertx.eventBus().send(this.caseName, mapper.writeValueAsString(
-					new Message("Error", "Cannot parse message in " + this.caseName + "." + this.scenario)));
+					new Message("Error", e.getMessage() + " - " + this.caseName + "." + this.scenario)));
 		} catch (IOException e1) {
-			vertx.eventBus().send(this.caseName, "Cannot parse message in " + this.caseName + "." + this.scenario);
+			vertx.eventBus().send(this.caseName, e.getMessage() + " - " + this.caseName + "." + this.scenario);
 		}
 	}
 

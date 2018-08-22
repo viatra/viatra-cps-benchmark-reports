@@ -12,7 +12,6 @@ import org.codehaus.jackson.map.ObjectMapper;
 import com.viatra.cps.benchmark.reports.processing.models.AggregatorConfiguration;
 import com.viatra.cps.benchmark.reports.processing.models.Diagrams;
 import com.viatra.cps.benchmark.reports.processing.models.Message;
-import com.viatra.cps.benchmark.reports.processing.verticles.operation.serializer.JSonSerializer;
 
 import eu.mondo.sam.core.results.BenchmarkResult;
 import io.vertx.core.AbstractVerticle;
@@ -76,7 +75,6 @@ public class CaseVerticle extends AbstractVerticle {
 					}
 					break;
 				case "Successfull":
-					System.out.println(message.getData());
 					this.numberOfScenario--;
 					if (numberOfScenario == 0) {
 						this.done();
