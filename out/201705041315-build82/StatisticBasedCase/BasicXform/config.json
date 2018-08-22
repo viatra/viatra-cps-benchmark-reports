@@ -1,6 +1,15 @@
 {
   "ResultData" : [ {
     "DiagramType" : "line",
+    "OperationID" : "2",
+    "Title" : "Init M2M",
+    "XLabel" : "Size",
+    "YLabel" : "Time",
+    "Metric" : "Time",
+    "XType" : "logarithmic",
+    "YType" : "logarithmic"
+  }, {
+    "DiagramType" : "line",
     "OperationID" : "7",
     "Title" : "Average memory during M2M",
     "XLabel" : "Size",
@@ -19,29 +28,11 @@
     "YType" : null
   }, {
     "DiagramType" : "line",
-    "OperationID" : "5",
-    "Title" : "Persistent memory after M2M",
-    "XLabel" : "Size",
-    "YLabel" : "Memory",
-    "Metric" : "Memory",
-    "XType" : "logarithmic",
-    "YType" : "logarithmic"
-  }, {
-    "DiagramType" : "line",
     "OperationID" : "9",
     "Title" : "Peak memory during Initialization",
     "XLabel" : "Size",
     "YLabel" : "PeakMemory",
     "Metric" : "Memory",
-    "XType" : "logarithmic",
-    "YType" : "logarithmic"
-  }, {
-    "DiagramType" : "line",
-    "OperationID" : "2",
-    "Title" : "Init M2M",
-    "XLabel" : "Size",
-    "YLabel" : "Time",
-    "Metric" : "Time",
     "XType" : "logarithmic",
     "YType" : "logarithmic"
   }, {
@@ -55,6 +46,15 @@
     "YType" : "logarithmic"
   }, {
     "DiagramType" : "line",
+    "OperationID" : "3",
+    "Title" : "Full workflow",
+    "XLabel" : "Size",
+    "YLabel" : "Time",
+    "Metric" : "Time",
+    "XType" : "logarithmic",
+    "YType" : "logarithmic"
+  }, {
+    "DiagramType" : "line",
     "OperationID" : "10",
     "Title" : "Average memory during Initialization",
     "XLabel" : "Size",
@@ -64,11 +64,11 @@
     "YType" : "logarithmic"
   }, {
     "DiagramType" : "line",
-    "OperationID" : "3",
-    "Title" : "Full workflow",
+    "OperationID" : "5",
+    "Title" : "Persistent memory after M2M",
     "XLabel" : "Size",
-    "YLabel" : "Time",
-    "Metric" : "Time",
+    "YLabel" : "Memory",
+    "Metric" : "Memory",
     "XType" : "logarithmic",
     "YType" : "logarithmic"
   }, {
