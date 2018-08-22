@@ -41,7 +41,7 @@ fi
 cd ./results
 git checkout Results
 cd ..
-cp -rf ./out/ ./results/
+cp -rf ./out ./results/
 cd ./results
 git add .
 git commit -m  "Updated results"
