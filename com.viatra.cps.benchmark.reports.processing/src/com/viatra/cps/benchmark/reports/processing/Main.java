@@ -28,20 +28,12 @@ public class Main {
 		CommandLine cmd;
 		try {
 
-			/*
-			 * cmd = parser.parse(options, args); String buildId = cmd.getOptionValue("b");
-			 * String resultInputPath = cmd.getOptionValue("i"); String resultOutputPath =
-			 * cmd.getOptionValue("o"); String configPath = cmd.getOptionValue("p"); String
-			 * diagramConfigTemplatePath = cmd.getOptionValue("d"); String
-			 * visualizerConfigPath = cmd.getOptionValue("v");
-			 */
-
-			String buildId = "0.6.0-20180814.140246";
-			String resultInputPath = "../results/0.6.0-20180814.140246";
-			String resultOutputPath = "../resultVisualizer/src/results";
-			String configPath = "./config.json";
-			String diagramConfigTemplatePath = "./diagramConfigTemplate.json";
-			String visualizerConfigPath = "../resultVisualizer/src/config";
+			
+			 cmd = parser.parse(options, args); String buildId = cmd.getOptionValue("b");
+			 String resultInputPath = cmd.getOptionValue("i"); String resultOutputPath =
+			 cmd.getOptionValue("o"); String configPath = cmd.getOptionValue("p"); String
+			 diagramConfigTemplatePath = cmd.getOptionValue("d"); String
+			 visualizerConfigPath = cmd.getOptionValue("v");
 
 			Vertx vertx = Vertx.vertx();
 			Future<Void> future = Future.future();
