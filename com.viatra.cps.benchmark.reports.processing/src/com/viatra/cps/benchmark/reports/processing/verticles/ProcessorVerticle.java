@@ -7,6 +7,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -19,13 +20,19 @@ import org.codehaus.jackson.type.TypeReference;
 import com.viatra.cps.benchmark.reports.processing.models.AggregatorConfiguration;
 import com.viatra.cps.benchmark.reports.processing.models.Diagrams;
 import com.viatra.cps.benchmark.reports.processing.models.Message;
+import com.viatra.cps.benchmark.reports.processing.models.Scale;
+import com.viatra.cps.benchmark.reports.processing.models.Tool;
+import com.viatra.cps.benchmark.reports.processing.models.ToolColor;
 
 import eu.mondo.sam.core.results.BenchmarkResult;
+import eu.mondo.sam.core.results.MetricResult;
+import eu.mondo.sam.core.results.PhaseResult;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Future;
 import io.vertx.core.eventbus.EventBus;
+import io.vertx.core.spi.metrics.Metrics;
 
 public class ProcessorVerticle extends AbstractVerticle {
 	ObjectMapper mapper;
@@ -47,6 +54,8 @@ public class ProcessorVerticle extends AbstractVerticle {
 	DeploymentOptions options;
 	List<String> failedCaseVerticles;
 	List<String> cases;
+	Set<String> tools;
+	Set<String> metrics;
 
 	public ProcessorVerticle(Future<Void> future, String buildId, String resultInputPath, String resultOutputPath,
 			String configPath, String diagramConfigTemplatePath, String visualizerConfigPath) {
@@ -115,7 +124,8 @@ public class ProcessorVerticle extends AbstractVerticle {
 	}
 
 	private Boolean separateResults(Map<String, Map<String, List<BenchmarkResult>>> caseScenarioMap) {
-
+		this.tools = new HashSet<>();
+		this.metrics = new HashSet<>();
 		try (Stream<Path> paths = Files.walk(this.resultInputPath)) {
 			paths.filter(Files::isRegularFile).forEach((path) -> {
 				String extension = path.toFile().getName().substring(path.toFile().getName().lastIndexOf(".") + 1);
@@ -125,6 +135,18 @@ public class ProcessorVerticle extends AbstractVerticle {
 				} else {
 					try {
 						BenchmarkResult result = mapper.readValue(path.toFile(), BenchmarkResult.class);
+
+						this.tools.add(result.getCaseDescriptor().getTool());
+
+						for (PhaseResult p : result.getPhaseResults()) {
+							for (MetricResult m : p.getMetrics()) {
+								this.metrics.add(m.getName());
+							}
+						}
+
+						this.sendMetrics();
+						this.sendTools();
+
 						Map<String, List<BenchmarkResult>> scenarioMap = caseScenarioMap
 								.get(result.getCaseDescriptor().getCaseName());
 						if (scenarioMap != null) {
@@ -152,6 +174,32 @@ public class ProcessorVerticle extends AbstractVerticle {
 			return true;
 		} catch (Exception e) {
 			return false;
+		}
+	}
+
+	private void sendTools() {
+		List<ToolColor> tools = new ArrayList<>();
+		for (String tool : this.tools) {
+			tools.add(new ToolColor(tool));
+		}
+		try {
+			eventBus.send("JsonUpdater",
+					mapper.writeValueAsString(new Message("Visualizer-Color", mapper.writeValueAsString(tools))));
+		} catch (IOException e) {
+			future.fail(e.getMessage());
+		}
+	}
+
+	private void sendMetrics() {
+		List<Scale> scales = new ArrayList<>();
+		for (String m : this.metrics) {
+			scales.add(new Scale(m));
+		}
+		try {
+			eventBus.send("JsonUpdater",
+					mapper.writeValueAsString(new Message("Visualizer-Scale", mapper.writeValueAsString(scales))));
+		} catch (IOException e) {
+			future.fail(e.getMessage());
 		}
 	}
 

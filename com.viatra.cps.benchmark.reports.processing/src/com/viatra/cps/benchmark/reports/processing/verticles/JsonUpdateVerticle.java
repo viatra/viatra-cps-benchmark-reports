@@ -10,6 +10,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 
 import com.viatra.cps.benchmark.reports.processing.models.Builds;
+import com.viatra.cps.benchmark.reports.processing.models.Case;
 import com.viatra.cps.benchmark.reports.processing.models.DiagramSet;
 import com.viatra.cps.benchmark.reports.processing.models.Message;
 import com.viatra.cps.benchmark.reports.processing.models.Scale;
@@ -178,9 +179,20 @@ public class JsonUpdateVerticle extends AbstractVerticle {
 			Optional<Builds> optBuild = this.builds.stream().filter(b -> b.getBuildId().equals(newBuild.getBuildId()))
 					.findFirst();
 			if (optBuild.isPresent()) {
-				this.builds.remove(optBuild.get());
+				Optional<Case> optCase = optBuild.get().getCases().stream()
+						.filter(b -> b.getCaseName().equals(newBuild.getCases().get(0).getCaseName())).findFirst();
+				if (optCase.isPresent()) {
+					Optional<String> optScenario = optCase.get().getScenarios().stream()
+							.filter(b -> b.equals(newBuild.getCases().get(0).getScenarios().get(0))).findFirst();
+					if (!optScenario.isPresent()) {
+						optCase.get().getScenarios().addAll(newBuild.getCases().get(0).getScenarios());
+					}
+				} else {
+					optBuild.get().getCases().addAll(newBuild.getCases());
+				}
+			} else {
+				this.builds.add(newBuild);
 			}
-			this.builds.add(newBuild);
 			return true;
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
