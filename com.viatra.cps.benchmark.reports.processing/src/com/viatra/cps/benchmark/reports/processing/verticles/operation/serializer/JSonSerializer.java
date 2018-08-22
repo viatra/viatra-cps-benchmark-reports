@@ -81,7 +81,7 @@ public class JSonSerializer extends AbstractVerticle {
 		this.builds.setCases(caseList);
 		builds.setBuildId(buildId);
 		this.template = digramConfiguration;
-		this.digramConfiguration = new File(path + "/" + "config.json");
+		this.digramConfiguration = new File(path + "/" + "diagram.config.json");
 		this.opearations = new HashMap<>();
 	}
 
