@@ -24,6 +24,7 @@ import com.viatra.cps.benchmark.reports.processing.models.Message;
 import com.viatra.cps.benchmark.reports.processing.models.Tool;
 import com.viatra.cps.benchmark.reports.processing.models.Result;
 import com.viatra.cps.benchmark.reports.processing.models.ResultData;
+import com.viatra.cps.benchmark.reports.processing.models.Results;
 import com.viatra.cps.benchmark.reports.processing.verticles.ProcessorVerticle;
 
 import eu.mondo.sam.core.results.MetricResult;
@@ -55,6 +56,7 @@ public class JSonSerializer extends AbstractVerticle {
 	protected String ID;
 	protected String scenarioId;
 	protected Builds builds;
+	protected Results output;
 
 	public JSonSerializer(String id, String scenarioId, ObjectMapper mapper, String scenarioName, File out,
 			Diagrams digramConfiguration, String path, String caseName, String buildId) {
@@ -211,7 +213,9 @@ public class JSonSerializer extends AbstractVerticle {
 			if (!json.exists()) {
 				Files.createDirectories(Paths.get(json.getParent()));
 			}
-			this.mapper.writeValue(json, this.result);
+			this.output = new Results(this.buildId + "/" + this.caseName + "/" + this.scenarioId);
+			this.output.setResults(this.result);
+			this.mapper.writeValue(json, this.output);
 			this.mapper.writeValue(digramConfiguration, this.config);
 			vertx.eventBus().send("JsonUpdater",
 					mapper.writeValueAsString(new Message("Dashboard", mapper.writeValueAsString(this.dashboard))));
