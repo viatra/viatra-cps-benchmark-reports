@@ -11,6 +11,7 @@ import org.codehaus.jackson.type.TypeReference;
 
 import com.viatra.cps.benchmark.reports.processing.models.Builds;
 import com.viatra.cps.benchmark.reports.processing.models.Case;
+import com.viatra.cps.benchmark.reports.processing.models.DiagramDescriptor;
 import com.viatra.cps.benchmark.reports.processing.models.DiagramSet;
 import com.viatra.cps.benchmark.reports.processing.models.Message;
 import com.viatra.cps.benchmark.reports.processing.models.Scale;
@@ -205,9 +206,18 @@ public class JsonUpdateVerticle extends AbstractVerticle {
 			Optional<DiagramSet> optDash = this.dashboard.stream()
 					.filter(d -> d.getTitle().equals(newDiagramSet.getTitle())).findFirst();
 			if (optDash.isPresent()) {
-				this.dashboard.remove(optDash.get());
+				DiagramSet diagramSet = optDash.get();
+				for (DiagramDescriptor diagramDescriptor : newDiagramSet.getDiagrams()) {
+					Optional<DiagramDescriptor> optDiag = diagramSet.getDiagrams().stream()
+							.filter(diag -> diag.equals(diagramDescriptor)).findFirst();
+					if (optDiag.isPresent()) {
+						diagramSet.getDiagrams().remove(optDiag.get());
+					}
+					diagramSet.getDiagrams().add(diagramDescriptor);
+				}
+			} else {
+				this.dashboard.add(newDiagramSet);
 			}
-			this.dashboard.add(newDiagramSet);
 			return true;
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
