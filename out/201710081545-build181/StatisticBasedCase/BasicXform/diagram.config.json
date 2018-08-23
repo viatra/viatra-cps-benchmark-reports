@@ -1,22 +1,13 @@
 {
   "ResultData" : [ {
     "DiagramType" : "line",
-    "OperationID" : "8",
-    "Title" : "Persistent memory after Initialization",
+    "OperationID" : "6",
+    "Title" : "Peak memory during M2M",
     "XLabel" : "Size",
-    "YLabel" : "Memory",
+    "YLabel" : "PeakMemory",
     "Metric" : "Memory",
-    "XType" : "logarithmic",
-    "YType" : "logarithmic"
-  }, {
-    "DiagramType" : "line",
-    "OperationID" : "5",
-    "Title" : "Persistent memory after M2M",
-    "XLabel" : "Size",
-    "YLabel" : "Memory",
-    "Metric" : "Memory",
-    "XType" : "logarithmic",
-    "YType" : "logarithmic"
+    "XType" : null,
+    "YType" : null
   }, {
     "DiagramType" : "line",
     "OperationID" : "2",
@@ -37,31 +28,13 @@
     "YType" : "logarithmic"
   }, {
     "DiagramType" : "line",
-    "OperationID" : "3",
-    "Title" : "Full workflow",
+    "OperationID" : "5",
+    "Title" : "Persistent memory after M2M",
     "XLabel" : "Size",
-    "YLabel" : "Time",
-    "Metric" : "Time",
-    "XType" : "logarithmic",
-    "YType" : "logarithmic"
-  }, {
-    "DiagramType" : "line",
-    "OperationID" : "10",
-    "Title" : "Average memory during Initialization",
-    "XLabel" : "Size",
-    "YLabel" : "AverageMemory",
+    "YLabel" : "Memory",
     "Metric" : "Memory",
     "XType" : "logarithmic",
     "YType" : "logarithmic"
-  }, {
-    "DiagramType" : "line",
-    "OperationID" : "6",
-    "Title" : "Peak memory during M2M",
-    "XLabel" : "Size",
-    "YLabel" : "PeakMemory",
-    "Metric" : "Memory",
-    "XType" : null,
-    "YType" : null
   }, {
     "DiagramType" : "line",
     "OperationID" : "9",
@@ -73,10 +46,10 @@
     "YType" : "logarithmic"
   }, {
     "DiagramType" : "line",
-    "OperationID" : "7",
-    "Title" : "Average memory during M2M",
+    "OperationID" : "8",
+    "Title" : "Persistent memory after Initialization",
     "XLabel" : "Size",
-    "YLabel" : "AverageMemory",
+    "YLabel" : "Memory",
     "Metric" : "Memory",
     "XType" : "logarithmic",
     "YType" : "logarithmic"
