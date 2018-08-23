@@ -24,7 +24,7 @@ for build in "${builds[@]}"
 do
   echo "BuilID: "$build
   echo "Input results path: ${inputResults}/${BuildID}/${build}/json"
-  java -jar "$jarLocation/com.viatra.cps.benchmark.reports.processing-0.0.1-jar-with-dependencies.jar"  -b "${build}" -i "${inputResults}/${BuildID}/${build}/json" -o "${outputResults}" -p "${processingConfig}" -d "${diagramConfigTemplate}" -v "${visualizerConfiguration}"
+  java -jar "$jarLocation/com.viatra.cps.benchmark.reports.processing-0.0.1-jar-with-dependencies.jar"  -b "${build}" -i "${inputResults}/${BuildID}/${build}/json/warmup" -o "${outputResults}" -p "${processingConfig}" -d "${diagramConfigTemplate}" -v "${visualizerConfiguration}"
 done
 
 
