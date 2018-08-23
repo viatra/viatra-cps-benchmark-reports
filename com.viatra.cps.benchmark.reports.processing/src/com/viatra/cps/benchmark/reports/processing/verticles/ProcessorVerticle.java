@@ -169,8 +169,8 @@ public class ProcessorVerticle extends AbstractVerticle {
 					future.fail("Cannot parse benchmark result");
 				}
 			}
-			return true;
 		}
+		return true;
 	}
 
 	private void sendTools() {
