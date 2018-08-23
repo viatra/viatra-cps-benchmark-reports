@@ -126,54 +126,50 @@ public class ProcessorVerticle extends AbstractVerticle {
 	private Boolean separateResults(Map<String, Map<String, List<BenchmarkResult>>> caseScenarioMap) {
 		this.tools = new HashSet<>();
 		this.metrics = new HashSet<>();
-		try (Stream<Path> paths = Files.walk(this.resultInputPath)) {
-			paths.filter(Files::isRegularFile).forEach((path) -> {
-				String extension = path.toFile().getName().substring(path.toFile().getName().lastIndexOf(".") + 1);
-				// Checks if there is any extension after the last . in your input
-				if (extension.isEmpty() || !extension.equals("json")) {
-					System.out.println(path.toFile().getName() + " is not a json file");
-				} else {
-					try {
-						BenchmarkResult result = mapper.readValue(path.toFile(), BenchmarkResult.class);
+		File[] listOfFiles = this.resultInputPath.toFile().listFiles();
+		for (File file : listOfFiles) {
+			String extension = file.getName().substring(file.getName().lastIndexOf(".") + 1);
+			// Checks if there is any extension after the last . in your input
+			if (extension.isEmpty() || !extension.equals("json")) {
+				System.out.println(file.getName() + " is not a json file");
+			} else {
+				try {
+					BenchmarkResult result = mapper.readValue(file, BenchmarkResult.class);
+					this.tools.add(result.getCaseDescriptor().getTool());
 
-						this.tools.add(result.getCaseDescriptor().getTool());
-
-						for (PhaseResult p : result.getPhaseResults()) {
-							for (MetricResult m : p.getMetrics()) {
-								this.metrics.add(m.getName());
-							}
+					for (PhaseResult p : result.getPhaseResults()) {
+						for (MetricResult m : p.getMetrics()) {
+							this.metrics.add(m.getName());
 						}
-
-						this.sendMetrics();
-						this.sendTools();
-
-						Map<String, List<BenchmarkResult>> scenarioMap = caseScenarioMap
-								.get(result.getCaseDescriptor().getCaseName());
-						if (scenarioMap != null) {
-							List<BenchmarkResult> benchmarkList = (List<BenchmarkResult>) scenarioMap
-									.get(result.getCaseDescriptor().getScenario());
-							if (benchmarkList != null) {
-								benchmarkList.add(result);
-							} else {
-								benchmarkList = new ArrayList<>();
-								benchmarkList.add(result);
-								scenarioMap.put(result.getCaseDescriptor().getScenario(), benchmarkList);
-							}
-						} else {
-							List<BenchmarkResult> resultList = new ArrayList<>();
-							resultList.add(result);
-							scenarioMap = new HashMap<>();
-							scenarioMap.put(result.getCaseDescriptor().getScenario(), resultList);
-							caseScenarioMap.put(result.getCaseDescriptor().getCaseName(), scenarioMap);
-						}
-					} catch (IOException e) {
-						future.fail("Cannot parse benchmark result");
 					}
+
+					this.sendMetrics();
+					this.sendTools();
+
+					Map<String, List<BenchmarkResult>> scenarioMap = caseScenarioMap
+							.get(result.getCaseDescriptor().getCaseName());
+					if (scenarioMap != null) {
+						List<BenchmarkResult> benchmarkList = (List<BenchmarkResult>) scenarioMap
+								.get(result.getCaseDescriptor().getScenario());
+						if (benchmarkList != null) {
+							benchmarkList.add(result);
+						} else {
+							benchmarkList = new ArrayList<>();
+							benchmarkList.add(result);
+							scenarioMap.put(result.getCaseDescriptor().getScenario(), benchmarkList);
+						}
+					} else {
+						List<BenchmarkResult> resultList = new ArrayList<>();
+						resultList.add(result);
+						scenarioMap = new HashMap<>();
+						scenarioMap.put(result.getCaseDescriptor().getScenario(), resultList);
+						caseScenarioMap.put(result.getCaseDescriptor().getCaseName(), scenarioMap);
+					}
+				} catch (IOException e) {
+					future.fail("Cannot parse benchmark result");
 				}
-			});
+			}
 			return true;
-		} catch (Exception e) {
-			return false;
 		}
 	}
 
