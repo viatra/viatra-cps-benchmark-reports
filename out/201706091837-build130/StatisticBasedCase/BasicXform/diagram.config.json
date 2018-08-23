@@ -1,11 +1,29 @@
 {
   "ResultData" : [ {
     "DiagramType" : "line",
-    "OperationID" : "5",
-    "Title" : "Persistent memory after M2M",
+    "OperationID" : "9",
+    "Title" : "Peak memory during Initialization",
     "XLabel" : "Size",
-    "YLabel" : "Memory",
+    "YLabel" : "PeakMemory",
     "Metric" : "Memory",
+    "XType" : "logarithmic",
+    "YType" : "logarithmic"
+  }, {
+    "DiagramType" : "line",
+    "OperationID" : "6",
+    "Title" : "Peak memory during M2M",
+    "XLabel" : "Size",
+    "YLabel" : "PeakMemory",
+    "Metric" : "Memory",
+    "XType" : null,
+    "YType" : null
+  }, {
+    "DiagramType" : "line",
+    "OperationID" : "3",
+    "Title" : "Full workflow",
+    "XLabel" : "Size",
+    "YLabel" : "Time",
+    "Metric" : "Time",
     "XType" : "logarithmic",
     "YType" : "logarithmic"
   }, {
@@ -19,15 +37,6 @@
     "YType" : "logarithmic"
   }, {
     "DiagramType" : "line",
-    "OperationID" : "3",
-    "Title" : "Full workflow",
-    "XLabel" : "Size",
-    "YLabel" : "Time",
-    "Metric" : "Time",
-    "XType" : "logarithmic",
-    "YType" : "logarithmic"
-  }, {
-    "DiagramType" : "line",
     "OperationID" : "10",
     "Title" : "Average memory during Initialization",
     "XLabel" : "Size",
@@ -37,13 +46,40 @@
     "YType" : "logarithmic"
   }, {
     "DiagramType" : "line",
-    "OperationID" : "6",
-    "Title" : "Peak memory during M2M",
+    "OperationID" : "2",
+    "Title" : "Init M2M",
     "XLabel" : "Size",
-    "YLabel" : "PeakMemory",
+    "YLabel" : "Time",
+    "Metric" : "Time",
+    "XType" : "logarithmic",
+    "YType" : "logarithmic"
+  }, {
+    "DiagramType" : "line",
+    "OperationID" : "4",
+    "Title" : "Modify M2M",
+    "XLabel" : "Size",
+    "YLabel" : "Time",
+    "Metric" : "Time",
+    "XType" : "logarithmic",
+    "YType" : "logarithmic"
+  }, {
+    "DiagramType" : "line",
+    "OperationID" : "8",
+    "Title" : "Persistent memory after Initialization",
+    "XLabel" : "Size",
+    "YLabel" : "Memory",
     "Metric" : "Memory",
-    "XType" : null,
-    "YType" : null
+    "XType" : "logarithmic",
+    "YType" : "logarithmic"
+  }, {
+    "DiagramType" : "line",
+    "OperationID" : "5",
+    "Title" : "Persistent memory after M2M",
+    "XLabel" : "Size",
+    "YLabel" : "Memory",
+    "Metric" : "Memory",
+    "XType" : "logarithmic",
+    "YType" : "logarithmic"
   } ],
   "Path" : "./out/201706091837-build130/StatisticBasedCase/BasicXform"
 }
