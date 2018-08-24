@@ -1,6 +1,15 @@
 {
   "ResultData" : [ {
     "DiagramType" : "line",
+    "OperationID" : "6",
+    "Title" : "Peak memory during M2M",
+    "XLabel" : "Size",
+    "YLabel" : "PeakMemory",
+    "Metric" : "Memory",
+    "XType" : "category",
+    "YType" : "logarithmic"
+  }, {
+    "DiagramType" : "line",
     "OperationID" : "7",
     "Title" : "Average memory during M2M",
     "XLabel" : "Size",
@@ -21,15 +30,6 @@
     "DiagramType" : "line",
     "OperationID" : "9",
     "Title" : "Peak memory during Initialization",
-    "XLabel" : "Size",
-    "YLabel" : "PeakMemory",
-    "Metric" : "Memory",
-    "XType" : "category",
-    "YType" : "logarithmic"
-  }, {
-    "DiagramType" : "line",
-    "OperationID" : "6",
-    "Title" : "Peak memory during M2M",
     "XLabel" : "Size",
     "YLabel" : "PeakMemory",
     "Metric" : "Memory",
