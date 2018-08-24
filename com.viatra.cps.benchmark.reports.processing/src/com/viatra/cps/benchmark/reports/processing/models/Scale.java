@@ -1,27 +1,37 @@
 package com.viatra.cps.benchmark.reports.processing.models;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 
 public class Scale {
-	
-	@JsonProperty("Metric")
-	protected String metric;
-	
-	@JsonProperty("DefaultScale")
-	protected String defaultScale;
-	
-	@JsonProperty("Units")
-	protected List<Unit> units;
-	
-	public List<Unit> getUnits() {
-		return units;
+
+	@JsonProperty("Title")
+	protected String title;
+
+	public String getTitle() {
+		return title;
 	}
 
-	public void setUnits(List<Unit> units) {
-		this.units = units;
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	@JsonProperty("Metric")
+	protected String metric;
+
+	@JsonProperty("DefaultScale")
+	protected String defaultScale;
+
+	@JsonProperty("ActualtScale")
+	protected String actualScale;
+
+	public String getActualScale() {
+		return actualScale;
+	}
+
+	public void setActualScale(String actualScale) {
+		this.actualScale = actualScale;
 	}
 
 	public String getMetric() {
@@ -39,16 +49,16 @@ public class Scale {
 	public void setDefaultScale(String defaultScale) {
 		this.defaultScale = defaultScale;
 	}
-	
+
 	public Scale() {
-		this.units = new ArrayList<>();
+		this.metric = "Default";
 	}
-	
-	public Scale(String metric) {
-		this.units = new ArrayList<>();
-		this.metric = metric;
+
+	public Scale(String title) {
+		this.title = title;
 		this.defaultScale = "u";
-		this.units.add(new Unit());
+		this.metric = "Default";
+		this.actualScale = "u";
 	}
 
 }

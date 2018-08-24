@@ -21,6 +21,17 @@ public class VisualizerConfiguration {
 	@JsonProperty("Scale")
 	protected List<Scale> scales;
 
+	@JsonProperty("Metric")
+	protected List<Metric> metrics;
+
+	public List<Metric> getMetrics() {
+		return metrics;
+	}
+
+	public void setMetrics(List<Metric> metrics) {
+		this.metrics = metrics;
+	}
+
 	public List<Scale> getScales() {
 		return scales;
 	}
@@ -28,8 +39,10 @@ public class VisualizerConfiguration {
 	public void setScales(List<Scale> scales) {
 		this.scales = scales;
 	}
-	
+
 	public VisualizerConfiguration() {
+		this.metrics = new ArrayList<>();
+		this.metrics.add(new Metric());
 		this.scales = new ArrayList<>();
 		this.toolColors = new ArrayList<>();
 	}
