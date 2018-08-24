@@ -9,7 +9,7 @@ export class ConfigService {
 
   public getResultConfig(configPath: string) {
     return this._jsonService.getDiagramConfig(configPath).map((config: Config) => {
-      return config.Scale
+      return config
     });
   }
 }

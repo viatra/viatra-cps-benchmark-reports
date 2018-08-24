@@ -1,5 +1,9 @@
+import { Unit } from "./scaleMetric";
+
 export class Scale {
+
     constructor(public Metric: string,
+        public Title: string,
         public ActualScale: string,
         public DefaultScale: string,
         public Interval: number,
@@ -8,6 +12,3 @@ export class Scale {
         public Units: Array<Unit>) { }
 }
 
-export class Unit{
-    constructor (public Label:string, public Value: Array<number>){}
-}

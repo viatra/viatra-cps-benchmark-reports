@@ -110,7 +110,7 @@ export class DiagramComponent implements OnInit {
   }
 
   setScale(scale: Scale, diagram: Diagram) {
-    if (diagram.metric === scale.Metric) {
+    if (diagram.metric === scale.Title) {
       diagram.data.datasets.forEach(dataset => {
         let defaultIndex = scale.Units.findIndex(unit => unit.Label === scale.DefaultScale)
         let datas = new Array<{ x: Number, y: number }>();
@@ -134,9 +134,9 @@ export class DiagramComponent implements OnInit {
   changeScale(scale: Scale) {
     if (this.chart != null && this.chart != undefined) {
       this.diagrams.forEach(diagram => {
-        if (diagram.metric === scale.Metric) {
+        console.log(diagram.metric, scale.Title)
+        if (diagram.metric === scale.Title) {
           diagram.data.datasets.forEach(dataset => {
-
             let datas = new Array<{ x: Number, y: number }>();
             dataset.data.forEach(data => {
               if (scale.UnitIndex > scale.PrevIndex) {

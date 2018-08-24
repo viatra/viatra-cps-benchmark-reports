@@ -25,6 +25,7 @@ import { DiagramLabel } from '../container/container.component';
 import { scan } from 'rxjs/operators/scan';
 import { Router } from '@angular/router';
 import { BuildConfigService } from '../../services/build.config.service';
+import { ScaleMetric } from '../../model/scaleMetric';
 
 @Injectable()
 export class DiagramService {
@@ -35,6 +36,7 @@ export class DiagramService {
     private _scenarios: Array<DiagramSet>;
     private _title: Array<Title>;
     private _colors: Array<Color>;
+    private _metrics: Array<ScaleMetric>
     public configPath: string = `config/config.json`;
     private _defaultScale: Array<Scale>;
     private _newScenario: DiagramSet;
@@ -49,11 +51,9 @@ export class DiagramService {
             this._colors = colors;
         });
 
-        this._configservice.getResultConfig(this.configPath).subscribe((scales: Array<Scale>) => {
-            this._defaultScale = scales
-            this._defaultScale.forEach(scale => {
-                scale.ActualScale = scale.DefaultScale;
-            })
+        this._configservice.getResultConfig(this.configPath).subscribe((config: any) => {
+            this._defaultScale = config.Scale
+            this._metrics = config.Metric
             this._initEvent.emit("Config");
 
             this._jsonService.getScenarios().subscribe((scenarios: Array<DiagramSet>) => {
@@ -114,6 +114,10 @@ export class DiagramService {
     }
     public getScale() {
         return this._defaultScale;
+    }
+
+    public getMetric() {
+        return this._metrics
     }
 
     public sortDiagrams(titles: Array<DiagramLabel>) {
@@ -179,7 +183,7 @@ export class DiagramService {
                     this.getOption(operation.YLabel, operation.XLabel, this.getSizesAsNumber(maxSizeTool),
                         operation.XType,
                         operation.YType,
-                    ), `${operation.Title.replace(/_/g,'-')} (${id})`, operation.Metric);
+                    ), `${operation.Title.replace(/_/g, '-')} (${id})`, operation.Metric);
                 this._diagrams.push(newDiagram)
                 if (opened) {
                     this._selectionUpdate.emit(new SelectionUpdateEvent("Added", newDiagram));

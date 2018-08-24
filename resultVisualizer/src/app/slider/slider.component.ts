@@ -28,10 +28,10 @@ export class SliderComponent implements OnInit {
   }
 
   public changeSlider(slider: string) {
+    this.selectedSlider.PrevIndex = this.selectedSlider.UnitIndex
     this.selectedSlider = this.scales.find(scale => {
-      return scale.Metric === slider;
+      return scale.Title === slider;
     });
-    this.change();
     this._sliderService.changeScale(this.selectedSlider);
   }
 

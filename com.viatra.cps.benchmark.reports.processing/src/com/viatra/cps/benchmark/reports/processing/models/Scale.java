@@ -23,7 +23,7 @@ public class Scale {
 	@JsonProperty("DefaultScale")
 	protected String defaultScale;
 
-	@JsonProperty("ActualtScale")
+	@JsonProperty("ActualScale")
 	protected String actualScale;
 
 	public String getActualScale() {
