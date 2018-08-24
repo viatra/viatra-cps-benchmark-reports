@@ -89,8 +89,7 @@ public abstract class Operation extends AbstractVerticle {
 						if (res.succeeded()) {
 							callback.apply(res);
 						} else {
-							vertx.eventBus().send(this.scenario,
-									new Message("Failed", res.cause().getMessage() + " " + this.ID));
+							this.sendError(new Exception(res.cause().getMessage() + " " + this.ID));
 						}
 					});
 		} catch (IOException e) {
