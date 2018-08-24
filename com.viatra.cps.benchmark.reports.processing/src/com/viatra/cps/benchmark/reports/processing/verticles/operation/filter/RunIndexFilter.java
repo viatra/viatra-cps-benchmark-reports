@@ -48,8 +48,8 @@ public class RunIndexFilter extends Filter {
 	private Integer calculateResultsSize(Set<String> toolKeys) {
 		Integer size = 0;
 		for (String tool : toolKeys) {
-			Set<Integer> sizeKey = this.benchmarkMap.get(tool).keySet();
-			size += sizeKey.size();
+			Set<Integer> sizeKeys = this.benchmarkMap.get(tool).keySet();
+			size += sizeKeys.size();
 		}
 		return size;
 	}

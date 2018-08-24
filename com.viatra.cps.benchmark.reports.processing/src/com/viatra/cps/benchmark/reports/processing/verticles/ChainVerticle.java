@@ -58,14 +58,14 @@ public class ChainVerticle extends AbstractVerticle {
 							new TypeReference<List<BenchmarkResult>>() {
 							});
 					vertx.eventBus()
-							.send(this.descriptors.get(0).getId(),
+							.send(this.descriptors.get(this.descriptors.size() - 1).getId(),
 									mapper.writeValueAsString(new Message("Header",
 											mapper.writeValueAsString(new Header(results.size(), this.operationId)))),
 									res -> {
 										if (res.succeeded()) {
 											for (BenchmarkResult result : results) {
 												try {
-													vertx.eventBus().send(this.descriptors.get(0).getId(),
+													vertx.eventBus().send(this.descriptors.get(this.descriptors.size() - 1).getId(),
 															mapper.writeValueAsString(
 																	new Message("Result", mapper.writeValueAsString(
 																			new Data(this.operationId, result)))));
@@ -106,8 +106,7 @@ public class ChainVerticle extends AbstractVerticle {
 
 	protected void sendError(Exception e) {
 		try {
-			vertx.eventBus().send(this.scenarioId,
-					mapper.writeValueAsString(new Message("Error", e.getMessage())));
+			vertx.eventBus().send(this.scenarioId, mapper.writeValueAsString(new Message("Error", e.getMessage())));
 		} catch (IOException e1) {
 			vertx.eventBus().send(this.scenarioId, e.getMessage());
 		}

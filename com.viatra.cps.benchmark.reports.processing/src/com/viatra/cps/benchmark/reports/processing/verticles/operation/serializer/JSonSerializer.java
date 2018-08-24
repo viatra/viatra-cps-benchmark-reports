@@ -96,13 +96,8 @@ public class JSonSerializer extends AbstractVerticle {
 					this.resultsSizeReceived(message, m);
 					break;
 				case "Result":
-					try {
 						Data data = mapper.readValue(message.getData().toString(), Data.class);
 						this.addResult(data);
-					} catch (Exception e) {
-						vertx.eventBus().send(this.scenarioId,
-								mapper.writeValueAsString(new Message("Error", e.getMessage() + " - " + this.ID)));
-					}
 					break;
 				case "Save":
 					this.save(m);

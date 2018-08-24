@@ -5,8 +5,6 @@ import java.util.List;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
-import com.viatra.cps.benchmark.reports.processing.models.Header;
-import com.viatra.cps.benchmark.reports.processing.models.Message;
 import com.viatra.cps.benchmark.reports.processing.verticles.operation.Operation;
 
 import eu.mondo.sam.core.results.BenchmarkResult;

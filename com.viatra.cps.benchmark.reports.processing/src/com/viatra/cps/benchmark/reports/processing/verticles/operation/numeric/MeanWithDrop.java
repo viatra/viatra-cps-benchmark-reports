@@ -59,5 +59,4 @@ public class MeanWithDrop extends Mean {
 			return null;
 		});
 	}
-
 }

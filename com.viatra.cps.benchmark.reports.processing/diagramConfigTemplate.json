@@ -6,7 +6,7 @@
         "XLabel": "Size",
         "YLabel": "Time",
         "Metric": "Time",
-        "XType": "logarithmic",
+        "XType": "category",
         "YType": "logarithmic"
     },
     {
@@ -16,7 +16,7 @@
         "XLabel": "Size",
         "YLabel": "Time",
         "Metric": "Time",
-        "XType": "logarithmic",
+        "XType": "category",
         "YType": "logarithmic"
     },
     {
@@ -26,7 +26,7 @@
         "XLabel": "Size",
         "YLabel": "Time",
         "Metric": "Time",
-        "XType": "logarithmic",
+        "XType": "category",
         "YType": "logarithmic"
     },
     {
@@ -36,7 +36,7 @@
         "XLabel": "Size",
         "YLabel": "Time",
         "Metric": "Time",
-        "XType": "logarithmic",
+        "XType": "category",
         "YType": "logarithmic"
     },
     {
@@ -46,7 +46,7 @@
         "XLabel": "Size",
         "YLabel": "Memory",
         "Metric": "Memory",
-        "XType": "logarithmic",
+        "XType": "category",
         "YType": "logarithmic"
     },
     {
@@ -55,7 +55,9 @@
         "Title": "Peak memory during M2M",
         "XLabel": "Size",
         "YLabel": "PeakMemory",
-        "Metric": "Memory"
+        "Metric": "Memory",
+         "XType": "category",
+        "YType": "logarithmic"
     },
     {
         "DiagramType": "line",
@@ -64,7 +66,7 @@
         "XLabel": "Size",
         "YLabel": "AverageMemory",
         "Metric": "Memory",
-        "XType": "logarithmic",
+        "XType": "category",
         "YType": "logarithmic"
     },
     {
@@ -74,7 +76,7 @@
         "XLabel": "Size",
         "YLabel": "Memory",
         "Metric": "Memory",
-        "XType": "logarithmic",
+        "XType": "category",
         "YType": "logarithmic"
     },
     {
@@ -84,7 +86,7 @@
         "XLabel": "Size",
         "YLabel": "PeakMemory",
         "Metric": "Memory",
-        "XType": "logarithmic",
+        "XType": "category",
         "YType": "logarithmic"
     },
     {
@@ -94,7 +96,7 @@
         "XLabel": "Size",
         "YLabel": "AverageMemory",
         "Metric": "Memory",
-        "XType": "logarithmic",
+        "XType": "category",
         "YType": "logarithmic"
     }]
 }
