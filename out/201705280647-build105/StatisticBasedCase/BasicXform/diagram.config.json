@@ -1,10 +1,28 @@
 {
   "ResultData" : [ {
     "DiagramType" : "line",
-    "OperationID" : "5",
-    "Title" : "Persistent memory after M2M",
+    "OperationID" : "8",
+    "Title" : "Persistent memory after Initialization",
     "XLabel" : "Size",
     "YLabel" : "Memory",
+    "Metric" : "Memory",
+    "XType" : "category",
+    "YType" : "logarithmic"
+  }, {
+    "DiagramType" : "line",
+    "OperationID" : "3",
+    "Title" : "Full workflow",
+    "XLabel" : "Size",
+    "YLabel" : "Time",
+    "Metric" : "Time",
+    "XType" : "category",
+    "YType" : "logarithmic"
+  }, {
+    "DiagramType" : "line",
+    "OperationID" : "6",
+    "Title" : "Peak memory during M2M",
+    "XLabel" : "Size",
+    "YLabel" : "PeakMemory",
     "Metric" : "Memory",
     "XType" : "category",
     "YType" : "logarithmic"
@@ -19,24 +37,6 @@
     "YType" : "logarithmic"
   }, {
     "DiagramType" : "line",
-    "OperationID" : "2",
-    "Title" : "Init M2M",
-    "XLabel" : "Size",
-    "YLabel" : "Time",
-    "Metric" : "Time",
-    "XType" : "category",
-    "YType" : "logarithmic"
-  }, {
-    "DiagramType" : "line",
-    "OperationID" : "8",
-    "Title" : "Persistent memory after Initialization",
-    "XLabel" : "Size",
-    "YLabel" : "Memory",
-    "Metric" : "Memory",
-    "XType" : "category",
-    "YType" : "logarithmic"
-  }, {
-    "DiagramType" : "line",
     "OperationID" : "7",
     "Title" : "Average memory during M2M",
     "XLabel" : "Size",
@@ -46,11 +46,20 @@
     "YType" : "logarithmic"
   }, {
     "DiagramType" : "line",
-    "OperationID" : "6",
-    "Title" : "Peak memory during M2M",
+    "OperationID" : "5",
+    "Title" : "Persistent memory after M2M",
     "XLabel" : "Size",
-    "YLabel" : "PeakMemory",
+    "YLabel" : "Memory",
     "Metric" : "Memory",
+    "XType" : "category",
+    "YType" : "logarithmic"
+  }, {
+    "DiagramType" : "line",
+    "OperationID" : "2",
+    "Title" : "Init M2M",
+    "XLabel" : "Size",
+    "YLabel" : "Time",
+    "Metric" : "Time",
     "XType" : "category",
     "YType" : "logarithmic"
   }, {
@@ -64,15 +73,6 @@
     "YType" : "logarithmic"
   }, {
     "DiagramType" : "line",
-    "OperationID" : "10",
-    "Title" : "Average memory during Initialization",
-    "XLabel" : "Size",
-    "YLabel" : "AverageMemory",
-    "Metric" : "Memory",
-    "XType" : "category",
-    "YType" : "logarithmic"
-  }, {
-    "DiagramType" : "line",
     "OperationID" : "9",
     "Title" : "Peak memory during Initialization",
     "XLabel" : "Size",
@@ -82,11 +82,11 @@
     "YType" : "logarithmic"
   }, {
     "DiagramType" : "line",
-    "OperationID" : "3",
-    "Title" : "Full workflow",
+    "OperationID" : "10",
+    "Title" : "Average memory during Initialization",
     "XLabel" : "Size",
-    "YLabel" : "Time",
-    "Metric" : "Time",
+    "YLabel" : "AverageMemory",
+    "Metric" : "Memory",
     "XType" : "category",
     "YType" : "logarithmic"
   } ],
