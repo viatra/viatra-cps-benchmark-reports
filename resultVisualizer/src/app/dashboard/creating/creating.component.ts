@@ -180,6 +180,10 @@ export class CreatingComponent implements OnInit {
     this.next["disabled"] = this.disabled;
   }
 
+  public replace(str): string{
+    return str.replace(/_/g,'-')
+  }
+
   
   public removeAllOperationFromClose() {
     let operations = this.operations;
@@ -207,7 +211,7 @@ export class CreatingComponent implements OnInit {
         case 1:
           this.selectedCases.forEach(selectedCase => {
             this._buildConfigService.getScenariosByCase(selectedCase.buildName, selectedCase.caseName, scenarios => {
-              this.scenarios.push({ id: `${selectedCase.buildName}/${selectedCase.caseName}`, scenarios: scenarios })
+              this.scenarios.push({ id: `${selectedCase.buildName}/${selectedCase.caseName}`.replace(/_/g,'-'), scenarios: scenarios })
             })
           })
           break;
@@ -216,7 +220,7 @@ export class CreatingComponent implements OnInit {
           this.hides = new Array<{ operationid: string, id: string, caseName: string, scenario: string, title: string, buildName: string }>();
           this.selectedScenarios.forEach(select => {
             this._buildConfigService.getBuildConfig(select.buildName, select.caseName, select.scenario, (buildConfig => {
-              this.operations.push({ id: `${select.buildName}/${select.caseName}/${select.scenario}`, operations: buildConfig });
+              this.operations.push({ id: `${select.buildName}/${select.caseName}/${select.scenario}`.replace(/_/g,'-'), operations: buildConfig });
             })
             )
           })

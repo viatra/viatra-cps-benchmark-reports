@@ -3,19 +3,29 @@
 <nav class="navbar navbar-inverse bg-primary navbar-fixed-top">
   <div class="collapse navbar-collapse">
     <div class="nav navbar-nav col col-lg-2">
-        <h4><a routerLink="/"  class="home-link"><span class="glyphicon glyphicon-home home"></span></a></h4>
+      <h4>
+        <a routerLink="/" (click)='home()' class="home-link">
+          <span class="glyphicon glyphicon-home home"></span>
+        </a>
+      </h4>
     </div>
-    <app-slider  *ngIf="showSlider == true"></app-slider>
-      <ul class="nav navbar-nav navbar-right menu" *ngIf="showSlider == true">
-        <li  class="dropdown" appDropDown><a  class="dropdown-toggle" role="button"><span class="glyphicon glyphicon-list"></span> </a>
+    <app-slider *ngIf="showSlider == true"></app-slider>
+    <ul class="nav navbar-nav navbar-right menu" *ngIf="showSlider == true">
+      <li class="dropdown" appDropDown>
+        <a class="dropdown-toggle" role="button">
+          <span class="glyphicon glyphicon-list"></span>
+        </a>
         <ul class="dropdown-menu">
-          <li class="menu-item" (click)="select('diagramTitle')"><span [ngClass]="title.diagramTitle"></span> Diagram title</li>
-          <li class="menu-item" (click)="select('legendTitle')"><span [ngClass]="title.legendTitle"></span> Legend title</li>
-        </ul></li>
-      </ul>
+          <li class="menu-item" (click)="select('diagramTitle')">
+            <span [ngClass]="title.diagramTitle"></span> Diagram title</li>
+          <li class="menu-item" (click)="select('legendTitle')">
+            <span [ngClass]="title.legendTitle"></span> Legend title</li>
+        </ul>
+      </li>
+    </ul>
   </div>
 
-  </nav>
+</nav>
 <div class="conatiner">
-<router-outlet></router-outlet>
+  <router-outlet></router-outlet>
 </div>

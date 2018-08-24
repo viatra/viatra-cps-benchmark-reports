@@ -176,10 +176,10 @@ export class DiagramService {
                 });
                 let newDiagram = new Diagram(operation.DiagramType,
                     data,
-                    this.getOption(operation.YLabel, operation.XLabel, this.getMax(result.tool), this.getSizesAsNumber(maxSizeTool),
+                    this.getOption(operation.YLabel, operation.XLabel, this.getSizesAsNumber(maxSizeTool),
                         operation.XType,
                         operation.YType,
-                    ), `${operation.Title} (${id})`, operation.Metric);
+                    ), `${operation.Title.replace(/_/g,'-')} (${id})`, operation.Metric);
                 this._diagrams.push(newDiagram)
                 if (opened) {
                     this._selectionUpdate.emit(new SelectionUpdateEvent("Added", newDiagram));
@@ -189,17 +189,6 @@ export class DiagramService {
         }
     }
 
-    private getMax(tools: Tool[]): Number {
-        let max = 0;
-        tools.forEach(tool=>{
-            tool.results.forEach(result=>{
-                if(result.metric.MetricValue> max){
-                    max = result.metric.MetricValue
-                }
-            })
-        })
-        return max
-    }
 
     private getDataSet(tool: Tool, index: number, sizes: Number[]) {
         let dataset: Dataset = new Dataset();
@@ -281,7 +270,7 @@ export class DiagramService {
         return max;
     }
 
-    getOption(yLabel: string, xLabel: string, max: Number, sizes: Number[], typeX: string, typeY: string): Option {
+    getOption(yLabel: string, xLabel: string, sizes: Number[], typeX: string, typeY: string): Option {
         return {
             maintainAspectRatio: true,
             legend: {
@@ -294,9 +283,7 @@ export class DiagramService {
                         callback: function (tick, index, ticks) {
                             return (index % 3 == 0) || (index == ticks.length - 1) ? tick.toLocaleString() : null;
                         },
-                        min: 0,
-                       // max: max
-
+                        min: 0
                     },
                     scaleLabel: {
                         display: true,
@@ -313,9 +300,9 @@ export class DiagramService {
                         callback: function (tick, index, ticks) {
                             return tick.toLocaleString()
                         },
-                        display: true,
                         min: sizes[0],
-                        max: sizes[sizes.length - 1]
+                        max: sizes[sizes.length - 1],
+                        display: true,
                     },
                     type: typeX
                 }]

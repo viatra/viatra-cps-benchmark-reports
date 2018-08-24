@@ -2,7 +2,7 @@
 <div *ngIf="selectedSlider != null">
     <ng-container>
         <div class="col col-lg-7">
-            <mat-slider step="1"  min="0" [max]="selectedSlider.Interval" class="slider" (change)="change()" [(ngModel)]="selectedSlider.UnitIndex"></mat-slider> 
+            <mat-slider step="1" color='primary'  min="0" tickInterval="1" [max]="selectedSlider.Interval" class="slider" (change)="change()" [(ngModel)]="selectedSlider.UnitIndex"></mat-slider> 
         </div>
         <div class="col col-lg-1 color-box"><span>{{selectedSlider.ActualScale}}</span></div>
       </ng-container>

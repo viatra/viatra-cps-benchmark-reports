@@ -67,8 +67,7 @@ export class ContainerComponent implements OnInit {
     this._diagramService.runScenario(scenario, type, () => {
       this.titles = new Array<DiagramLabel>();
       this._diagramService.Title.forEach((title) => {
-
-        this.titles.push(new DiagramLabel(title.Value, title.NgClass, title.ID));
+        this.titles.push(new DiagramLabel(title.Value.replace(/_/g, '-'), title.NgClass, title.ID));
       });
       this.titles.sort((a, b) => {
         if (a.ID < b.ID) return -1;

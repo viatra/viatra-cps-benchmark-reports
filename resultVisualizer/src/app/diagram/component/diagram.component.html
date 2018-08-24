@@ -4,7 +4,7 @@
         <div class="row bordered">
             <div class="col col-lg-12 center"><h3>Diagrams<span class="glyphicon glyphicon-th grid-selector"  mat-button (click)="openDialog()"></span></h3></div>
           <div [ngClass]="ngClass" *ngFor="let diagram of diagrams">
-            <h3><a name="{{diagram.title}}">{{diagram.title}}</a></h3>
+            <h4><a name="{{diagram.title}}">{{diagram.title}}</a></h4>
             <chart [type]="diagram.type" [data]="diagram.data"  [options]="diagram.options"></chart>
           </div>
         </div>
@@ -15,7 +15,7 @@
             <table class="inline">
               <tr>
                 <td  *ngFor="let diagram of diagrams" class="cell">
-                    <h3><a name="{{diagram.title}}">{{diagram.title}}</a></h3>
+                    <h4><a name="{{diagram.title}}">{{diagram.title}}</a></h4>
                     <chart [type]="diagram.type" [data]="diagram.data"  [options]="diagram.options"></chart>
                 </td>
               </tr>

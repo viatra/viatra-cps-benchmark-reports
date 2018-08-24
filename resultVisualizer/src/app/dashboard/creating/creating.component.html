@@ -13,14 +13,17 @@
                         <span *ngIf="builds.length>0" class="glyphicon glyphicon-menu-right" (click)="addAllBuilds()"></span>
                     </h4>
                     <div class="col col-lg-12 build-list" [dragula]='"build"' [dragulaModel]='builds'>
-                        <div class="build-list-element" *ngFor='let build of builds' [innerHtml]='build'>
+                        <div class="build-list-element" *ngFor='let build of builds'>
+                            {{replace(build)}}
                         </div>
                     </div>
                 </div>
                 <div class="col col-lg-6 selected">
-                    <h4><span *ngIf="selectedBuilds.length>0" class="glyphicon glyphicon-menu-left" (click)="removeAllBuilds()"></span>Select </h4>
+                    <h4>
+                        <span *ngIf="selectedBuilds.length>0" class="glyphicon glyphicon-menu-left" (click)="removeAllBuilds()"></span>Select </h4>
                     <div class="col col-lg-12 build-list" [dragula]='"build"' [dragulaModel]='selectedBuilds'>
-                        <div class="build-list-element" *ngFor='let selectedBuild of selectedBuilds' [innerHtml]='selectedBuild'>
+                        <div class="build-list-element" *ngFor='let selectedBuild of selectedBuilds'>
+                            {{replace(selectedBuild)}}
                         </div>
                     </div>
                 </div>
@@ -31,17 +34,22 @@
                         <h3>Cases</h3>
                     </div>
                     <div class="col col-lg-12" *ngFor='let build of cases'>
-                        <h4>{{build.buildName}}  <span *ngIf="build.cases.length>0" class="glyphicon glyphicon-menu-right" (click)="addAllCasesFromBuild(build.buildName)"></span></h4>
+                        <h4>{{build.buildName}}
+                            <span *ngIf="build.cases.length>0" class="glyphicon glyphicon-menu-right" (click)="addAllCasesFromBuild(build.buildName)"></span>
+                        </h4>
                         <div class="col col-lg-12 build-list" [dragula]='case' [dragulaModel]='build.cases'>
-                            <div class="build-list-element" *ngFor='let case of build.cases' [innerHtml]='case.caseName'>
+                            <div class="build-list-element" *ngFor='let case of build.cases'>
+                                {{replace(case.caseName)}}
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col col-lg-6 selected">
-                    <h4><span *ngIf="selectedCases.length>0" class="glyphicon glyphicon-menu-left" (click)="removeAllCases()"></span>Select</h4>
+                    <h4>
+                        <span *ngIf="selectedCases.length>0" class="glyphicon glyphicon-menu-left" (click)="removeAllCases()"></span>Select</h4>
                     <div class="col col-lg-12 build-list " [dragula]='case' [dragulaModel]='selectedCases'>
-                        <div class="build-list-element" *ngFor='let selected of selectedCases' [innerHtml]='selected.caseName'>
+                        <div class="build-list-element" *ngFor='let selected of selectedCases'>
+                            {{replace(selected.caseName)}}
                         </div>
                     </div>
                 </div>
@@ -52,17 +60,22 @@
                         <h3>Scenarios</h3>
                     </div>
                     <div class="col col-lg-12" *ngFor='let case of scenarios'>
-                        <h4>{{case.id}}  <span *ngIf="case.scenarios.length>0" class="glyphicon glyphicon-menu-right" (click)="addAllScenarioFromCases(case.id)"></span></h4>
+                        <h4>{{case.id}}
+                            <span *ngIf="case.scenarios.length>0" class="glyphicon glyphicon-menu-right" (click)="addAllScenarioFromCases(case.id)"></span>
+                        </h4>
                         <div class="col col-lg-12 build-list" [dragula]='scenario' [dragulaModel]='case.scenarios'>
-                            <div class="build-list-element" *ngFor='let scenario of case.scenarios' [innerHtml]='scenario.scenario'>
+                            <div class="build-list-element" *ngFor='let scenario of case.scenarios'>
+                                {{replace(scenario.scenario)}}
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col col-lg-6 selected">
-                    <h4><span *ngIf="selectedScenarios.length>0" class="glyphicon glyphicon-menu-left" (click)="removeAllScenario()"></span>Select</h4>
+                    <h4>
+                        <span *ngIf="selectedScenarios.length>0" class="glyphicon glyphicon-menu-left" (click)="removeAllScenario()"></span>Select</h4>
                     <div class="col col-lg-12 build-list " [dragula]='scenario' [dragulaModel]='selectedScenarios'>
-                        <div class="build-list-element" *ngFor='let selected of selectedScenarios' [innerHtml]='selected.scenario'>
+                        <div class="build-list-element" *ngFor='let selected of selectedScenarios'>
+                            {{replace(selected.scenario)}}
                         </div>
                     </div>
                 </div>
@@ -73,13 +86,15 @@
                         <h3>Operations</h3>
                     </div>
                     <div class="col col-lg-12" *ngFor='let operation of operations'>
-                        <h4>{{operation.id}} 
+                        <h4>{{operation.id}}
                             <br/>
-                                <span *ngIf="operation.operations.length>0" class="glyphicon glyphicon-eye-open" (click)="addAllOperationToOpen(operation.id)"></span>
-                                <span *ngIf="operation.operations.length>0" class="glyphicon glyphicon-eye-close"  (click)="addAllOperationToClose(operation.id)"></span></h4>
-              
-                                <div class="col col-lg-12 build-list" [dragula]='"operation"' [dragulaModel]='operation.operations'>
-                            <div class="build-list-element" *ngFor='let oper of operation.operations' [innerHtml]='oper.title'>
+                            <span *ngIf="operation.operations.length>0" class="glyphicon glyphicon-eye-open" (click)="addAllOperationToOpen(operation.id)"></span>
+                            <span *ngIf="operation.operations.length>0" class="glyphicon glyphicon-eye-close" (click)="addAllOperationToClose(operation.id)"></span>
+                        </h4>
+
+                        <div class="col col-lg-12 build-list" [dragula]='"operation"' [dragulaModel]='operation.operations'>
+                            <div class="build-list-element" *ngFor='let oper of operation.operations'>
+                                {{replace(oper.title)}}
                             </div>
                         </div>
                     </div>
@@ -89,16 +104,20 @@
                         <h3>Diagrams</h3>
                     </div>
                     <div class="col col-lg-12">
-                        <h4><span *ngIf="shows.length>0" class="glyphicon glyphicon-menu-left" (click)="removeAllOperationFromOpen()"></span>Show</h4>
+                        <h4>
+                            <span *ngIf="shows.length>0" class="glyphicon glyphicon-menu-left" (click)="removeAllOperationFromOpen()"></span>Show</h4>
                         <div class="col col-lg-12 build-list" [dragula]='"operation"' [dragulaModel]='shows'>
-                            <div class="build-list-element" *ngFor='let show of shows' [innerHtml]='show.title'>
+                            <div class="build-list-element" *ngFor='let show of shows'>
+                                {{replace(show.title)}}
                             </div>
                         </div>
                     </div>
                     <div class="col col-lg-12 hideComponent">
-                        <h4><span *ngIf="hides.length>0" class="glyphicon glyphicon-menu-left" (click)="removeAllOperationFromClose()"></span>Hide</h4>
+                        <h4>
+                            <span *ngIf="hides.length>0" class="glyphicon glyphicon-menu-left" (click)="removeAllOperationFromClose()"></span>Hide</h4>
                         <div class="col col-lg-12 build-list" [dragula]='"operation"' [dragulaModel]='hides'>
-                            <div class="build-list-element" *ngFor='let hide of hides' [innerHtml]='hide.title'>
+                            <div class="build-list-element" *ngFor='let hide of hides'>
+                                {{replace(hide.title)}}
                             </div>
                         </div>
                     </div>

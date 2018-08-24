@@ -1,8 +1,7 @@
-import { Component, OnInit, Injectable } from '@angular/core';
+import { Component, OnInit, Injectable, Input, OnDestroy } from '@angular/core';
 import { Scale } from '../model/defaultScale';
-import { DiagramService } from '../diagram/service/diagram.service';
 import { SliderService } from './slider.service';
-import { interval } from '../../../node_modules/rxjs/observable/interval';
+import { Observable, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-slider',
@@ -18,38 +17,52 @@ export class SliderComponent implements OnInit {
     this.scales = new Array<Scale>();
   }
 
-  public getLabel(): string{
+  public getLabel(): string {
     return this.selectedSlider.ActualScale
   }
 
-  change(){
+  change() {
     this.selectedSlider.ActualScale = this.selectedSlider.Units[this.selectedSlider.UnitIndex].Label
     this._sliderService.changeScale(this.selectedSlider)
     this.selectedSlider.PrevIndex = this.selectedSlider.UnitIndex
   }
 
-  public changeSlider(slider: string){
-    this.selectedSlider =  this.scales.find(scale =>{
+  public changeSlider(slider: string) {
+    this.selectedSlider = this.scales.find(scale => {
       return scale.Metric === slider;
-     });
-     this.change();
-      this._sliderService.changeScale(this.selectedSlider);
-    }
+    });
+    this.change();
+    this._sliderService.changeScale(this.selectedSlider);
+  }
+
+  private reset() {
+    this.scales.forEach(scale => {
+      scale.ActualScale = scale.DefaultScale;
+      scale.UnitIndex = scale.Units.findIndex(unit => unit.Label === scale.ActualScale)
+      scale.PrevIndex = scale.UnitIndex
+    })
+    this.selectedSlider.ActualScale = this.selectedSlider.DefaultScale
+    this.selectedSlider.UnitIndex = this.selectedSlider.Units.findIndex(unit => unit.Label === this.selectedSlider.ActualScale)
+    this.selectedSlider.PrevIndex = this.selectedSlider.UnitIndex
+
+  }
 
   ngOnInit() {
+    this._sliderService.ResetEvent.subscribe(() => {
+      this.reset()
+    })
     this.scales = this._sliderService.Scales;
     if (this.scales === null || this.scales === undefined) {
       this._sliderService.InitEvent.subscribe(() => {
         this.scales = this._sliderService.Scales;
-        this.selectedSlider =  this.scales[0]
+        this.selectedSlider = this.scales[0]
         this._sliderService.changeScale(this.selectedSlider)
       })
-    }else{
+    } else {
       this.scales = this._sliderService.Scales;
-      this.selectedSlider =  this.scales[0]
-      
+      this.selectedSlider = this.scales[0]
+
       this._sliderService.changeScale(this.selectedSlider)
     }
-    console.log(this.selectedSlider)
   }
 }

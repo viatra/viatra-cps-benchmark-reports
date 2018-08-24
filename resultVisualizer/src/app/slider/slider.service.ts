@@ -10,8 +10,10 @@ export class SliderService {
   private _scales: Array<Scale>
   private _scaleChangeEvent: EventEmitter<Scale>
   private _initEvent: EventEmitter<null>
+  private _resetEvent: EventEmitter<null>
   constructor(private _diagramService: DiagramService) {
     this._initEvent = new EventEmitter<null>();
+    this._resetEvent = new EventEmitter<null>();
     this._scaleChangeEvent = new EventEmitter<Scale>();
     this._scales = this._diagramService.getScale();
     if (this._scales === null || this._scales === undefined) {
@@ -50,8 +52,16 @@ export class SliderService {
     return this._scaleChangeEvent;
   }
 
+  get ResetEvent(){
+    return this._resetEvent;
+  }
+
   public changeScale(scale: Scale) {
     this._scaleChangeEvent.emit(scale);
+  }
+
+  public reset() {
+    this._resetEvent.emit()
   }
 }
 
