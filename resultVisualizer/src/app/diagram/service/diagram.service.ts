@@ -295,7 +295,7 @@ export class DiagramService {
                             return (index % 3 == 0) || (index == ticks.length - 1) ? tick.toLocaleString() : null;
                         },
                         min: 0,
-                        max: max
+                       // max: max
 
                     },
                     scaleLabel: {

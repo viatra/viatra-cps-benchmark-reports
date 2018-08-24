@@ -79,16 +79,14 @@ public class ScenarioVerticle extends AbstractVerticle {
 				Set<String> operations = chains.keySet();
 				this.numberOfChain = operations.size();
 				Integer index = 0;
+				this.chains.addAll(operations);
 				for (String operation : operations) {
 					List<OperationDescriptor> descriptors = chains.get(operation);
-					ChainVerticle verticle = new ChainVerticle(operation, this.caseName + "." + this.scenario, index,
+					ChainVerticle verticle = new ChainVerticle(operation, this.caseName + "." + this.scenario,
 							descriptors, this.mapper, this.options);
 					vertx.deployVerticle(verticle, this.options, result -> {
 						this.chainDeployed(startFuture, res.succeeded());
-						this.chains.add(operation);
-						System.out.println(
-								"Chain deployed: " + this.caseName + "." + this.scenario + "." + this.deployedChain);
-						this.deployedChain++;
+						System.out.println("Chain deployed: " + this.caseName + "." + this.scenario + "." + operation);
 					});
 					index++;
 				}
@@ -104,8 +102,8 @@ public class ScenarioVerticle extends AbstractVerticle {
 				switch (message.getEvent()) {
 				case "Start":
 					System.out.println("Scenario started: " + this.caseName + "." + this.scenario);
-					for (String opeation : this.chains) {
-						vertx.eventBus().send(this.caseName + "." + this.scenario + "." + opeation, mapper
+					for (String operation : this.chains) {
+						vertx.eventBus().send(this.caseName + "." + this.scenario + "." + operation, mapper
 								.writeValueAsString(new Message("Start", mapper.writeValueAsString(this.results))));
 					}
 					break;

@@ -53,14 +53,11 @@ public class ToolFilter extends Filter {
 			for (Integer sizeKey : sizeKeys) {
 				Map<Integer, List<BenchmarkResult>> sizeMap = this.benchmarkMap.get(tool).get(sizeKey);
 				Set<Integer> runindexkeys = sizeMap.keySet();
-				for (Integer runindexKey : runindexkeys) {
-					size+= sizeMap.get(runindexKey).size();
-				}
+				size += runindexkeys.size();
 			}
 		}
 		return size;
 	}
-	
 
 	private void addToMap(BenchmarkResult benchmarkResult) {
 		Map<Integer, Map<Integer, List<BenchmarkResult>>> toolMap = this.benchmarkMap

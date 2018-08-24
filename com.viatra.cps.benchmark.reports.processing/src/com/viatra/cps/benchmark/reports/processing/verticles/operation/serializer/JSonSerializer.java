@@ -96,8 +96,8 @@ public class JSonSerializer extends AbstractVerticle {
 					this.resultsSizeReceived(message, m);
 					break;
 				case "Result":
-						Data data = mapper.readValue(message.getData().toString(), Data.class);
-						this.addResult(data);
+					Data data = mapper.readValue(message.getData().toString(), Data.class);
+					this.addResult(data);
 					break;
 				case "Save":
 					this.save(m);
@@ -124,7 +124,16 @@ public class JSonSerializer extends AbstractVerticle {
 	protected void resultsSizeReceived(Message message, io.vertx.core.eventbus.Message<Object> m) {
 		try {
 			Header header = mapper.readValue(message.getData(), Header.class);
+			if (header.getSize() == 0) {
+				this.opearations.remove((header.getOperationId()));
+				System.out.println(this.ID + " - Chain " + header.getOperationId() + " done. " + this.opearations.size()
+						+ " chain remeaning");
+				if (this.opearations.isEmpty()) {
+					this.sendNotification();
+				}
+			}else {
 			this.opearations.put(header.getOperationId(), header.getSize());
+			}
 			m.reply("");
 		} catch (Exception e) {
 			m.fail(20, e.getMessage());
@@ -229,7 +238,8 @@ public class JSonSerializer extends AbstractVerticle {
 		if (numberOfResults == 0) {
 			this.opearations.remove(data.getOperationId());
 			this.append(data.getOperationId());
-			System.out.println(this.ID + " - Chain done. " + this.opearations.size() + " chain remeaning");
+			System.out.println(this.ID + " - Chain " + data.getOperationId() + " done. " + this.opearations.size()
+					+ " chain remeaning");
 		} else {
 			this.opearations.put(data.getOperationId(), numberOfResults);
 		}
