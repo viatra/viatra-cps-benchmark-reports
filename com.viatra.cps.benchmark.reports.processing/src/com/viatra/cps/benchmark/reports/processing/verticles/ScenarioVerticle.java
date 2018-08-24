@@ -75,19 +75,18 @@ public class ScenarioVerticle extends AbstractVerticle {
 			if (res.succeeded()) {
 				Map<String, List<OperationDescriptor>> chains = this.createOperationDescriptorChains(
 						this.caseName + "." + this.scenario + ".serializer", this.configuration);
+
 				Set<String> operations = chains.keySet();
 				this.numberOfChain = operations.size();
 				Integer index = 0;
+				this.chains.addAll(operations);
 				for (String operation : operations) {
 					List<OperationDescriptor> descriptors = chains.get(operation);
-					ChainVerticle verticle = new ChainVerticle(operation, this.caseName + "." + this.scenario, index,
+					ChainVerticle verticle = new ChainVerticle(operation, this.caseName + "." + this.scenario,
 							descriptors, this.mapper, this.options);
 					vertx.deployVerticle(verticle, this.options, result -> {
 						this.chainDeployed(startFuture, res.succeeded());
-						this.chains.add(operation);
-						System.out.println(
-								"Chain deployed: " + this.caseName + "." + this.scenario + "." + this.deployedChain);
-						this.deployedChain++;
+						System.out.println("Chain deployed: " + this.caseName + "." + this.scenario + "." + operation);
 					});
 					index++;
 				}
@@ -103,8 +102,8 @@ public class ScenarioVerticle extends AbstractVerticle {
 				switch (message.getEvent()) {
 				case "Start":
 					System.out.println("Scenario started: " + this.caseName + "." + this.scenario);
-					for (String opeation : this.chains) {
-						vertx.eventBus().send(this.caseName + "." + this.scenario + "." + opeation, mapper
+					for (String operation : this.chains) {
+						vertx.eventBus().send(this.caseName + "." + this.scenario + "." + operation, mapper
 								.writeValueAsString(new Message("Start", mapper.writeValueAsString(this.results))));
 					}
 					break;
@@ -161,17 +160,49 @@ public class ScenarioVerticle extends AbstractVerticle {
 		Map<String, List<OperationDescriptor>> chains = new HashMap<>();
 		for (AggregatorConfiguration config : configuration) {
 			List<OperationDescriptor> descriptors = new ArrayList<>();
-			List<OperationConfig> configs = config.getOperations(true);
+			List<OperationConfig> configs = config.getOperations(false);
 			String next = serializer;
 			for (OperationConfig operationConfig : configs) {
-				OperationDescriptor tmp = this.createOperationDescriptor(next, operationConfig, config.getID(),
+				OperationDescriptor filter = null;
+				OperationDescriptor operation = null;
+				operation = this.createOperationDescriptor(next, operationConfig, config.getID(),
 						configuration.indexOf(config), configs.indexOf(operationConfig));
-				descriptors.add(tmp);
-				next = tmp.getId();
+				descriptors.add(operation);
+				if (!operationConfig.getType().equals("Filter")) {
+					filter = this.createFilterDescriptor(operation.getId(), operationConfig, config.getID(),
+							configuration.indexOf(config), configs.indexOf(operationConfig));
+					descriptors.add(filter);
+					next = filter.getId();
+				} else {
+					next = operation.getId();
+				}
 			}
 			chains.put(config.getID(), descriptors);
 		}
 		return chains;
+	}
+
+	private OperationDescriptor createFilterDescriptor(String next, OperationConfig config, String id,
+			Integer chainIndex, Integer index) {
+		StringBuilder builder = new StringBuilder();
+		builder.append(this.caseName).append('.').append(this.scenario).append('.').append(id).append('.')
+				.append(chainIndex).append('.').append(index).append(".f");
+		switch (config.getAttribute()) {
+		case "Metric":
+			return new FilterDescriptor(builder.toString(), next, OperationType.FILTER, FilterType.METRIC,
+					config.getFilter());
+		case "Phase-Name":
+			return new FilterDescriptor(builder.toString(), next, OperationType.FILTER, FilterType.PHASENAME,
+					config.getFilter());
+		case "RunIndex":
+			return new FilterDescriptor(builder.toString(), next, OperationType.FILTER, FilterType.RUNINDEX,
+					config.getFilter());
+		case "Tool":
+			return new FilterDescriptor(builder.toString(), next, OperationType.FILTER, FilterType.TOOL,
+					config.getFilter());
+		default:
+			return null;
+		}
 	}
 
 	private OperationDescriptor createOperationDescriptor(String next, OperationConfig config, String id,

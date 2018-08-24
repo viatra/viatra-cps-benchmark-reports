@@ -59,6 +59,13 @@ public class DiagramDescriptor {
 		this.opened = opened;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		DiagramDescriptor descriptor = (DiagramDescriptor) obj;
+		return this.build.equals(descriptor.build) && this.scenario.equals(descriptor.scenario)
+				&& this.caseName.equals(descriptor.caseName) && this.operationId.equals(descriptor.operationId);
+	}
+
 	public DiagramDescriptor() {
 	}
 

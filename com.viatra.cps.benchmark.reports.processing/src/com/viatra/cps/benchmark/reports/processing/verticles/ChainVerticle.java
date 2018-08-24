@@ -28,13 +28,13 @@ public class ChainVerticle extends AbstractVerticle {
 	protected String id;
 	private DeploymentOptions options;
 
-	public ChainVerticle(String operationId, String scenarioId, Integer index, List<OperationDescriptor> descriptors,
+	public ChainVerticle(String operationId, String scenarioId, List<OperationDescriptor> descriptors,
 			ObjectMapper mapper, DeploymentOptions options) {
 		this.operationId = operationId;
 		this.scenarioId = scenarioId;
 		this.descriptors = descriptors;
 		this.chainSize = descriptors.size();
-		this.id = scenarioId + "." + index;
+		this.id = scenarioId + "." + operationId;
 		this.mapper = mapper;
 		this.options = options;
 	}
@@ -54,18 +54,21 @@ public class ChainVerticle extends AbstractVerticle {
 				switch (message.getEvent()) {
 				case "Start":
 					System.out.println("Chain started: " + this.id);
+					vertx.eventBus().send(this.scenarioId + ".serializer", mapper.writeValueAsString(
+							new Message("Header", mapper.writeValueAsString(new Header(-1, this.operationId)))));
 					List<BenchmarkResult> results = mapper.readValue(message.getData(),
 							new TypeReference<List<BenchmarkResult>>() {
 							});
 					vertx.eventBus()
-							.send(this.descriptors.get(0).getId(),
+							.send(this.descriptors.get(this.descriptors.size() - 1).getId(),
 									mapper.writeValueAsString(new Message("Header",
 											mapper.writeValueAsString(new Header(results.size(), this.operationId)))),
 									res -> {
 										if (res.succeeded()) {
 											for (BenchmarkResult result : results) {
 												try {
-													vertx.eventBus().send(this.descriptors.get(0).getId(),
+													vertx.eventBus().send(
+															this.descriptors.get(this.descriptors.size() - 1).getId(),
 															mapper.writeValueAsString(
 																	new Message("Result", mapper.writeValueAsString(
 																			new Data(this.operationId, result)))));
@@ -106,8 +109,7 @@ public class ChainVerticle extends AbstractVerticle {
 
 	protected void sendError(Exception e) {
 		try {
-			vertx.eventBus().send(this.scenarioId,
-					mapper.writeValueAsString(new Message("Error", e.getMessage())));
+			vertx.eventBus().send(this.scenarioId, mapper.writeValueAsString(new Message("Error", e.getMessage())));
 		} catch (IOException e1) {
 			vertx.eventBus().send(this.scenarioId, e.getMessage());
 		}

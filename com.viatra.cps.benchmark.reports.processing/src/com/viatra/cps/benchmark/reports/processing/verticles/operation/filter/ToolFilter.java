@@ -49,8 +49,12 @@ public class ToolFilter extends Filter {
 	private Integer calculateResultsSize(Set<String> toolKeys) {
 		Integer size = 0;
 		for (String tool : toolKeys) {
-			Set<Integer> sizeKey = this.benchmarkMap.get(tool).keySet();
-			size += sizeKey.size();
+			Set<Integer> sizeKeys = this.benchmarkMap.get(tool).keySet();
+			for (Integer sizeKey : sizeKeys) {
+				Map<Integer, List<BenchmarkResult>> sizeMap = this.benchmarkMap.get(tool).get(sizeKey);
+				Set<Integer> runindexkeys = sizeMap.keySet();
+				size += runindexkeys.size();
+			}
 		}
 		return size;
 	}

@@ -13,6 +13,8 @@ import java.util.stream.Collectors;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import com.viatra.cps.benchmark.reports.processing.models.AggregataedResult;
+import com.viatra.cps.benchmark.reports.processing.models.Builds;
+import com.viatra.cps.benchmark.reports.processing.models.Case;
 import com.viatra.cps.benchmark.reports.processing.models.Data;
 import com.viatra.cps.benchmark.reports.processing.models.DiagramDescriptor;
 import com.viatra.cps.benchmark.reports.processing.models.DiagramSet;
@@ -22,6 +24,7 @@ import com.viatra.cps.benchmark.reports.processing.models.Message;
 import com.viatra.cps.benchmark.reports.processing.models.Tool;
 import com.viatra.cps.benchmark.reports.processing.models.Result;
 import com.viatra.cps.benchmark.reports.processing.models.ResultData;
+import com.viatra.cps.benchmark.reports.processing.models.Results;
 import com.viatra.cps.benchmark.reports.processing.verticles.ProcessorVerticle;
 
 import eu.mondo.sam.core.results.MetricResult;
@@ -52,6 +55,8 @@ public class JSonSerializer extends AbstractVerticle {
 	protected Map<String, Integer> opearations;
 	protected String ID;
 	protected String scenarioId;
+	protected Builds builds;
+	protected Results output;
 
 	public JSonSerializer(String id, String scenarioId, ObjectMapper mapper, String scenarioName, File out,
 			Diagrams digramConfiguration, String path, String caseName, String buildId) {
@@ -67,8 +72,18 @@ public class JSonSerializer extends AbstractVerticle {
 		this.result = new ArrayList<>();
 		this.config = new Diagrams(path);
 		this.map = new HashMap<>();
+		List<String> s = new ArrayList<>();
+		s.add(scenarioName);
+		Case c = new Case();
+		c.setScenarios(s);
+		List<Case> caseList = new ArrayList<>();
+		caseList.add(c);
+		c.setCaseName(caseName);
+		this.builds = new Builds();
+		this.builds.setCases(caseList);
+		builds.setBuildId(buildId);
 		this.template = digramConfiguration;
-		this.digramConfiguration = new File(path + "/" + "config.json");
+		this.digramConfiguration = new File(path + "/" + "diagram.config.json");
 		this.opearations = new HashMap<>();
 	}
 
@@ -81,13 +96,8 @@ public class JSonSerializer extends AbstractVerticle {
 					this.resultsSizeReceived(message, m);
 					break;
 				case "Result":
-					try {
-						Data data = mapper.readValue(message.getData().toString(), Data.class);
-						this.addResult(data);
-					} catch (Exception e) {
-						vertx.eventBus().send(this.scenarioId,
-								mapper.writeValueAsString(new Message("Error", e.getMessage() + " - " + this.ID)));
-					}
+					Data data = mapper.readValue(message.getData().toString(), Data.class);
+					this.addResult(data);
 					break;
 				case "Save":
 					this.save(m);
@@ -114,7 +124,16 @@ public class JSonSerializer extends AbstractVerticle {
 	protected void resultsSizeReceived(Message message, io.vertx.core.eventbus.Message<Object> m) {
 		try {
 			Header header = mapper.readValue(message.getData(), Header.class);
+			if (header.getSize() == 0) {
+				this.opearations.remove((header.getOperationId()));
+				System.out.println(this.ID + " - Chain " + header.getOperationId() + " done. " + this.opearations.size()
+						+ " chain remeaning");
+				if (this.opearations.isEmpty()) {
+					this.sendNotification();
+				}
+			}else {
 			this.opearations.put(header.getOperationId(), header.getSize());
+			}
 			m.reply("");
 		} catch (Exception e) {
 			m.fail(20, e.getMessage());
@@ -198,10 +217,14 @@ public class JSonSerializer extends AbstractVerticle {
 			if (!json.exists()) {
 				Files.createDirectories(Paths.get(json.getParent()));
 			}
-			this.mapper.writeValue(json, this.result);
+			this.output = new Results(this.buildId + "/" + this.caseName + "/" + this.scenarioId);
+			this.output.setResults(this.result);
+			this.mapper.writeValue(json, this.output);
 			this.mapper.writeValue(digramConfiguration, this.config);
 			vertx.eventBus().send("JsonUpdater",
 					mapper.writeValueAsString(new Message("Dashboard", mapper.writeValueAsString(this.dashboard))));
+			vertx.eventBus().send("JsonUpdater",
+					mapper.writeValueAsString(new Message("Builds", mapper.writeValueAsString(this.builds))));
 			m.reply(mapper.writeValueAsString(new Message("Successfull", "")));
 		} catch (IOException e) {
 			m.fail(20, e.getMessage());
@@ -215,7 +238,8 @@ public class JSonSerializer extends AbstractVerticle {
 		if (numberOfResults == 0) {
 			this.opearations.remove(data.getOperationId());
 			this.append(data.getOperationId());
-			System.out.println(this.ID + " - Chain done. " + this.opearations.size() + " chain remeaning");
+			System.out.println(this.ID + " - Chain " + data.getOperationId() + " done. " + this.opearations.size()
+					+ " chain remeaning");
 		} else {
 			this.opearations.put(data.getOperationId(), numberOfResults);
 		}

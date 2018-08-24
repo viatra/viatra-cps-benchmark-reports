@@ -66,6 +66,11 @@ public abstract class Operation extends AbstractVerticle {
 			Header header = mapper.readValue(message.getData(), Header.class);
 			this.numberOfResults = header.getSize();
 			this.operationId = header.getOperationId();
+			if (this.numberOfResults == 0) {
+				System.err.println("empty");
+				vertx.eventBus().send(this.scenario + ".serializer", mapper.writeValueAsString(
+						new Message("Header", mapper.writeValueAsString(new Header(0, this.operationId)))));
+			}
 			m.reply("");
 		} catch (Exception e) {
 			m.fail(20, e.getMessage());
@@ -84,15 +89,25 @@ public abstract class Operation extends AbstractVerticle {
 	protected void sendResultsSize(Header header,
 			Function<AsyncResult<io.vertx.core.eventbus.Message<Object>>, Void> callback) {
 		try {
-			vertx.eventBus().send(this.next,
-					mapper.writeValueAsString(new Message("Header", mapper.writeValueAsString(header))), res -> {
-						if (res.succeeded()) {
-							callback.apply(res);
-						} else {
-							vertx.eventBus().send(this.scenario,
-									new Message("Failed", res.cause().getMessage() + " " + this.ID));
-						}
-					});
+			if (header.getSize() == 0) {
+				vertx.eventBus().send(this.scenario + ".serializer",
+						mapper.writeValueAsString(new Message("Header", mapper.writeValueAsString(header))), res -> {
+							if (res.succeeded()) {
+								callback.apply(res);
+							} else {
+								this.sendError(new Exception(res.cause().getMessage() + " " + this.ID));
+							}
+						});
+			} else {
+				vertx.eventBus().send(this.next,
+						mapper.writeValueAsString(new Message("Header", mapper.writeValueAsString(header))), res -> {
+							if (res.succeeded()) {
+								callback.apply(res);
+							} else {
+								this.sendError(new Exception(res.cause().getMessage() + " " + this.ID));
+							}
+						});
+			}
 		} catch (IOException e) {
 			this.sendError(e);
 		}

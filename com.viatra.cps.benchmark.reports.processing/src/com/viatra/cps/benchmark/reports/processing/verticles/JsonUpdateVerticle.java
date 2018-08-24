@@ -10,6 +10,8 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 
 import com.viatra.cps.benchmark.reports.processing.models.Builds;
+import com.viatra.cps.benchmark.reports.processing.models.Case;
+import com.viatra.cps.benchmark.reports.processing.models.DiagramDescriptor;
 import com.viatra.cps.benchmark.reports.processing.models.DiagramSet;
 import com.viatra.cps.benchmark.reports.processing.models.Message;
 import com.viatra.cps.benchmark.reports.processing.models.Scale;
@@ -178,9 +180,20 @@ public class JsonUpdateVerticle extends AbstractVerticle {
 			Optional<Builds> optBuild = this.builds.stream().filter(b -> b.getBuildId().equals(newBuild.getBuildId()))
 					.findFirst();
 			if (optBuild.isPresent()) {
-				this.builds.remove(optBuild.get());
+				Optional<Case> optCase = optBuild.get().getCases().stream()
+						.filter(b -> b.getCaseName().equals(newBuild.getCases().get(0).getCaseName())).findFirst();
+				if (optCase.isPresent()) {
+					Optional<String> optScenario = optCase.get().getScenarios().stream()
+							.filter(b -> b.equals(newBuild.getCases().get(0).getScenarios().get(0))).findFirst();
+					if (!optScenario.isPresent()) {
+						optCase.get().getScenarios().addAll(newBuild.getCases().get(0).getScenarios());
+					}
+				} else {
+					optBuild.get().getCases().addAll(newBuild.getCases());
+				}
+			} else {
+				this.builds.add(newBuild);
 			}
-			this.builds.add(newBuild);
 			return true;
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
@@ -193,9 +206,18 @@ public class JsonUpdateVerticle extends AbstractVerticle {
 			Optional<DiagramSet> optDash = this.dashboard.stream()
 					.filter(d -> d.getTitle().equals(newDiagramSet.getTitle())).findFirst();
 			if (optDash.isPresent()) {
-				this.dashboard.remove(optDash.get());
+				DiagramSet diagramSet = optDash.get();
+				for (DiagramDescriptor diagramDescriptor : newDiagramSet.getDiagrams()) {
+					Optional<DiagramDescriptor> optDiag = diagramSet.getDiagrams().stream()
+							.filter(diag -> diag.equals(diagramDescriptor)).findFirst();
+					if (optDiag.isPresent()) {
+						diagramSet.getDiagrams().remove(optDiag.get());
+					}
+					diagramSet.getDiagrams().add(diagramDescriptor);
+				}
+			} else {
+				this.dashboard.add(newDiagramSet);
 			}
-			this.dashboard.add(newDiagramSet);
 			return true;
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
