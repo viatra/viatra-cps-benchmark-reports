@@ -1,8 +1,71 @@
 {
   "ResultData" : [ {
     "DiagramType" : "line",
+    "OperationID" : "2",
+    "Title" : "Init M2M",
+    "XLabel" : "Size",
+    "YLabel" : "Time",
+    "Metric" : "Time",
+    "XType" : "category",
+    "YType" : "logarithmic"
+  }, {
+    "DiagramType" : "line",
+    "OperationID" : "5",
+    "Title" : "Persistent memory after M2M",
+    "XLabel" : "Size",
+    "YLabel" : "Memory",
+    "Metric" : "Memory",
+    "XType" : "category",
+    "YType" : "logarithmic"
+  }, {
+    "DiagramType" : "line",
+    "OperationID" : "1",
+    "Title" : "Generation",
+    "XLabel" : "Size",
+    "YLabel" : "Time",
+    "Metric" : "Time",
+    "XType" : "category",
+    "YType" : "logarithmic"
+  }, {
+    "DiagramType" : "line",
+    "OperationID" : "4",
+    "Title" : "Modify M2M",
+    "XLabel" : "Size",
+    "YLabel" : "Time",
+    "Metric" : "Time",
+    "XType" : "category",
+    "YType" : "logarithmic"
+  }, {
+    "DiagramType" : "line",
+    "OperationID" : "3",
+    "Title" : "Full workflow",
+    "XLabel" : "Size",
+    "YLabel" : "Time",
+    "Metric" : "Time",
+    "XType" : "category",
+    "YType" : "logarithmic"
+  }, {
+    "DiagramType" : "line",
+    "OperationID" : "7",
+    "Title" : "Average memory during M2M",
+    "XLabel" : "Size",
+    "YLabel" : "AverageMemory",
+    "Metric" : "Memory",
+    "XType" : "category",
+    "YType" : "logarithmic"
+  }, {
+    "DiagramType" : "line",
     "OperationID" : "6",
     "Title" : "Peak memory during M2M",
+    "XLabel" : "Size",
+    "YLabel" : "PeakMemory",
+    "Metric" : "Memory",
+    "XType" : "category",
+    "YType" : "logarithmic"
+  }, {
+    "DiagramType" : "line",
+    "OperationID" : "9",
+    "Title" : "Peak memory during Initialization",
     "XLabel" : "Size",
     "YLabel" : "PeakMemory",
     "Metric" : "Memory",
@@ -23,24 +86,6 @@
     "Title" : "Average memory during Initialization",
     "XLabel" : "Size",
     "YLabel" : "AverageMemory",
-    "Metric" : "Memory",
-    "XType" : "category",
-    "YType" : "logarithmic"
-  }, {
-    "DiagramType" : "line",
-    "OperationID" : "7",
-    "Title" : "Average memory during M2M",
-    "XLabel" : "Size",
-    "YLabel" : "AverageMemory",
-    "Metric" : "Memory",
-    "XType" : "category",
-    "YType" : "logarithmic"
-  }, {
-    "DiagramType" : "line",
-    "OperationID" : "9",
-    "Title" : "Peak memory during Initialization",
-    "XLabel" : "Size",
-    "YLabel" : "PeakMemory",
     "Metric" : "Memory",
     "XType" : "category",
     "YType" : "logarithmic"
