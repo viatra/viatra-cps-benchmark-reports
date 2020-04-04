@@ -19,15 +19,6 @@
     "YType" : "logarithmic"
   }, {
     "DiagramType" : "line",
-    "OperationID" : "6",
-    "Title" : "Peak memory during M2M",
-    "XLabel" : "Size",
-    "YLabel" : "PeakMemory",
-    "Metric" : "PeakMemory",
-    "XType" : "category",
-    "YType" : "logarithmic"
-  }, {
-    "DiagramType" : "line",
     "OperationID" : "5",
     "Title" : "Persistent memory after M2M",
     "XLabel" : "Size",
@@ -51,6 +42,15 @@
     "XLabel" : "Size",
     "YLabel" : "Time",
     "Metric" : "Time",
+    "XType" : "category",
+    "YType" : "logarithmic"
+  }, {
+    "DiagramType" : "line",
+    "OperationID" : "6",
+    "Title" : "Peak memory during M2M",
+    "XLabel" : "Size",
+    "YLabel" : "PeakMemory",
+    "Metric" : "PeakMemory",
     "XType" : "category",
     "YType" : "logarithmic"
   }, {
